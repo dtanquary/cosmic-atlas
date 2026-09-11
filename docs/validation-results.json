@@ -1,0 +1,240 @@
+[
+  {
+    "runId": "chrome-full",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 598539,
+      "loaded": 630491,
+      "represented": 14140375,
+      "pending": 12,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 118.56770215793222,
+      "p95": 8.433999999999997,
+      "calls": 55,
+      "managedMiB": 68.86002445220947,
+      "blocked": false,
+      "focusDistance": 16099.112169655016,
+      "budget": 1000000
+    },
+    "interaction": {
+      "first": {
+        "ok": true,
+        "selected": "39628100723545457",
+        "attempted": 1
+      },
+      "second": {
+        "ok": true,
+        "selected": "39627981714364036",
+        "attempted": 2
+      },
+      "measuredMpc": 915.7522950655592,
+      "measurementStable": true,
+      "selectedExactId": "39627981714364036"
+    },
+    "context": {
+      "supported": true,
+      "recovered": true
+    },
+    "integrity": {
+      "rejected": true,
+      "message": "Data integrity check failed"
+    },
+    "benchmark": {
+      "mode": "adaptive",
+      "resolution": [
+        1920,
+        1080
+      ],
+      "frames": 2396,
+      "meanMs": 8.333305509181999,
+      "fps": 120.00040066911701,
+      "p95Ms": 10.299999999999272,
+      "stats": {
+        "drawn": 1990709,
+        "loaded": 14140375,
+        "represented": 14140375,
+        "pending": 0,
+        "failed": 0,
+        "mode": "adaptive",
+        "complete": false,
+        "fps": 119.99999999999999,
+        "p95": 10.299999999999272,
+        "calls": 142,
+        "managedMiB": 436.87855052948,
+        "blocked": false,
+        "focusDistance": 16099.112169643397,
+        "budget": 2000000
+      }
+    }
+  },
+  {
+    "runId": "chrome-all-points",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 168.20000000298023,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 661312,
+      "loaded": 773650,
+      "represented": 14140375,
+      "pending": 8,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 120.48192771084331,
+      "p95": 8.300000000000004,
+      "calls": 60,
+      "managedMiB": 73.554612159729,
+      "blocked": false,
+      "focusDistance": 16099.112169655016,
+      "budget": 1000000
+    },
+    "benchmark": {
+      "mode": "full",
+      "resolution": [
+        1920,
+        1080
+      ],
+      "frames": 413,
+      "meanMs": 48.03002421307508,
+      "fps": 20.820310136919996,
+      "p95Ms": 59.5,
+      "stats": {
+        "drawn": 14140375,
+        "loaded": 14140375,
+        "represented": 14140375,
+        "pending": 0,
+        "failed": 0,
+        "mode": "full",
+        "complete": true,
+        "fps": 19.680680951560927,
+        "p95": 60.79999999999927,
+        "calls": 883,
+        "managedMiB": 436.4410352706909,
+        "blocked": false,
+        "focusDistance": 16099.112169651786,
+        "budget": 1000000
+      }
+    }
+  },
+  {
+    "runId": "safari-development",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Safari/605.1.15",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 429,
+    "rendering": {
+      "renderer": "Apple GPU",
+      "version": "WebGL 2.0",
+      "width": 2268,
+      "height": 1270
+    },
+    "initial": {
+      "drawn": 198758,
+      "loaded": 393290,
+      "represented": 1000000,
+      "pending": 1,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 8.064516129032258,
+      "p95": 124,
+      "calls": 16,
+      "managedMiB": 35.70457458496094,
+      "blocked": false,
+      "focusDistance": 16069.490014018398,
+      "budget": 1000000
+    },
+    "interaction": {
+      "first": {
+        "ok": true,
+        "selected": "39628106658489484",
+        "attempted": 1
+      },
+      "second": {
+        "ok": true,
+        "selected": "39628130117224559",
+        "attempted": 2
+      },
+      "measuredMpc": 456.4793938914198,
+      "measurementStable": true,
+      "selectedExactId": "39628130117224559"
+    },
+    "context": {
+      "supported": true,
+      "recovered": true
+    },
+    "integrity": {
+      "rejected": true,
+      "message": "Data integrity check failed"
+    }
+  },
+  {
+    "runId": "firefox-development",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:149.0) Gecko/20100101 Firefox/149.0",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 366,
+    "rendering": {
+      "renderer": "Apple M1, or similar",
+      "version": "WebGL 2.0",
+      "width": 2268,
+      "height": 1222
+    },
+    "initial": {
+      "drawn": 111691,
+      "loaded": 137856,
+      "represented": 1000000,
+      "pending": 12,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 0,
+      "p95": 0,
+      "calls": 9,
+      "managedMiB": 40.028459548950195,
+      "blocked": false,
+      "focusDistance": 16069.490014018415,
+      "budget": 1000000
+    },
+    "interaction": {
+      "first": {
+        "ok": true,
+        "selected": "39633248527058294",
+        "attempted": 1
+      },
+      "second": {
+        "ok": true,
+        "selected": "39627746447458545",
+        "attempted": 1
+      },
+      "measuredMpc": 3093.03551077387,
+      "measurementStable": true,
+      "selectedExactId": "39627746447458545"
+    },
+    "context": {
+      "supported": true,
+      "recovered": true
+    },
+    "integrity": {
+      "rejected": true,
+      "message": "Data integrity check failed"
+    }
+  }
+]
