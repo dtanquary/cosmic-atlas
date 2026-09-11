@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 import {cartesian} from './format';
+import spiralProfile from './data/spiral-profile.json';
 import type {Galaxy} from './types';
 
 export type GalaxyFamily='spiral'|'barred'|'elliptical'|'lenticular'|'irregular';
+export type GalaxyAppearance='spiral'|'catalog';
 export type ModelDisplay='automatic'|'focused'|'points';
 export const familyLabels:Record<GalaxyFamily,string>={spiral:'Spiral',barred:'Barred spiral',elliptical:'Elliptical',lenticular:'Lenticular',irregular:'Irregular'};
 
@@ -84,7 +86,7 @@ export function galaxyRadius(distanceMpc:number,radiusArcsec:number){
 }
 
 export function detailBlend(radiusPixels:number){
-  const t=THREE.MathUtils.clamp((radiusPixels-1)/7,0,1);
+  const t=THREE.MathUtils.clamp((radiusPixels-.6)/4.4,0,1);
   return t*t*(3-2*t);
 }
 
@@ -185,11 +187,11 @@ export class GalaxyVolume<F extends VolumeFrame=VolumeFrame> {
     }
   }
 
-  update(camera:THREE.PerspectiveCamera,height:number,pixelRatio=1,focused=false,display:ModelDisplay='automatic'){
+  update(camera:THREE.PerspectiveCamera,height:number,pixelRatio=1,focused=false,display:ModelDisplay='automatic',presence=1){
     camera.updateMatrixWorld();
     this.relative.copy(this.center).sub(camera.position);
     const distance=this.relative.length(),tan=Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
-    this.blend.value=modelBlend(this.radius*height/(2*tan*Math.max(distance,1e-10)),Math.min(height,height*camera.aspect),focused,display);
+    this.blend.value=modelBlend(this.radius*height/(2*tan*Math.max(distance,1e-10)),Math.min(height,height*camera.aspect),focused,display)*presence;
     this.mesh.visible=this.blend.value>0;
     if(this.arms)this.arms.visible=false;
     if(!this.mesh.visible)return;
@@ -235,12 +237,14 @@ export class GalaxyVolume<F extends VolumeFrame=VolumeFrame> {
 
 /** A measured catalog observation using the shared light renderer. */
 export class ResolvedGalaxy extends GalaxyVolume<ReturnType<typeof galaxyFrame>> {
-  constructor(readonly data:GalaxyDetailData){
+  constructor(readonly data:GalaxyDetailData,readonly appearance:GalaxyAppearance='catalog'){
     const {galaxy,shape}=data;
-    const family=data.model?.family??(data.spiral?'spiral':'lenticular');
+    const family=appearance==='spiral'?'spiral':data.model?.family??(data.spiral?'spiral':'lenticular');
     const q=(1-Math.hypot(shape.e1,shape.e2))/(1+Math.hypot(shape.e1,shape.e2));
     const intrinsic=Math.min(family==='elliptical'?.65:family==='irregular'?.3:.12,q*.95);
-    super({family,gaussians:data.gaussians,spiral:data.spiral,seed:galaxy.id,knotCount:data.knotCount},
+    const seed=Math.imul(galaxy.id+1,2654435761)>>>0;
+    const spiral=appearance==='spiral'?{arms:2,pitchDegrees:20,phaseRadians:seed/4294967296*Math.PI*2,seed}:data.spiral;
+    super({family,gaussians:appearance==='spiral'?spiralProfile.gaussians:data.gaussians,spiral,seed:galaxy.id,knotCount:data.knotCount??(data.spiral?24000:12000)},
       galaxyFrame(galaxy.ra,galaxy.dec,shape.e1,shape.e2,intrinsic),galaxyRadius(galaxy.distance,shape.radiusArcsec),new THREE.Vector3().fromArray(galaxy.position));
   }
 }

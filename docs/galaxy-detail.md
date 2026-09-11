@@ -93,3 +93,9 @@ Profile sidecars still cover every accepted record. The renderer now withholds p
 ## Independently measured neighbors
 
 Six additional nearby models share `ResolvedGalaxy` and `GalaxyVolume`, with adopted sizes, projected ellipses and independently measured distances. Their local distance is used directly; no redshift is fabricated. M31/M33 are disk approximations, M32/M110 use measured half-light ellipses with illustrative Sérsic profiles, and the Clouds disclose assumed sizes/structure and missing orientation. Their identities, counts and geometry budget remain separate from DESI. See [nearby-galaxies.md](nearby-galaxies.md) for the exact source and rendering assumptions.
+
+## All-spiral appearance
+
+The requested default now renders every source family as a spiral illustration. Settings → Galaxy appearance → Catalog types restores the measured/proxy families described above. Original type metadata, Gaussian profiles, exact positions and adopted radii/sky ellipses are retained; only rendering parameters change. The common exponential profile, assumed thin depth, two arms and colors in this mode are visual choices. They must not be presented as a measured morphology distribution. `scripts/prepare_spiral_profile.py` regenerates its small Gaussian profile from the analytic exponential law.
+
+The more distant transition spans projected half-light radii of 0.6–5 CSS pixels. Resident models remain candidates even when their source point node leaves the displayed frontier. A 30% resident ranking margin and 0.6-second arrival/departure fades prevent abrupt pool replacement during orbiting. The final blend also controls the complementary point and body hit testing. Automatic foreground-obstruction fading and deliberate focus behavior remain in force.

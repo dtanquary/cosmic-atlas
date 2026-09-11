@@ -1,4 +1,4 @@
-import {ResolvedGalaxy,type GalaxyDetailData,type GalaxyFamily} from './galaxy-detail';
+import {ResolvedGalaxy,type GalaxyDetailData,type GalaxyFamily,type GalaxyAppearance} from './galaxy-detail';
 import {cartesian} from './format';
 import reference from './data/nearby-galaxies.json';
 
@@ -15,4 +15,4 @@ export function nearbyDetails():GalaxyDetailData[]{
   spiral:entry.family==='spiral'?{arms:2,pitchDegrees:entry.key==='m31'?12:20,phaseRadians:.4,seed:100-entry.id}:undefined,knotCount:12000,
  }));
 }
-export function createNearbyGalaxies(){return nearbyDetails().map(data=>new ResolvedGalaxy(data))}
+export function createNearbyGalaxies(appearance:GalaxyAppearance='catalog'){return nearbyDetails().map(data=>new ResolvedGalaxy(data,appearance))}

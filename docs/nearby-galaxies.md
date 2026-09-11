@@ -21,7 +21,7 @@ Positions use the existing equatorial Cartesian axes and Mpc units, with the obs
 
 ## What the models measure and assume
 
-The common light-volume renderer preserves adopted projected ellipses. It assumes an oblate depth and chooses one of the ambiguous near sides. Colors, exposure, spiral arms, clumps and internal light structure are illustrative. The models are not photometrically calibrated telescope reconstructions.
+The source-based shapes below describe Catalog types appearance. The default All spirals mode renders every entry as a spiral illustration, explicitly overriding its light profile, morphology and assumed depth. Settings can restore Catalog types. Both appearances preserve adopted projected ellipses. It assumes an oblate depth and chooses one of the ambiguous near sides. Colors, exposure, spiral arms, clumps and internal light structure are illustrative. The models are not photometrically calibrated telescope reconstructions.
 
 | Galaxy | Size and projected shape |
 | --- | --- |
@@ -49,6 +49,6 @@ This is a network-free calculation from the pinned excerpt. It converts sky coor
 
 Search merges these aliases ahead of the DESI name index and removes redundant name suggestions for the same local destination. This deduplicates search names only, not survey observations. A failed or unavailable DESI name index still leaves the six local destinations and Milky Way usable. Nearby entries bypass the redshift-only 1 Mpc display safeguard on both CPU and GPU. Original uncertain DESI records remain subject to it.
 
-The six distant points use one batched draw and a separate GPU-pick namespace. Models share existing visibility, focus, body picking and measurement behavior. The fixed models add 2,688,000 tracked geometry bytes, beside the 12-model DESI pool and separate Milky Way reference; invisible models do not draw. The current uniform allocation explicitly caps this layer at 12 entries. Before adding a larger population, replace the fixed layer with bounded spatial streaming and maintain stable identities/provenance.
+The six distant points use one batched draw and a separate GPU-pick namespace. Models share existing visibility, focus, body picking and measurement behavior. The fixed models add 4,032,000 tracked geometry bytes in All spirals mode (2,688,000 with Catalog types), beside the 12-model DESI pool and separate Milky Way reference; invisible models do not draw. The current uniform allocation explicitly caps this layer at 12 entries. Before adding a larger population, replace the fixed layer with bounded spatial streaming and maintain stable identities/provenance.
 
 For browser validation, run `?nearbytest&run=neighbors` and `?dataset=development&nearbytest&run=neighbors-subset`. They check all six search destinations, framing, projected shapes, model and point picking, independent-distance measurement preservation, separate catalog counts and graphics recovery. Changes shared with DESI navigation additionally require the existing UI/home/model/point suites.

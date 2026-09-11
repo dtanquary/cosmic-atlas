@@ -8,7 +8,7 @@ export async function runDiagnostics(atlas:Explorer,parent:HTMLElement){
  const sleep=(ms:number)=>new Promise(resolve=>setTimeout(resolve,ms));
  while(!atlas.stats.drawn){await sleep(100)}
  report.firstCoarseMs=performance.now();report.rendering=atlas.renderingInfo;report.initial=atlas.stats;show();
- if(query.has('continuitytest')){report.continuity=await atlas.probeModelContinuity();show()}
+ if(query.has('continuitytest')){report.appearance=await atlas.probeGalaxyAppearance();show();report.continuity=await atlas.probeModelContinuity();show()}
  if(query.has('uxtest')){report.observerPass=await atlas.probeObserverPass();const {probeUI,probeSearchAvailability}=await import('./ui-diagnostics');report.ui=await probeUI(atlas);report.searchAvailability=await probeSearchAvailability(atlas);show()}
  if(query.has('nearbytest')){const {probeNearbySearch}=await import('./ui-diagnostics');report.nearbySearch=await probeNearbySearch(atlas);report.nearby=await atlas.probeNearbyGalaxies();show();report.nearbyContext=await atlas.probeContextRecovery();report.nearbyAfterRecovery=await atlas.probeNearbyGalaxies();show()}
  if(query.has('hometest')){

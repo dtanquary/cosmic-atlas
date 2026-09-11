@@ -8186,5 +8186,5654 @@
       },
       "passed": false
     }
+  },
+  {
+    "runId": "spiral-continuity-trace",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 233.20000000298023,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 804285,
+      "loaded": 826263,
+      "represented": 14140375,
+      "pending": 6,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 79.88496564946476,
+      "p95": 16.63600000000001,
+      "calls": 68,
+      "managedMiB": 86.714674949646,
+      "blocked": false,
+      "focusDistance": 16099.112169655013,
+      "budget": 1000000,
+      "models": 0
+    },
+    "continuity": {
+      "available": true,
+      "events": [
+        {
+          "step": 117,
+          "id": 6929751,
+          "kind": "arrival",
+          "before": 0,
+          "after": 0.4971709207547875,
+          "name": "39633404207039924"
+        },
+        {
+          "step": 122,
+          "id": 6929751,
+          "kind": "eviction",
+          "before": 0.49211203170005524,
+          "after": 0,
+          "name": "39633404207039924"
+        },
+        {
+          "step": 125,
+          "id": 1060722,
+          "kind": "eviction",
+          "before": 0.49927602969456086,
+          "after": 0,
+          "name": "2782303340199952"
+        },
+        {
+          "step": 130,
+          "id": 981894,
+          "kind": "eviction",
+          "before": 0.5337762897960456,
+          "after": 0,
+          "name": "2782240014598148"
+        },
+        {
+          "step": 130,
+          "id": 6929375,
+          "kind": "eviction",
+          "before": 0.52122776648347,
+          "after": 0,
+          "name": "39633377116031979"
+        },
+        {
+          "step": 130,
+          "id": 2281916,
+          "kind": "eviction",
+          "before": 0.5093737231024862,
+          "after": 0,
+          "name": "39633507839904582"
+        },
+        {
+          "step": 134,
+          "id": 2177,
+          "kind": "eviction",
+          "before": 0.7705952907212722,
+          "after": 0,
+          "name": "2305843013269630419"
+        },
+        {
+          "step": 134,
+          "id": 2188,
+          "kind": "eviction",
+          "before": 0.5858460883220435,
+          "after": 0,
+          "name": "2305843013315725282"
+        },
+        {
+          "step": 294,
+          "id": 6929751,
+          "kind": "eviction",
+          "before": 0.5039454516587463,
+          "after": 0,
+          "name": "39633404207039924"
+        },
+        {
+          "step": 294,
+          "id": 2281916,
+          "kind": "arrival",
+          "before": 0,
+          "after": 0.5038576147911286,
+          "name": "39633507839904582"
+        },
+        {
+          "step": 299,
+          "id": 6929751,
+          "kind": "arrival",
+          "before": 0,
+          "after": 0.49442562960274733,
+          "name": "39633404207039924"
+        },
+        {
+          "step": 303,
+          "id": 6929751,
+          "kind": "eviction",
+          "before": 0.49111776686439984,
+          "after": 0,
+          "name": "39633404207039924"
+        },
+        {
+          "step": 309,
+          "id": 981894,
+          "kind": "eviction",
+          "before": 0.5338546168142292,
+          "after": 0,
+          "name": "2782240014598148"
+        },
+        {
+          "step": 309,
+          "id": 6929375,
+          "kind": "eviction",
+          "before": 0.5215064259629917,
+          "after": 0,
+          "name": "39633377116031979"
+        },
+        {
+          "step": 309,
+          "id": 1060722,
+          "kind": "eviction",
+          "before": 0.4988992043084139,
+          "after": 0,
+          "name": "2782303340199952"
+        },
+        {
+          "step": 309,
+          "id": 2281916,
+          "kind": "eviction",
+          "before": 0.508473054925667,
+          "after": 0,
+          "name": "39633507839904582"
+        },
+        {
+          "step": 314,
+          "id": 2177,
+          "kind": "eviction",
+          "before": 0.7705952907212723,
+          "after": 0,
+          "name": "2305843013269630419"
+        },
+        {
+          "step": 314,
+          "id": 2188,
+          "kind": "eviction",
+          "before": 0.5858460883220435,
+          "after": 0,
+          "name": "2305843013315725282"
+        }
+      ],
+      "removed": [
+        {
+          "id": 5984778,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8512386,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8872047,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 12716247,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6181120,
+          "blend": 1,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2188,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8822848,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 5984778,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6173579,
+          "blend": 0.37883504814046215,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6711,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8190526,
+          "blend": 0.2775193371865145,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 13101033,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 886577,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 954281,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 7828996,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 95754,
+          "blend": 1,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6205188,
+          "blend": 1,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9482281,
+          "blend": 1,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8832190,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6162938,
+          "blend": 0.9985531320835714,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6081409,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9277544,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6190134,
+          "blend": 0.9956117207298455,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2188,
+          "blend": 0.724140836863075,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8822848,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 5984778,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9012343,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9277544,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8832190,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6081409,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6190134,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6119414,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6109534,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6127107,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 13108902,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6181120,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6162938,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6158945,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6205188,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9383580,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 95754,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9389683,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3060359,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9482281,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3054359,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9281857,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8676554,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8817623,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8700795,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8832190,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8632363,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2943577,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9277544,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9275904,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9269533,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8676554,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9441983,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8380171,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8254118,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2741722,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3190733,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3430400,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3446377,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8234969,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3581897,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8902125,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8900335,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8990752,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8948236,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8241556,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9160936,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8892703,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9006139,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9098584,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3865982,
+          "blend": 0.5338160893549764,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9067206,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8218803,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8215435,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8206309,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929751,
+          "blend": 0.5039454516587463,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3865982,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929751,
+          "blend": 0.49111776686439984,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 1060722,
+          "blend": 0.49902035187317284,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3853729,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 981894,
+          "blend": 0.5338169973541183,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929375,
+          "blend": 0.5210654519341034,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2281916,
+          "blend": 0.5103486564499983,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2177,
+          "blend": 0.7704491622123887,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6490,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2188,
+          "blend": 0.5853434763373895,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 13018430,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6148537,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6078912,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6106627,
+          "blend": 0.8755542290356022,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 13108902,
+          "blend": 0.9745157243199521,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6127107,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6119414,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6109534,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9383580,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6119414,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6158945,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6190134,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3054359,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6119414,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9275904,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9277544,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8832190,
+          "blend": 0.9681250227467912,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6081409,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6119414,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6190134,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6109534,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6127107,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 13108902,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6205188,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6181120,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6162938,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6158945,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9383580,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 95754,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9482281,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3054359,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9281857,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8832190,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8817623,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8700795,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9277544,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9275904,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9269533,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8676554,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2943577,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9441983,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8254118,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2741722,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8380171,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3581897,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3446377,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3190733,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3430400,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8241556,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8990752,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8948236,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9160936,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8892703,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9006139,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9098584,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8215435,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9067206,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8206309,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929751,
+          "blend": 0.5020923916138729,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3865982,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929751,
+          "blend": 0.49023213861135906,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 981894,
+          "blend": 0.5337762897960453,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929375,
+          "blend": 0.52122776648347,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 1060722,
+          "blend": 0.4990741456342896,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3853729,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2281916,
+          "blend": 0.5093737231024862,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2177,
+          "blend": 0.7704491622123889,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6490,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2188,
+          "blend": 0.5853434763373895,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 13018430,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6078912,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6127107,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6109534,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6119414,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9383580,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6119414,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6158945,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6190134,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3054359,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6119414,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9275904,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        }
+      ],
+      "peakJump": 0.7705952907212723,
+      "maxResident": 11,
+      "stats": {
+        "drawn": 1099226,
+        "loaded": 8220938,
+        "represented": 1779940,
+        "pending": 0,
+        "failed": 0,
+        "mode": "adaptive",
+        "complete": false,
+        "fps": 35.61422669642556,
+        "p95": 59.19999999999709,
+        "calls": 70,
+        "managedMiB": 352.87870693206787,
+        "blocked": false,
+        "focusDistance": 0.106742868564,
+        "budget": 1100000,
+        "models": 5
+      },
+      "passed": false
+    }
+  },
+  {
+    "runId": "spiral-continuity-retention",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 144.79999999701977,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 65536,
+      "loaded": 140759,
+      "represented": 14140375,
+      "pending": 6,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 56.382498872350055,
+      "p95": 17.73599999999999,
+      "calls": 10,
+      "managedMiB": 50.938963890075684,
+      "blocked": false,
+      "focusDistance": 16099.112169655042,
+      "budget": 1000000,
+      "models": 0
+    },
+    "continuity": {
+      "available": true,
+      "events": [],
+      "removed": [
+        {
+          "id": 8850497,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8872047,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 12716247,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 5984778,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8512386,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6711,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9328206,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2188,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8822848,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8757055,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6078912,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3446377,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8190526,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6173579,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8241556,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6081409,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6190134,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6119414,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6109534,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6127107,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 13108902,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6181120,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6162938,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6158945,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6205188,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9383580,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 95754,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9389683,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3060359,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9482281,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3054359,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9281857,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8817623,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8700795,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8832190,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8643521,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8632363,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2943577,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9277544,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9275904,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9269533,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8676554,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9441983,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8380171,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8348144,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8254118,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2741722,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3190733,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3430400,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3446377,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8234969,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3581897,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8902125,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8900335,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8990752,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8948236,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8241556,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9160936,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8892703,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9006139,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9098584,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9067206,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8218803,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8215435,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8206309,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3865982,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3805868,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3853729,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6490,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 13018430,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929751,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2281916,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 1060722,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2188,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 981894,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929375,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2177,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6158945,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9383580,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6081409,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6190134,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6119414,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6109534,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6127107,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 13108902,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6181120,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6162938,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6158945,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 95754,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6205188,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9383580,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9389683,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3060359,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9482281,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3054359,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9281857,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8832190,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8817623,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8700795,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9277544,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2943577,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8632363,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9275904,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9269533,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8676554,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9441983,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8254118,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3446377,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2741722,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8380171,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8348144,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3581897,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8241556,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8990752,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8948236,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8902125,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8900335,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9160936,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8892703,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9098584,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9067206,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8215435,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8206309,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3865982,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3805868,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3853729,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6490,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929751,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 1060722,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2281916,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929375,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2188,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 981894,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2177,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6158945,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9383580,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        }
+      ],
+      "peakJump": 0.1528333333333346,
+      "maxResident": 12,
+      "stats": {
+        "drawn": 996701,
+        "loaded": 7222556,
+        "represented": 2177804,
+        "pending": 0,
+        "failed": 0,
+        "mode": "adaptive",
+        "complete": false,
+        "fps": 97.95518550263195,
+        "p95": 15.899999999997817,
+        "calls": 66,
+        "managedMiB": 317.6912031173706,
+        "blocked": false,
+        "focusDistance": 0.106742868564,
+        "budget": 1000000,
+        "models": 6
+      },
+      "passed": true
+    }
+  },
+  {
+    "runId": "spiral-final",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 169.30000001192093,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 65536,
+      "loaded": 134092,
+      "represented": 14140375,
+      "pending": 6,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 40.04805766920305,
+      "p95": 24.97,
+      "calls": 10,
+      "managedMiB": 52.56136226654053,
+      "blocked": false,
+      "focusDistance": 16099.112169655042,
+      "budget": 1000000,
+      "models": 0
+    },
+    "appearance": {
+      "catalog": true,
+      "catalogHidden": true,
+      "spiral": true,
+      "disclosed": true,
+      "savedSpiral": true,
+      "unchanged": true,
+      "body": {
+        "available": true,
+        "passed": true,
+        "targetId": "nearby:m31"
+      },
+      "nearbyBytes": 4032000,
+      "passed": true
+    },
+    "continuity": {
+      "available": true,
+      "events": [],
+      "removed": [
+        {
+          "id": 8850497,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8872047,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 12716247,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3884039,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8365594,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8512386,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 5984778,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6711,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9328206,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8550591,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8822848,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2188,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8190526,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6173579,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6081409,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6119414,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6190134,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6109534,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6127107,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 13108902,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6181120,
+          "blend": 0,
+          "sourceDrawn": false,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6162938,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6158945,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6205188,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9383580,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 95754,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9389683,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3060359,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9482281,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3054359,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9281857,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8817623,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8700795,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8832190,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8643521,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8632363,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2943577,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9277544,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9275904,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9269533,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8676554,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9441983,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8380171,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8348144,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8254118,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2741722,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3190733,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3430400,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3446377,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8234969,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3581897,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8902125,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8900335,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8990752,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8948236,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8241556,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9160936,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8892703,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9006139,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9098584,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9067206,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8218803,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8215435,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8206309,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3865982,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3805868,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3853729,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6490,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 13018430,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929751,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2281916,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 1060722,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2188,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 981894,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929375,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2177,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6158945,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9383580,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6081409,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6119414,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6190134,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6109534,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6127107,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 13108902,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 95754,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6205188,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6181120,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6162938,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6158945,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9383580,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9389683,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9482281,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3054359,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9281857,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8832190,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8817623,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8700795,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9277544,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2943577,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8632363,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9275904,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9269533,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8676554,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9441983,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8254118,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2741722,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8380171,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8348144,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3581897,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8990752,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3446377,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8948236,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8234969,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8902125,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8241556,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9160936,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8892703,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9006139,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9098584,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9067206,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8218803,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8215435,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8206309,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3865982,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3805868,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3853729,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6490,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929751,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 1060722,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2281916,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929375,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2188,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 981894,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2177,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6158945,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9383580,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        }
+      ],
+      "peakJump": 0.15408144137582996,
+      "maxResident": 12,
+      "idleTransitionsComplete": true,
+      "stats": {
+        "drawn": 996701,
+        "loaded": 7222556,
+        "represented": 2177804,
+        "pending": 0,
+        "failed": 0,
+        "mode": "adaptive",
+        "complete": false,
+        "fps": 98.70856296783656,
+        "p95": 16.699999999999818,
+        "calls": 71,
+        "managedMiB": 326.0225019454956,
+        "blocked": false,
+        "focusDistance": 0.106742868564,
+        "budget": 1000000,
+        "models": 6
+      },
+      "passed": true
+    },
+    "observerPass": {
+      "galaxy": "NGC 3982",
+      "samples": [
+        {
+          "radiusMultiple": 60,
+          "blend": 1,
+          "brightFraction": 0.00543212890625,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 24,
+          "blend": 1,
+          "brightFraction": 0.03375244140625,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 12,
+          "blend": 0.7920833213002185,
+          "brightFraction": 0.1239776611328125,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 6,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 2,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 0.25,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 0,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": -2,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        }
+      ],
+      "deliberate": true,
+      "pointsOnly": true,
+      "stablePointHorizon": true,
+      "focusedOnly": true,
+      "observerClearsFocus": true,
+      "overviewClearsFocus": true,
+      "passed": true
+    },
+    "ui": {
+      "focusReachable": true,
+      "closeReachableAfterScroll": true,
+      "retryReachable": true,
+      "cancelledVisitStable": true,
+      "searchReusable": true,
+      "reopenedVisitStable": true,
+      "speedEditable": true,
+      "automaticWithFreePointer": true,
+      "escapeKeepsSpeedMenu": true,
+      "passed": true
+    },
+    "searchAvailability": {
+      "recognized": {
+        "status": "1 name match \u00b7 no visit location",
+        "visitOptions": 0,
+        "activeOption": null,
+        "explanation": "Location unavailable in this atlasSombrero GalaxyNGC 4594 \u00b7 M 104We recognize these names, but this atlas has no verified 3D visit location for them yet. They cannot be visited in the current dataset."
+      },
+      "unavailableStable": true,
+      "browseWorks": true,
+      "mixedHasOnlyVisitsInList": true,
+      "noMatch": {
+        "status": "No name matches. Try an NGC, IC, UGC or Messier name.",
+        "visitOptions": 0,
+        "unavailableHidden": true,
+        "activeOption": null
+      },
+      "passed": true
+    },
+    "nearbySearch": {
+      "cases": [
+        {
+          "query": "Andromeda",
+          "available": true,
+          "closed": true,
+          "selectedId": -1,
+          "passed": true
+        },
+        {
+          "query": "M33",
+          "available": true,
+          "closed": true,
+          "selectedId": -2,
+          "passed": true
+        },
+        {
+          "query": "LMC",
+          "available": true,
+          "closed": true,
+          "selectedId": -3,
+          "passed": true
+        },
+        {
+          "query": "SMC",
+          "available": true,
+          "closed": true,
+          "selectedId": -4,
+          "passed": true
+        },
+        {
+          "query": "M32",
+          "available": true,
+          "closed": true,
+          "selectedId": -5,
+          "passed": true
+        },
+        {
+          "query": "M110",
+          "available": true,
+          "closed": true,
+          "selectedId": -6,
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "nearby": {
+      "cases": [
+        {
+          "name": "Andromeda",
+          "id": -1,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m31"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1168,
+              "axisRatio": 0.2697981835439243,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2480,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.962290846746051,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.27000000000000013,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Triangulum",
+          "id": -2,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.2412670766236366e-16,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m33"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2551,
+              "axisRatio": 0.5918436509023006,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 3512,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9487432492598551,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.591560637783862,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Large Magellanic Cloud",
+          "id": -3,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:lmc"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2920,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2920,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.999203488840886,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 1,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Small Magellanic Cloud",
+          "id": -4,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.5540063044689707e-17,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:smc"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1756,
+              "axisRatio": 0.6003126413948241,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2292,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9418760030857499,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.5997932782075219,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "M32",
+          "id": -5,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.1443916996305594e-16,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m32"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1344,
+              "axisRatio": 0.7513108875632536,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 1436,
+              "axisRatio": 0.9999999899800223,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9668182306415422,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.7500000000000001,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "M110",
+          "id": -6,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m110"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1012,
+              "axisRatio": 0.570169984010185,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 1152,
+              "axisRatio": 0.99942130058894,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9866408622114318,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.5699999999999998,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        }
+      ],
+      "measurement": {
+        "distanceMpc": 0.2064522546487897,
+        "expectedMpc": 0.2064522546487897,
+        "preserved": true,
+        "markersVisible": true,
+        "localCaption": true
+      },
+      "countUnchanged": true,
+      "modelCount": 6,
+      "geometryBytes": 4032000,
+      "passed": true
+    },
+    "nearbyContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "nearbyAfterRecovery": {
+      "cases": [
+        {
+          "name": "Andromeda",
+          "id": -1,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m31"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1168,
+              "axisRatio": 0.2697981835439243,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2480,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.962290846746051,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.27000000000000013,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Triangulum",
+          "id": -2,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.2412670766236366e-16,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m33"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2551,
+              "axisRatio": 0.5918436509023006,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 3512,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9487432492598551,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.591560637783862,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Large Magellanic Cloud",
+          "id": -3,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:lmc"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2920,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2920,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.999203488840886,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 1,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Small Magellanic Cloud",
+          "id": -4,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.5540063044689707e-17,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:smc"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1756,
+              "axisRatio": 0.6003126413948241,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2292,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9418760030857499,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.5997932782075219,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "M32",
+          "id": -5,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.1443916996305594e-16,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m32"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1344,
+              "axisRatio": 0.7513108875632536,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 1436,
+              "axisRatio": 0.9999999899800223,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9668182306415422,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.7500000000000001,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "M110",
+          "id": -6,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m110"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1012,
+              "axisRatio": 0.570169984010185,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 1152,
+              "axisRatio": 0.99942130058894,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9866408622114318,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.5699999999999998,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        }
+      ],
+      "measurement": {
+        "distanceMpc": 0.2064522546487897,
+        "expectedMpc": 0.2064522546487897,
+        "preserved": true,
+        "markersVisible": true,
+        "localCaption": true
+      },
+      "countUnchanged": true,
+      "modelCount": 6,
+      "geometryBytes": 4032000,
+      "passed": true
+    },
+    "localPositions": {
+      "candidateCount": 1107,
+      "exampleTargetId": "2305843034832594809",
+      "rotations": [
+        {
+          "angle": 0,
+          "hidden": {
+            "covered": 0,
+            "amber": 0
+          },
+          "raw": {
+            "covered": 10950,
+            "amber": 10950
+          },
+          "hiddenPick": {
+            "covered": 0,
+            "amber": 0
+          },
+          "rawPick": {
+            "covered": 11136,
+            "amber": 11020
+          },
+          "withoutFading": {
+            "covered": 0,
+            "amber": 0
+          }
+        },
+        {
+          "angle": 1.5707963267948966,
+          "hidden": {
+            "covered": 0,
+            "amber": 0
+          },
+          "raw": {
+            "covered": 10238,
+            "amber": 10238
+          },
+          "hiddenPick": {
+            "covered": 0,
+            "amber": 0
+          },
+          "rawPick": {
+            "covered": 10425,
+            "amber": 10355
+          },
+          "withoutFading": {
+            "covered": 0,
+            "amber": 0
+          }
+        },
+        {
+          "angle": 3.141592653589793,
+          "hidden": {
+            "covered": 0,
+            "amber": 0
+          },
+          "raw": {
+            "covered": 8729,
+            "amber": 8729
+          },
+          "hiddenPick": {
+            "covered": 0,
+            "amber": 0
+          },
+          "rawPick": {
+            "covered": 8872,
+            "amber": 8777
+          },
+          "withoutFading": {
+            "covered": 0,
+            "amber": 0
+          }
+        },
+        {
+          "angle": 4.71238898038469,
+          "hidden": {
+            "covered": 0,
+            "amber": 0
+          },
+          "raw": {
+            "covered": 9956,
+            "amber": 9956
+          },
+          "hiddenPick": {
+            "covered": 0,
+            "amber": 0
+          },
+          "rawPick": {
+            "covered": 10136,
+            "amber": 10061
+          },
+          "withoutFading": {
+            "covered": 0,
+            "amber": 0
+          }
+        }
+      ],
+      "outsideGuard": {
+        "covered": 16,
+        "amber": 0
+      },
+      "outsideGuardPick": {
+        "covered": 16,
+        "amber": 0
+      },
+      "passed": true
+    },
+    "localInteraction": {
+      "node": "701",
+      "nodeCenter": [
+        75.27442906067417,
+        -17.445578152133237,
+        -14.18009294267876
+      ],
+      "targetId": "39628351635193964",
+      "hidden": {
+        "covered": 0,
+        "amber": 0,
+        "code": 0
+      },
+      "hiddenPick": {
+        "covered": 0,
+        "amber": 0,
+        "code": 0
+      },
+      "raw": {
+        "covered": 4,
+        "amber": 4,
+        "code": 3761473760
+      },
+      "rawPick": {
+        "covered": 88,
+        "amber": 0,
+        "code": 46006272
+      },
+      "expectedCode": 46006272,
+      "visitRejected": true,
+      "modelWithheld": true,
+      "rawVisitable": true,
+      "rawAnnotated": true,
+      "hiddenAnnotated": true,
+      "recordPreserved": true,
+      "warning": true,
+      "persistedOn": true,
+      "persistedOff": true,
+      "passed": true
+    },
+    "homeNavigation": {
+      "observer": [
+        {
+          "distanceMpc": 0.05999999999999996,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 4.005965623199194e-13
+        },
+        {
+          "distanceMpc": 0.0414725947916218,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 4.071716571412504e-14
+        },
+        {
+          "distanceMpc": 0.02866626864583432,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.0287681282290393e-13
+        },
+        {
+          "distanceMpc": 0.019814409062274354,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.278347370404543e-13
+        }
+      ],
+      "galaxyView": [
+        {
+          "distanceMpc": 0.05999999999999996,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 4.005965623199194e-13
+        },
+        {
+          "distanceMpc": 0.0414725947916218,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 4.071716571412504e-14
+        },
+        {
+          "distanceMpc": 0.02866626864583432,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.0287681282290393e-13
+        },
+        {
+          "distanceMpc": 0.019814409062274354,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.278347370404543e-13
+        }
+      ],
+      "search": [
+        {
+          "distanceMpc": 0.05999999999999996,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 4.005965623199194e-13
+        },
+        {
+          "distanceMpc": 0.0414725947916218,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 4.071716571412504e-14
+        },
+        {
+          "distanceMpc": 0.02866626864583432,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.0287681282290393e-13
+        },
+        {
+          "distanceMpc": 0.019814409062274354,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.278347370404543e-13
+        }
+      ],
+      "solarTargetErrorMpc": 0,
+      "sunOffsetPx": 4.588975651100541e-13,
+      "coreControlActive": true,
+      "solarControlActive": true,
+      "coreLabeled": true,
+      "sunLabeled": true,
+      "passed": true
+    },
+    "home": {
+      "arrival": {
+        "visible": true,
+        "blend": 1,
+        "focusAtSun": true,
+        "cameraDistance": 0.05999999999999996,
+        "centerNdc": [
+          0.1300563606234142,
+          -0.08983219660524,
+          0.0015892965182614644
+        ],
+        "sunNdc": [
+          -3.754679097702496e-16,
+          -8.88114735659583e-16,
+          0.0016666662325847592
+        ]
+      },
+      "bodyPicking": true,
+      "views": {
+        "outside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 10133
+        },
+        "nearSun": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 649
+        },
+        "inside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 43421
+        },
+        "points": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "focused": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 43421
+        },
+        "noFocus": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "sunMarkerWithinClip": true
+      },
+      "catalogUnchanged": true,
+      "memoryBytes": 1792000,
+      "passed": true
+    },
+    "homePerformance": {
+      "drawn": 177767,
+      "loaded": 7336945,
+      "represented": 177767,
+      "pending": 0,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": true,
+      "fps": 120.0060003000149,
+      "p95": 9.200000000000728,
+      "calls": 24,
+      "managedMiB": 330.94398403167725,
+      "blocked": false,
+      "focusDistance": 0.05999999999998502,
+      "budget": 1948717,
+      "models": 3
+    },
+    "homeContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "homeAfterRecovery": {
+      "arrival": {
+        "visible": true,
+        "blend": 1,
+        "focusAtSun": true,
+        "cameraDistance": 0.05999999999999996,
+        "centerNdc": [
+          0.1300563606234142,
+          -0.08983219660524,
+          0.0015892965182614644
+        ],
+        "sunNdc": [
+          -3.754679097702496e-16,
+          -8.88114735659583e-16,
+          0.0016666662325847592
+        ]
+      },
+      "bodyPicking": true,
+      "views": {
+        "outside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 10133
+        },
+        "nearSun": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 649
+        },
+        "inside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 43421
+        },
+        "points": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "focused": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 43421
+        },
+        "noFocus": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "sunMarkerWithinClip": true
+      },
+      "catalogUnchanged": true,
+      "memoryBytes": 1792000,
+      "passed": true
+    },
+    "models": {
+      "available": true,
+      "coverage": {
+        "count": 14140375,
+        "measured": 12097577,
+        "assumed": 2042798,
+        "visualTypes": 3128
+      },
+      "cases": [
+        {
+          "name": "NGC 3982",
+          "family": "spiral",
+          "expectedFamily": "spiral",
+          "picking": {
+            "available": true,
+            "passed": true,
+            "targetId": "39633325333155389"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 5885,
+              "axisRatio": 0.8791599817575738,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 6448,
+              "axisRatio": 0.9999660595179797,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9993996531212419,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.8788387644479687,
+            "passed": true
+          },
+          "residentModels": 12
+        },
+        {
+          "name": "NGC 5107",
+          "family": "barred",
+          "expectedFamily": "barred",
+          "picking": {
+            "available": true,
+            "passed": true,
+            "targetId": "39633049024991434"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2052,
+              "axisRatio": 0.25103487741611674,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 5172,
+              "axisRatio": 0.999981312916783,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9806872897390224,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.25099221046545983,
+            "passed": true
+          },
+          "residentModels": 11
+        },
+        {
+          "name": "NGC 4026",
+          "family": "lenticular",
+          "expectedFamily": "lenticular",
+          "picking": {
+            "available": true,
+            "passed": true,
+            "targetId": "39633263488141603"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 4404,
+              "axisRatio": 0.3147394872370014,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 8360,
+              "axisRatio": 0.999993044886123,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9960748765607642,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.3146016797918665,
+            "passed": true
+          },
+          "residentModels": 10
+        },
+        {
+          "name": "NGC 4121",
+          "family": "elliptical",
+          "expectedFamily": "elliptical",
+          "picking": {
+            "available": true,
+            "passed": true,
+            "targetId": "39633443159541267"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 11070,
+              "axisRatio": 0.7536688112093884,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 12908,
+              "axisRatio": 0.9999897221733564,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.7532394433693744,
+            "passed": true
+          },
+          "residentModels": 11
+        },
+        {
+          "name": "NGC 3738",
+          "family": "irregular",
+          "expectedFamily": "irregular",
+          "picking": {
+            "available": true,
+            "passed": true,
+            "targetId": "39633314813841448"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 4635,
+              "axisRatio": 0.7160326694059478,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 5712,
+              "axisRatio": 0.9999684472191986,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9716583260946057,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.7160761298520021,
+            "passed": true
+          },
+          "residentModels": 8
+        }
+      ],
+      "unresolved": {
+        "id": "39627613664187303",
+        "radiusMpc": 0.004999999999999999,
+        "shapeMeasured": false,
+        "typeSource": "proxy",
+        "picking": {
+          "available": true,
+          "passed": true,
+          "targetId": "39627613664187303"
+        }
+      },
+      "automatic": {
+        "loadedWithoutSelection": true,
+        "selectionEmpty": true,
+        "residentModels": 5
+      },
+      "saturation": {
+        "requested": 24,
+        "peakResidentModels": 12,
+        "limit": 12
+      },
+      "bounded": true,
+      "passed": true
+    },
+    "depthCues": {
+      "configuredNear": {
+        "maxAlpha": 255,
+        "coveredPixels": 52
+      },
+      "near": {
+        "maxAlpha": 255,
+        "coveredPixels": 124
+      },
+      "middle": {
+        "maxAlpha": 149,
+        "coveredPixels": 52
+      },
+      "far": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniform": {
+        "maxAlpha": 224,
+        "coveredPixels": 52
+      },
+      "nearPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 140
+      },
+      "farPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniformPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "faintFloor": {
+        "maxAlpha": 3,
+        "coveredPixels": 32
+      },
+      "faintFloorPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "fixedNear": {
+        "maxAlpha": 255,
+        "coveredPixels": 52
+      },
+      "fixedNearPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "enlargedWithoutFade": {
+        "maxAlpha": 224,
+        "coveredPixels": 124
+      },
+      "fixedWithoutFade": {
+        "maxAlpha": 224,
+        "coveredPixels": 52
+      },
+      "independentSize": true,
+      "passed": true
+    },
+    "modelPerformance": {
+      "drawn": 1478670,
+      "loaded": 8999115,
+      "represented": 1478670,
+      "pending": 0,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": true,
+      "fps": 97.29598248672328,
+      "p95": 9.39999999999418,
+      "calls": 87,
+      "managedMiB": 396.49125576019287,
+      "blocked": false,
+      "focusDistance": 0.006268306969322802,
+      "budget": 2000000,
+      "models": 3
+    },
+    "context": {
+      "supported": true,
+      "recovered": true
+    },
+    "profileAfterRecovery": {
+      "available": true,
+      "observed": {
+        "litPixels": 4635,
+        "axisRatio": 0.7160326694059478,
+        "visible": true,
+        "blend": 1
+      },
+      "faceOn": {
+        "litPixels": 5712,
+        "axisRatio": 0.9999684472191986,
+        "visible": true,
+        "blend": 1
+      },
+      "inside": {
+        "litPixels": 65536,
+        "axisRatio": 0.9716583260946057,
+        "visible": true,
+        "blend": 1
+      },
+      "far": {
+        "litPixels": 0,
+        "axisRatio": null,
+        "visible": false,
+        "blend": 0
+      },
+      "expectedAxisRatio": 0.7160761298520021,
+      "passed": true
+    },
+    "pointSettings": {
+      "offPixels": 52,
+      "onPixels": 124,
+      "savedOn": true,
+      "savedOff": true,
+      "independentControl": true,
+      "passed": true
+    },
+    "interaction": {
+      "first": {
+        "ok": true,
+        "selected": "39628171032659127",
+        "attempted": 1
+      },
+      "second": {
+        "ok": true,
+        "selected": "39628065227146682",
+        "attempted": 2
+      },
+      "measuredMpc": 743.7310334650739,
+      "measurementStable": true,
+      "selectedExactId": "39628065227146682"
+    },
+    "integrity": {
+      "rejected": true,
+      "message": "Data integrity check failed"
+    }
+  },
+  {
+    "runId": "spiral-subset",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 214.5,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 638073,
+      "loaded": 814206,
+      "represented": 1000000,
+      "pending": 3,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 95.91866097549278,
+      "p95": 16.701999999999998,
+      "calls": 52,
+      "managedMiB": 61.444698333740234,
+      "blocked": false,
+      "focusDistance": 16069.49001401839,
+      "budget": 1000000,
+      "models": 0
+    },
+    "appearance": {
+      "catalog": true,
+      "catalogHidden": true,
+      "spiral": true,
+      "disclosed": true,
+      "savedSpiral": true,
+      "unchanged": true,
+      "body": {
+        "available": true,
+        "passed": true,
+        "targetId": "nearby:m31"
+      },
+      "nearbyBytes": 4032000,
+      "passed": true
+    },
+    "continuity": {
+      "available": false
+    },
+    "nearbySearch": {
+      "cases": [
+        {
+          "query": "Andromeda",
+          "available": true,
+          "closed": true,
+          "selectedId": -1,
+          "passed": true
+        },
+        {
+          "query": "M33",
+          "available": true,
+          "closed": true,
+          "selectedId": -2,
+          "passed": true
+        },
+        {
+          "query": "LMC",
+          "available": true,
+          "closed": true,
+          "selectedId": -3,
+          "passed": true
+        },
+        {
+          "query": "SMC",
+          "available": true,
+          "closed": true,
+          "selectedId": -4,
+          "passed": true
+        },
+        {
+          "query": "M32",
+          "available": true,
+          "closed": true,
+          "selectedId": -5,
+          "passed": true
+        },
+        {
+          "query": "M110",
+          "available": true,
+          "closed": true,
+          "selectedId": -6,
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "nearby": {
+      "cases": [
+        {
+          "name": "Andromeda",
+          "id": -1,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m31"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1168,
+              "axisRatio": 0.2697981835439243,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2480,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.962290846746051,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.27000000000000013,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Triangulum",
+          "id": -2,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.2412670766236366e-16,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m33"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2551,
+              "axisRatio": 0.5918436509023006,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 3512,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9487432492598551,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.591560637783862,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Large Magellanic Cloud",
+          "id": -3,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:lmc"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2920,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2920,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.999203488840886,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 1,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Small Magellanic Cloud",
+          "id": -4,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.5540063044689707e-17,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:smc"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1756,
+              "axisRatio": 0.6003126413948241,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2292,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9418760030857499,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.5997932782075219,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "M32",
+          "id": -5,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.1443916996305594e-16,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m32"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1344,
+              "axisRatio": 0.7513108875632536,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 1436,
+              "axisRatio": 0.9999999899800223,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9668182306415422,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.7500000000000001,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "M110",
+          "id": -6,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m110"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1012,
+              "axisRatio": 0.570169984010185,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 1152,
+              "axisRatio": 0.99942130058894,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9866408622114318,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.5699999999999998,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        }
+      ],
+      "measurement": {
+        "distanceMpc": 0.2064522546487897,
+        "expectedMpc": 0.2064522546487897,
+        "preserved": true,
+        "markersVisible": true,
+        "localCaption": true
+      },
+      "countUnchanged": true,
+      "modelCount": 6,
+      "geometryBytes": 4032000,
+      "passed": true
+    },
+    "nearbyContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "nearbyAfterRecovery": {
+      "cases": [
+        {
+          "name": "Andromeda",
+          "id": -1,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m31"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1168,
+              "axisRatio": 0.2697981835439243,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2480,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.962290846746051,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.27000000000000013,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Triangulum",
+          "id": -2,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.2412670766236366e-16,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m33"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2551,
+              "axisRatio": 0.5918436509023006,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 3512,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9487432492598551,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.591560637783862,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Large Magellanic Cloud",
+          "id": -3,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:lmc"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2920,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2920,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.999203488840886,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 1,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Small Magellanic Cloud",
+          "id": -4,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.5540063044689707e-17,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:smc"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1756,
+              "axisRatio": 0.6003126413948241,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2292,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9418760030857499,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.5997932782075219,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "M32",
+          "id": -5,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.1443916996305594e-16,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m32"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1344,
+              "axisRatio": 0.7513108875632536,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 1436,
+              "axisRatio": 0.9999999899800223,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9668182306415422,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.7500000000000001,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "M110",
+          "id": -6,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m110"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1012,
+              "axisRatio": 0.570169984010185,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 1152,
+              "axisRatio": 0.99942130058894,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9866408622114318,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.5699999999999998,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        }
+      ],
+      "measurement": {
+        "distanceMpc": 0.2064522546487897,
+        "expectedMpc": 0.2064522546487897,
+        "preserved": true,
+        "markersVisible": true,
+        "localCaption": true
+      },
+      "countUnchanged": true,
+      "modelCount": 6,
+      "geometryBytes": 4032000,
+      "passed": true
+    },
+    "pointSettings": {
+      "offPixels": 52,
+      "onPixels": 124,
+      "savedOn": true,
+      "savedOff": true,
+      "independentControl": true,
+      "passed": true
+    },
+    "depthCues": {
+      "configuredNear": {
+        "maxAlpha": 255,
+        "coveredPixels": 52
+      },
+      "near": {
+        "maxAlpha": 255,
+        "coveredPixels": 124
+      },
+      "middle": {
+        "maxAlpha": 149,
+        "coveredPixels": 52
+      },
+      "far": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniform": {
+        "maxAlpha": 224,
+        "coveredPixels": 52
+      },
+      "nearPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 140
+      },
+      "farPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniformPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "faintFloor": {
+        "maxAlpha": 3,
+        "coveredPixels": 32
+      },
+      "faintFloorPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "fixedNear": {
+        "maxAlpha": 255,
+        "coveredPixels": 52
+      },
+      "fixedNearPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "enlargedWithoutFade": {
+        "maxAlpha": 224,
+        "coveredPixels": 124
+      },
+      "fixedWithoutFade": {
+        "maxAlpha": 224,
+        "coveredPixels": 52
+      },
+      "independentSize": true,
+      "passed": true
+    },
+    "interaction": {
+      "first": {
+        "ok": true,
+        "selected": "39628106658489484",
+        "attempted": 1
+      },
+      "second": {
+        "ok": true,
+        "selected": "39628147695560716",
+        "attempted": 2
+      },
+      "measuredMpc": 592.7254824061827,
+      "measurementStable": true,
+      "selectedExactId": "39628147695560716"
+    },
+    "context": {
+      "supported": true,
+      "recovered": true
+    },
+    "integrity": {
+      "rejected": true,
+      "message": "Data integrity check failed"
+    }
   }
 ]

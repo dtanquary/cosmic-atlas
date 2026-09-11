@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ChunkLoader } from './loader';
 import { chooseFrontier, coveredFrontier } from './spatial';
 import { decodeGalaxy, separation } from './format';
-import {ResolvedGalaxy, detailBlend, type GalaxyDetailData, type ModelDisplay} from './galaxy-detail';
+import {ResolvedGalaxy, detailBlend, type GalaxyDetailData, type ModelDisplay,type GalaxyAppearance} from './galaxy-detail';
 import {ModelCatalog,MODEL_LIMIT,decodeModel,measuredShape} from './model-catalog';
 import {MilkyWay} from './milky-way';
 import {createNearbyGalaxies} from './nearby-galaxies';
@@ -101,7 +101,8 @@ export class Explorer {
   speed=1000;
   selected:Galaxy|null=null;
   readonly milkyWay=new MilkyWay();
-  readonly nearbyGalaxies=createNearbyGalaxies();
+  galaxyAppearance:GalaxyAppearance='spiral';
+  readonly nearbyGalaxies=createNearbyGalaxies(this.galaxyAppearance);
   private get allModels(){return [...this.resolvedGalaxies,...this.nearbyGalaxies]}
   homeSelected=false;
   private homeFocused=false;
@@ -112,6 +113,7 @@ export class Explorer {
   private focusedGalaxyId:number|null=null;
   private modelDisplay:ModelDisplay='automatic';
   resolvedGalaxies:ResolvedGalaxy[]=[];
+  private modelPresence=new Map<number,{value:number;target:number}>();
   modelCatalog:ModelCatalog|null=null;
   get resolved(){return this.resolvedGalaxies.find(model=>model.data.galaxy.id===this.selected?.id)??this.resolvedGalaxies[0]??null}
   resolvedFor(id:number){return this.allModels.find(model=>model.data.galaxy.id===id)}
@@ -297,7 +299,7 @@ export class Explorer {
           !Number.isFinite(data.shape.radiusArcsec)||data.shape.radiusArcsec<=0||
           !Number.isFinite(data.shape.e1+data.shape.e2+data.galaxy.distance)||data.galaxy.distance<=0||
           !data.gaussians.length||data.gaussians.length>20||data.gaussians.some(g=>!Number.isFinite(g.sigmaRe+g.peak)||g.sigmaRe<=0||g.peak<0))throw new Error('Invalid galaxy profile');
-        return new ResolvedGalaxy(data);
+        return new ResolvedGalaxy(data,this.galaxyAppearance);
         }));
         this.resolvedGalaxies=results.flatMap(result=>result.status==='fulfilled'?[result.value]:[]);
         this.pinnedModels=new Set(this.resolvedGalaxies.map(model=>model.data.galaxy.id));
@@ -342,8 +344,16 @@ export class Explorer {
   }
   private catalogPositionVisible(galaxy:Galaxy){return this.showUncertainLocal||!uncertainLocalPosition(galaxy)}
   setMinimumOpacity(value:number){if(!Number.isFinite(value))return;this.minOpacityUniform.value=THREE.MathUtils.clamp(value,0,1);this.dirty=true;this.invalidate()}
+  setGalaxyAppearance(appearance:GalaxyAppearance){
+    if(appearance===this.galaxyAppearance)return;
+    this.galaxyAppearance=appearance;
+    const replace=(old:ResolvedGalaxy)=>{const model=new ResolvedGalaxy(old.data,appearance);old.dispose();this.updateModel(model);return model};
+    this.resolvedGalaxies=this.resolvedGalaxies.map(replace);
+    const nearby=this.nearbyGalaxies.map(replace);this.nearbyGalaxies.splice(0,this.nearbyGalaxies.length,...nearby);
+    this.bindModels();this.onSelection(this.selected);this.invalidate();
+  }
   setModelDisplay(display:ModelDisplay){this.modelDisplay=display;this.modelScanNeeded=true;this.dirty=true;this.invalidate()}
-  private updateModel(model:ResolvedGalaxy){model.update(this.camera,this.canvas.clientHeight||innerHeight,this.pixelRatio,model.data.galaxy.id===this.focusedGalaxyId,uncertainLocalPosition(model.data.galaxy)?'points':this.modelDisplay)}
+  private updateModel(model:ResolvedGalaxy){model.update(this.camera,this.canvas.clientHeight||innerHeight,this.pixelRatio,model.data.galaxy.id===this.focusedGalaxyId,uncertainLocalPosition(model.data.galaxy)?'points':this.modelDisplay,this.modelPresence.get(model.data.galaxy.id)?.value??1)}
   private updateDepthCues(){
     // Expand the fade horizon smoothly outside the survey; use a neighborhood
     // range inside it. This works in both orbit and flight without mode changes.
@@ -417,12 +427,12 @@ export class Explorer {
     }
   }
   private removeModel(model:ResolvedGalaxy){
-    const id=model.data.galaxy.id;model.dispose();this.modelLocations.delete(id);
+    const id=model.data.galaxy.id;model.dispose();this.modelLocations.delete(id);this.modelPresence.delete(id);
     this.resolvedGalaxies=this.resolvedGalaxies.filter(item=>item!==model);
   }
   private ensureModel(galaxy:Galaxy,node:SpatialNode,row:number,priority=false):Promise<ResolvedGalaxy>{
     if(uncertainLocalPosition(galaxy))return Promise.reject(new Error('Uncertain local distance: physical galaxy model withheld.'));
-    const existing=this.resolvedFor(galaxy.id);if(existing)return Promise.resolve(existing);
+    const existing=this.resolvedFor(galaxy.id);if(existing){if(priority)this.modelPresence.set(galaxy.id,{value:1,target:1});return Promise.resolve(existing)}
     const pending=this.modelRequests.get(galaxy.id);if(pending)return pending;
     if(!this.modelCatalog)return Promise.reject(new Error('The model catalog is unavailable'));
     const catalog=this.modelCatalog;
@@ -430,13 +440,13 @@ export class Explorer {
       if(this.disposed||(!priority&&!this.wantedModels.has(galaxy.id)))throw new DOMException('Model no longer nearby','AbortError');
       const existing=this.resolvedFor(galaxy.id);if(existing)return existing;
       if(this.resolvedGalaxies.length>=MODEL_LIMIT){
-        const removable=this.resolvedGalaxies.filter(model=>!this.pinnedModels.has(model.data.galaxy.id)&&model.data.galaxy.id!==this.selected?.id&&model.data.galaxy.id!==this.focusedGalaxyId)
+        const removable=this.resolvedGalaxies.filter(model=>!this.pinnedModels.has(model.data.galaxy.id)&&model.data.galaxy.id!==this.selected?.id&&model.data.galaxy.id!==this.focusedGalaxyId&&(priority||model.blend.value===0))
           .sort((a,b)=>b.center.distanceToSquared(this.camera.position)/b.radius**2-a.center.distanceToSquared(this.camera.position)/a.radius**2)[0];
-        if(!removable)throw new Error('Nearby model budget is occupied');
+        if(!removable)throw new DOMException('Waiting for a model to fade out','AbortError');
         this.removeModel(removable);
       }
-      const model=new ResolvedGalaxy(decodeModel(catalog.manifest,chunk,row,galaxy));
-      this.updateModel(model);
+      const model=new ResolvedGalaxy(decodeModel(catalog.manifest,chunk,row,galaxy),this.galaxyAppearance);
+      this.modelPresence.set(galaxy.id,{value:priority?1:0,target:1});this.updateModel(model);
       this.resolvedGalaxies.push(model);this.modelLocations.set(galaxy.id,{node:node.id,row});this.bindModels();
       if(this.selected?.id===galaxy.id)this.onSelection(this.selected);
       this.invalidate();return model;
@@ -448,12 +458,24 @@ export class Explorer {
     const scale=(this.canvas.clientHeight||innerHeight)/(2*Math.tan(THREE.MathUtils.degToRad(this.camera.fov/2)));
     const camera=this.camera.position,forward=this.camera.getWorldDirection(this.scratch);
     const candidates:{id:number;node:SpatialNode;row:number;score:number}[]=[];
-    const protectedIds=new Set(this.pinnedModels);if(this.selected)protectedIds.add(this.selected.id);if(this.focusedGalaxyId!==null)protectedIds.add(this.focusedGalaxyId);
-    const available=MODEL_LIMIT-protectedIds.size;
+    const protectedIds=new Set(this.pinnedModels);if(this.selected&&this.selected.id>=0)protectedIds.add(this.selected.id);if(this.focusedGalaxyId!==null&&this.focusedGalaxyId>=0)protectedIds.add(this.focusedGalaxyId);
+    const available=Math.max(0,MODEL_LIMIT-protectedIds.size);
+    const consider=(id:number,node:SpatialNode,row:number,score:number)=>{
+      if(!available||candidates.some(c=>c.id===id)||candidates.length>=available&&score<=candidates[candidates.length-1].score)return;
+      const index=candidates.findIndex(other=>score>other.score);candidates.splice(index<0?candidates.length:index,0,{id,node,row,score});if(candidates.length>available)candidates.pop();
+    };
+    // Resident models keep their exact center/shape when the point frontier changes.
+    // A 30% ranking margin prevents near-equal candidates repeatedly trading places.
+    for(const model of this.resolvedGalaxies){
+      const id=model.data.galaxy.id,location=this.modelLocations.get(id);if(protectedIds.has(id)||!location)continue;
+      const relative=model.center.clone().sub(camera),score=model.radius**2*scale**2/Math.max(relative.lengthSq(),1e-20);
+      if(score<.25**2||relative.dot(forward)<-8*model.radius)continue;
+      consider(id,this.nodes.get(location.node)!,location.row,score*1.3);
+    }
     let requests=0;
     for(const nodeId of this.drawn){
       const item=this.cache.get(nodeId)!,asset=catalog.manifest.nodes[nodeId];if(!asset)continue;
-      if(this.bounds.get(nodeId)!.distanceToPoint(camera)>asset.maxRadiusMpc*scale/.7)continue;
+      if(this.bounds.get(nodeId)!.distanceToPoint(camera)>asset.maxRadiusMpc*scale/.35)continue;
       const chunk=catalog.get(nodeId);
       if(!chunk){
         if(!catalog.failed.has(nodeId)&&catalog.pendingCount<4&&requests++<4)void catalog.read(item.node).catch(()=>this.onMessage('Some galaxy shapes could not load. Retry missing detail to try again.'));
@@ -469,21 +491,20 @@ export class Explorer {
         const radius=measuredShape(chunk,row)?chunk.values[row*5]*Math.sqrt(x*x+y*y+z*z)*Math.PI/(180*3600):catalog.manifest.fallbackRadiusMpc;
         if(dx*forward.x+dy*forward.y+dz*forward.z < -8*radius)continue;
         const score=radius*radius*scale*scale/Math.max(distanceSq,1e-20);
-        if(score<.7*.7||candidates.length>=available&&score<=candidates[candidates.length-1].score)continue;
-        const candidate={id,node:item.node,row,score};
-        const index=candidates.findIndex(other=>score>other.score);
-        candidates.splice(index<0?candidates.length:index,0,candidate);if(candidates.length>available)candidates.pop();
+        if(score>=.35*.35)consider(id,item.node,row,score);
       }
     }
     this.wantedModels=new Set(candidates.map(item=>item.id));
     let changed=false;
     for(const model of [...this.resolvedGalaxies]){
       const id=model.data.galaxy.id;
-      if(!protectedIds.has(id)&&!this.wantedModels.has(id)&&!this.modelRequests.has(id)){this.removeModel(model);changed=true}
+      const wanted=protectedIds.has(id)||this.wantedModels.has(id),presence=this.modelPresence.get(id);
+      if(presence)presence.target=Number(wanted);
+      if(!wanted&&!this.modelRequests.has(id)&&(!presence||presence.value===0||model.blend.value===0)){this.removeModel(model);changed=true}
     }
     if(changed)this.bindModels();
     for(const candidate of candidates){
-      if(this.resolvedFor(candidate.id)||this.modelRequests.has(candidate.id)||this.modelRequests.size>=4)continue;
+      if(this.resolvedFor(candidate.id)||this.modelRequests.has(candidate.id)||this.modelRequests.size>=4||this.resolvedGalaxies.length+this.modelRequests.size>=MODEL_LIMIT)continue;
       const {node,row,id}=candidate;
       // Metadata supplies the exact float64 center and target identity only for
       // the small nearby set. The candidate scan uses existing packed positions.
@@ -543,6 +564,7 @@ export class Explorer {
   clearHomeSelection(){this.homeSelected=false;this.onHomeSelection(false)}
   private focusAt(target:THREE.Vector3,distance=25,direction=this.camera.getWorldDirection(new THREE.Vector3()).negate(),galaxyId:number|null=null,home=false){
     this.selectionSerial++;this.focusedGalaxyId=galaxyId;this.homeFocused=home;
+    if(galaxyId!==null&&this.modelPresence.has(galaxyId))this.modelPresence.set(galaxyId,{value:1,target:1});
     this.exitFlight();this.controls.enabled=true;
     // Consume any remaining orbit/pan damping before setting the exact focus.
     const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();
@@ -712,6 +734,11 @@ export class Explorer {
     const near=Math.min(.0001,Math.max(1e-8,this.camera.position.distanceTo(this.controls.target)*.01));
     if(this.camera.near!==near){this.camera.near=near;this.camera.updateProjectionMatrix()}
     if((moved||orbitMoved||automaticOrbit)&&this.wasContinuous){this.timings.push(elapsed);if(this.timings.length>240)this.timings.shift()}
+    for(const presence of this.modelPresence.values()){
+      const delta=Math.min(elapsed/1000,.05)/.6;
+      presence.value=presence.target>presence.value?Math.min(presence.target,presence.value+delta):Math.max(presence.target,presence.value-delta);
+      if(presence.value===0&&presence.target===0)this.modelScanNeeded=true;
+    }
     this.resolvedGalaxies.forEach((model,i)=>{this.updateModel(model);this.detailBlendUniform.value[i]=model.blend.value});
     this.nearbyGalaxies.forEach(model=>this.updateModel(model));
     this.milkyWay.update(this.camera,this.canvas.clientHeight||innerHeight,this.pixelRatio,this.homeFocused,this.modelDisplay);
@@ -730,10 +757,26 @@ export class Explorer {
       else if(p95>0&&p95<17)this.sampleBudget=Math.min(2000000,Math.floor(this.sampleBudget*1.1));
       this.adaptationFrames=0;this.dirty=true;
     }
-    this.wasContinuous=!!(moved||orbitMoved||automaticOrbit||this.dirty);
+    this.wasContinuous=!!(moved||orbitMoved||automaticOrbit||this.dirty||[...this.modelPresence.values()].some(presence=>presence.value!==presence.target));
     if(this.wasContinuous)this.invalidate();
   }
   get measurementDistance(){return this.measurement.length===2?separation(this.measurement[0].position,this.measurement[1].position):null}
+  async probeGalaxyAppearance(){
+    const input=document.getElementById('galaxy-appearance') as HTMLSelectElement,saved=input.value as GalaxyAppearance,stored=localStorage.getItem('atlas-galaxy-appearance');
+    const change=(value:GalaxyAppearance)=>{input.value=value;input.dispatchEvent(new Event('change',{bubbles:true}))};
+    const frame=()=>new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));
+    this.visitNearby(-1);const selected=this.selected,count=this.manifest.count;
+    const source=JSON.stringify(this.nearbyGalaxies.map(model=>model.data)),center=this.resolvedFor(-1)!.center.clone();
+    try{
+      change('catalog');await frame();
+      const catalog=this.allModels.every(model=>model.appearance==='catalog'),catalogHidden=document.getElementById('profile-appearance')!.hidden;
+      change('spiral');await frame();
+      const spiral=this.allModels.every(model=>model.appearance==='spiral'),disclosed=!document.getElementById('profile-appearance')!.hidden,savedSpiral=localStorage.getItem('atlas-galaxy-appearance')==='spiral';
+      const body=await this.probeResolvedPicking(-1),nearbyBytes=this.nearbyGalaxies.reduce((bytes,m)=>bytes+m.memoryBytes,0);
+      const unchanged=this.selected===selected&&this.manifest.count===count&&JSON.stringify(this.nearbyGalaxies.map(model=>model.data))===source&&this.resolvedFor(-1)!.center.equals(center);
+      return {catalog,catalogHidden,spiral,disclosed,savedSpiral,unchanged,body,nearbyBytes,passed:catalog&&catalogHidden&&spiral&&disclosed&&savedSpiral&&unchanged&&body.passed&&nearbyBytes<4*1048576};
+    }finally{change(saved);if(stored===null)localStorage.removeItem('atlas-galaxy-appearance');else localStorage.setItem('atlas-galaxy-appearance',stored)}
+  }
   /** Replay two Andromeda orbits through the real streaming/render path. */
   async probeModelContinuity(){
     if(!this.modelCatalog)return {available:false};
@@ -742,6 +785,9 @@ export class Explorer {
     const model=this.resolvedFor(-1)!,offset=this.camera.position.clone().sub(model.center),axis=model.frame.normal;
     const snapshot=()=>new Map(this.resolvedGalaxies.map(m=>{const p=m.center.clone().project(this.camera);return [m.data.galaxy.id,{blend:m.blend.value,onScreen:p.z>-1&&p.z<1&&Math.abs(p.x)<.85&&Math.abs(p.y)<.85,name:m.data.name}]}));
     const events:{step:number;id:number;kind:string;before:number;after:number;name:string}[]=[];
+    const removed:{id:number;blend:number;sourceDrawn:boolean;sourceProfileLoaded:boolean;wanted:boolean}[]=[];
+    const remove=this.removeModel;
+    this.removeModel=(m)=>{const source=this.modelLocations.get(m.data.galaxy.id)?.node;removed.push({id:m.data.galaxy.id,blend:m.blend.value,sourceDrawn:!!source&&this.drawn.includes(source),sourceProfileLoaded:!!source&&!!this.modelCatalog?.get(source),wanted:this.wantedModels.has(m.data.galaxy.id)});remove.call(this,m)};
     let previous=snapshot(),maxResident=0,peakJump=0;
     try{
       await sleep(1500);previous=snapshot();
@@ -756,8 +802,10 @@ export class Explorer {
         }
         previous=current;
       }
-      return {available:true,events,peakJump,maxResident,stats:this.stats,passed:events.length===0&&maxResident<=MODEL_LIMIT};
-    }finally{this.setModelDisplay(display);this.visitNearby(-1)}
+      await sleep(1200);
+      const idleTransitionsComplete=[...this.modelPresence.values()].every(presence=>presence.value===presence.target);
+      return {available:true,events,removed,peakJump,maxResident,idleTransitionsComplete,stats:this.stats,passed:events.length===0&&maxResident<=MODEL_LIMIT&&idleTransitionsComplete};
+    }finally{this.removeModel=remove;this.setModelDisplay(display);this.visitNearby(-1)}
   }
   async probeNearbyGalaxies(){
     const display=this.modelDisplay,raw=this.showUncertainLocal,count=this.manifest.count;

@@ -35,7 +35,7 @@ describe('Measured galaxy deprojection',()=>{
   expect(data.fitMaxRelativeError).toBeLessThan(.001);
  });
  it('crossfades monotonically between the unresolved and fully resolved sizes',()=>{
-  expect(detailBlend(0)).toBe(0);expect(detailBlend(1)).toBe(0);expect(detailBlend(8)).toBe(1);
+  expect(detailBlend(0)).toBe(0);expect(detailBlend(.6)).toBe(0);expect(detailBlend(5)).toBe(1);
   let previous=0;
   for(let pixels=0;pixels<12;pixels+=.1){const value=detailBlend(pixels);expect(value).toBeGreaterThanOrEqual(previous);previous=value}
  });

@@ -38,8 +38,9 @@
 .model-kind { color: #c1dde5; font-size: 13px; margin: 10px 0 14px; line-height: 1.45; }
 
 .model-display-label{display:block;font-size:13px;color:#d7e7ee;margin:4px 0 10px}
-#model-display{width:100%;font-size:13px;padding:11px 12px;appearance:auto}
+#model-display,#galaxy-appearance{width:100%;font-size:13px;padding:11px 12px;appearance:auto}
 .display-settings .view-preference{margin-top:24px}
+#galaxy-appearance-hint{margin-bottom:22px}
 
 /* Keep the selected identity and its main actions reachable while details scroll. */
 .inspector{display:flex;flex-direction:column;padding:0;overflow:hidden}
