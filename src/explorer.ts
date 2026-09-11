@@ -734,6 +734,31 @@ export class Explorer {
     if(this.wasContinuous)this.invalidate();
   }
   get measurementDistance(){return this.measurement.length===2?separation(this.measurement[0].position,this.measurement[1].position):null}
+  /** Replay two Andromeda orbits through the real streaming/render path. */
+  async probeModelContinuity(){
+    if(!this.modelCatalog)return {available:false};
+    const display=this.modelDisplay;this.setModelDisplay('automatic');this.visitNearby(-1);
+    const sleep=(ms:number)=>new Promise<void>(resolve=>setTimeout(resolve,ms));
+    const model=this.resolvedFor(-1)!,offset=this.camera.position.clone().sub(model.center),axis=model.frame.normal;
+    const snapshot=()=>new Map(this.resolvedGalaxies.map(m=>{const p=m.center.clone().project(this.camera);return [m.data.galaxy.id,{blend:m.blend.value,onScreen:p.z>-1&&p.z<1&&Math.abs(p.x)<.85&&Math.abs(p.y)<.85,name:m.data.name}]}));
+    const events:{step:number;id:number;kind:string;before:number;after:number;name:string}[]=[];
+    let previous=snapshot(),maxResident=0,peakJump=0;
+    try{
+      await sleep(1500);previous=snapshot();
+      for(let step=0;step<360;step++){
+        this.camera.position.copy(offset).applyAxisAngle(axis,step*Math.PI/90).add(model.center);this.camera.lookAt(model.center);this.controls.target.copy(model.center);this.dirty=true;this.invalidate();await sleep(40);
+        const current=snapshot();maxResident=Math.max(maxResident,current.size);
+        for(const id of new Set([...previous.keys(),...current.keys()])){
+          const a=previous.get(id),b=current.get(id),before=a?.blend??0,after=b?.blend??0;
+          if(!(a?.onScreen&&b?.onScreen||a?.onScreen&&!b||!a&&b?.onScreen))continue;
+          const jump=Math.abs(after-before);peakJump=Math.max(peakJump,jump);
+          if(jump>.35)events.push({step,id,kind:!a?'arrival':!b?'eviction':'visibility',before,after,name:(b??a)!.name});
+        }
+        previous=current;
+      }
+      return {available:true,events,peakJump,maxResident,stats:this.stats,passed:events.length===0&&maxResident<=MODEL_LIMIT};
+    }finally{this.setModelDisplay(display);this.visitNearby(-1)}
+  }
   async probeNearbyGalaxies(){
     const display=this.modelDisplay,raw=this.showUncertainLocal,count=this.manifest.count;
     const frame=()=>new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));

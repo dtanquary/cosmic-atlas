@@ -7923,5 +7923,268 @@
       "rejected": true,
       "message": "Data integrity check failed"
     }
+  },
+  {
+    "runId": "spiral-continuity-before",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 143.30000001192093,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 65536,
+      "loaded": 140759,
+      "represented": 14140375,
+      "pending": 6,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 80.10253123998717,
+      "p95": 16.567999999999998,
+      "calls": 10,
+      "managedMiB": 50.938963890075684,
+      "blocked": false,
+      "focusDistance": 16099.112169655042,
+      "budget": 1000000,
+      "models": 0
+    },
+    "continuity": {
+      "available": true,
+      "events": [
+        {
+          "step": 8,
+          "id": 95754,
+          "kind": "eviction",
+          "before": 1,
+          "after": 0,
+          "name": "2781655169236995"
+        },
+        {
+          "step": 8,
+          "id": 9482281,
+          "kind": "eviction",
+          "before": 1,
+          "after": 0,
+          "name": "39628488709247500"
+        },
+        {
+          "step": 9,
+          "id": 95754,
+          "kind": "arrival",
+          "before": 0,
+          "after": 1,
+          "name": "2781655169236995"
+        },
+        {
+          "step": 9,
+          "id": 9482281,
+          "kind": "arrival",
+          "before": 0,
+          "after": 1,
+          "name": "39628488709247500"
+        },
+        {
+          "step": 17,
+          "id": 95754,
+          "kind": "eviction",
+          "before": 1,
+          "after": 0,
+          "name": "2781655169236995"
+        },
+        {
+          "step": 17,
+          "id": 9482281,
+          "kind": "eviction",
+          "before": 1,
+          "after": 0,
+          "name": "39628488709247500"
+        },
+        {
+          "step": 18,
+          "id": 95754,
+          "kind": "arrival",
+          "before": 0,
+          "after": 1,
+          "name": "2781655169236995"
+        },
+        {
+          "step": 18,
+          "id": 9482281,
+          "kind": "arrival",
+          "before": 0,
+          "after": 1,
+          "name": "39628488709247500"
+        },
+        {
+          "step": 117,
+          "id": 6929751,
+          "kind": "arrival",
+          "before": 0,
+          "after": 0.4971709207547875,
+          "name": "39633404207039924"
+        },
+        {
+          "step": 122,
+          "id": 6929751,
+          "kind": "eviction",
+          "before": 0.49211203170005524,
+          "after": 0,
+          "name": "39633404207039924"
+        },
+        {
+          "step": 124,
+          "id": 1060722,
+          "kind": "eviction",
+          "before": 0.49963928342854824,
+          "after": 0,
+          "name": "2782303340199952"
+        },
+        {
+          "step": 130,
+          "id": 981894,
+          "kind": "eviction",
+          "before": 0.5337762897960456,
+          "after": 0,
+          "name": "2782240014598148"
+        },
+        {
+          "step": 130,
+          "id": 6929375,
+          "kind": "eviction",
+          "before": 0.52122776648347,
+          "after": 0,
+          "name": "39633377116031979"
+        },
+        {
+          "step": 130,
+          "id": 2281916,
+          "kind": "eviction",
+          "before": 0.5093737231024862,
+          "after": 0,
+          "name": "39633507839904582"
+        },
+        {
+          "step": 134,
+          "id": 2177,
+          "kind": "eviction",
+          "before": 0.7705952907212722,
+          "after": 0,
+          "name": "2305843013269630419"
+        },
+        {
+          "step": 134,
+          "id": 2188,
+          "kind": "eviction",
+          "before": 0.5858460883220435,
+          "after": 0,
+          "name": "2305843013315725282"
+        },
+        {
+          "step": 294,
+          "id": 6929751,
+          "kind": "eviction",
+          "before": 0.5039454516587463,
+          "after": 0,
+          "name": "39633404207039924"
+        },
+        {
+          "step": 294,
+          "id": 2281916,
+          "kind": "arrival",
+          "before": 0,
+          "after": 0.5038576147911286,
+          "name": "39633507839904582"
+        },
+        {
+          "step": 299,
+          "id": 6929751,
+          "kind": "arrival",
+          "before": 0,
+          "after": 0.49442562960274733,
+          "name": "39633404207039924"
+        },
+        {
+          "step": 303,
+          "id": 6929751,
+          "kind": "eviction",
+          "before": 0.49111776686439984,
+          "after": 0,
+          "name": "39633404207039924"
+        },
+        {
+          "step": 309,
+          "id": 981894,
+          "kind": "eviction",
+          "before": 0.5338546168142292,
+          "after": 0,
+          "name": "2782240014598148"
+        },
+        {
+          "step": 309,
+          "id": 6929375,
+          "kind": "eviction",
+          "before": 0.5215064259629917,
+          "after": 0,
+          "name": "39633377116031979"
+        },
+        {
+          "step": 309,
+          "id": 1060722,
+          "kind": "eviction",
+          "before": 0.4988992043084139,
+          "after": 0,
+          "name": "2782303340199952"
+        },
+        {
+          "step": 309,
+          "id": 2281916,
+          "kind": "eviction",
+          "before": 0.508473054925667,
+          "after": 0,
+          "name": "39633507839904582"
+        },
+        {
+          "step": 314,
+          "id": 2177,
+          "kind": "eviction",
+          "before": 0.7705952907212723,
+          "after": 0,
+          "name": "2305843013269630419"
+        },
+        {
+          "step": 314,
+          "id": 2188,
+          "kind": "eviction",
+          "before": 0.5858460883220435,
+          "after": 0,
+          "name": "2305843013315725282"
+        }
+      ],
+      "peakJump": 1,
+      "maxResident": 11,
+      "stats": {
+        "drawn": 1099226,
+        "loaded": 8029806,
+        "represented": 1779940,
+        "pending": 0,
+        "failed": 0,
+        "mode": "adaptive",
+        "complete": false,
+        "fps": 80.10253123998717,
+        "p95": 16.567999999999998,
+        "calls": 70,
+        "managedMiB": 347.0095090866089,
+        "blocked": false,
+        "focusDistance": 0.106742868564,
+        "budget": 1100000,
+        "models": 5
+      },
+      "passed": false
+    }
   }
 ]
