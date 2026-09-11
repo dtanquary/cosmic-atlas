@@ -1,0 +1,26 @@
+# Cosmic Atlas working instructions
+
+## Git workflow
+
+Dave requested on 2026-09-11: **commit early and often, and commit the work you do.**
+
+- Reuse this repository. Make small, coherent commits as useful milestones are reached; do not leave an entire completed feature uncommitted.
+- Include related source, tests, requirements, and validation notes. Describe unfinished checkpoints honestly in the commit message.
+- Before committing, review the staged changes and run checks appropriate to that milestone. Finish production and actual-GPU validation before describing a feature as complete.
+- Keep generated catalog binaries, raw FITS downloads, local caches, credentials, and dependencies out of Git. Track reproducible preparation scripts, compact sidecars, manifests, and attribution.
+- Preserve existing user work and the full accepted catalog.
+
+## Product and delivery
+
+- Build a simple, clean 3D galaxy explorer with high scientific fidelity and smooth navigation.
+- The intended delivery is a **public URL and all application source shared on GitHub**. Keep the code reproducible, document data sources and licenses, and design catalog delivery independently of the source repository.
+- Measured positions, sizes and projected shapes must remain distinguishable from assumed depth, missing-shape fallbacks, and illustrative structure/colors.
+- Use bounded streaming and level of detail. Never create one scene object or DOM element for every catalog galaxy.
+- The existing full static archive exceeds the current Sites upload limit. Preserve the local catalog while arranging a separate public catalog-storage path; do not replace it with a small sample and call it complete.
+
+## Checks and documentation
+
+- `npm test` checks TypeScript data, interaction logic, and model geometry.
+- `npm run build` checks TypeScript and catalog asset presence/sizes, then builds the static app.
+- Use the Sites build helper when required by the active Sites skills.
+- Keep `docs/requirements.md`, `docs/architecture.md`, `docs/galaxy-detail.md`, and `docs/validation.md` consistent with the implemented experience. Record measured performance separately from targets.
