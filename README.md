@@ -1,6 +1,6 @@
 # Cosmic Atlas
 
-A minimal 3D explorer of **14,140,375 accepted DESI DR1 galaxy observations**, built with TypeScript, Three.js and Vite. Browse the cosmic web, inspect catalog measurements, compare distances, fly through space, and approach galaxies to reveal procedural 3D models.
+A minimal 3D explorer of **14,140,375 accepted DESI DR1 galaxy observations**, plus six nearby galaxies with independently measured distances, built with TypeScript, Three.js and Vite. Browse the cosmic web, inspect catalog measurements, compare distances, fly through space, and approach galaxies to reveal procedural 3D models.
 
 The Milky Way is a separate reference model around the Solar System. **Milky Way** takes you to a view centered on the Galactic core, so the galaxy stays centered as you zoom. **Sun / Observer** switches the focus to our location inside the disk.
 
@@ -27,7 +27,7 @@ npm run dev
 
 Open the URL Vite prints, normally **http://127.0.0.1:5173/**.
 
-Bootstrap downloads small byte ranges from the official DESI catalog and builds a clearly labeled subset of real observations. It gives you the point map, navigation, selection, distance measurement and the Milky Way reference model. Catalog-wide close-up models and verified galaxy-name destinations require the full-data setup below.
+Bootstrap downloads small byte ranges from the official DESI catalog and builds a clearly labeled subset of real observations. It gives you the point map, navigation, selection, distance measurement and the Milky Way reference model. The six nearby galaxies also work in bootstrap, including their search, models and measurements. DESI-wide close-up models and additional DESI name destinations require the full-data setup below.
 
 **Generated catalog binaries are not in Git.** A fresh clone needs bootstrap or full preparation before it can load the map. `data:bootstrap` also changes `public/data/catalog.json` to activate the sample; treat that as a local dataset choice when reviewing changes for a commit.
 
@@ -58,9 +58,9 @@ Run the commands in order. `data:download` is resumable: rerun it after an inter
 
 The prepared full atlas contains all **14,140,375** accepted observations. Its model sidecars add about **143 MB compressed**. The name index contains **17,320 names** and **3,181 verified catalog destinations**; an unmatched familiar name does not receive a fabricated position.
 
-Search distinguishes names it recognizes from places it can visit. For example, Andromeda appears with its aliases and a location-unavailable explanation because it has no verified destination in this index. Only available galaxies are selectable; **Browse available galaxies** returns to usable suggestions.
+Search distinguishes names it recognizes from places it can visit. Andromeda now resolves to the independently measured nearby layer. Names without either a nearby entry or a matched DESI destination (for example, the Sombrero Galaxy) retain a location-unavailable explanation. Only available galaxies are selectable; **Browse available galaxies** returns to usable suggestions.
 
-To work with the million-object subset after full preparation, open `/?dataset=development`. Full catalog model/name matching is deliberately disabled for subsets. The Milky Way reference model is available independently.
+To work with the million-object subset after full preparation, open `/?dataset=development`. Full catalog model/name matching is deliberately disabled for subsets. The Milky Way and six nearby galaxies are available independently.
 
 The two original individually fitted previews and the Milky Way reference data are checked in. To regenerate them:
 
@@ -78,7 +78,7 @@ Python, NumPy, Astropy and SciPy prepare immutable binary datasets ahead of time
 
 The main renderer batches point geometry, uses camera-relative coordinates to retain precision at galaxy scales, and performs selection on the GPU. A Web Worker decompresses and validates chunks. The browser never creates a scene object or DOM element for every galaxy and never integrates cosmological distances during navigation.
 
-Nearby catalog objects outside the local-distance safeguard crossfade into bounded analytic light volumes and, where appropriate, seeded spiral arms or irregular clumps. There are at most **12 resident catalog models**, plus the fixed Milky Way reference model. Automatic display fades incidental models back to points before they fill the view. **Visit** or **Focus** keeps the chosen galaxy visible for deliberate close-ups. Settings also offers **Focused galaxy only** and **Points only**.
+Nearby catalog objects outside the local-distance safeguard crossfade into bounded analytic light volumes and, where appropriate, seeded spiral arms or irregular clumps. There are at most **12 resident DESI models**, plus six fixed nearby models and the Milky Way reference. The nearby layer batches its six distant points into one draw call; its geometry is bounded to about 2.6 MiB. Automatic display fades incidental models back to points before they fill the view. **Visit** or **Focus** keeps the chosen galaxy visible for deliberate close-ups. Settings also offers **Focused galaxy only** and **Points only**.
 
 The visual direction is a dark, uncluttered atlas with recognizable galaxy shapes, restrained glow and varied orientations. Dense fly-through views with many small galaxy silhouettes are a future intermediate level of detail; currently distant observations remain points.
 
@@ -91,6 +91,7 @@ The visual direction is a dark, uncluttered atlas with recognizable galaxy shape
 | [`src/explorer.ts`](src/explorer.ts) | Camera/navigation, point shaders, streaming decisions, GPU picking, model pool and diagnostic probes |
 | [`src/galaxy-detail.ts`](src/galaxy-detail.ts) | Shared volume renderer, measured-shape projection, model fading and seeded light geometry |
 | [`src/model-catalog.ts`](src/model-catalog.ts) | Profile sidecar loading, decoding and morphology interpretation |
+| [`src/nearby-galaxies.ts`](src/nearby-galaxies.ts), [`src/data/nearby-sources.json`](src/data/nearby-sources.json) | Nearby entries, independent distance provenance, model inputs and separate identities |
 | [`src/local-distances.ts`](src/local-distances.ts) | Conservative display guard for uncertain local redshift positions |
 | [`src/milky-way.ts`](src/milky-way.ts) | Home-galaxy disk, bar, arms, bulge and arrival direction |
 | [`src/galaxy-search.ts`](src/galaxy-search.ts) | Name normalization, suggestions and cancellable visits |
@@ -106,6 +107,15 @@ For Milky Way placement or adopted dimensions, edit `scripts/prepare_milky_way.p
 
 Read [`AGENTS.md`](AGENTS.md) before contributing. Make small, coherent commits, preserve existing user work, and include the relevant tests and documentation. Raw source downloads, generated `.bin`/`.bin.gz` files, caches, dependencies and build output stay out of Git.
 
+To modify the nearby layer, edit the pinned measurements and source links in `src/data/nearby-sources.json`, then run:
+
+```sh
+uv run python scripts/prepare_nearby_galaxies.py
+npm test
+```
+
+The generator reads that small source excerpt, converts coordinates/distance moduli and projected ellipses, and fits illustrative smooth light profiles. It needs no full DESI download or network request. Keep IDs negative and stable, aliases unambiguous, and adopted measurements distinct from missing-shape assumptions. The renderer currently supports a maximum of 12 nearby entries; use a bounded streaming design before expanding beyond that. Details are in [nearby-galaxies.md](docs/nearby-galaxies.md).
+
 ## Controls
 
 | Action | Control |
@@ -114,7 +124,7 @@ Read [`AGENTS.md`](AGENTS.md) before contributing. Make small, coherent commits,
 | Inspect a catalog galaxy | Click its point or visible body |
 | Focus selection / survey overview | **F** / **R** |
 | Visit by name | **Visit**, type a name, arrows to choose, **Enter** |
-| Explore our galaxy | **Milky Way** in the toolbar, or search its name with the full name index available |
+| Explore our galaxy | **Milky Way** in the toolbar, or search its name |
 | Compare two catalog distances | **Measure**, then click two galaxies |
 | Configure flight | **Fly**, adjust speed, then **Start flying** |
 | Manual flight | **WASD**, **Q/E**, **Shift** to accelerate; scroll changes speed |
@@ -167,6 +177,7 @@ Run these against `npm run dev`, using a unique `run` name:
 | `?selftest&run=my-points` | Point visibility/picking, measurement persistence, data integrity rejection and graphics recovery |
 | `?hometest&run=my-milky-way` | Core-centered toolbar/search/wheel navigation, separate Sun focus, labels, body picking, inside/near-Sun rendering, display modes, marker clipping and graphics recovery; full data also checks the embedded-position safeguard and raw-position setting |
 | `?uxtest&run=my-navigation` | Foreground obstruction, focus intent, reachable actions, delayed-search cancellation and flight controls; requires full data |
+| `?nearbytest&run=my-neighbors` | All six search destinations, center framing, model/point picking, projected shapes, independent-distance measurements and graphics recovery; works with subsets |
 | `?modeltest&run=my-models` | All five catalog families, projected shape, body selection, automatic loading and the model pool limit; requires full data |
 | `?benchmark=adaptive&run=my-overview` | 1920×1080 overview orbit: 5-second warmup, 20-second measurement |
 | `?benchmark=full&run=my-full-overview` | The same benchmark with full detail in view |
@@ -181,13 +192,15 @@ The initial atlas imports a filtered **DESI DR1 redshift survey**, not a combine
 
 The DESI importer accepts positive redshifts and converts them to Planck18 distances. This works poorly in our immediate neighborhood, where galaxies' own motions matter: Andromeda (M31), for example, is approaching us and has a blueshift. Its measured distance must come from another method. Very small positive redshifts can also produce implausible positions inside the Milky Way, which is why the app hides uncertain redshift-only positions below 1 Mpc by default.
 
-Nearby-galaxy integration is now in progress, beginning with well-known Local Group galaxies. It will use published redshift-independent distances, documented sky positions and projected shapes, with clear provenance and separate counts. Those measured nearby entries will bypass the redshift-only display guard. Original DESI observations will remain intact; the combined view must not claim an independently deduplicated census.
+The app now adds **Andromeda (M31), Triangulum (M33), the Large and Small Magellanic Clouds, M32 and M110** using published redshift-independent distances. Search their common names or aliases to visit them. Their six entries are counted separately and bypass the redshift-only display guard. Original DESI observations remain intact; the combined view is not a globally deduplicated census.
+
+Adopted distances and errors are linked in each inspector. M31/M33 use literature disk scales, M32/M110 use catalog half-light radii, and the Clouds have explicitly illustrative size/structure assumptions. Projected angles/axis ratios follow cited measurements where available; the LMC model does not claim a measured orientation. Depth, near side, arms, clumps and colors remain illustrative. Nearby distances are placed directly on the observer-centered Mpc axes, without using recession velocity as a distance or applying a cosmological correction. Mixed local/DESI measurements are labeled as map separations. [Full provenance and limitations](docs/nearby-galaxies.md).
 
 References: [NASA on Andromeda](https://science.nasa.gov/mission/hubble/science/explore-the-night-sky/hubble-messier-catalog/messier-31/), [NASA/IPAC on local distance limitations](https://ned.ipac.caltech.edu/Documents/Overview), and the [confirmed local-position audit](docs/local-distance-audit.md).
 
 ## Scientific boundaries and data credit
 
-This is an observer-centered reconstruction of catalog measurements, not a complete census or a simultaneous snapshot of the universe. Distances are **linear comoving distances inferred with Planck18**; redshift includes local velocity effects. Survey gaps are not proof of empty space. Point size, opacity and color are navigation cues, not measured luminosity.
+This is an observer-centered reconstruction of catalog measurements, not a complete census or a simultaneous snapshot of the universe. DESI distances are **linear comoving distances inferred with Planck18**; redshift includes local velocity effects. The six nearby entries instead use independently measured local distances. Survey gaps are not proof of empty space. Point size, opacity and color are navigation cues, not measured luminosity.
 
 Of the catalog profile records, **12,097,577 (85.6%)** have usable measured sizes and projected ellipses. Models for the remainder disclose an assumed 5 kpc half-light radius. Records inside the local-distance safeguard are excluded from model rendering regardless of their profile. **3,128** have matched visual classifications; other families are labeled approximations. Inferred depth, near side, spiral structure, clumps and colors remain illustrative. The Milky Way uses separately documented literature-based geometry and is excluded from DESI counts and pair measurements.
 

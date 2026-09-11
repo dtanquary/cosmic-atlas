@@ -115,3 +115,17 @@ Imaging profiles are extracted for all 14,140,375 accepted DR1 observations, ret
 Without a recorded visual classification, display families are labeled approximations, not measured Hubble types. Galaxy depth, reflected tilt choice, all bars/arms/clumps, colors and exposure are illustrative. Generic smooth profiles use a quantized Sersic Gaussian library. Original telescope images are not redistributed. See docs/galaxy-detail.md for fitting, deprojection and fallback assumptions.
 
 The derived model manifest and profile sidecars include adapted OpenNGC classifications and are distributed under CC BY-SA 4.0, with the same OpenNGC credit and license above. Original DESI data retain their CC BY 4.0 license. Input checksums and processing descriptions are retained in the model manifest and preparation scripts.
+
+INDEPENDENT NEARBY GALAXIES
+
+The six-entry nearby layer uses adopted numerical measurements from McConnachie, A. W. (2012), AJ, 144, 4, and its January 2021 compilation: https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/community/nearby/ . Coordinates and selected half-light radii/ellipses are credited to that compilation and its referenced studies. M32's RR Lyrae distance is attributed there to Fiorentino et al. (2010).
+
+M31, M33 and NGC 205 tip-of-the-red-giant-branch distances: McConnachie et al. (2005), https://arxiv.org/abs/astro-ph/0410489 .
+Large Magellanic Cloud eclipsing-binary distance: Pietrzynski et al. (2019), https://arxiv.org/abs/1903.08096 .
+Small Magellanic Cloud eclipsing-binary distance: Graczyk et al. (2020), https://arxiv.org/abs/2010.08754 .
+M31 disk scale and projected flattening: Courteau et al. (2011), https://arxiv.org/abs/1106.3564 .
+M33 K-band disk scale: https://doi.org/10.1111/j.1365-2966.2012.21778.x ; rescaled from that work's adopted distance.
+
+Additional projected axis ratios, sky angles and aliases derive from Mattia Verga's OpenNGC, under CC BY-SA 4.0, as credited above. Adapted OpenNGC shape fields and the combined nearby reference are distributed under CC BY-SA 4.0, preserving the research provenance of other numerical measurements. Processing converts sexagesimal coordinates, distance moduli, angular sizes and ellipses; fits illustrative smooth Gaussian profiles; and adds explicit missing-shape assumptions. Source snapshot and input-excerpt SHA-256 values are retained in src/data/nearby-sources.json and the generated nearby-galaxies.json. See docs/nearby-galaxies.md for exact choices.
+
+The layer does not alter or globally deduplicate DESI observations. Depth, ambiguous near side, arms/clumps, colors and exposure are illustrative; the Clouds have explicitly assumed model sizes, and LMC orientation is unknown. The six nearby entries are counted separately. These adopted values are not a claim of the latest scientific consensus.

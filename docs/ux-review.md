@@ -79,3 +79,9 @@ The real Settings path persists both choices, rejects hidden visits, allows raw 
 Native Chrome comparison confirmed the dense local cloud returns as amber points when enabled and clears when disabled, with unchanged Milky Way scale/framing. Reload retains the raw preference. The final browser was returned to the Galactic core with uncertain locals hidden, Automatic models, enlargement off and the existing 2% distant-opacity floor.
 
 Prevention: the renderer now treats local redshift-only positions as an explicitly uncertain data class. The guard is shared by display, ID picking and model eligibility, while original records remain available for later cross-matching. This fixes the misleading presentation; it does not supply corrected distances or establish the records' actual identities.
+
+## Nearby destinations — 11 September 2026
+
+Andromeda now has a sourced independent-distance destination rather than an unavailable DESI name. Search merges its aliases into one selectable result, and the empty list prioritizes the Milky Way and six nearby neighbors. The former unavailable-Andromeda regression now uses the still-unavailable Sombrero Galaxy, preserving checks that explanatory matches cannot enter keyboard selection or move the camera. The async DESI-visit regressions still explicitly choose NGC 3982, so local synchronous visits do not accidentally weaken cancellation coverage.
+
+Full-data UI/home/model/point checks and separate full/subset nearby suites pass. Native Chrome review verified Andromeda search/Enter, model framing, distance citation/error, and the Clouds' assumed-size/unknown-orientation disclosures. The fixed inspector actions remain reachable above the scrolling details. Separate HUD counts and source-specific separation labels keep nearby entries distinguishable from the original survey. See [validation](validation.md) and [nearby provenance](nearby-galaxies.md).

@@ -11,7 +11,7 @@ export async function probeSearchAvailability(atlas:Explorer){
  while(!list.children.length){if(performance.now()>deadline)throw new Error('Search availability check timed out');await frame()}
  const position=atlas.camera.position.clone(),selected=atlas.selected;
  try{
-  query('Andromeda');await frame();
+  query('Sombrero');await frame();
   const before=status.textContent;
   const recognized={status:before,visitOptions:list.querySelectorAll('[role=option]').length,activeOption:input.getAttribute('aria-activedescendant'),explanation:element('unavailable-matches')?.textContent??''};
   (element('unavailable-matches')??list.querySelector<HTMLElement>('[aria-disabled=true]'))?.click();
@@ -98,14 +98,14 @@ export async function probeUI(atlas:Explorer){
  try{
   element('visit-galaxy-button').click();await waitFor(()=>element('galaxy-results').children.length>2);
   const position=atlas.camera.position.clone(),selected=atlas.selected?.id;
-  element('galaxy-option-2').click();await waitFor(()=>input.disabled);
+  [...element('galaxy-results').children].find(item=>item.textContent?.includes('NGC 3982'))!.dispatchEvent(new MouseEvent('click',{bubbles:true}));await waitFor(()=>input.disabled);
   dialog.close();await sleep(30);release();await done;
   cancelledVisitStable=atlas.selected?.id===selected&&atlas.camera.position.distanceTo(position)<1e-10;
   element('visit-galaxy-button').click();searchReusable=dialog.open&&!input.disabled&&document.activeElement===input;dialog.close();await sleep(30);
   let releaseSecond!:()=>void,finishSecond!:()=>void;
   const secondGate=new Promise<void>(resolve=>releaseSecond=resolve),secondDone=new Promise<void>(resolve=>finishSecond=resolve);
   atlas.visitCatalog=async(...args)=>{try{await secondGate;await originalVisit(...args)}finally{finishSecond()}};
-  element('visit-galaxy-button').click();element('galaxy-option-2').click();
+  element('visit-galaxy-button').click();[...element('galaxy-results').children].find(item=>item.textContent?.includes('NGC 3982'))!.dispatchEvent(new MouseEvent('click',{bubbles:true}));
   // Reopen before the queued close event or old network request completes.
   dialog.close();element('visit-galaxy-button').click();releaseSecond();await secondDone;await sleep(30);
   reopenedVisitStable=dialog.open&&!input.disabled&&document.activeElement===input&&atlas.selected?.id===selected&&atlas.camera.position.distanceTo(position)<1e-10;
@@ -118,4 +118,21 @@ export async function probeUI(atlas:Explorer){
  element('orbit-button').click();
  return {focusReachable,closeReachableAfterScroll,retryReachable,cancelledVisitStable,searchReusable,reopenedVisitStable,speedEditable,automaticWithFreePointer,escapeKeepsSpeedMenu,
   passed:focusReachable&&closeReachableAfterScroll&&retryReachable&&cancelledVisitStable&&searchReusable&&reopenedVisitStable&&speedEditable&&automaticWithFreePointer&&escapeKeepsSpeedMenu};
+}
+
+/** Search the shipped nearby layer through the real dialog on any dataset. */
+export async function probeNearbySearch(atlas:Explorer){
+ const element=<T extends HTMLElement=HTMLElement>(id:string)=>document.getElementById(id) as T;
+ const dialog=element<HTMLDialogElement>('visit-dialog'),input=element<HTMLInputElement>('galaxy-query');
+ const frame=()=>new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));
+ const cases=[];
+ for(const [query,id] of [['Andromeda',-1],['M33',-2],['LMC',-3],['SMC',-4],['M32',-5],['M110',-6]] as const){
+  element('visit-galaxy-button').click();const deadline=performance.now()+10000;
+  while(!element('galaxy-results').children.length){if(performance.now()>deadline)throw new Error('Nearby search timed out');await frame()}
+  input.value=query;input.dispatchEvent(new Event('input',{bubbles:true}));await frame();
+  const available=element('galaxy-results').children.length===1&&!element('galaxy-results').hidden;
+  input.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true,cancelable:true}));await frame();
+  cases.push({query,available,closed:!dialog.open,selectedId:atlas.selected?.id,passed:available&&!dialog.open&&atlas.selected?.id===id});
+ }
+ return {cases,passed:cases.every(c=>c.passed)};
 }

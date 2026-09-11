@@ -1,0 +1,194 @@
+{
+  "source": {
+    "title": "Curated nearby-galaxy measurements \u00b7 first six destinations",
+    "compilation": "https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/community/nearby/",
+    "compilationCitation": "McConnachie, A.W. 2012, AJ, 144, 4; January 2021 update",
+    "compilationSha256": "879c15cb0aee9357287fd32268276eff5b36501a11d0b434a5d58c461240502d",
+    "openNgcSha256": "be150bdaa1997dacbcb39f303074403edec7a953b589b36d5f1c4522c0cc6fae",
+    "license": "OpenNGC-derived positions/shape fields: Mattia Verga, CC-BY-SA-4.0. Other numerical measurements retain their cited research provenance.",
+    "notes": "Pinned adopted measurements, not a claim of the latest consensus. Nearby distances are used directly on the observer-centered Mpc axes, without redshift conversion or a cosmological 1+z correction. Positions are approximate observed centers; no proper-motion time propagation. DESI observations are not removed or globally deduplicated."
+  },
+  "entries": [
+    {
+      "key": "m31",
+      "name": "Andromeda",
+      "aliases": [
+        "M 31",
+        "Messier 31",
+        "NGC 224",
+        "Andromeda Galaxy",
+        "UGC 454",
+        "PGC 2557"
+      ],
+      "ra": "00:42:44.3",
+      "dec": "+41:16:09",
+      "distanceKpc": 785,
+      "distanceError": "\u00b1 25 kpc",
+      "method": "Tip of the red giant branch",
+      "distanceSource": "https://arxiv.org/abs/astro-ph/0410489",
+      "family": "spiral",
+      "typeLabel": "Spiral \u00b7 Sb",
+      "radiusKpc": 8.895239047,
+      "axisRatio": 0.27,
+      "positionAngleDeg": 35,
+      "shapeMeasured": true,
+      "orientationMeasured": true,
+      "shapeNote": "Adopted exponential disk scale 5.3 kpc (\u00b10.5); model half-light radius is 1.678 \u00d7 that scale. Disk axis ratio 0.27 from infrared photometry; sky angle from OpenNGC. Single disk approximation omits the separately measured bulge and halo.",
+      "shapeSources": [
+        "https://arxiv.org/abs/1106.3564",
+        "https://github.com/mattiaverga/OpenNGC"
+      ],
+      "id": -1,
+      "coordinateSource": "https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/community/nearby/"
+    },
+    {
+      "key": "m33",
+      "name": "Triangulum",
+      "aliases": [
+        "M 33",
+        "Messier 33",
+        "NGC 598",
+        "Triangulum Galaxy",
+        "Triangulum Pinwheel",
+        "UGC 1117",
+        "PGC 5818"
+      ],
+      "ra": "01:33:50.9",
+      "dec": "+30:39:37",
+      "distanceKpc": 809,
+      "distanceError": "\u00b1 24 kpc",
+      "method": "Tip of the red giant branch",
+      "distanceSource": "https://arxiv.org/abs/astro-ph/0410489",
+      "family": "spiral",
+      "typeLabel": "Spiral \u00b7 Sc",
+      "radiusKpc": 2.262971191516667,
+      "axisRatio": 0.591560637783862,
+      "positionAngleDeg": 23,
+      "shapeMeasured": true,
+      "orientationMeasured": true,
+      "shapeNote": "Adopted K-band disk scale 1.4 kpc at 840 kpc, rescaled to the adopted distance; model half-light radius is 1.678 \u00d7 that scale. Projected axis ratio and sky angle from OpenNGC. One unwarped disk approximation.",
+      "shapeSources": [
+        "https://doi.org/10.1111/j.1365-2966.2012.21778.x",
+        "https://github.com/mattiaverga/OpenNGC"
+      ],
+      "id": -2,
+      "coordinateSource": "https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/community/nearby/"
+    },
+    {
+      "key": "lmc",
+      "name": "Large Magellanic Cloud",
+      "aliases": [
+        "LMC",
+        "Large Magellanic"
+      ],
+      "ra": "05:23:34.5",
+      "dec": "-69:45:22",
+      "distanceKpc": 49.59,
+      "distanceError": "\u00b1 0.09 kpc statistical \u00b7 \u00b1 0.54 kpc systematic",
+      "method": "Eclipsing binary stars",
+      "distanceSource": "https://arxiv.org/abs/1903.08096",
+      "family": "irregular",
+      "typeLabel": "Magellanic irregular \u00b7 illustrative structure",
+      "radiusKpc": 1.5,
+      "axisRatio": 1,
+      "positionAngleDeg": null,
+      "shapeMeasured": false,
+      "orientationMeasured": false,
+      "shapeNote": "Assumed 1.5 kpc model half-light radius, round projected envelope and illustrative depth. No measured 3D orientation is claimed. The irregular clumps do not reproduce the observed bar.",
+      "shapeSources": [
+        "https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/community/nearby/"
+      ],
+      "id": -3,
+      "coordinateSource": "https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/community/nearby/"
+    },
+    {
+      "key": "smc",
+      "name": "Small Magellanic Cloud",
+      "aliases": [
+        "SMC",
+        "NGC 292",
+        "Small Magellanic",
+        "PGC 3085"
+      ],
+      "ra": "00:52:44.8",
+      "dec": "-72:49:43",
+      "distanceKpc": 62.44,
+      "distanceError": "\u00b1 0.47 kpc statistical \u00b7 \u00b1 0.81 kpc systematic",
+      "method": "Eclipsing binary stars",
+      "distanceSource": "https://arxiv.org/abs/2010.08754",
+      "family": "irregular",
+      "typeLabel": "Magellanic irregular \u00b7 illustrative structure",
+      "radiusArcmin": 37.49,
+      "axisRatio": 0.5997932782075219,
+      "positionAngleDeg": 45,
+      "shapeMeasured": false,
+      "orientationMeasured": true,
+      "shapeNote": "Projected ellipse and sky angle from OpenNGC. Model half-light radius is assumed to be one eighth of the catalog major-axis diameter; that diameter is not a half-light measurement. Actual depth is complex; the oblate clump model is illustrative.",
+      "shapeSources": [
+        "https://github.com/mattiaverga/OpenNGC"
+      ],
+      "id": -4,
+      "coordinateSource": "https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/community/nearby/"
+    },
+    {
+      "key": "m32",
+      "name": "M32",
+      "aliases": [
+        "M 32",
+        "Messier 32",
+        "NGC 221",
+        "UGC 452",
+        "PGC 2555"
+      ],
+      "ra": "00:42:41.8",
+      "dec": "+40:51:55",
+      "distanceModulus": 24.53,
+      "distanceError": "Distance modulus \u00b1 0.21 mag (about \u00b1 80 kpc)",
+      "method": "RR Lyrae stars",
+      "distanceSource": "https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/community/nearby/",
+      "family": "elliptical",
+      "typeLabel": "Compact elliptical \u00b7 cE",
+      "radiusArcmin": 0.47,
+      "axisRatio": 0.75,
+      "positionAngleDeg": 159,
+      "shapeMeasured": true,
+      "orientationMeasured": true,
+      "shapeNote": "V-band semi-major half-light radius 0.47 arcmin, ellipticity 0.25 and sky angle 159\u00b0 from McConnachie (2012), January 2021 table. The adopted n=2 light profile and deprojected depth are illustrative.",
+      "shapeSources": [
+        "https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/community/nearby/"
+      ],
+      "id": -5,
+      "coordinateSource": "https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/community/nearby/"
+    },
+    {
+      "key": "m110",
+      "name": "M110",
+      "aliases": [
+        "M 110",
+        "Messier 110",
+        "NGC 205",
+        "UGC 426",
+        "PGC 2429"
+      ],
+      "ra": "00:40:22.1",
+      "dec": "+41:41:07",
+      "distanceKpc": 824,
+      "distanceError": "\u00b1 27 kpc",
+      "method": "Tip of the red giant branch",
+      "distanceSource": "https://arxiv.org/abs/astro-ph/0410489",
+      "family": "elliptical",
+      "typeLabel": "Dwarf elliptical \u00b7 dE/dSph",
+      "radiusArcmin": 2.46,
+      "axisRatio": 0.57,
+      "positionAngleDeg": 28,
+      "shapeMeasured": true,
+      "orientationMeasured": true,
+      "shapeNote": "V-band semi-major half-light radius 2.46 arcmin, ellipticity 0.43 and sky angle 28\u00b0 from McConnachie (2012), January 2021 table. The adopted n=2 light profile and deprojected depth are illustrative.",
+      "shapeSources": [
+        "https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/community/nearby/"
+      ],
+      "id": -6,
+      "coordinateSource": "https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/community/nearby/"
+    }
+  ]
+}

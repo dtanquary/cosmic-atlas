@@ -1,21 +1,27 @@
 import type {Explorer} from './explorer';
 import {formatDistance} from './format';
 import {familyLabels} from './galaxy-detail';
+import {nearbyReference} from './nearby-galaxies';
 
 export interface NamedGalaxy {
   name:string; aliases:string[]; sgaId?:number; id?:number; node?:string; row?:number; targetId?:string; distance?:number;
-  kind?:'observer';
+  kind?:'observer'|'nearby';
 }
 export interface NameIndex {version:1;catalogId:string;catalogSourceSha256:string;matched:number;entries:NamedGalaxy[]}
 export function normalizeName(value:string){
   return value.toLowerCase().replace(/messier/g,'m').replace(/\b(ngc|ic|ugc|pgc|m)\s*0*(\d+)/g,'$1$2').replace(/[^a-z0-9]/g,'');
 }
 export const observerEntry:NamedGalaxy={name:'Milky Way',aliases:['Observer','Home','Our galaxy'],kind:'observer',distance:0};
+export const nearbyEntries:NamedGalaxy[]=nearbyReference.entries.map(entry=>({name:entry.name,aliases:entry.aliases,kind:'nearby',id:entry.id,distance:entry.distanceMpc}));
+export function mergeNearbyNames(entries:NamedGalaxy[]){
+ const aliases=new Set(nearbyEntries.flatMap(entry=>[entry.name,...entry.aliases].map(normalizeName)));
+ return [...nearbyEntries,...entries.filter(entry=>![entry.name,...entry.aliases].some(name=>aliases.has(normalizeName(name))))];
+}
 const favorites=['NGC 3982','NGC 5107','NGC 4026','NGC 4121','NGC 3738','NGC 3992'];
 const isVisitable=(entry:NamedGalaxy)=>entry.kind==='observer'||entry.id!==undefined;
 export function namedSuggestions(entries:NamedGalaxy[],query:string,limit=8){
   const needle=normalizeName(query);
-  if(!needle)return [observerEntry,...favorites.flatMap(name=>entries.filter(e=>e.name===name&&e.id!==undefined))].slice(0,limit);
+  if(!needle)return [observerEntry,...entries.filter(entry=>entry.kind==='nearby'),...favorites.flatMap(name=>entries.filter(e=>e.name===name&&e.id!==undefined))].slice(0,limit);
   const results:{entry:NamedGalaxy;rank:number}[]=[];
   for(const entry of [observerEntry,...entries]){
     let rank=Infinity;
@@ -74,11 +80,12 @@ export class GalaxySearch {
     this.retry.hidden=true;this.status.textContent='Loading galaxy names…';this.results=[];this.list.replaceChildren();this.list.hidden=true;this.unavailable.hidden=true;this.browse.hidden=true;this.highlight();
     this.loading=(async()=>{
       try{
+        if(this.atlas.manifest.subset){this.entries=mergeNearbyNames([]);this.byId=new Map(this.entries.map(e=>[e.id!,e]));this.loaded=true;this.onLoaded();this.render();return}
         const response=await fetch(this.atlas.catalogAsset('galaxy-search.json'),{signal:this.signal});if(!response.ok)throw new Error('Galaxy names could not load.');
         const index:NameIndex=await response.json();
         if(index.version!==1||index.catalogId!==this.atlas.manifest.id||index.catalogSourceSha256!==this.atlas.manifest.source.sha256||this.atlas.manifest.subset)throw new Error('Name search is available with the full DESI DR1 atlas.');
-        this.entries=index.entries;this.byId=new Map(index.entries.filter(e=>e.id!==undefined).map(e=>[e.id!,e]));this.loaded=true;this.onLoaded();this.render();
-      }catch(error){if(!this.signal.aborted){this.status.textContent=error instanceof Error?error.message:'Galaxy names could not load.';this.retry.hidden=false}}
+        this.entries=mergeNearbyNames(index.entries);this.byId=new Map(this.entries.filter(e=>e.id!==undefined).map(e=>[e.id!,e]));this.loaded=true;this.onLoaded();this.render();
+      }catch(error){if(!this.signal.aborted){this.entries=mergeNearbyNames([]);this.byId=new Map(this.entries.map(e=>[e.id!,e]));this.loaded=true;this.onLoaded();this.render();this.status.textContent+=' · DESI names unavailable; nearby galaxies remain available.';this.retry.hidden=false}}
       finally{this.loading=null}
     })();return this.loading;
   }
@@ -108,7 +115,7 @@ export class GalaxySearch {
       const recorded=entry.id===undefined?null:this.atlas.modelCatalog?.manifest.namedTypes[String(entry.id)];
       const modelLabel=recorded?`${familyLabels[recorded.family]} model`:model?.data.spiral?'Spiral model':model?'Smooth model':this.atlas.modelCatalog?'3D model':'Catalog point';
       const aliases=entry.aliases.filter(a=>a!==entry.name&&!a.startsWith('PGC')&&!a.startsWith('UGC')&&!a.startsWith('Messier')).slice(0,2).join(' · ');
-      detail.textContent=entry.kind==='observer'?'Our home galaxy · Galactic core view':[aliases,formatDistance(entry.distance!,this.atlas.units),modelLabel].filter(Boolean).join(' · ');
+      detail.textContent=entry.kind==='observer'?'Our home galaxy · Galactic core view':entry.kind==='nearby'?[aliases,formatDistance(entry.distance!,this.atlas.units),'Independent distance'].filter(Boolean).join(' · '):[aliases,formatDistance(entry.distance!,this.atlas.units),modelLabel].filter(Boolean).join(' · ');
       option.append(title,detail);option.dataset.result=String(i);this.list.append(option);
     }
     this.highlight();
@@ -127,6 +134,7 @@ export class GalaxySearch {
     this.busy=true;this.input.disabled=true;this.dialog.setAttribute('aria-busy','true');this.status.textContent=`Visiting ${entry.name}…`;
     try{
       if(entry.kind==='observer')this.atlas.visitMilkyWay();
+      else if(entry.kind==='nearby')this.atlas.visitNearby(entry.id!);
       // Check the actual dialog state as well: its close event is asynchronous.
       else await this.atlas.visitCatalog({id:entry.id!,node:entry.node!,row:entry.row!,targetId:entry.targetId!},()=>this.dialog.open&&this.pendingVisit===controller&&!controller.signal.aborted);
       if(controller.signal.aborted||!this.dialog.open)return;

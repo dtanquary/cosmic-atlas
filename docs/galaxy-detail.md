@@ -88,4 +88,8 @@ A separate [Milky Way reference model](milky-way.md) is available even with the 
 
 ## Local-distance exception
 
-Profile sidecars still cover every accepted record. The renderer now withholds physical models for redshift-only observer distances below 1 Mpc, because the inferred distances and corresponding physical sizes are unreliable at these scales. Such positions are hidden by default or shown as amber points through Settings. This applies even to manually focused records and does not affect the separately sourced Milky Way reference. See [the confirmed embedded-position audit](local-distance-audit.md); corrected local distances have not yet been integrated.
+Profile sidecars still cover every accepted record. The renderer now withholds physical models for redshift-only observer distances below 1 Mpc, because the inferred distances and corresponding physical sizes are unreliable at these scales. Such positions are hidden by default or shown as amber points through Settings. This applies even to manually focused records and does not affect the separately sourced Milky Way reference. See [the confirmed embedded-position audit](local-distance-audit.md); the six separately sourced nearby entries bypass this guard without correcting the original DESI records.
+
+## Independently measured neighbors
+
+Six additional nearby models share `ResolvedGalaxy` and `GalaxyVolume`, with adopted sizes, projected ellipses and independently measured distances. Their local distance is used directly; no redshift is fabricated. M31/M33 are disk approximations, M32/M110 use measured half-light ellipses with illustrative Sérsic profiles, and the Clouds disclose assumed sizes/structure and missing orientation. Their identities, counts and geometry budget remain separate from DESI. See [nearby-galaxies.md](nearby-galaxies.md) for the exact source and rendering assumptions.

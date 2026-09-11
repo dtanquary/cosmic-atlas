@@ -23,7 +23,7 @@ describe('Measured galaxy deprojection',()=>{
  it('preserves the measured angular size in comoving coordinates',()=>{
   const radius=galaxyRadius(data.galaxy.distance,data.shape.radiusArcsec);
   expect(radius/data.galaxy.distance*180/Math.PI*3600).toBeCloseTo(data.shape.radiusArcsec,12);
-  expect(radius/(1+data.galaxy.z)).toBeCloseTo(data.galaxy.distance/(1+data.galaxy.z)*data.shape.radiusArcsec*Math.PI/(180*3600),12);
+  expect(radius/(1+data.galaxy.z!)).toBeCloseTo(data.galaxy.distance/(1+data.galaxy.z!)*data.shape.radiusArcsec*Math.PI/(180*3600),12);
   const expected=cartesian(data.galaxy.ra,data.galaxy.dec,data.galaxy.distance);
   data.galaxy.position.forEach((coordinate,i)=>expect(coordinate).toBeCloseTo(expected[i],12));
   expect(data.galaxy.targetId).toBe('39633263488141603');
