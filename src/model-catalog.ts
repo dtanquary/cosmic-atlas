@@ -45,12 +45,12 @@ export class ModelCatalog {
   private pending=new Map<string,Promise<ProfileChunk>>();
   readonly failed=new Set<string>();
   private disposed=false;
-  constructor(readonly manifest:ModelManifest,private onChange:()=>void){}
-  static async open(catalog:Manifest,signal:AbortSignal,onChange:()=>void){
-    const response=await fetch('/data/models/manifest.json',{signal});if(!response.ok)throw new Error('Galaxy model catalog unavailable');
+  constructor(readonly manifest:ModelManifest,private base:string,private onChange:()=>void){}
+  static async open(catalog:Manifest,url:string,signal:AbortSignal,onChange:()=>void){
+    const response=await fetch(url,{signal});if(!response.ok)throw new Error('Galaxy model catalog unavailable');
     const manifest:ModelManifest=await response.json();
     if(manifest.version!==1||manifest.catalogId!==catalog.id||manifest.catalogSourceSha256!==catalog.source.sha256||manifest.count!==catalog.count||!manifest.library?.length||catalog.nodes.some(n=>!manifest.nodes[n.id]))throw new Error('Galaxy models do not match the active catalog');
-    return new ModelCatalog(manifest,onChange);
+    return new ModelCatalog(manifest,new URL('.',url).href,onChange);
   }
   get(id:string){const chunk=this.chunks.get(id);if(chunk)chunk.used=performance.now();return chunk}
   get pendingCount(){return this.pending.size}
@@ -59,7 +59,7 @@ export class ModelCatalog {
     const cached=this.get(node.id);if(cached)return cached;
     const pending=this.pending.get(node.id);if(pending)return pending;
     const asset=this.manifest.nodes[node.id];if(!asset)throw new Error('No profile chunk for this node');
-    const promise=this.loader.load(`s:${node.id}`,new URL(asset.url,new URL('/data/models/',location.href)).href,asset,'profiles',node.storedCount,true).then(buffer=>{
+    const promise=this.loader.load(`s:${node.id}`,new URL(asset.url,this.base).href,asset,'profiles',node.storedCount,true).then(buffer=>{
       if(this.disposed)throw new DOMException('Disposed','AbortError');
       const chunk={buffer,values:new Float32Array(buffer,16),flags:new Uint32Array(buffer,16),used:performance.now()};
       this.chunks.set(node.id,chunk);this.trim();return chunk;

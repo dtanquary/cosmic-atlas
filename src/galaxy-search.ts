@@ -63,7 +63,7 @@ export class GalaxySearch {
     this.retry.hidden=true;this.status.textContent='Loading galaxy names…';this.list.replaceChildren();
     this.loading=(async()=>{
       try{
-        const response=await fetch('/data/galaxy-search.json',{signal:this.signal});if(!response.ok)throw new Error('Galaxy names could not load.');
+        const response=await fetch(this.atlas.catalogAsset('galaxy-search.json'),{signal:this.signal});if(!response.ok)throw new Error('Galaxy names could not load.');
         const index:NameIndex=await response.json();
         if(index.version!==1||index.catalogId!==this.atlas.manifest.id||index.catalogSourceSha256!==this.atlas.manifest.source.sha256||this.atlas.manifest.subset)throw new Error('Name search is available with the full DESI DR1 atlas.');
         this.entries=index.entries;this.byId=new Map(index.entries.filter(e=>e.id!==undefined).map(e=>[e.id!,e]));this.loaded=true;this.onLoaded();this.render();

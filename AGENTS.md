@@ -21,6 +21,7 @@ Dave requested on 2026-09-11: **commit early and often, and commit the work you 
 ## Checks and documentation
 
 - `npm test` checks TypeScript data, interaction logic, and model geometry.
+- `npm run test:models` verifies every profile sidecar, complete catalog coverage, and visual-type parsing.
 - `npm run build` checks TypeScript and catalog asset presence/sizes, then builds the static app.
 - Use the Sites build helper when required by the active Sites skills.
 - Keep `docs/requirements.md`, `docs/architecture.md`, `docs/galaxy-detail.md`, and `docs/validation.md` consistent with the implemented experience. Record measured performance separately from targets.

@@ -1,6 +1,6 @@
 # Resolved galaxy prototypes
 
-The first model replaces the existing NGC 4026 catalog point, DESI target **39633263488141603** (dense ID 13414618). It is matched through `REF_CAT=L3`, `REF_ID=801183` to the [Siena Galaxy Atlas entry](https://sga.legacysurvey.org/?sgaid__gte=801183&sgaid__lte=801183). NGC 3982 adds a spiral test, documented below. Other galaxies remain points. NGC 4026 is a lenticular (S0) galaxy; its smooth model is retained instead of assigning it spiral arms ([classification reference](https://www.ipac.caltech.edu/publication/1988A%26A...199...41V)).
+The first model replaces the existing NGC 4026 catalog point, DESI target **39633263488141603** (dense ID 13414618). It is matched through `REF_CAT=L3`, `REF_ID=801183` to the [Siena Galaxy Atlas entry](https://sga.legacysurvey.org/?sgaid__gte=801183&sgaid__lte=801183). NGC 3982 adds a spiral test, documented below. All other catalog observations now use the streamed models described below. NGC 4026 is a lenticular (S0) galaxy; its smooth model is retained instead of assigning it spiral arms ([classification reference](https://www.ipac.caltech.edu/publication/1988A%26A...199...41V)).
 
 ## NGC 4026 measurements and provenance
 
@@ -52,6 +52,28 @@ A 17-component positive Gaussian fit reproduces the smooth measured Sersic profi
 
 Knots are one batched geometry in true 3D, with small Gaussian sprites and an inter-arm component. The arm field extends to 4.5 effective radii and fades with the volume's angular-size transition. Each knot represents illustrative light, not an individual observed star. The source image is not redistributed or used as a texture.
 
-## Scope for the next iteration
+## Catalog-wide variants
 
-Expansion should carry measured profiles and quality flags through a compact detail catalog, stream only nearby models, and retain a fixed GPU budget. Matching actual arm shapes or dust lanes requires additional image constraints. Do not apply either galaxy's geometry to every catalog point.
+`scripts/prepare_model_catalog.py` extracts aligned imaging profiles for all **14,140,375** accepted observations, without changing positions or distances. It packages profiles for every existing spatial node, including parent samples. **12,097,577** records have a finite positive size, usable ellipticity, and an extended imaging fit (REX, EXP, DEV or SER). **2,042,798** do not; their display uses a smooth illustrative model with assumed **5 kpc comoving half-light radius**, zero projected ellipticity and no claimed orientation. The inspector explicitly distinguishes these assumptions.
+
+The 3,128 exact named central matches have visual types from SGA/HyperLEDA, with OpenNGC filling missing recognized types. The current family counts are 1,657 spiral, 389 barred spiral, 285 elliptical, 657 lenticular and 140 irregular. Case matters: `Sb` is a spiral stage, while `SB` denotes a bar. Unrecognized or ambiguous-only labels remain unclassified. These are catalog classifications, not newly inferred observations. [SGA defines its visual MORPHTYPE field](https://www.legacysurvey.org/sga/sga2020/); [Legacy Surveys defines the distinct imaging-fit types](https://www.legacysurvey.org/dr9/catalogs/).
+
+| Variant | Display structure | Example |
+| --- | --- | --- |
+| Spiral | Logarithmic arms and a smooth light volume | NGC 3982 |
+| Barred spiral | Arms beginning near an illustrative central bar | NGC 5107 |
+| Elliptical | Smooth, warmer, thicker oblate light volume | NGC 4121 |
+| Lenticular | Smooth flattened light volume without arms | NGC 4026 |
+| Irregular | Asymmetric clumps and a diffuse blue light component | NGC 3738 |
+
+These families follow the broad [NASA galaxy-type descriptions](https://science.nasa.gov/universe/galaxies/types/). Without a recorded visual classification, the display uses a **labeled approximation**: concentrated fitted profiles (n ≥ 2.5) receive a spheroidal model, round exponential fits a smooth disk, other usable extended fits a disk with illustrative arms, and missing shapes a generic smooth model. A Sersic index or exponential fit does **not** establish spiral arms, an elliptical classification, or a unique 3D shape.
+
+The assumed intrinsic axis ratio is 0.12 for disks, 0.65 for ellipticals, and 0.30 for irregulars, reduced to 95% of the measured projected axis ratio when necessary to permit deprojection. The same covariance construction preserves every usable projected ellipse. Round fits have no constrained sky position angle. The choice of thickness, reflected tilt, all internal arms/bars/clumps, and color remain unmeasured. Active nuclei and dwarf size categories are not treated as separate shape families or invented from absent measurements.
+
+Generic smooth profiles use a 56-entry Gaussian library for n=0.5–6 in 0.1 steps; maximum index quantization is 0.05 within that range. The n=0.5 case is an exact Gaussian. Each entry uses at most 20 positive components, with maximum error below 0.426% relative to `max(Sersic intensity, 0.001)` over 0.01–8 effective radii. This is a weighted fit bound, not a relative error guarantee in arbitrarily faint tails; quantization and illustrative structure add further differences. The inspector and documentation do not claim photometric calibration. The original NGC 4026 and NGC 3982 profiles remain unchanged.
+
+Generic structure uses 12,000 deterministic batched light knots, seeded from the exact catalog dense ID. Spiral pitch, arm count and phase vary within a small illustrative range; bars and irregular clumps are also seeded. NGC 3982 preserves its existing appearance. Knots are light samples, not resolved individual stars. The bounded model pool and fade behavior are described in [architecture](architecture.md#catalog-wide-galaxy-models).
+
+## Next iterations
+
+Image-constrained arm and dust geometry, improved distances for very nearby galaxies, and probabilistic morphology catalogs can replace assumptions as data becomes available. Do not present the current proxy populations as a measured distribution of visual galaxy types.

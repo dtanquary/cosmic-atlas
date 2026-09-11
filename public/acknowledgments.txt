@@ -105,3 +105,13 @@ SGA-2020 names and identifiers were joined to exact DESI SGA references, with a 
 OpenNGC database: Copyright Mattia Verga, https://github.com/mattiaverga/OpenNGC . Licensed under Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0): https://creativecommons.org/licenses/by-sa/4.0/ . A copy is included at licenses/CC-BY-SA-4.0.txt.
 
 Changes to OpenNGC data: selected galaxy names and aliases, normalized catalog names, and joined them with SGA and verified DESI destinations. Entries without verified destinations are explicitly identified as unmatched. The derived galaxy-search.json index is distributed under CC BY-SA 4.0. This data license does not change the application code's licensing. The atlas is not endorsed by the source authors.
+
+CATALOG-WIDE GALAXY MODELS
+
+Imaging profiles are extracted for all 14,140,375 accepted DR1 observations, retaining the original catalog ordering, positions, distances, and identifiers. Streamed profile sidecars recover angular radius, ellipticity and imaging-fit type. 12,097,577 rows have usable measured shapes; 2,042,798 use explicitly labeled illustrative shapes with an assumed 5 kpc comoving half-light radius and unknown orientation.
+
+3,128 exact named central matches have recognized visual morphological types from the SGA-2020 MORPHTYPE field (credited to HyperLEDA), with OpenNGC filling missing recognized types. These visual classifications are distinct from DESI's Tractor imaging model labels. SGA field documentation: https://www.legacysurvey.org/sga/sga2020/ . HyperLEDA: https://leda.univ-lyon1.fr/ . Broad morphology descriptions: https://science.nasa.gov/universe/galaxies/types/ .
+
+Without a recorded visual classification, display families are labeled approximations, not measured Hubble types. Galaxy depth, reflected tilt choice, all bars/arms/clumps, colors and exposure are illustrative. Generic smooth profiles use a quantized Sersic Gaussian library. Original telescope images are not redistributed. See docs/galaxy-detail.md for fitting, deprojection and fallback assumptions.
+
+The derived model manifest and profile sidecars include adapted OpenNGC classifications and are distributed under CC BY-SA 4.0, with the same OpenNGC credit and license above. Original DESI data retain their CC BY 4.0 license. Input checksums and processing descriptions are retained in the model manifest and preparation scripts.

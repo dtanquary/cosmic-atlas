@@ -1,6 +1,6 @@
 # Cosmic Atlas
 
-A minimal, scientifically explicit 3D explorer of **14,140,375 DESI DR1 galaxies**. Each point is an actual accepted catalog observation. The map uses linear Planck18 comoving distances, with adaptive streaming or full detail, GPU point selection, two-galaxy measurement, orbit controls, and free flight.
+A minimal, scientifically explicit 3D explorer of **14,140,375 DESI DR1 galaxies**. Each point is an actual accepted catalog observation. The map uses linear Planck18 comoving distances, with adaptive streaming or full detail, GPU point selection, two-galaxy measurement, orbit controls, free flight, and streamed 3D close-ups for every catalog observation.
 
 ## Run locally
 
@@ -32,6 +32,9 @@ For the full atlas, allow about 24 GB of additional storage for the official 22.
 ```sh
 npm run data:download
 npm run data:prepare
+python3 scripts/download_search_sources.py
+uv run python scripts/prepare_galaxy_search.py
+npm run data:models
 ```
 
 The importer validates primary-record uniqueness, records all filtering exclusions, computes distances, creates a reproducible one-million-galaxy development sample, writes the full spatial hierarchy, and activates the full dataset only when all referenced assets exist. Use `?dataset=development` for the million-galaxy test dataset. All normal browsing uses the complete accepted catalog.
@@ -39,7 +42,7 @@ The importer validates primary-record uniqueness, records all filtering exclusio
 ## Controls
 
 - Drag to orbit; right-drag to pan; scroll to zoom.
-- Choose **Visit** to search galaxy names with autocomplete, arrow keys and Enter, or choose a nearby suggestion. Try **NGC 3982** for a spiral close-up, **NGC 4026** for a smooth lenticular model, or **M 109** for a catalog point. The two models crossfade in as you approach. Drag to orbit, scroll to change scale, and choose **Observer-facing view** to restore the measured sky orientation. Click their visible bodies to inspect them.
+- Choose **Visit** to search galaxy names with autocomplete, arrow keys and Enter, or choose a nearby suggestion. Try **NGC 3982** (spiral), **NGC 5107** (barred spiral), **NGC 4026** (lenticular), **NGC 4121** (elliptical), or **NGC 3738** (irregular). Every galaxy can crossfade into a model as you approach; Visit and Focus open its close-up. Drag to orbit, scroll to change scale, and choose **Observer-facing view** to restore the measured sky orientation. Click their visible bodies to inspect them.
 - Click a point to inspect it. **F** focuses the selection; **R** resets the overview.
 - Choose **Observer** in the left toolbar to center and zoom onto our location at the map origin. It returns to orbit navigation and preserves selected galaxies and measurements.
 - Choose **Measure**, then select two galaxies. Distances are estimated comoving separations.
@@ -55,6 +58,7 @@ The importer validates primary-record uniqueness, records all filtering exclusio
 ```sh
 npm test
 npm run test:data
+npm run test:models
 uv run python scripts/test_data.py public/data/dr1
 npm run build
 ```
@@ -65,12 +69,18 @@ Development-only browser checks are available at `?selftest=1&run=my-browser`, `
 
 Use `?detailtest&run=my-browser-galaxy` to check both resolved profiles' actual GPU projection, selection away from their centers, rendering from inside, distance-fade floors, close-up orbit performance, and context recovery. Rebuild the small checked-in profiles with `uv run python scripts/prepare_galaxy_detail.py` after preparing the full dataset. The previews are available only for the matched full DR1 catalog.
 
+Use `?modeltest&run=my-browser-models` for all five families, unresolved-shape fallbacks, automatic model loading without a selection, 24 requests against the 12-model pool, GPU picking/projection, and close-up performance. `npm run test:models` verifies every profile checksum and complete leaf coverage. The full model sidecars add about 143 MB of compressed data and load only near the camera.
+
 Name search is a lazy-loaded local index of **17,320 names**, with **3,181 verified, visitable matches** to existing DESI rows. It is not a name for every atlas point. Unmatched familiar names are explained without inventing positions; Milky Way visits the existing observer marker. Rebuild with `python3 scripts/download_search_sources.py`, then `uv run python scripts/prepare_galaxy_search.py`. Sources, exact reference matching, checksums, and limitations are described in [architecture](docs/architecture.md#name-search).
 
 ## Scientific conventions and attribution
 
 This is an observer-centered reconstruction of catalog measurements, not a complete galaxy census or a simultaneous image of the universe today. Spectroscopic redshifts include peculiar velocities; comoving distance depends on a cosmological model. Screen point sizes and intensities do not encode physical galaxy sizes or luminosities. The About the data panel explains survey gaps, sampling, and uncertainty.
 
-NGC 4026 and NGC 3982 use measured imaging size, ellipticity and Sersic profiles from their original DESI rows. Their apparent sky orientations are preserved; unknown depth assumes an oblate, transparent galaxy with intrinsic axis ratio 0.12 and one of two possible tilt directions. NGC 3982 adds illustrative spiral arms and light knots, whose pitch, phase, and brightness are not measured. Colors and display exposure are illustrative. Both models use the same comoving scale as the map, with no size exaggeration. See [model provenance and assumptions](docs/galaxy-detail.md).
+All **14,140,375 observations** have a model path. **12,097,577 (85.6%)** have usable measured sizes and projected ellipses; **2,042,798** use an explicitly labeled illustrative shape with an assumed 5 kpc comoving half-light radius. **3,128** have matched visual classifications from SGA/HyperLEDA or OpenNGC. Other model families are labeled approximations based on imaging-profile fits, which do not establish a Hubble type.
+
+Spiral, barred spiral, elliptical, lenticular, and irregular variants preserve catalog position and usable projected shape. Depth, near side, arm pitch, bars, clumps, colors and display exposure remain illustrative. The two original previews retain their individually fitted profiles. Distant objects remain points; at most 12 close-up models are resident, with bounded profile streaming. See [model provenance and assumptions](docs/galaxy-detail.md).
+
+The intended release is a public web app with all application source on GitHub. See [public delivery](docs/public-delivery.md) for the split between the small application and the large catalog assets.
 
 See [requirements](docs/requirements.md), [architecture](docs/architecture.md), [build sequence](docs/build-plan.md), and [validation results](docs/validation.md). DESI DR1 is licensed CC BY 4.0. OpenNGC names by Mattia Verga are CC BY-SA 4.0; the derived name index carries that license. Citations, acknowledgments, and processing changes appear in [the attribution file](public/acknowledgments.txt).

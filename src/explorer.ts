@@ -88,6 +88,7 @@ export class Explorer {
   modelCatalog:ModelCatalog|null=null;
   get resolved(){return this.resolvedGalaxies.find(model=>model.data.galaxy.id===this.selected?.id)??this.resolvedGalaxies[0]??null}
   resolvedFor(id:number){return this.resolvedGalaxies.find(model=>model.data.galaxy.id===id)}
+  catalogAsset(path:string){return new URL(`../${path}`,this.base).href}
   measurement:Galaxy[]=[];
   measuring=false;
   onStats=(stats:AtlasStats)=>{};
@@ -234,8 +235,8 @@ export class Explorer {
     this.camera.updateProjectionMatrix();this.reset();this.invalidate();
     if(manifest.id==='dr1'&&!manifest.subset){
       try{
-        const results=await Promise.allSettled(['/data/galaxy-detail.json','/data/galaxy-spiral.json'].map(async path=>{
-        const response=await fetch(path,{signal:this.lifecycle.signal});
+        const results=await Promise.allSettled(['galaxy-detail.json','galaxy-spiral.json'].map(async path=>{
+        const response=await fetch(this.catalogAsset(path),{signal:this.lifecycle.signal});
         if(!response.ok)throw new Error('Profile unavailable');
         const data:GalaxyDetailData=await response.json();
         if(data.version!==1||data.catalogId!==manifest.id||data.catalogSourceSha256!==manifest.source.sha256||
@@ -251,7 +252,7 @@ export class Explorer {
         this.bindModels();
         this.invalidate();
       }catch(error){if(!this.lifecycle.signal.aborted)this.onMessage('The close-up galaxy preview could not load. The point atlas is still available.')}
-      try{this.modelCatalog=await ModelCatalog.open(manifest,this.lifecycle.signal,()=>{this.modelScanNeeded=true;this.invalidate()});this.modelScanNeeded=true;this.invalidate()}
+      try{this.modelCatalog=await ModelCatalog.open(manifest,this.catalogAsset('models/manifest.json'),this.lifecycle.signal,()=>{this.modelScanNeeded=true;this.invalidate()});this.modelScanNeeded=true;this.invalidate()}
       catch(error){if(!this.lifecycle.signal.aborted)this.onMessage('Galaxy models could not load. The point atlas is still available.');}
     }
   }

@@ -14,7 +14,8 @@ Build a minimal desktop-browser explorer that makes the quantity, arrangement, a
 - Adaptive detail by default; explicit full detail includes every accepted galaxy in the view after loading, even when frame rate falls. Never silently call a sampled view complete.
 - Light-years displayed by default, optional Mpc. Observer marker and a scale reference at focus depth.
 - Near-black background, off-white points, a restrained cyan accent, quiet borders, readable controls, and collapsible details.
-- Two resolved galaxy prototypes: NGC 4026 has a smooth lenticular light profile; NGC 3982 adds illustrative spiral arms. Both automatically crossfade from points as their angular size increases. Use measured sky orientation and size, preserve map scale, and distinguish inferred depth, arm structure, and display colors from measurements. Other galaxies remain points.
+- Every accepted galaxy supports an automatically streamed close-up model. Provide spiral, barred spiral, elliptical, lenticular and irregular variants. Use recorded visual types where matched; label other choices as approximations. Preserve usable measured size and sky ellipse. Missing shapes use a clearly disclosed 5 kpc comoving half-light radius and unknown orientation. Retain the original NGC 4026 and NGC 3982 previews.
+- Distant objects stay as points; a fixed pool of at most 12 resident close-up models protects navigation performance. Candidate searches operate on nearby resident chunks, not on the entire catalog each frame. Model bodies and point markers keep the same exact catalog identities.
 - Visit opens a local name search with autocomplete, keyboard selection, and popular/nearby suggestions. Resolve names only to verified existing catalog observations and explicitly explain unmatched names. The Milky Way suggestion visits the observer. Resolved bodies support inspection and measurement under their existing identities; observer-facing view restores orientation from our direction. Flight controls include galaxy-scale speeds.
 - Camera-distance display cues: distant points fade smoothly; nearby points have opaque centers and grow modestly. Settings can restore uniform points or set a saved minimum distant opacity from 0–100%, in 0.5% steps. Positive floors retain faint background points and their pick hits; 0% allows disappearance. Selection rings and measurements remain readable.
 - Desktop Chrome is the primary performance browser. Desktop Safari and Firefox are compatibility targets; mobile controls are deferred.
@@ -37,6 +38,6 @@ The development subset is explicitly labeled. A full-detail development subset r
 
 ## Deferred
 
-Additional galaxy types and broad resolved-galaxy coverage, measured arm/dust/star structure, planets, inferred populations, cosmological/time simulations, merged position catalogs, accounts, public access, and mobile-first navigation.
+Measured arm/dust/star structure, planets, inferred populations, cosmological/time simulations, merged position catalogs, accounts and mobile-first navigation. Public web hosting and a public GitHub source repository are the agreed delivery goal; the catalog needs a separate asset-hosting path.
 
 Sources: https://data.desi.lbl.gov/doc/releases/dr1/ ; https://data.desi.lbl.gov/doc/organization/ ; https://docs.astropy.org/en/stable/api/astropy.cosmology.realizations.Planck18.html ; https://data.desi.lbl.gov/doc/acknowledgments/
