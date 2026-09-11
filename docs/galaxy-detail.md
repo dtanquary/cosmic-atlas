@@ -54,7 +54,7 @@ Knots are one batched geometry in true 3D, with small Gaussian sprites and an in
 
 ## Catalog-wide variants
 
-`scripts/prepare_model_catalog.py` extracts aligned imaging profiles for all **14,140,375** accepted observations, without changing positions or distances. It packages profiles for every existing spatial node, including parent samples. **12,097,577** records have a finite positive size, usable ellipticity, and an extended imaging fit (REX, EXP, DEV or SER). **2,042,798** do not; their display uses a smooth illustrative model with assumed **5 kpc comoving half-light radius**, zero projected ellipticity and no claimed orientation. The inspector explicitly distinguishes these assumptions.
+`scripts/prepare_model_catalog.py` extracts aligned imaging profiles for all **14,140,375** accepted observations, without changing positions or distances. It packages profiles for every existing spatial node, including parent samples. **12,097,577** records have a finite positive size, usable ellipticity, and an extended imaging fit (REX, EXP, DEV or SER). **2,042,798** do not; outside the local-distance safeguard, their display uses a smooth illustrative model with assumed **5 kpc comoving half-light radius**, zero projected ellipticity and no claimed orientation. The inspector explicitly distinguishes these assumptions.
 
 The 3,128 exact named central matches have visual types from SGA/HyperLEDA, with OpenNGC filling missing recognized types. The current family counts are 1,657 spiral, 389 barred spiral, 285 elliptical, 657 lenticular and 140 irregular. Case matters: `Sb` is a spiral stage, while `SB` denotes a bar. Unrecognized or ambiguous-only labels remain unclassified. These are catalog classifications, not newly inferred observations. [SGA defines its visual MORPHTYPE field](https://www.legacysurvey.org/sga/sga2020/); [Legacy Surveys defines the distinct imaging-fit types](https://www.legacysurvey.org/dr9/catalogs/).
 
@@ -85,3 +85,7 @@ Automatic close-ups yield to points when they would obstruct the camera. The fad
 ## Milky Way
 
 A separate [Milky Way reference model](milky-way.md) is available even with the bootstrap dataset. It shares the volume renderer and uses adopted Galactic geometry, an illustrative bar/spiral disk and bulge. It adds one fixed home model beside the bounded catalog pool. The Milky Way toolbar button and name search center this model on the Galactic core, with Sun / Observer as a separate focus; its dedicated inspector supplies sources without manufacturing a DESI record.
+
+## Local-distance exception
+
+Profile sidecars still cover every accepted record. The renderer now withholds physical models for redshift-only observer distances below 1 Mpc, because the inferred distances and corresponding physical sizes are unreliable at these scales. Such positions are hidden by default or shown as amber points through Settings. This applies even to manually focused records and does not affect the separately sourced Milky Way reference. See [the confirmed embedded-position audit](local-distance-audit.md); corrected local distances have not yet been integrated.

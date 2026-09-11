@@ -6,6 +6,7 @@ import { decodeGalaxy, separation } from './format';
 import {ResolvedGalaxy, detailBlend, type GalaxyDetailData, type ModelDisplay} from './galaxy-detail';
 import {ModelCatalog,MODEL_LIMIT,decodeModel,measuredShape} from './model-catalog';
 import {MilkyWay} from './milky-way';
+import {LOCAL_REDSHIFT_GUARD_MPC,uncertainLocalDistance} from './local-distances';
 import type { Galaxy, Manifest, SpatialNode } from './types';
 
 const vertex=`precision highp float;
@@ -17,12 +18,15 @@ uniform float uSize;
 uniform uint uNode;
 uniform bool uDepthCues;
 uniform bool uEnlargePoints;
+uniform bool uLocalChunk,uHideUncertainLocal;
+uniform vec3 uWorldOrigin;
 uniform vec2 uFadeRange;
 uniform vec3 uDetailOrigins[${MODEL_LIMIT}];
 uniform float uDetailMix[${MODEL_LIMIT}];
 uniform float uMinOpacity;
 out float vDetail;
 out float vVisibility;
+out float vUncertainLocal;
 in vec3 position;
 in float detailSlot;
 flat out uint vCode;
@@ -33,17 +37,26 @@ void main(){
   gl_Position = projectionMatrix * vec4(mat3(viewMatrix) * relative, 1.0);
   gl_PointSize = uSize;
   vVisibility = 1.0;
+  vUncertainLocal = 0.0;
   if(uDepthCues || uEnlargePoints){
     float distanceToCamera = length(relative);
     if(uDepthCues) vVisibility = mix(1.0,uMinOpacity,smoothstep(uFadeRange.x, uFadeRange.y, distanceToCamera));
     // Screen markers grow by at most 65%, only within 150 Mpc of the camera.
     if(uEnlargePoints) gl_PointSize *= 1.0 + .65 * (1.0 - smoothstep(0.0, 150.0, distanceToCamera));
   }
+  if(uLocalChunk){
+    vec3 world = position + uWorldOrigin;
+    if(dot(world,world) < ${(LOCAL_REDSHIFT_GUARD_MPC**2).toFixed(1)}){
+      vUncertainLocal = 1.0;
+      if(uHideUncertainLocal) vVisibility = 0.0;
+    }
+  }
   vCode = (uNode << 16u) | uint(gl_VertexID);
 }`;
 const pointFragment=`precision highp float;
 in float vVisibility;
 in float vDetail;
+in float vUncertainLocal;
 uniform bool uDepthCues;
 out vec4 fragColor;
 void main(){
@@ -52,7 +65,7 @@ void main(){
   float alpha=(uDepthCues?vVisibility:.88)*(1.0-smoothstep(.25,.5,r));
   alpha *= 1.0 - vDetail;
   if(alpha<=0.0)discard;
-  fragColor=vec4(.73,.82,.9,alpha);
+  fragColor=vec4(mix(vec3(.73,.82,.9),vec3(1.,.61,.23),vUncertainLocal),alpha);
 }`;
 const pickFragment=`precision highp float;
 precision highp int;
@@ -153,6 +166,8 @@ export class Explorer {
   private picking=false;
   private depthCueUniform={value:true};
   private enlargePointsUniform={value:false};
+  private hideUncertainLocalUniform={value:true};
+  get showUncertainLocal(){return !this.hideUncertainLocalUniform.value}
   private fadeRangeUniform={value:new THREE.Vector2(100,1000)};
   private detailBlendUniform={value:new Float32Array(MODEL_LIMIT)};
   private detailOriginsUniform={value:Array.from({length:MODEL_LIMIT},()=>new THREE.Vector3())};
@@ -219,6 +234,7 @@ export class Explorer {
   private material(fragment:string,size:number,transparent:boolean,depthCues=false){
     const material=new THREE.RawShaderMaterial({glslVersion:THREE.GLSL3,vertexShader:vertex,fragmentShader:fragment,
       uniforms:{uOrigin:{value:new THREE.Vector3()},uSize:{value:size},uNode:{value:0},uColor:{value:new THREE.Color(0x9fe5f1)},uDepthCues:depthCues?this.depthCueUniform:{value:false},uEnlargePoints:depthCues?this.enlargePointsUniform:{value:false},uFadeRange:this.fadeRangeUniform,
+        uLocalChunk:{value:false},uWorldOrigin:{value:new THREE.Vector3()},uHideUncertainLocal:this.hideUncertainLocalUniform,
         uDetailOrigins:this.detailOriginsUniform,uDetailMix:this.detailBlendUniform,uMinOpacity:this.minOpacityUniform},
       transparent,depthTest:true,depthWrite:!transparent,toneMapped:false});
     (material.defaultAttributeValues as Record<string,number[]>).detailSlot=[0];return material;
@@ -298,9 +314,14 @@ export class Explorer {
   setMode(mode:'adaptive'|'full'){this.mode=mode;this.blocked=false;this.dirty=true;this.invalidate()}
   setDepthCues(enabled:boolean){this.depthCueUniform.value=enabled;this.dirty=true;this.invalidate()}
   setEnlargePoints(enabled:boolean){this.enlargePointsUniform.value=enabled;this.invalidate()}
+  setShowUncertainLocal(show:boolean){
+    this.hideUncertainLocalUniform.value=!show;this.selectionSerial++;this.modelScanNeeded=true;
+    this.resolvedGalaxies.forEach(model=>this.updateModel(model));this.updateAnnotations();this.onSelection(this.selected);this.onMeasure(this.measurement,this.measuring);this.invalidate();
+  }
+  private catalogPositionVisible(galaxy:Galaxy){return this.showUncertainLocal||!uncertainLocalDistance(galaxy.distance)}
   setMinimumOpacity(value:number){if(!Number.isFinite(value))return;this.minOpacityUniform.value=THREE.MathUtils.clamp(value,0,1);this.dirty=true;this.invalidate()}
   setModelDisplay(display:ModelDisplay){this.modelDisplay=display;this.modelScanNeeded=true;this.dirty=true;this.invalidate()}
-  private updateModel(model:ResolvedGalaxy){model.update(this.camera,this.canvas.clientHeight||innerHeight,this.pixelRatio,model.data.galaxy.id===this.focusedGalaxyId,this.modelDisplay)}
+  private updateModel(model:ResolvedGalaxy){model.update(this.camera,this.canvas.clientHeight||innerHeight,this.pixelRatio,model.data.galaxy.id===this.focusedGalaxyId,uncertainLocalDistance(model.data.galaxy.distance)?'points':this.modelDisplay)}
   private updateDepthCues(){
     // Expand the fade horizon smoothly outside the survey; use a neighborhood
     // range inside it. This works in both orbit and flight without mode changes.
@@ -378,6 +399,7 @@ export class Explorer {
     this.resolvedGalaxies=this.resolvedGalaxies.filter(item=>item!==model);
   }
   private ensureModel(galaxy:Galaxy,node:SpatialNode,row:number,priority=false):Promise<ResolvedGalaxy>{
+    if(uncertainLocalDistance(galaxy.distance))return Promise.reject(new Error('Uncertain local distance: physical galaxy model withheld.'));
     const existing=this.resolvedFor(galaxy.id);if(existing)return Promise.resolve(existing);
     const pending=this.modelRequests.get(galaxy.id);if(pending)return pending;
     if(!this.modelCatalog)return Promise.reject(new Error('The model catalog is unavailable'));
@@ -420,6 +442,7 @@ export class Explorer {
       for(let row=0;row<item.ids.length;row++){
         const id=item.ids[row];if(protectedIds.has(id))continue;
         const x=positions[row*3]+cx,y=positions[row*3+1]+cy,z=positions[row*3+2]+cz;
+        if(x*x+y*y+z*z<LOCAL_REDSHIFT_GUARD_MPC**2)continue;
         const dx=x-camera.x,dy=y-camera.y,dz=z-camera.z,distanceSq=dx*dx+dy*dy+dz*dz;
         const radius=measuredShape(chunk,row)?chunk.values[row*5]*Math.sqrt(x*x+y*y+z*z)*Math.PI/(180*3600):catalog.manifest.fallbackRadiusMpc;
         if(dx*forward.x+dy*forward.y+dz*forward.z < -8*radius)continue;
@@ -456,6 +479,7 @@ export class Explorer {
   focusSelected(){
     if(this.homeSelected){this.visitMilkyWay();return}
     if(!this.selected)return;
+    if(!this.catalogPositionVisible(this.selected)){this.onMessage('This uncertain local position is hidden. Show uncertain local positions in Settings to inspect it.');return}
     this.focusAt(new THREE.Vector3().fromArray(this.selected.position),this.resolvedFor(this.selected.id)?this.resolvedFor(this.selected.id)!.radius*12:25,undefined,this.selected.id);
   }
   visitGalaxy(id=this.resolved?.data.galaxy.id){
@@ -473,7 +497,8 @@ export class Explorer {
     if(!canNavigate()||serial!==this.selectionSerial)return;
     const galaxy=decodeGalaxy(metadata,entry.row,entry.id);
     if(galaxy.targetId!==entry.targetId)throw new Error('The name index does not match this catalog.');
-    if(this.modelCatalog)try{await this.ensureModel(galaxy,node,entry.row,true)}catch{if(canNavigate()&&serial===this.selectionSerial)this.onMessage('The shape could not load; showing the catalog position. Retry missing detail to try again.')}
+    if(!this.catalogPositionVisible(galaxy))throw new Error('This name has an uncertain local position. Enable Show uncertain local positions in Settings to inspect the record.');
+    if(this.modelCatalog&&!uncertainLocalDistance(galaxy.distance))try{await this.ensureModel(galaxy,node,entry.row,true)}catch{if(canNavigate()&&serial===this.selectionSerial)this.onMessage('The shape could not load; showing the catalog position. Retry missing detail to try again.')}
     if(!canNavigate()||serial!==this.selectionSerial)return;
     if(this.resolvedFor(galaxy.id)){this.visitGalaxy(galaxy.id);return}
     this.selectGalaxy(galaxy);this.focusSelected();
@@ -530,10 +555,13 @@ export class Explorer {
       geometry.setAttribute('detailSlot',new THREE.BufferAttribute(new Float32Array(node.storedCount),1).setUsage(THREE.DynamicDrawUsage));
       const material=this.material(pointFragment,1.6*this.pixelRatio,true,true);
       const points=new THREE.Points(geometry,material);points.frustumCulled=false;points.visible=false;
+      // Most chunks never intersect the local guard, so their shader skips its math.
+      const localChunk=this.bounds.get(node.id)!.distanceToPoint(new THREE.Vector3())<LOCAL_REDSHIFT_GUARD_MPC;
       points.onBeforeRender=(_renderer,_scene,camera,_geometry,usedMaterial)=>{
         const m=usedMaterial as THREE.RawShaderMaterial;
         m.uniforms.uOrigin.value.set(node.center[0]-camera.position.x,node.center[1]-camera.position.y,node.center[2]-camera.position.z);
         m.uniforms.uNode.value=Number(node.id)+1;m.uniformsNeedUpdate=true;
+        m.uniforms.uLocalChunk.value=localChunk;m.uniforms.uWorldOrigin.value.fromArray(node.center);
         this.resolvedGalaxies.forEach((model,i)=>m.uniforms.uDetailOrigins.value[i].copy(model.center).sub(camera.position));
       };
       const resident={node,buffer,ids,points,bytes:buffer.byteLength+positions.byteLength+node.storedCount*8,used:performance.now(),modelRows:[]};
@@ -563,10 +591,10 @@ export class Explorer {
     this.evict();
   }
   private updateAnnotations(){
-    this.selectionMarker.visible=!!this.selected;
+    this.selectionMarker.visible=!!this.selected&&this.catalogPositionVisible(this.selected);
     if(this.selected)this.selectionMarker.userData.world.fromArray(this.selected.position);
-    this.measureMarkers.forEach((marker,i)=>{marker.visible=!!this.measurement[i];if(this.measurement[i])marker.userData.world.fromArray(this.measurement[i].position)});
-    this.measureLine.visible=this.measurement.length===2;
+    this.measureMarkers.forEach((marker,i)=>{marker.visible=!!this.measurement[i]&&this.catalogPositionVisible(this.measurement[i]);if(this.measurement[i])marker.userData.world.fromArray(this.measurement[i].position)});
+    this.measureLine.visible=this.measurement.length===2&&this.measurement.every(galaxy=>this.catalogPositionVisible(galaxy));
     if(this.measurement.length===2){const [a,b]=this.measurement;this.measureLine.userData.world=new THREE.Vector3().fromArray(a.position);this.measureLine.geometry.dispose();this.measureLine.geometry=new THREE.BufferGeometry();this.measureLine.geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array([0,0,0,b.position[0]-a.position[0],b.position[1]-a.position[1],b.position[2]-a.position[2]]),3))}
   }
   private positionAnnotations(){
@@ -624,7 +652,8 @@ export class Explorer {
       }
       if(serial!==this.selectionSerial)return;
       const galaxy=decodeGalaxy(metadata,row,id);
-      if(this.modelCatalog)try{await this.ensureModel(galaxy,node,row,true)}catch{this.onMessage('The shape could not load; the catalog measurements are still available.')}
+      if(!this.catalogPositionVisible(galaxy))return;
+      if(this.modelCatalog&&!uncertainLocalDistance(galaxy.distance))try{await this.ensureModel(galaxy,node,row,true)}catch{this.onMessage('The shape could not load; the catalog measurements are still available.')}
       if(serial!==this.selectionSerial)return;
       this.selectGalaxy(galaxy);
     }catch(error){this.onMessage(`Could not inspect this point. ${error instanceof Error?error.message:'Try again.'}`)}
@@ -674,6 +703,7 @@ export class Explorer {
   }
   get measurementDistance(){return this.measurement.length===2?separation(this.measurement[0].position,this.measurement[1].position):null}
   async probeLocalPositions(){
+    if(this.manifest.subset)return {available:false,reason:"The embedded-position audit requires the full catalog."};
     const center=this.milkyWay.center,radius=this.milkyWay.radius*8;
     const nodes=[...this.nodes.values()].filter(node=>!node.children.length&&this.bounds.get(node.id)!.distanceToPoint(center)<=radius);
     const near:THREE.Vector3[]=[];let far:THREE.Vector3|null=null;let example:Galaxy|null=null;
@@ -719,6 +749,55 @@ export class Explorer {
       return {candidateCount:near.length,exampleTargetId:example?.targetId,rotations,outsideGuard,outsideGuardPick,
         passed:near.length>0&&rotations.every(r=>r.hidden.covered===0&&r.hiddenPick.covered===0&&r.withoutFading.covered===0&&r.raw.covered>0&&r.raw.amber>0&&r.rawPick.covered>0)&&outsideGuard.covered>0&&outsideGuardPick.covered>0};
     }finally{target.dispose();geometry.dispose();controlGeometry.dispose();visual.dispose();picker.dispose();this.renderer.setRenderTarget(null);this.renderer.setClearColor(0x06090d,1);this.invalidate()}
+  }
+  /** Real chunk offsets, shared settings uniforms, visit guards and annotation lifecycle. */
+  async probeLocalInteraction(){
+    if(this.manifest.subset)return {available:false,reason:'Requires the full catalog.'};
+    const input=document.getElementById('show-uncertain-local') as HTMLInputElement;
+    const saved=input.checked,stored=localStorage.getItem('atlas-show-uncertain-local'),count=this.manifest.count;
+    const change=(show:boolean)=>{input.checked=show;input.dispatchEvent(new Event('change',{bubbles:true}))};
+    this.visitMilkyWay();
+    const node=[...this.nodes.values()].find(node=>!node.children.length&&this.bounds.get(node.id)!.distanceToPoint(this.milkyWay.center)<this.milkyWay.radius*8)!;
+    const deadline=performance.now()+15000;
+    while(!this.cache.has(node.id)){this.request(node);if(performance.now()>deadline)throw new Error('Local chunk check timed out');await new Promise(resolve=>setTimeout(resolve,50))}
+    const item=this.cache.get(node.id)!;
+    const buffer=await this.loader.load(`m:${node.id}`,new URL(node.metadata.url,this.base).href,node.metadata,'metadata',node.storedCount,true);
+    let row=0;while(row<node.storedCount&&!uncertainLocalDistance(decodeGalaxy(buffer,row,item.ids[row]).distance))row++;
+    if(row===node.storedCount)throw new Error('No uncertain local fixture');
+    const galaxy=decodeGalaxy(buffer,row,item.ids[row]),entry={id:galaxy.id,node:node.id,row,targetId:galaxy.targetId};
+    const geometry=item.points.geometry,range={...geometry.drawRange};geometry.setDrawRange(row,1);
+    const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(50,1,.000001,100000);
+    const point=new THREE.Vector3().fromArray(galaxy.position);camera.position.copy(point).add(new THREE.Vector3(0,0,.06));camera.lookAt(point);camera.updateMatrixWorld();
+    const points=new THREE.Points(geometry,item.points.material);points.frustumCulled=false;points.onBeforeRender=item.points.onBeforeRender;scene.add(points);
+    const target=new THREE.WebGLRenderTarget(256,256),pixels=new Uint8Array(256*256*4);
+    const sample=(pick=false)=>{
+      scene.overrideMaterial=pick?this.pickMaterial:null;
+      this.renderer.setRenderTarget(target);this.renderer.setClearColor(0,0);this.renderer.clear();this.renderer.render(scene,camera);
+      this.renderer.readRenderTargetPixels(target,0,0,256,256,pixels);
+      let covered=0,amber=0,code=0;
+      for(let i=0;i<pixels.length;i+=4)if(pixels[i]||pixels[i+1]||pixels[i+2]){covered++;if(pixels[i]>pixels[i+2]*1.2)amber++;code=(pixels[i]|pixels[i+1]<<8|pixels[i+2]<<16|pixels[i+3]<<24)>>>0}
+      return {covered,amber,code};
+    };
+    try{
+      change(false);const hidden=sample(),hiddenPick=sample(true);let visitRejected=false,modelWithheld=false;
+      try{await this.visitCatalog(entry)}catch(error){visitRejected=error instanceof Error&&/uncertain local/.test(error.message)}
+      change(true);const raw=sample(),rawPick=sample(true),persistedOn=localStorage.getItem('atlas-show-uncertain-local')==='true';
+      try{await this.ensureModel(galaxy,node,row,true)}catch(error){modelWithheld=error instanceof Error&&/physical galaxy model withheld/.test(error.message)}
+      this.setMeasuring(true);await this.visitCatalog(entry);
+      const rawVisitable=this.selected?.targetId===galaxy.targetId&&!this.resolvedFor(galaxy.id);
+      const rawAnnotated=this.selectionMarker.visible&&this.measureMarkers[0].visible;
+      change(false);
+      const hiddenAnnotated=!this.selectionMarker.visible&&!this.measureMarkers[0].visible&&!this.measureLine.visible;
+      const recordPreserved=this.selected?.targetId===galaxy.targetId&&this.measurement[0]?.targetId===galaxy.targetId&&this.manifest.count===count;
+      const warning=!document.getElementById('local-distance-warning')!.hidden&&document.getElementById('measurement-hint')!.textContent!.includes('Unreliable');
+      const persistedOff=localStorage.getItem('atlas-show-uncertain-local')==='false';
+      const expectedCode=(((Number(node.id)+1)<<16)|row)>>>0;
+      return {node:node.id,nodeCenter:node.center,targetId:galaxy.targetId,hidden,hiddenPick,raw,rawPick,expectedCode,visitRejected,modelWithheld,rawVisitable,rawAnnotated,hiddenAnnotated,recordPreserved,warning,persistedOn,persistedOff,
+        passed:hidden.covered===0&&hiddenPick.covered===0&&raw.covered>0&&raw.amber>0&&rawPick.code===expectedCode&&visitRejected&&modelWithheld&&rawVisitable&&rawAnnotated&&hiddenAnnotated&&recordPreserved&&warning&&persistedOn&&persistedOff};
+    }finally{
+      geometry.setDrawRange(range.start,range.count);target.dispose();this.renderer.setRenderTarget(null);this.renderer.setClearColor(0x06090d,1);
+      this.setMeasuring(false);this.clearSelection();change(saved);if(stored===null)localStorage.removeItem('atlas-show-uncertain-local');else localStorage.setItem('atlas-show-uncertain-local',stored);this.visitMilkyWay();
+    }
   }
   async probeModelCatalog(){
     const catalog=this.modelCatalog;if(!catalog)return {available:false};

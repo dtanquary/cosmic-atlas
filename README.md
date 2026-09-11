@@ -74,11 +74,11 @@ uv run python scripts/prepare_milky_way.py
 
 ## How it works
 
-Python, NumPy, Astropy and SciPy prepare immutable binary datasets ahead of time. The browser streams a spatial hierarchy, initially drawing a representative set of real catalog positions and revealing more as you approach. **Full detail** loads all accepted observations in view once loading completes.
+Python, NumPy, Astropy and SciPy prepare immutable binary datasets ahead of time. The browser streams a spatial hierarchy, initially drawing a representative set of real catalog positions and revealing more as you approach. **Full detail** loads all accepted observations in view once loading completes. The disclosed local-distance display safeguard applies in both detail modes.
 
 The main renderer batches point geometry, uses camera-relative coordinates to retain precision at galaxy scales, and performs selection on the GPU. A Web Worker decompresses and validates chunks. The browser never creates a scene object or DOM element for every galaxy and never integrates cosmological distances during navigation.
 
-Nearby catalog objects crossfade into bounded analytic light volumes and, where appropriate, seeded spiral arms or irregular clumps. There are at most **12 resident catalog models**, plus the fixed Milky Way reference model. Automatic display fades incidental models back to points before they fill the view. **Visit** or **Focus** keeps the chosen galaxy visible for deliberate close-ups. Settings also offers **Focused galaxy only** and **Points only**.
+Nearby catalog objects outside the local-distance safeguard crossfade into bounded analytic light volumes and, where appropriate, seeded spiral arms or irregular clumps. There are at most **12 resident catalog models**, plus the fixed Milky Way reference model. Automatic display fades incidental models back to points before they fill the view. **Visit** or **Focus** keeps the chosen galaxy visible for deliberate close-ups. Settings also offers **Focused galaxy only** and **Points only**.
 
 The visual direction is a dark, uncluttered atlas with recognizable galaxy shapes, restrained glow and varied orientations. Dense fly-through views with many small galaxy silhouettes are a future intermediate level of detail; currently distant observations remain points.
 
@@ -91,6 +91,7 @@ The visual direction is a dark, uncluttered atlas with recognizable galaxy shape
 | [`src/explorer.ts`](src/explorer.ts) | Camera/navigation, point shaders, streaming decisions, GPU picking, model pool and diagnostic probes |
 | [`src/galaxy-detail.ts`](src/galaxy-detail.ts) | Shared volume renderer, measured-shape projection, model fading and seeded light geometry |
 | [`src/model-catalog.ts`](src/model-catalog.ts) | Profile sidecar loading, decoding and morphology interpretation |
+| [`src/local-distances.ts`](src/local-distances.ts) | Conservative display guard for uncertain local redshift positions |
 | [`src/milky-way.ts`](src/milky-way.ts) | Home-galaxy disk, bar, arms, bulge and arrival direction |
 | [`src/galaxy-search.ts`](src/galaxy-search.ts) | Name normalization, suggestions and cancellable visits |
 | [`src/loader.ts`](src/loader.ts), [`src/data.worker.ts`](src/data.worker.ts) | Chunk requests, decompression, integrity checks and data lifetimes |
@@ -119,10 +120,12 @@ Read [`AGENTS.md`](AGENTS.md) before contributing. Make small, coherent commits,
 | Manual flight | **WASD**, **Q/E**, **Shift** to accelerate; scroll changes speed |
 | Release the pointer | **Escape**; the speed controls remain available |
 | Slow camera pass with the mouse free | **Auto fly**; **Escape** pauses it |
-| Rendering mode, point enlargement and distant opacity | **Settings**; display choices, enlargement toggle and opacity floor persist locally |
+| Rendering mode, local uncertainty, point enlargement and distant opacity | **Settings**; these choices persist locally |
 | Performance readout | **F8** |
 
 **Enlarge nearby points** is off by default. Enable it in Settings to restore the optional marker-size boost; distance fading works independently. The toggle affects point markers, while galaxy models keep their physical dimensions.
+
+**Show uncertain local positions** is off by default. Redshift-only positions within 1 Mpc of the observer can land inside the Milky Way because very small redshifts do not establish reliable nearby distances. Enable the setting to inspect these original records as amber points, with no physical models. The full catalog count is preserved. This is a display safeguard, not corrected distance data or a reliability boundary. [Audit and scientific context](docs/local-distance-audit.md).
 
 Flight speed ranges from 1 parsec/sec to 10,000 megaparsecs/sec. Start low for galaxy-scale passes. The observer marker identifies the Solar System, about 26,500 light-years from the adopted Galactic center, rather than the center itself.
 
@@ -162,7 +165,7 @@ Run these against `npm run dev`, using a unique `run` name:
 | URL query | Checks |
 | --- | --- |
 | `?selftest&run=my-points` | Point visibility/picking, measurement persistence, data integrity rejection and graphics recovery |
-| `?hometest&run=my-milky-way` | Core-centered toolbar/search/wheel navigation, separate Sun focus, labels, body picking, inside/near-Sun rendering, display modes, marker clipping and graphics recovery |
+| `?hometest&run=my-milky-way` | Core-centered toolbar/search/wheel navigation, separate Sun focus, labels, body picking, inside/near-Sun rendering, display modes, marker clipping and graphics recovery; full data also checks the embedded-position safeguard and raw-position setting |
 | `?uxtest&run=my-navigation` | Foreground obstruction, focus intent, reachable actions, delayed-search cancellation and flight controls; requires full data |
 | `?modeltest&run=my-models` | All five catalog families, projected shape, body selection, automatic loading and the model pool limit; requires full data |
 | `?benchmark=adaptive&run=my-overview` | 1920×1080 overview orbit: 5-second warmup, 20-second measurement |
@@ -176,7 +179,7 @@ Measured results and device-specific limitations are in [`docs/validation.md`](d
 
 This is an observer-centered reconstruction of catalog measurements, not a complete census or a simultaneous snapshot of the universe. Distances are **linear comoving distances inferred with Planck18**; redshift includes local velocity effects. Survey gaps are not proof of empty space. Point size, opacity and color are navigation cues, not measured luminosity.
 
-Of the catalog models, **12,097,577 (85.6%)** have usable measured sizes and projected ellipses. The remainder disclose an assumed 5 kpc half-light radius. **3,128** have matched visual classifications; other families are labeled approximations. Inferred depth, near side, spiral structure, clumps and colors remain illustrative. The Milky Way uses separately documented literature-based geometry and is excluded from DESI counts and pair measurements.
+Of the catalog profile records, **12,097,577 (85.6%)** have usable measured sizes and projected ellipses. Models for the remainder disclose an assumed 5 kpc half-light radius. Records inside the local-distance safeguard are excluded from model rendering regardless of their profile. **3,128** have matched visual classifications; other families are labeled approximations. Inferred depth, near side, spiral structure, clumps and colors remain illustrative. The Milky Way uses separately documented literature-based geometry and is excluded from DESI counts and pair measurements.
 
 See [galaxy model provenance](docs/galaxy-detail.md), [Milky Way assumptions and sources](docs/milky-way.md), and [data credits and processing notes](public/acknowledgments.txt). DESI and OpenNGC-derived data have their own licenses; preserve their attribution. An application-source license has not yet been selected.
 

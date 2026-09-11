@@ -64,10 +64,18 @@ Native Chrome review confirmed the Andromeda explanation and recovery button, th
 
 ## Unreliable local positions inside the Milky Way
 
-Status: reproducing.
+Status: verified display mitigation; independent local distances remain unavailable.
 
 The [float64 catalog audit](local-distance-audit.md) already confirmed that near-zero-redshift distance inference places records within the home model. Additional orbit screenshots rule out a purely projected-background explanation. Physical model dimensions and coordinates remain consistent with their checked-in reference; display enlargement is not the cause of these embedded points.
 
 The new `?hometest&run=local-positions-before` GPU probe loads the checksum-verified metadata of all intersecting leaves, reconstructs the 1,107 actual records within the Milky Way bounding sphere, and renders their positions from four orbit angles using the production point/picking shaders. The baseline draws 8,723–10,934 colored pixels and nonzero pick coverage in every view, even when requesting protection. A control point outside the proposed local guard remains visible. This failing regression isolates actual local positions rather than distant projection or illustrative arm particles.
 
-Planned display safeguard: hide redshift-only positions within 1 Mpc of the observer by default, allow them to be shown as explicitly uncertain amber points, and suppress physical galaxy models for those records. Keep the original records, counts and coordinates intact. The guard radius is a conservative UI policy, not a physical boundary of distance reliability; independent local distances remain a separate data-integration task.
+Implemented display safeguard: hide redshift-only positions within 1 Mpc of the observer by default, allow them to be shown as explicitly uncertain amber points, and suppress physical galaxy models for those records. Keep the original records, counts and coordinates intact. The guard radius is a conservative UI policy, not a physical boundary of distance reliability; independent local distances remain a separate data-integration task.
+
+`?uxtest&hometest&modeltest&selftest&run=local-distance-guard` now passes the same four-angle regression: **zero visible pixels and zero ID hits** for the embedded positions when protected, including no fading and a 100% opacity floor. Raw display produces 8,729–10,950 amber pixels, with nonzero pick coverage. The outer control remains visible and pickable. The actual loaded chunk callback (origin approximately `[75.2744, -17.4456, -14.1801]` Mpc) correctly distinguishes world position from chunk-relative coordinates and returns the exact expected GPU ID in raw mode.
+
+The real Settings path persists both choices, rejects hidden visits, allows raw record inspection without a model, updates warnings, and suppresses selection/measurement annotations while retaining original IDs, values and the catalog total. All preceding UI, search, home, model, point-sizing, measurement, integrity and recovery checks pass. All 27 TypeScript tests and the final production build pass.
+
+Native Chrome comparison confirmed the dense local cloud returns as amber points when enabled and clears when disabled, with unchanged Milky Way scale/framing. Reload retains the raw preference. The final browser was returned to the Galactic core with uncertain locals hidden, Automatic models, enlargement off and the existing 2% distant-opacity floor.
+
+Prevention: the renderer now treats local redshift-only positions as an explicitly uncertain data class. The guard is shared by display, ID picking and model eligibility, while original records remain available for later cross-matching. This fixes the misleading presentation; it does not supply corrected distances or establish the records' actual identities.
