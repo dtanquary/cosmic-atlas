@@ -12,6 +12,7 @@ Dave requested on 2026-09-11: **commit early and often, and commit the work you 
 
 ## Product and delivery
 
+- Product name: **Cosmic Atlas**. Dave chose **`cosmic-atlas`** as the intended GitHub repository name. The local checkout folder can have a different name; use the actual remote URL once configured.
 - Build a simple, clean 3D galaxy explorer with high scientific fidelity and smooth navigation.
 - The intended delivery is a **public URL and all application source shared on GitHub**. Keep the code reproducible, document data sources and licenses, and design catalog delivery independently of the source repository.
 - Measured positions, sizes and projected shapes must remain distinguishable from assumed depth, missing-shape fallbacks, and illustrative structure/colors.
