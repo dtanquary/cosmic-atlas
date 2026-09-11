@@ -1,5 +1,31 @@
 import type {Explorer} from './explorer';
 
+/** A recognized name without a destination must not masquerade as a visit. */
+export async function probeSearchAvailability(atlas:Explorer){
+ const element=<T extends HTMLElement=HTMLElement>(id:string)=>document.getElementById(id) as T;
+ const dialog=element<HTMLDialogElement>('visit-dialog'),input=element<HTMLInputElement>('galaxy-query'),list=element('galaxy-results'),status=element('search-status');
+ const frame=()=>new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));
+ const query=(value:string)=>{input.value=value;input.dispatchEvent(new Event('input',{bubbles:true}))};
+ if(dialog.open){dialog.close();await frame()}
+ element('visit-galaxy-button').click();const deadline=performance.now()+10000;
+ while(!list.children.length){if(performance.now()>deadline)throw new Error('Search availability check timed out');await frame()}
+ const position=atlas.camera.position.clone(),selected=atlas.selected;
+ try{
+  query('Andromeda');await frame();
+  const before=status.textContent;
+  const recognized={status:before,visitOptions:list.querySelectorAll('[role=option]').length,activeOption:input.getAttribute('aria-activedescendant'),explanation:element('unavailable-matches')?.textContent??''};
+  (element('unavailable-matches')??list.querySelector<HTMLElement>('[aria-disabled=true]'))?.click();
+  input.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true,cancelable:true}));
+  input.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true,cancelable:true}));await frame();
+  const unavailableStable=status.textContent===before&&dialog.open&&atlas.camera.position.distanceTo(position)<1e-12&&atlas.selected===selected&&!input.hasAttribute('aria-activedescendant');
+  const browse=element('browse-available');let browseWorks=false;
+  if(browse&&!browse.hidden){browse.click();await frame();browseWorks=input.value===''&&list.children.length>2&&list.querySelectorAll('[aria-disabled=true]').length===0&&document.activeElement===input}
+  query('NGC 398');await frame();const mixedHasOnlyVisitsInList=list.children.length>0&&list.querySelectorAll('[aria-disabled=true]').length===0;
+  query('zz-no-such-galaxy-998877');await frame();const noMatch={status:status.textContent,visitOptions:list.children.length,unavailableHidden:element('unavailable-matches')?.hidden??true,activeOption:input.getAttribute('aria-activedescendant')};
+  return {recognized,unavailableStable,browseWorks,mixedHasOnlyVisitsInList,noMatch,passed:recognized.visitOptions===0&&recognized.activeOption===null&&!!recognized.explanation&&/1 name match/.test(recognized.status??'')&&unavailableStable&&browseWorks&&mixedHasOnlyVisitsInList&&noMatch.visitOptions===0&&noMatch.unavailableHidden&&noMatch.activeOption===null&&/No name matches/.test(noMatch.status??'')};
+ }finally{dialog.close();await frame()}
+}
+
 /** Exercise the actual home buttons, search and wheel handler at galaxy scales. */
 export async function probeHomeNavigation(atlas:Explorer){
  const element=<T extends HTMLElement=HTMLElement>(id:string)=>document.getElementById(id) as T;

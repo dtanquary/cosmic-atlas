@@ -8,7 +8,7 @@ export async function runDiagnostics(atlas:Explorer,parent:HTMLElement){
  const sleep=(ms:number)=>new Promise(resolve=>setTimeout(resolve,ms));
  while(!atlas.stats.drawn){await sleep(100)}
  report.firstCoarseMs=performance.now();report.rendering=atlas.renderingInfo;report.initial=atlas.stats;show();
- if(query.has('uxtest')){report.observerPass=await atlas.probeObserverPass();const {probeUI}=await import('./ui-diagnostics');report.ui=await probeUI(atlas);show()}
+ if(query.has('uxtest')){report.observerPass=await atlas.probeObserverPass();const {probeUI,probeSearchAvailability}=await import('./ui-diagnostics');report.ui=await probeUI(atlas);report.searchAvailability=await probeSearchAvailability(atlas);show()}
  if(query.has('hometest')){
   const {probeHomeNavigation}=await import('./ui-diagnostics');report.homeNavigation=await probeHomeNavigation(atlas);show();
   report.home=await atlas.probeMilkyWay();show();atlas.controls.autoRotate=true;atlas.controls.autoRotateSpeed=2;atlas.invalidate();await sleep(7000);

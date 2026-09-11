@@ -49,3 +49,11 @@ The toolbar is now labeled Milky Way, and both it and name search call the core-
 The user also requested control over nearby enlargement. Settings now separates **Enlarge nearby points** from **Distance fading**. Enlargement is off by default and persists locally. Actual GPU readback measures 52 covered pixels with it off versus 124 with it on at the diagnostic point size, with identical near opacity; the ID pass follows the size choice. The size boost also works with fading disabled. Galaxy volumes are never resized by this setting.
 
 `?uxtest&hometest&modeltest&selftest&run=home-core-point-size` passes the new core/Sun controls, search and wheel checks, the setting-to-shader/persistence checks, all previous navigation/model/picking cases and graphics recovery. All 27 TypeScript tests and the production build pass. The cause was reuse of the Sun-focused navigation path for a galaxy destination; the regression now checks the caller and zoom behavior instead of only validating the reference's physical coordinates.
+
+## Recognized names without visit destinations
+
+Status: reproducing.
+
+`?uxtest&run=search-availability-before` reproduces Andromeda as “1 suggestion,” with one disabled but active listbox option. Clicking or pressing Enter changes the count message into a missing-observation message. Mixed queries also put unavailable names into the interactive suggestion list. The fresh no-match query clears the old row correctly, so stale results are not required to reproduce this confusion.
+
+Ranked hypotheses: (1) presentation and keyboard selection conflate a recognized name with a verified visit destination; (2) alias resolution is wrong; (3) stale result state. The checked-in index and alias tests correctly resolve Andromeda to NGC 224, with no verified DESI visit reference. The new real-DOM regression fails on the misleading selectable result and status change. The fix must disclose recognized unavailable names clearly, keep them out of visit selection, and offer a route back to available destinations without inventing coordinates.
