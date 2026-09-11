@@ -10,7 +10,7 @@ export interface GalaxyDetailData {
   version:1; catalogId:string; catalogSourceSha256:string; name:string; galaxy:Galaxy;
   shape:{radiusArcsec:number; e1:number; e2:number; sersic:number; profileType:string};
   gaussians:{sigmaRe:number; peak:number}[]; fitMaxRelativeError:number;
-  spiral?:{arms:number; pitchDegrees:number; phaseRadians:number; seed:number; bar?:boolean};
+  spiral?:{arms:number; pitchDegrees:number; phaseRadians:number; seed:number; bar?:boolean; barRadiusRe?:number};
   model?:{family:GalaxyFamily;typeSource:'catalog'|'proxy';typeLabel:string;shapeMeasured:boolean;sourceName?:string;profileIndex:number};
   knotCount?:number;
 }
@@ -23,7 +23,8 @@ export function spiralSamples(parameters:NonNullable<GalaxyDetailData['spiral']>
   const positions=new Float32Array(count*3),colors=new Float32Array(count*3),sizes=new Float32Array(count);
   const winding=1/Math.tan(THREE.MathUtils.degToRad(parameters.pitchDegrees));
   for(let i=0;i<count;i++){
-    const start=parameters.bar?.85:.32;
+    const barRadius=parameters.barRadiusRe??.95;
+    const start=parameters.bar?barRadius*.9:.32;
     const r=start-Math.log(random()*random())/1.55;
     // Keep the faint outer skirt bounded; no structure outside the measured scale.
     if(r>4.5){i--;continue}
@@ -32,7 +33,7 @@ export function spiralSamples(parameters:NonNullable<GalaxyDetailData['spiral']>
     const angle=random()<.2?random()*2*Math.PI:phase+normal()*(.2+.045*r)+.08*Math.sin(r*10+arm*3);
     positions.set([r*Math.cos(angle),r*Math.sin(angle),normal()*.035],i*3);
     if(parameters.bar&&random()<.27){
-      const x=(random()*2-1)*.95,y=normal()*.09,c=Math.cos(parameters.phaseRadians),s=Math.sin(parameters.phaseRadians);
+      const x=(random()*2-1)*barRadius,y=normal()*.09,c=Math.cos(parameters.phaseRadians),s=Math.sin(parameters.phaseRadians);
       positions.set([x*c-y*s,x*s+y*c,normal()*.045],i*3);
     }
     const young=random(),warm=1-THREE.MathUtils.smoothstep(r,.3,1.1);
@@ -138,11 +139,11 @@ void main(){
   fragColor=vec4(color*light,uMix);
 }`;
 
-/** One volume, one draw call, no per-frame catalog scan or individual star objects. */
-export class ResolvedGalaxy {
-  readonly frame;
-  readonly radius:number;
-  readonly center:THREE.Vector3;
+export interface VolumeFrame {major:THREE.Vector3;minor:THREE.Vector3;normal:THREE.Vector3;thickness:number;q:number}
+export interface GalaxyLight {family:GalaxyFamily;gaussians:GalaxyDetailData['gaussians'];spiral?:GalaxyDetailData['spiral'];seed:number;knotCount?:number;exposure?:number}
+
+/** Shared renderer; reference models need no invented catalog identity. */
+export class GalaxyVolume<F extends VolumeFrame=VolumeFrame> {
   readonly scene=new THREE.Scene();
   readonly blend={value:0};
   private readonly material:THREE.RawShaderMaterial;
@@ -156,24 +157,19 @@ export class ResolvedGalaxy {
   private readonly rayDirection=new THREE.Vector3();
   private arms:THREE.Points<THREE.BufferGeometry,THREE.RawShaderMaterial>|null=null;
 
-  constructor(readonly data:GalaxyDetailData){
-    const {galaxy,shape}=data;
-    const family=data.model?.family??(data.spiral?'spiral':'lenticular'),measuredQ=(1-Math.hypot(shape.e1,shape.e2))/(1+Math.hypot(shape.e1,shape.e2));
-    const intrinsic=Math.min(family==='elliptical'?.65:family==='irregular'?.3:.12,measuredQ*.95);
-    this.frame=galaxyFrame(galaxy.ra,galaxy.dec,shape.e1,shape.e2,intrinsic);
-    this.radius=galaxyRadius(galaxy.distance,shape.radiusArcsec);
-    this.center=new THREE.Vector3().fromArray(galaxy.position);
+  constructor(data:GalaxyLight,readonly frame:F,readonly radius:number,readonly center:THREE.Vector3){
+    const family=data.family;
     const {major:x,minor:y,normal:z,thickness,q}=this.frame;
     this.toModel=new THREE.Matrix3().set(x.x,x.y,x.z,y.x,y.y,y.z,z.x/thickness,z.y/thickness,z.z/thickness);
     const gaussians=Array.from({length:20},(_,i)=>new THREE.Vector2(data.gaussians[i]?.sigmaRe??1,data.gaussians[i]?.peak??0));
     this.material=new THREE.RawShaderMaterial({glslVersion:THREE.GLSL3,vertexShader:vertex,fragmentShader:fragment,
       uniforms:{uBounds:{value:new THREE.Vector4(-1,-1,1,1)},uToModel:{value:this.toModel},
         uOrigin:{value:new THREE.Vector3()},uForward:{value:new THREE.Vector3()},uRight:{value:new THREE.Vector3()},uUp:{value:new THREE.Vector3()},
-        uProjection:{value:new THREE.Vector2()},uGaussians:{value:gaussians},uMix:this.blend,uNormalization:{value:this.frame.q/this.frame.thickness},uExposure:{value:family==='irregular'?.2:.55},uPalette:{value:family==='elliptical'?1:family==='irregular'?2:0}},
+        uProjection:{value:new THREE.Vector2()},uGaussians:{value:gaussians},uMix:this.blend,uNormalization:{value:this.frame.q/this.frame.thickness},uExposure:{value:data.exposure??(family==='irregular'?.2:.55)},uPalette:{value:family==='elliptical'?1:family==='irregular'?2:0}},
       transparent:true,blending:THREE.AdditiveBlending,depthTest:false,depthWrite:false,toneMapped:false});
     this.mesh=new THREE.Mesh(new THREE.PlaneGeometry(2,2),this.material);this.mesh.frustumCulled=false;this.mesh.visible=false;this.scene.add(this.mesh);
     if(data.spiral||family==='irregular'){
-      const samples=family==='irregular'?irregularSamples(galaxy.id,data.knotCount):spiralSamples(data.spiral!,data.knotCount),position=new THREE.Vector3();
+      const samples=family==='irregular'?irregularSamples(data.seed,data.knotCount):spiralSamples(data.spiral!,data.knotCount),position=new THREE.Vector3();
       for(let i=0;i<samples.positions.length;i+=3){
         position.copy(x).multiplyScalar(samples.positions[i]).addScaledVector(y,samples.positions[i+1]).addScaledVector(z,samples.positions[i+2]).multiplyScalar(this.radius);
         samples.positions.set(position.toArray(),i);
@@ -235,4 +231,16 @@ export class ResolvedGalaxy {
   get visible(){return this.mesh.visible}
   get memoryBytes(){return this.arms?this.arms.geometry.getAttribute('position').array.byteLength*2+this.arms.geometry.getAttribute('color').array.byteLength*2+this.arms.geometry.getAttribute('size').array.byteLength*2:0}
   dispose(){this.mesh.geometry.dispose();this.material.dispose();this.arms?.geometry.dispose();this.arms?.material.dispose()}
+}
+
+/** A measured catalog observation using the shared light renderer. */
+export class ResolvedGalaxy extends GalaxyVolume<ReturnType<typeof galaxyFrame>> {
+  constructor(readonly data:GalaxyDetailData){
+    const {galaxy,shape}=data;
+    const family=data.model?.family??(data.spiral?'spiral':'lenticular');
+    const q=(1-Math.hypot(shape.e1,shape.e2))/(1+Math.hypot(shape.e1,shape.e2));
+    const intrinsic=Math.min(family==='elliptical'?.65:family==='irregular'?.3:.12,q*.95);
+    super({family,gaussians:data.gaussians,spiral:data.spiral,seed:galaxy.id,knotCount:data.knotCount},
+      galaxyFrame(galaxy.ra,galaxy.dec,shape.e1,shape.e2,intrinsic),galaxyRadius(galaxy.distance,shape.radiusArcsec),new THREE.Vector3().fromArray(galaxy.position));
+  }
 }

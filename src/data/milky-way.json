@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "name": "Milky Way",
+  "frame": "Astropy Galactocentric v4.0 \u2192 ICRS",
+  "centerMpc": [
+    -0.00044568627205772795,
+    -0.007094056794030106,
+    -0.003929708125290551
+  ],
+  "axes": [
+    [
+      -0.057095820333711286,
+      -0.8739415856218067,
+      -0.48266569405879844
+    ],
+    [
+      0.49411076270400484,
+      -0.4448286178025456,
+      0.746981964282903
+    ],
+    [
+      -0.8675221158451738,
+      -0.1958407661972316,
+      0.457221798271686
+    ]
+  ],
+  "centerRaDeg": 266.4051,
+  "centerDecDeg": -28.936175,
+  "observerDistanceMpc": 0.008122,
+  "solarHeightMpc": 2.08e-05,
+  "diskScaleMpc": 0.0026,
+  "radiusMpc": 0.004363702174,
+  "barHalfLengthMpc": 0.005,
+  "barAngleDeg": 28,
+  "gaussians": [
+    {
+      "sigmaRe": 0.015,
+      "peak": 0.026871487138780552
+    },
+    {
+      "sigmaRe": 0.021354689384786074,
+      "peak": 0.0
+    },
+    {
+      "sigmaRe": 0.030401517248046333,
+      "peak": 0.0
+    },
+    {
+      "sigmaRe": 0.043280997177216396,
+      "peak": 0.04923507005406972
+    },
+    {
+      "sigmaRe": 0.061616816732217285,
+      "peak": 0.0006427784185450472
+    },
+    {
+      "sigmaRe": 0.08772053214638595,
+      "peak": 0.061471675339776814
+    },
+    {
+      "sigmaRe": 0.12488298111028094,
+      "peak": 0.04607632397463781
+    },
+    {
+      "sigmaRe": 0.1777891514037437,
+      "peak": 0.08554796596047086
+    },
+    {
+      "sigmaRe": 0.2531088069474434,
+      "peak": 0.10820666224052487
+    },
+    {
+      "sigmaRe": 0.3603373301944293,
+      "peak": 0.1414093239366206
+    },
+    {
+      "sigmaRe": 0.5129927840030089,
+      "peak": 0.16840147996020963
+    },
+    {
+      "sigmaRe": 0.7303201039347275,
+      "peak": 0.16231792166787962
+    },
+    {
+      "sigmaRe": 1.0397172647327195,
+      "peak": 0.10763207384694637
+    },
+    {
+      "sigmaRe": 1.4801892824244407,
+      "peak": 0.031867884411379784
+    },
+    {
+      "sigmaRe": 2.1072654904575545,
+      "peak": 0.0019317027298716637
+    },
+    {
+      "sigmaRe": 3.0,
+      "peak": 9.319463458521528e-06
+    }
+  ],
+  "sources": {
+    "frame": "https://docs.astropy.org/en/stable/coordinates/galactocentric.html",
+    "disk": "https://arxiv.org/abs/astro-ph/0510520",
+    "bar": "https://arxiv.org/abs/1504.01401"
+  },
+  "frameReferences": {
+    "galcen_coord": "https://ui.adsabs.harvard.edu/abs/2004ApJ...616..872R",
+    "galcen_distance": "https://ui.adsabs.harvard.edu/abs/2018A%26A...615L..15G",
+    "galcen_v_sun": [
+      "https://ui.adsabs.harvard.edu/abs/2018RNAAS...2..210D",
+      "https://ui.adsabs.harvard.edu/abs/2018A%26A...615L..15G",
+      "https://ui.adsabs.harvard.edu/abs/2004ApJ...616..872R"
+    ],
+    "z_sun": "https://ui.adsabs.harvard.edu/abs/2019MNRAS.482.1417B",
+    "roll": null
+  },
+  "assumptions": "Disk scale and bar dimensions are adopted literature estimates. The smooth light mixture, oblate depth, bulge, arms, knots, outer extent, and colors are illustrative; not a star catalog or observed image."
+}
