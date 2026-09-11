@@ -1,0 +1,57 @@
+# Resolved galaxy prototypes
+
+The first model replaces the existing NGC 4026 catalog point, DESI target **39633263488141603** (dense ID 13414618). It is matched through `REF_CAT=L3`, `REF_ID=801183` to the [Siena Galaxy Atlas entry](https://sga.legacysurvey.org/?sgaid__gte=801183&sgaid__lte=801183). NGC 3982 adds a spiral test, documented below. Other galaxies remain points. NGC 4026 is a lenticular (S0) galaxy; its smooth model is retained instead of assigning it spiral arms ([classification reference](https://www.ipac.caltech.edu/publication/1988A%26A...199...41V)).
+
+## NGC 4026 measurements and provenance
+
+`scripts/prepare_galaxy_detail.py` reads zero-based row 26509104 from the verified DESI DR1 FITS source. It verifies primary-record eligibility, identity, SGA reference, and correspondence with the checksum-verified existing leaf metadata. The sidecar retains the original source URL, source checksum, row checksum, and measured fields. There is no new catalog match based only on coordinate proximity.
+
+| Property | Value |
+| --- | --- |
+| RA / Dec | 179.85448679932676° / +50.96165741661699° |
+| Redshift | 0.003292937922230409 |
+| Comoving distance | 14.579349261873272 Mpc, existing Planck18 result |
+| `SHAPE_R` | 28.66065216064453 arcsec, major-axis half-light radius |
+| `SHAPE_E1`, `SHAPE_E2` | 0.5204411149024963, −0.031164828687906265 |
+| `SERSIC` | 1.8044934272766113 |
+| Photometric profile type | `SER`; this is not a Hubble morphology classification |
+| Derived apparent minor/major ratio | 0.3146016797918665 |
+| Derived sky position angle | 178.2866° east of north, modulo 180° |
+
+The [Legacy DR9 catalog documentation](https://www.legacysurvey.org/dr9/catalogs/) defines the imaging fields. Orientation follows the actual [`Tractor EllipseE.getRaDecBasis`](https://github.com/dstndstn/tractor/blob/main/tractor/ellipses.py) convention, avoiding ambiguous rendered position-angle formulas. In the local east/north tangent plane, let `theta = atan2(e2,e1)/2`, `q = (1-hypot(e1,e2))/(1+hypot(e1,e2))`. The major axis is `(sin(theta), cos(theta))`; the projected minor axis is `(cos(theta), -sin(theta))`. These are transformed into the atlas's equatorial Cartesian axes, not screen coordinates.
+
+The world half-light radius is `D_C * SHAPE_R * pi/(180*3600)`, about **2.026 comoving kpc**. Physical size at emission is smaller by `1+z`; the map consistently uses comoving dimensions. The redshift distance is uncertain because local velocities are significant at this redshift. No independent distance measurement or velocity correction is introduced.
+
+## Explicit model assumptions
+
+The image alone does not determine a unique 3D galaxy. We choose a transparent, axisymmetric oblate model with intrinsic short/long axis ratio `q0=0.12`. Its inclination satisfies `cos(i)^2=(q^2-q0^2)/(1-q0^2)`. Projecting its covariance from the observer reproduces the measured ellipse. Either reflected tilt would do this; the displayed near side is an arbitrary fixed branch, not a measurement. A different assumed thickness would give a different inclination.
+
+A positive sum of 19 Gaussians approximates the measured Sersic surface-brightness law. Maximum relative fitting error is 0.054% over 0.01–8 effective radii. The very center is regularized by finite Gaussian widths; display tails taper from 6 to 8 effective radii. These numerical choices and the illustrative exposure/color mapping mean the display is not photometrically calibrated. There are no measured individual stars, dust lanes, spiral arms, gas structures, rotation, or velocities in this model.
+
+Each Gaussian is deprojected with the same oblate shape. The GPU evaluates its analytic line integral over the part of the viewing ray in front of the camera. This produces a true view-dependent volume with meaningful changes when orbiting or flying inside. It is not a photograph turned to face the camera. The inspector links to the original [Legacy Surveys sky image](https://www.legacysurvey.org/viewer?ra=179.8544868&dec=50.9616574&layer=ls-dr9&zoom=14) for comparison; that image is not bundled or used as a texture.
+
+## NGC 3982 spiral test
+
+The second sidecar matches DESI target **39633325333155389**, dense ID **13426480**, original FITS row **26540536**, through `REF_CAT=L3`, `REF_ID=678110`. It uses the same extraction, eligibility, checksum, and existing-metadata checks as NGC 4026.
+
+| Property | Value |
+| --- | --- |
+| RA / Dec | 179.11738820825124° / +55.125143810334784° |
+| Redshift | 0.00374319231740685 |
+| Comoving distance | 16.571087037211587 Mpc |
+| `SHAPE_R` | 18.033153533935547 arcsec |
+| `SHAPE_E1`, `SHAPE_E2` | 0.05487750843167305, 0.03386843204498291 |
+| `SERSIC` | 0.9111405611038208 |
+| Derived apparent minor/major ratio | 0.8788387644479687 |
+| Derived sky position angle | 15.84° east of north |
+| Comoving half-light radius | About 1.449 kpc / 4.73 thousand light-years |
+
+A 17-component positive Gaussian fit reproduces the smooth measured Sersic profile to **0.246%** maximum relative error over 0.01–8 effective radii. It shares the oblate deprojection and its ambiguities described above.
+
+[Hubble imagery of NGC 3982](https://esahubble.org/images/opo1036a/) establishes that this is a spiral galaxy with star-forming structure. The prototype adds **illustrative**, unmeasured arms: two logarithmic arms, 22° pitch, fixed phase/handedness, finite thickness, and 24,000 deterministic light knots. Their plane uses the measured global ellipse and assumed deprojection; the exact pitch, winding, near side, individual knots, colors, and arm phase are not recovered from telescope pixels. The extra light means the composite image is not an exact Sersic profile or a calibrated surface-brightness measurement. GPU profile validation isolates the measured smooth component.
+
+Knots are one batched geometry in true 3D, with small Gaussian sprites and an inter-arm component. The arm field extends to 4.5 effective radii and fades with the volume's angular-size transition. Each knot represents illustrative light, not an individual observed star. The source image is not redistributed or used as a texture.
+
+## Scope for the next iteration
+
+Expansion should carry measured profiles and quality flags through a compact detail catalog, stream only nearby models, and retain a fixed GPU budget. Matching actual arm shapes or dust lanes requires additional image constraints. Do not apply either galaxy's geometry to every catalog point.

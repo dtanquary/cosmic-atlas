@@ -13,11 +13,11 @@ export function cartesian(ra: number, dec: number, distance: number): Vec3 {
   return [distance * Math.cos(d) * Math.cos(a), distance * Math.cos(d) * Math.sin(a), distance * Math.sin(d)];
 }
 export function separation(a: Vec3, b: Vec3): number { return Math.hypot(a[0]-b[0], a[1]-b[1], a[2]-b[2]); }
-export function validateBinary(buffer: ArrayBuffer, kind: 'points' | 'metadata', expectedCount?: number): number {
+export function validateBinary(buffer: ArrayBuffer, kind: 'points' | 'metadata' | 'profiles', expectedCount?: number): number {
   if(buffer.byteLength < 16) throw new Error('Truncated data header');
   const view = new DataView(buffer), count = view.getUint32(8, true);
-  if(view.getUint32(0,true) !== (kind === 'points' ? 0x43415431 : 0x43414d31) || view.getUint32(4,true) !== 1) throw new Error('Unsupported data format');
-  if(count > 65536 || (expectedCount !== undefined && count !== expectedCount) || buffer.byteLength !== 16+count*(kind==='points'?16:56)) throw new Error('Data length does not match manifest');
+  if(view.getUint32(0,true) !== (kind === 'points' ? 0x43415431 : kind==='profiles'?0x43415331:0x43414d31) || view.getUint32(4,true) !== 1) throw new Error('Unsupported data format');
+  if(count > 65536 || (expectedCount !== undefined && count !== expectedCount) || buffer.byteLength !== 16+count*(kind==='points'?16:kind==='profiles'?20:56)) throw new Error('Data length does not match manifest');
   return count;
 }
 export function decodeGalaxy(buffer: ArrayBuffer, row: number, id: number): Galaxy {

@@ -3,6 +3,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ChunkLoader } from './loader';
 import { chooseFrontier, coveredFrontier } from './spatial';
 import { decodeGalaxy, separation } from './format';
+import {ResolvedGalaxy, type GalaxyDetailData} from './galaxy-detail';
+import {ModelCatalog,MODEL_LIMIT,decodeModel,measuredShape} from './model-catalog';
 import type { Galaxy, Manifest, SpatialNode } from './types';
 
 const vertex=`precision highp float;
@@ -12,22 +14,50 @@ uniform mat4 viewMatrix;
 uniform vec3 uOrigin;
 uniform float uSize;
 uniform uint uNode;
+uniform bool uDepthCues;
+uniform vec2 uFadeRange;
+uniform vec3 uDetailOrigins[${MODEL_LIMIT}];
+uniform float uDetailMix[${MODEL_LIMIT}];
+uniform float uMinOpacity;
+out float vDetail;
+out float vVisibility;
 in vec3 position;
+in float detailSlot;
 flat out uint vCode;
 void main(){
   vec3 relative = position + uOrigin;
+  vDetail = 0.0;
+  if(detailSlot>0.0){int slot=int(detailSlot)-1;relative=uDetailOrigins[slot];vDetail=uDetailMix[slot];}
   gl_Position = projectionMatrix * vec4(mat3(viewMatrix) * relative, 1.0);
   gl_PointSize = uSize;
+  vVisibility = 1.0;
+  if(uDepthCues){
+    float distanceToCamera = length(relative);
+    vVisibility = mix(1.0,uMinOpacity,smoothstep(uFadeRange.x, uFadeRange.y, distanceToCamera));
+    // Screen markers grow by at most 65%, only within 150 Mpc of the camera.
+    gl_PointSize *= 1.0 + .65 * (1.0 - smoothstep(0.0, 150.0, distanceToCamera));
+  }
   vCode = (uNode << 16u) | uint(gl_VertexID);
 }`;
 const pointFragment=`precision highp float;
+in float vVisibility;
+in float vDetail;
+uniform bool uDepthCues;
 out vec4 fragColor;
-void main(){float r=length(gl_PointCoord-vec2(.5));if(r>.5)discard;float alpha=.88*(1.0-smoothstep(.15,.52,r));fragColor=vec4(.73,.82,.9,alpha);}`;
+void main(){
+  float r=length(gl_PointCoord-vec2(.5));
+  if(r>.5||vVisibility<=0.0)discard;
+  float alpha=(uDepthCues?vVisibility:.88)*(1.0-smoothstep(.25,.5,r));
+  alpha *= 1.0 - vDetail;
+  if(alpha<=0.0)discard;
+  fragColor=vec4(.73,.82,.9,alpha);
+}`;
 const pickFragment=`precision highp float;
 precision highp int;
 flat in uint vCode;
+in float vVisibility;
 out vec4 fragColor;
-void main(){if(length(gl_PointCoord-vec2(.5))>.5)discard;fragColor=vec4(float(vCode&255u),float((vCode>>8u)&255u),float((vCode>>16u)&255u),float((vCode>>24u)&255u))/255.0;}`;
+void main(){if(length(gl_PointCoord-vec2(.5))>.5||vVisibility<=0.0)discard;fragColor=vec4(float(vCode&255u),float((vCode>>8u)&255u),float((vCode>>16u)&255u),float((vCode>>24u)&255u))/255.0;}`;
 const markerFragment=`precision highp float;
 uniform vec3 uColor;
 out vec4 fragColor;
@@ -36,11 +66,11 @@ const lineFragment=`precision highp float;out vec4 fragColor;void main(){fragCol
 
 interface Resident {
   node: SpatialNode; buffer: ArrayBuffer; ids: Uint32Array; points: THREE.Points<THREE.BufferGeometry,THREE.RawShaderMaterial>;
-  bytes: number; used: number;
+  bytes: number; used: number; modelRows:number[];
 }
 export interface AtlasStats {
   drawn:number; loaded:number; represented:number; pending:number; failed:number; mode:'adaptive'|'full'; complete:boolean;
-  fps:number; p95:number; calls:number; managedMiB:number; blocked:boolean; focusDistance:number; budget:number;
+  fps:number; p95:number; calls:number; managedMiB:number; blocked:boolean; focusDistance:number; budget:number; models:number;
 }
 export class Explorer {
   readonly renderer:THREE.WebGLRenderer;
@@ -51,14 +81,20 @@ export class Explorer {
   mode:'adaptive'|'full'='adaptive';
   units:'ly'|'Mpc'='ly';
   flight=false;
+  autoFly=false;
   speed=1000;
   selected:Galaxy|null=null;
+  resolvedGalaxies:ResolvedGalaxy[]=[];
+  modelCatalog:ModelCatalog|null=null;
+  get resolved(){return this.resolvedGalaxies.find(model=>model.data.galaxy.id===this.selected?.id)??this.resolvedGalaxies[0]??null}
+  resolvedFor(id:number){return this.resolvedGalaxies.find(model=>model.data.galaxy.id===id)}
   measurement:Galaxy[]=[];
   measuring=false;
   onStats=(stats:AtlasStats)=>{};
   onSelection=(galaxy:Galaxy|null)=>{};
   onMeasure=(galaxies:Galaxy[],enabled:boolean)=>{};
   onFlight=(active:boolean)=>{};
+  onAutoFly=(active:boolean)=>{};
   onMessage=(message:string)=>{};
   onReady=()=>{};
   onError=(message:string)=>{};
@@ -102,8 +138,19 @@ export class Explorer {
   private pixelRatio=1;
   private selectionSerial=0;
   private picking=false;
+  private depthCueUniform={value:true};
+  private fadeRangeUniform={value:new THREE.Vector2(100,1000)};
+  private detailBlendUniform={value:new Float32Array(MODEL_LIMIT)};
+  private detailOriginsUniform={value:Array.from({length:MODEL_LIMIT},()=>new THREE.Vector3())};
+  private modelRequests=new Map<number,Promise<ResolvedGalaxy>>();
+  private pinnedModels=new Set<number>();
+  private modelLocations=new Map<number,{node:string;row:number}>();
+  private wantedModels=new Set<number>();
+  private lastModelScan=0;
+  private modelScanNeeded=true;
+  private minOpacityUniform={value:0};
   private pickTarget=new THREE.WebGLRenderTarget(1,1,{type:THREE.UnsignedByteType,format:THREE.RGBAFormat,minFilter:THREE.NearestFilter,magFilter:THREE.NearestFilter,depthBuffer:true,stencilBuffer:false});
-  private pickMaterial=this.material(pickFragment,9,false);
+  private pickMaterial=this.material(pickFragment,9,false,true);
   private originMarker=this.marker(0x7299ad,7);
   private selectionMarker=this.marker(0xb6f1fa,15);
   private measureMarkers=[this.marker(0x9ee4f1,13),this.marker(0x9ee4f1,13)];
@@ -118,7 +165,7 @@ export class Explorer {
     this.renderer.setClearColor(0x06090d,1);this.renderer.info.autoReset=false;
     this.canvas=this.renderer.domElement;this.canvas.tabIndex=0;this.canvas.setAttribute('aria-label','Galaxy map. Drag to orbit, scroll to zoom, click a point to inspect.');
     viewport.append(this.canvas);this.camera.up.set(0,0,1);
-    this.controls=new OrbitControls(this.camera,this.canvas);this.controls.enableDamping=true;this.controls.dampingFactor=.09;this.controls.minDistance=.02;this.controls.zoomSpeed=.9;
+    this.controls=new OrbitControls(this.camera,this.canvas);this.controls.enableDamping=true;this.controls.dampingFactor=.09;this.controls.minDistance=.00001;this.controls.zoomSpeed=.9;
     this.controls.addEventListener('change',()=>{this.dirty=true;this.invalidate()});
     this.loader.onChange=()=>{this.dirty=true;this.invalidate()};
     this.pickMaterial.blending=THREE.NoBlending;this.pickMaterial.depthWrite=true;
@@ -127,18 +174,19 @@ export class Explorer {
     this.measureLine.frustumCulled=false;
     const signal=this.lifecycle.signal;
     addEventListener('resize',()=>this.resize(),{signal});
-    document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(this.frame);this.frame=0;this.keys.clear();this.lastTime=0}else this.invalidate()},{signal});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){this.setAutoFly(false);cancelAnimationFrame(this.frame);this.frame=0;this.keys.clear();this.lastTime=0}else this.invalidate()},{signal});
     this.canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();this.contextLost=true;this.onError('The graphics connection was interrupted. Waiting for it to recover…')},{signal});
     this.canvas.addEventListener('webglcontextrestored',()=>{this.contextLost=false;this.onReady();this.onMessage('Graphics restored');this.dirty=true;this.invalidate()},{signal});
     document.addEventListener('pointerlockchange',()=>{
       const enabled=document.pointerLockElement===this.canvas;
-      this.flight=enabled;this.controls.enabled=!enabled;
+      this.flight=enabled;if(enabled)this.setAutoFly(false);this.controls.enabled=!enabled&&!this.autoFly;
       if(!enabled){this.keys.clear();this.controls.target.copy(this.camera.position).addScaledVector(this.camera.getWorldDirection(this.scratch),this.focusDistance);this.controls.update()}
       this.onFlight(enabled);this.invalidate();
     },{signal});
-    document.addEventListener('pointerlockerror',()=>this.onMessage('Flight could not capture the pointer. Click Fly to try again.'),{signal});
+    document.addEventListener('pointerlockerror',()=>this.onMessage('Flight could not capture the pointer. Click Start flying to try again.'),{signal});
     document.addEventListener('mousemove',event=>this.look(event),{signal});
     window.addEventListener('keydown',event=>{
+      if(event.code==='Escape'&&this.autoFly)this.setAutoFly(false);
       if((event.target as HTMLElement)?.matches('input,select,textarea')||document.querySelector('dialog[open]'))return;
       if(this.flight&&['KeyW','KeyA','KeyS','KeyD','KeyQ','KeyE','ShiftLeft','ShiftRight'].includes(event.code)){event.preventDefault();this.keys.add(event.code);this.invalidate()}
       if(event.code==='KeyR'&&!event.metaKey&&!event.ctrlKey)this.reset();
@@ -146,16 +194,18 @@ export class Explorer {
     },{signal});
     window.addEventListener('keyup',event=>this.keys.delete(event.code),{signal});
     addEventListener('blur',()=>this.keys.clear(),{signal});
-    this.canvas.addEventListener('wheel',event=>{if(this.flight){event.preventDefault();this.speed=THREE.MathUtils.clamp(this.speed*Math.exp(-event.deltaY*.002),.01,10000);this.invalidate()}},{passive:false,signal});
+    this.canvas.addEventListener('wheel',event=>{if(this.flight){event.preventDefault();this.speed=THREE.MathUtils.clamp(this.speed*Math.exp(-event.deltaY*.002),.000001,10000);this.invalidate()}},{passive:false,signal});
     let down=[0,0];
     this.canvas.addEventListener('pointerdown',event=>{down=[event.clientX,event.clientY]},{signal});
     this.canvas.addEventListener('pointerup',event=>{if(event.button===0&&!this.flight&&Math.hypot(event.clientX-down[0],event.clientY-down[1])<5)void this.pick(event.clientX,event.clientY)},{signal});
     this.resize();
   }
-  private material(fragment:string,size:number,transparent:boolean){
-    return new THREE.RawShaderMaterial({glslVersion:THREE.GLSL3,vertexShader:vertex,fragmentShader:fragment,
-      uniforms:{uOrigin:{value:new THREE.Vector3()},uSize:{value:size},uNode:{value:0},uColor:{value:new THREE.Color(0x9fe5f1)}},
+  private material(fragment:string,size:number,transparent:boolean,depthCues=false){
+    const material=new THREE.RawShaderMaterial({glslVersion:THREE.GLSL3,vertexShader:vertex,fragmentShader:fragment,
+      uniforms:{uOrigin:{value:new THREE.Vector3()},uSize:{value:size},uNode:{value:0},uColor:{value:new THREE.Color(0x9fe5f1)},uDepthCues:depthCues?this.depthCueUniform:{value:false},uFadeRange:this.fadeRangeUniform,
+        uDetailOrigins:this.detailOriginsUniform,uDetailMix:this.detailBlendUniform,uMinOpacity:this.minOpacityUniform},
       transparent,depthTest:true,depthWrite:!transparent,toneMapped:false});
+    (material.defaultAttributeValues as Record<string,number[]>).detailSlot=[0];return material;
   }
   private marker(color:number,size:number){
     const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(3),3));
@@ -182,6 +232,28 @@ export class Explorer {
     this.overviewPosition.copy(this.overviewTarget).add(new THREE.Vector3(.85,-1,.58).normalize().multiplyScalar(this.overviewRadius*2.1));
     this.controls.maxDistance=this.overviewRadius*10;this.camera.far=this.overviewRadius*30;
     this.camera.updateProjectionMatrix();this.reset();this.invalidate();
+    if(manifest.id==='dr1'&&!manifest.subset){
+      try{
+        const results=await Promise.allSettled(['/data/galaxy-detail.json','/data/galaxy-spiral.json'].map(async path=>{
+        const response=await fetch(path,{signal:this.lifecycle.signal});
+        if(!response.ok)throw new Error('Profile unavailable');
+        const data:GalaxyDetailData=await response.json();
+        if(data.version!==1||data.catalogId!==manifest.id||data.catalogSourceSha256!==manifest.source.sha256||
+          !Number.isInteger(data.galaxy.id)||data.galaxy.id<0||data.galaxy.id>=manifest.count||
+          !Number.isFinite(data.shape.radiusArcsec)||data.shape.radiusArcsec<=0||
+          !Number.isFinite(data.shape.e1+data.shape.e2+data.galaxy.distance)||data.galaxy.distance<=0||
+          !data.gaussians.length||data.gaussians.length>20||data.gaussians.some(g=>!Number.isFinite(g.sigmaRe+g.peak)||g.sigmaRe<=0||g.peak<0))throw new Error('Invalid galaxy profile');
+        return new ResolvedGalaxy(data);
+        }));
+        this.resolvedGalaxies=results.flatMap(result=>result.status==='fulfilled'?[result.value]:[]);
+        this.pinnedModels=new Set(this.resolvedGalaxies.map(model=>model.data.galaxy.id));
+        if(results.some(result=>result.status==='rejected'))this.onMessage('Some galaxy previews could not load. You can still browse the point atlas.');
+        this.bindModels();
+        this.invalidate();
+      }catch(error){if(!this.lifecycle.signal.aborted)this.onMessage('The close-up galaxy preview could not load. The point atlas is still available.')}
+      try{this.modelCatalog=await ModelCatalog.open(manifest,this.lifecycle.signal,()=>{this.modelScanNeeded=true;this.invalidate()});this.modelScanNeeded=true;this.invalidate()}
+      catch(error){if(!this.lifecycle.signal.aborted)this.onMessage('Galaxy models could not load. The point atlas is still available.');}
+    }
   }
   private resize(){
     // Keep the canvas crisp without multiplying a Retina screen's fill cost by four.
@@ -200,14 +272,37 @@ export class Explorer {
     for(const item of this.cache.values())item.points.material.uniforms.uSize.value=1.6*this.pixelRatio;
   }
   reset(){
+    this.selectionSerial++;
     this.exitFlight();this.controls.enabled=true;
     this.camera.position.copy(this.overviewPosition);this.controls.target.copy(this.overviewTarget);
     this.camera.up.set(0,0,1);this.controls.update();this.focusDistance=this.camera.position.distanceTo(this.controls.target);
     this.dirty=true;this.invalidate();
   }
   setMode(mode:'adaptive'|'full'){this.mode=mode;this.blocked=false;this.dirty=true;this.invalidate()}
-  enterFlight(){if(!this.ready)return;this.focusDistance=this.camera.position.distanceTo(this.controls.target);void this.canvas.requestPointerLock()?.catch(()=>this.onMessage('Click Fly again to enter flight.'))}
-  exitFlight(){if(document.pointerLockElement===this.canvas)document.exitPointerLock()}
+  setDepthCues(enabled:boolean){this.depthCueUniform.value=enabled;this.dirty=true;this.invalidate()}
+  setMinimumOpacity(value:number){if(!Number.isFinite(value))return;this.minOpacityUniform.value=THREE.MathUtils.clamp(value,0,1);this.dirty=true;this.invalidate()}
+  private updateDepthCues(){
+    // Expand the fade horizon smoothly outside the survey; use a neighborhood
+    // range inside it. This works in both orbit and flight without mode changes.
+    const outside=this.camera.position.distanceTo(this.overviewTarget)-this.overviewRadius;
+    let far=Math.max(1500,this.overviewRadius*.4+Math.max(0,outside)*3);
+    // Resolve a galaxy against its local neighborhood rather than a wall of
+    // distant screen markers. The same reversible distance-cue setting applies.
+    for(const model of this.resolvedGalaxies){const localHorizon=Math.max(1,this.camera.position.distanceTo(model.center)*30);far=Math.min(far,THREE.MathUtils.lerp(far,localHorizon,model.blend.value))}
+    this.fadeRangeUniform.value.set(far*.08,far);
+  }
+  enterFlight(){if(!this.ready)return;this.setAutoFly(false);this.focusDistance=this.camera.position.distanceTo(this.controls.target);void this.canvas.requestPointerLock()?.catch(()=>this.onMessage('Click Start flying again to enter flight.'))}
+  exitFlight(){this.setAutoFly(false);if(document.pointerLockElement===this.canvas)document.exitPointerLock()}
+  setAutoFly(enabled:boolean){
+    if(enabled&&!this.ready||this.autoFly===enabled)return;
+    if(enabled){
+      this.exitFlight();
+      // Finish any residual pan/zoom damping before starting a straight pass.
+      const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();this.controls.enableDamping=damping;
+    }
+    this.autoFly=enabled;this.controls.enabled=!this.flight&&!enabled;
+    this.lastTime=0;this.onAutoFly(enabled);this.invalidate();
+  }
   private look(event:MouseEvent){
     if(!this.flight)return;
     const yaw=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,0,1),-event.movementX*.002);
@@ -218,6 +313,12 @@ export class Explorer {
     this.dirty=true;this.invalidate();
   }
   private move(dt:number){
+    if(this.autoFly){
+      const forward=this.camera.getWorldDirection(this.scratch),distance=this.speed*dt;
+      // Translate both camera and orbit target so stopping preserves the view.
+      this.camera.position.addScaledVector(forward,distance);this.controls.target.addScaledVector(forward,distance);
+      this.dirty=true;return true;
+    }
     if(!this.flight||!this.keys.size)return false;
     const forward=this.camera.getWorldDirection(new THREE.Vector3()),right=new THREE.Vector3(1,0,0).applyQuaternion(this.camera.quaternion),movement=new THREE.Vector3();
     if(this.keys.has('KeyW'))movement.add(forward);if(this.keys.has('KeyS'))movement.sub(forward);
@@ -230,14 +331,137 @@ export class Explorer {
   }
   setMeasuring(enabled:boolean){this.measuring=enabled;this.measurement=[];this.updateAnnotations();this.onMeasure(this.measurement,enabled);this.invalidate()}
   clearSelection(){this.selectionSerial++;this.selected=null;this.selectionMarker.visible=false;this.onSelection(null);this.invalidate()}
+  private bindModels(only?:Resident){
+    this.detailBlendUniform.value.fill(0);
+    this.resolvedGalaxies.forEach((model,i)=>this.detailBlendUniform.value[i]=model.blend.value);
+    for(const item of only?[only]:this.cache.values()){
+      const slots=item.points.geometry.getAttribute('detailSlot') as THREE.BufferAttribute;
+      const previous=item.modelRows;item.modelRows=[];slots.clearUpdateRanges();
+      for(const row of previous){slots.setX(row,0);slots.addUpdateRange(row,1)}
+      this.resolvedGalaxies.forEach((model,i)=>{
+        const row=item.ids.indexOf(model.data.galaxy.id);if(row<0)return;
+        slots.setX(row,i+1);slots.addUpdateRange(row,1);item.modelRows.push(row);
+      });
+      if(previous.length||item.modelRows.length)slots.needsUpdate=true;
+    }
+  }
+  private removeModel(model:ResolvedGalaxy){
+    const id=model.data.galaxy.id;model.dispose();this.modelLocations.delete(id);
+    this.resolvedGalaxies=this.resolvedGalaxies.filter(item=>item!==model);
+  }
+  private ensureModel(galaxy:Galaxy,node:SpatialNode,row:number,priority=false):Promise<ResolvedGalaxy>{
+    const existing=this.resolvedFor(galaxy.id);if(existing)return Promise.resolve(existing);
+    const pending=this.modelRequests.get(galaxy.id);if(pending)return pending;
+    if(!this.modelCatalog)return Promise.reject(new Error('The model catalog is unavailable'));
+    const catalog=this.modelCatalog;
+    const promise=catalog.read(node).then(chunk=>{
+      if(this.disposed||(!priority&&!this.wantedModels.has(galaxy.id)))throw new DOMException('Model no longer nearby','AbortError');
+      const existing=this.resolvedFor(galaxy.id);if(existing)return existing;
+      if(this.resolvedGalaxies.length>=MODEL_LIMIT){
+        const removable=this.resolvedGalaxies.filter(model=>!this.pinnedModels.has(model.data.galaxy.id)&&model.data.galaxy.id!==this.selected?.id)
+          .sort((a,b)=>b.center.distanceToSquared(this.camera.position)/b.radius**2-a.center.distanceToSquared(this.camera.position)/a.radius**2)[0];
+        if(!removable)throw new Error('Nearby model budget is occupied');
+        this.removeModel(removable);
+      }
+      const model=new ResolvedGalaxy(decodeModel(catalog.manifest,chunk,row,galaxy));
+      model.update(this.camera,this.canvas.clientHeight||innerHeight,this.pixelRatio);
+      this.resolvedGalaxies.push(model);this.modelLocations.set(galaxy.id,{node:node.id,row});this.bindModels();
+      if(this.selected?.id===galaxy.id)this.onSelection(this.selected);
+      this.invalidate();return model;
+    }).finally(()=>this.modelRequests.delete(galaxy.id));
+    this.modelRequests.set(galaxy.id,promise);return promise;
+  }
+  private updateModels(){
+    const catalog=this.modelCatalog;if(!catalog)return;
+    const scale=(this.canvas.clientHeight||innerHeight)/(2*Math.tan(THREE.MathUtils.degToRad(this.camera.fov/2)));
+    const camera=this.camera.position,forward=this.camera.getWorldDirection(this.scratch);
+    const candidates:{id:number;node:SpatialNode;row:number;score:number}[]=[];
+    const available=MODEL_LIMIT-this.pinnedModels.size-(this.selected&&!this.pinnedModels.has(this.selected.id)?1:0);
+    let requests=0;
+    for(const nodeId of this.drawn){
+      const item=this.cache.get(nodeId)!,asset=catalog.manifest.nodes[nodeId];if(!asset)continue;
+      if(this.bounds.get(nodeId)!.distanceToPoint(camera)>asset.maxRadiusMpc*scale/.7)continue;
+      const chunk=catalog.get(nodeId);
+      if(!chunk){
+        if(!catalog.failed.has(nodeId)&&catalog.pendingCount<4&&requests++<4)void catalog.read(item.node).catch(()=>this.onMessage('Some galaxy shapes could not load. Retry missing detail to try again.'));
+        continue;
+      }
+      const positions=item.points.geometry.getAttribute('position').array as Float32Array;
+      const cx=item.node.center[0],cy=item.node.center[1],cz=item.node.center[2];
+      for(let row=0;row<item.ids.length;row++){
+        const id=item.ids[row];if(this.pinnedModels.has(id)||id===this.selected?.id)continue;
+        const x=positions[row*3]+cx,y=positions[row*3+1]+cy,z=positions[row*3+2]+cz;
+        const dx=x-camera.x,dy=y-camera.y,dz=z-camera.z,distanceSq=dx*dx+dy*dy+dz*dz;
+        const radius=measuredShape(chunk,row)?chunk.values[row*5]*Math.sqrt(x*x+y*y+z*z)*Math.PI/(180*3600):catalog.manifest.fallbackRadiusMpc;
+        if(dx*forward.x+dy*forward.y+dz*forward.z < -8*radius)continue;
+        const score=radius*radius*scale*scale/Math.max(distanceSq,1e-20);
+        if(score<.7*.7||candidates.length>=available&&score<=candidates[candidates.length-1].score)continue;
+        const candidate={id,node:item.node,row,score};
+        const index=candidates.findIndex(other=>score>other.score);
+        candidates.splice(index<0?candidates.length:index,0,candidate);if(candidates.length>available)candidates.pop();
+      }
+    }
+    this.wantedModels=new Set(candidates.map(item=>item.id));
+    let changed=false;
+    for(const model of [...this.resolvedGalaxies]){
+      const id=model.data.galaxy.id;
+      if(!this.pinnedModels.has(id)&&id!==this.selected?.id&&!this.wantedModels.has(id)&&!this.modelRequests.has(id)){this.removeModel(model);changed=true}
+    }
+    if(changed)this.bindModels();
+    for(const candidate of candidates){
+      if(this.resolvedFor(candidate.id)||this.modelRequests.has(candidate.id)||this.modelRequests.size>=4)continue;
+      const {node,row,id}=candidate;
+      // Metadata supplies the exact float64 center and target identity only for
+      // the small nearby set. The candidate scan uses existing packed positions.
+      const pending=(async()=>{
+        let metadata=this.metadata.get(node.id);
+        if(!metadata){metadata=await this.loader.load(`m:${node.id}`,new URL(node.metadata.url,this.base).href,node.metadata,'metadata',node.storedCount,true);this.metadata.set(node.id,metadata)}
+        this.modelRequests.delete(id);
+        if(this.disposed||!this.wantedModels.has(id))throw new DOMException('Model no longer nearby','AbortError');
+        return this.ensureModel(decodeGalaxy(metadata,row,id),node,row);
+      })();
+      this.modelRequests.set(id,pending);
+      void pending.catch(error=>{if(error.name!=='AbortError')this.onMessage('A close-up model could not load; its catalog point is still available.')}).finally(()=>{if(this.modelRequests.get(id)===pending)this.modelRequests.delete(id);this.invalidate()});
+    }
+  }
   focusSelected(){
     if(!this.selected)return;
-    this.exitFlight();const direction=this.camera.position.clone().sub(this.controls.target).normalize();
-    this.controls.target.fromArray(this.selected.position);this.camera.position.copy(this.controls.target).addScaledVector(direction,25);
-    this.controls.update();this.dirty=true;this.invalidate();
+    this.focusAt(new THREE.Vector3().fromArray(this.selected.position),this.resolvedFor(this.selected.id)?this.resolvedFor(this.selected.id)!.radius*12:25);
+  }
+  visitGalaxy(id=this.resolved?.data.galaxy.id){
+    const model=id===undefined?null:this.resolvedFor(id);
+    if(!this.ready||!model)return;
+    this.selectionSerial++;this.selectGalaxy(model.data.galaxy);
+    this.focusAt(model.center,model.radius*12,model.frame.radial.clone().negate());
+    this.onMessage(`${model.data.name} · observer-facing view. Drag to explore its inferred 3D shape.`);
+  }
+  async visitCatalog(entry:{id:number;node:string;row:number;targetId:string}){
+    const node=this.nodes.get(entry.node),serial=++this.selectionSerial;
+    if(!node||!Number.isInteger(entry.row)||entry.row<0||entry.row>=node.storedCount)throw new Error('This named observation is unavailable.');
+    const metadata=await this.loader.load(`m:${node.id}`,new URL(node.metadata.url,this.base).href,node.metadata,'metadata',node.storedCount,true);
+    const galaxy=decodeGalaxy(metadata,entry.row,entry.id);
+    if(galaxy.targetId!==entry.targetId)throw new Error('The name index does not match this catalog.');
+    if(this.modelCatalog)try{await this.ensureModel(galaxy,node,entry.row,true)}catch{this.onMessage('The shape could not load; showing the catalog position. Retry missing detail to try again.')}
+    if(serial!==this.selectionSerial)return;
+    if(this.resolvedFor(galaxy.id)){this.visitGalaxy(galaxy.id);return}
+    this.selectGalaxy(galaxy);this.focusSelected();
+  }
+  focusObserver(){
+    if(!this.ready)return;
+    this.focusAt(new THREE.Vector3(0,0,0));
+    this.onMessage('Focused on observer · our location');
+  }
+  private focusAt(target:THREE.Vector3,distance=25,direction=this.camera.getWorldDirection(new THREE.Vector3()).negate()){
+    this.selectionSerial++;
+    this.exitFlight();this.controls.enabled=true;
+    // Consume any remaining orbit/pan damping before setting the exact focus.
+    const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();
+    this.controls.target.copy(target);this.camera.position.copy(target).addScaledVector(direction,distance);
+    this.controls.update();this.controls.enableDamping=damping;this.focusDistance=distance;
+    this.dirty=true;this.invalidate();
   }
   private get memoryBytes(){
-    let bytes=this.references.byteLength+this.pickTarget.width*this.pickTarget.height*8;
+    let bytes=this.references.byteLength+this.pickTarget.width*this.pickTarget.height*8+this.resolvedGalaxies.reduce((sum,model)=>sum+model.memoryBytes,0)+(this.modelCatalog?.memoryBytes??0);
     for(const item of this.cache.values())bytes+=item.bytes;
     for(const buffer of this.metadata.values())bytes+=buffer.byteLength;
     return bytes+this.loader.reservedBytes;
@@ -264,26 +488,29 @@ export class Explorer {
       const positions=new Float32Array(buffer,16,node.storedCount*3),ids=new Uint32Array(buffer,16+node.storedCount*12,node.storedCount);
       for(const id of ids)if(id>=this.manifest.count)throw new Error('Invalid catalog object reference');
       const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(positions,3));
-      const material=this.material(pointFragment,1.6*this.pixelRatio,true);
+      geometry.setAttribute('detailSlot',new THREE.BufferAttribute(new Float32Array(node.storedCount),1).setUsage(THREE.DynamicDrawUsage));
+      const material=this.material(pointFragment,1.6*this.pixelRatio,true,true);
       const points=new THREE.Points(geometry,material);points.frustumCulled=false;points.visible=false;
       points.onBeforeRender=(_renderer,_scene,camera,_geometry,usedMaterial)=>{
         const m=usedMaterial as THREE.RawShaderMaterial;
         m.uniforms.uOrigin.value.set(node.center[0]-camera.position.x,node.center[1]-camera.position.y,node.center[2]-camera.position.z);
         m.uniforms.uNode.value=Number(node.id)+1;m.uniformsNeedUpdate=true;
+        this.resolvedGalaxies.forEach((model,i)=>m.uniforms.uDetailOrigins.value[i].copy(model.center).sub(camera.position));
       };
-      this.cache.set(node.id,{node,buffer,ids,points,bytes:buffer.byteLength+positions.byteLength,used:performance.now()});
+      const resident={node,buffer,ids,points,bytes:buffer.byteLength+positions.byteLength+node.storedCount*8,used:performance.now(),modelRows:[]};
+      this.cache.set(node.id,resident);this.bindModels(resident);this.modelScanNeeded=true;
       for(const id of ids)if(this.references[id]++===0)this.loadedUnique++;
       this.scene.add(points);
       if(!this.ready){this.ready=true;this.onReady()}
     }).catch(error=>{if(error.name!=='AbortError'){this.failed.set(node.id,error.message);if(node.id===this.root&&!this.ready)this.onError('The first galaxy data could not load. Use Retry missing detail below.');this.onMessage(`Some detail could not load: ${error.message}`)}}).finally(()=>{this.pending.delete(node.id);this.dirty=true;this.invalidate()});
   }
-  retry(){this.failed.clear();this.blocked=false;this.dirty=true;this.invalidate()}
+  retry(){this.failed.clear();this.modelCatalog?.retry();this.blocked=false;this.dirty=true;this.modelScanNeeded=true;this.invalidate()}
   private updateLOD(){
     if(!this.manifest)return;
     this.camera.updateMatrixWorld();this.clipMatrix.multiplyMatrices(this.camera.projectionMatrix,this.camera.matrixWorldInverse);this.frustum.setFromProjectionMatrix(this.clipMatrix,this.camera.coordinateSystem,this.camera.reversedDepth);
     const height=this.canvas.clientHeight||innerHeight;
     const wanted=chooseFrontier({root:this.root,nodes:this.nodes,mode:this.mode,budget:this.sampleBudget,
-      visible:node=>this.frustum.intersectsBox(this.bounds.get(node.id)!),
+      visible:node=>{const box=this.bounds.get(node.id)!;return this.frustum.intersectsBox(box)&&(!this.depthCueUniform.value||this.minOpacityUniform.value>0||box.distanceToPoint(this.camera.position)<=this.fadeRangeUniform.value.y)},
       projectedSize:node=>{const sphere=this.spheres.get(node.id)!;const distance=Math.max(.0001,this.camera.position.distanceTo(sphere.center)-sphere.radius);return sphere.radius/distance*height/Math.tan(THREE.MathUtils.degToRad(this.camera.fov/2))}});
     this.desired=new Set(wanted);this.required=new Set(wanted);
     for(const id of wanted){let parent=this.parents.get(id);while(parent!==undefined){this.required.add(parent);parent=this.parents.get(parent)}}
@@ -310,15 +537,20 @@ export class Explorer {
     }
     if(this.measureLine.visible)this.measureLine.material.uniforms.uOrigin.value.copy(this.measureLine.userData.world).sub(this.camera.position);
     const origin=new THREE.Vector3().project(this.camera);
-    this.onOrigin((origin.x*.5+.5)*this.canvas.clientWidth,(.5-origin.y*.5)*this.canvas.clientHeight,origin.z>-1&&origin.z<1&&Math.abs(origin.x)<.95&&Math.abs(origin.y)<.9);
+    const observerInFront=this.camera.getWorldDirection(this.scratch).dot(this.camera.position)<0;
+    this.onOrigin((origin.x*.5+.5)*this.canvas.clientWidth,(.5-origin.y*.5)*this.canvas.clientHeight,observerInFront&&origin.z>-1&&origin.z<1&&Math.abs(origin.x)<.95&&Math.abs(origin.y)<.9);
   }
   private async pick(clientX:number,clientY:number){
     if(this.picking||!this.ready||this.contextLost)return;
+    const bounds=this.canvas.getBoundingClientRect();
+    const body=this.resolvedGalaxies.filter(model=>model.hitTest(new THREE.Vector2((clientX-bounds.left)/bounds.width*2-1,1-(clientY-bounds.top)/bounds.height*2),this.camera)).sort((a,b)=>a.center.distanceToSquared(this.camera.position)-b.center.distanceToSquared(this.camera.position))[0];
+    if(body){this.selectionSerial++;this.selectGalaxy(body.data.galaxy);return}
     this.picking=true;const serial=++this.selectionSerial;
     const rect=this.canvas.getBoundingClientRect(),width=this.pickTarget.width,height=this.pickTarget.height;
     const x=Math.floor((clientX-rect.left)*width/rect.width),y=Math.floor((rect.bottom-clientY)*height/rect.height);
     const left=Math.max(0,x-4),bottom=Math.max(0,y-4),w=Math.min(9,width-left),h=Math.min(9,height-bottom);
     try{
+      this.updateDepthCues();
       this.pickMaterial.uniforms.uSize.value=7*this.pixelRatio;
       // Render-target scissor coordinates are physical pixels. Renderer.setScissor
       // multiplies by its DPR and would move the pick region on Retina displays.
@@ -345,28 +577,40 @@ export class Explorer {
         this.metadata.set(nodeId,metadata);
       }
       if(serial!==this.selectionSerial)return;
-      const galaxy=decodeGalaxy(metadata,row,id);this.selected=galaxy;this.onSelection(galaxy);
-      if(this.measuring){if(this.measurement.length===2)this.measurement=[];if(!this.measurement.length||this.measurement[0].id!==galaxy.id)this.measurement.push(galaxy);this.onMeasure(this.measurement,true)}
-      this.updateAnnotations();this.invalidate();
+      const galaxy=decodeGalaxy(metadata,row,id);
+      if(this.modelCatalog)try{await this.ensureModel(galaxy,node,row,true)}catch{this.onMessage('The shape could not load; the catalog measurements are still available.')}
+      if(serial!==this.selectionSerial)return;
+      this.selectGalaxy(galaxy);
     }catch(error){this.onMessage(`Could not inspect this point. ${error instanceof Error?error.message:'Try again.'}`)}
     finally{this.scene.overrideMaterial=null;this.renderer.setRenderTarget(null);this.renderer.setScissorTest(false);this.renderer.setClearColor(0x06090d,1);this.picking=false;this.invalidate()}
   }
+  private selectGalaxy(galaxy:Galaxy){
+    this.selected=galaxy;this.onSelection(galaxy);
+    if(this.measuring){if(this.measurement.length===2)this.measurement=[];if(!this.measurement.length||this.measurement[0].id!==galaxy.id)this.measurement.push(galaxy);this.onMeasure(this.measurement,true)}
+    this.updateAnnotations();this.invalidate();
+  }
   get stats():AtlasStats{
     const sorted=[...this.timings].sort((a,b)=>a-b),mean=this.timings.reduce((a,b)=>a+b,0)/(this.timings.length||1);
-    return {drawn:this.drawn.reduce((n,id)=>n+this.nodes.get(id)!.storedCount,0),loaded:this.loadedUnique,represented:this.drawn.reduce((n,id)=>n+this.nodes.get(id)!.count,0),pending:this.loader.pending,failed:this.failed.size,mode:this.mode,
+    return {drawn:this.drawn.reduce((n,id)=>n+this.nodes.get(id)!.storedCount,0),loaded:this.loadedUnique,represented:this.drawn.reduce((n,id)=>n+this.nodes.get(id)!.count,0),pending:this.loader.pending+(this.modelCatalog?.pendingCount??0),failed:this.failed.size+(this.modelCatalog?.failed.size??0),mode:this.mode,
       complete:this.ready&&this.drawn.length>0&&this.desired.size===this.drawn.length&&this.drawn.every(id=>this.desired.has(id))&&this.drawn.every(id=>!this.nodes.get(id)!.children.length),
       fps:mean?1000/mean:0,p95:sorted[Math.floor(sorted.length*.95)]??0,calls:this.renderer.info.render.calls,managedMiB:this.memoryBytes/1048576,blocked:this.blocked,
-      focusDistance:this.camera.position.distanceTo(this.controls.target),budget:this.sampleBudget};
+      focusDistance:this.camera.position.distanceTo(this.controls.target),budget:this.sampleBudget,models:this.resolvedGalaxies.filter(model=>model.visible).length};
   }
   invalidate(){if(!this.frame&&!document.hidden&&!this.contextLost&&!this.disposed)this.frame=requestAnimationFrame(time=>this.tick(time))}
   private tick(time:number){
     this.frame=0;if(this.contextLost)return;
     const elapsed=this.lastTime?time-this.lastTime:16.67;this.lastTime=time;
     const moved=this.move(Math.min(elapsed/1000,.05));
-    const orbitMoved=!this.flight&&this.controls.update();
-    if((moved||orbitMoved)&&this.wasContinuous){this.timings.push(elapsed);if(this.timings.length>240)this.timings.shift()}
+    const orbitMoved=!this.flight&&!this.autoFly&&this.controls.update();
+    const automaticOrbit=!this.flight&&!this.autoFly&&this.controls.autoRotate;
+    if((moved||orbitMoved||automaticOrbit)&&this.wasContinuous){this.timings.push(elapsed);if(this.timings.length>240)this.timings.shift()}
+    this.resolvedGalaxies.forEach((model,i)=>{model.update(this.camera,this.canvas.clientHeight||innerHeight,this.pixelRatio);this.detailBlendUniform.value[i]=model.blend.value});
+    this.updateDepthCues();
     if(this.dirty||time-this.lastLOD>200){this.updateLOD();this.lastLOD=time;this.dirty=false}
-    this.positionAnnotations();this.renderer.info.reset();this.renderer.autoClear=true;this.renderer.render(this.scene,this.camera);this.renderer.autoClear=false;this.renderer.render(this.annotations,this.camera);this.renderer.autoClear=true;
+    if(this.modelScanNeeded||time-this.lastModelScan>250){this.updateModels();this.lastModelScan=time;this.modelScanNeeded=false}
+    this.positionAnnotations();this.renderer.info.reset();this.renderer.autoClear=true;this.renderer.render(this.scene,this.camera);this.renderer.autoClear=false;
+    for(const model of this.resolvedGalaxies)if(model.visible)this.renderer.render(model.scene,this.camera);
+    this.renderer.render(this.annotations,this.camera);this.renderer.autoClear=true;
     if(time-this.lastStats>250||!(moved||orbitMoved)){this.onStats(this.stats);this.lastStats=time}
     if(this.mode==='adaptive'&&(moved||orbitMoved)&&!this.loader.pending&&++this.adaptationFrames>120){
       const p95=this.stats.p95;
@@ -374,10 +618,75 @@ export class Explorer {
       else if(p95>0&&p95<17)this.sampleBudget=Math.min(2000000,Math.floor(this.sampleBudget*1.1));
       this.adaptationFrames=0;this.dirty=true;
     }
-    this.wasContinuous=!!(moved||orbitMoved||this.dirty);
+    this.wasContinuous=!!(moved||orbitMoved||automaticOrbit||this.dirty);
     if(this.wasContinuous)this.invalidate();
   }
   get measurementDistance(){return this.measurement.length===2?separation(this.measurement[0].position,this.measurement[1].position):null}
+  probeGalaxyProfile(id=this.resolved?.data.galaxy.id){
+    const source=id===undefined?null:this.resolvedFor(id);if(!source)return {available:false};
+    // Check the measured smooth component separately from illustrative arm light.
+    const model=new ResolvedGalaxy({...source.data,spiral:undefined}),target=new THREE.WebGLRenderTarget(256,256);
+    const camera=new THREE.PerspectiveCamera(50,1,.000001,100000),pixels=new Uint8Array(256*256*4);
+    camera.up.copy(model.frame.north);
+    const sample=(direction:THREE.Vector3,distance:number,zoom=false)=>{
+      camera.fov=zoom?THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(25))*24/distance)):50;camera.updateProjectionMatrix();
+      camera.position.copy(model.center).addScaledVector(direction,distance*model.radius);camera.lookAt(model.center);camera.updateMatrixWorld();model.update(camera,256);
+      this.renderer.setRenderTarget(target);this.renderer.setClearColor(0,0);this.renderer.clear();this.renderer.render(model.scene,camera);
+      this.renderer.readRenderTargetPixels(target,0,0,256,256,pixels);
+      let weight=0,x=0,y=0,xx=0,yy=0,xy=0,litPixels=0;
+      for(let i=0;i<256*256;i++){
+        const w=pixels[i*4]+pixels[i*4+1]+pixels[i*4+2],px=i%256-127.5,py=Math.floor(i/256)-127.5;
+        if(w)litPixels++;weight+=w;x+=w*px;y+=w*py;xx+=w*px*px;yy+=w*py*py;xy+=w*px*py;
+      }
+      const a=xx/weight-(x/weight)**2,b=yy/weight-(y/weight)**2,c=xy/weight-x*y/weight**2;
+      const discriminant=Math.hypot(a-b,2*c),axisRatio=Math.sqrt((a+b-discriminant)/(a+b+discriminant));
+      return {litPixels,axisRatio,visible:model.visible,blend:model.blend.value};
+    };
+    try{
+      const observerDistance=model.data.galaxy.distance/model.radius;
+      const observed=sample(model.frame.radial.clone().negate(),observerDistance,true),faceOn=sample(model.frame.normal,observerDistance,true);
+      const inside=sample(model.frame.normal,0),far=sample(model.frame.radial.clone().negate(),1e6);
+      return {available:true,observed,faceOn,inside,far,expectedAxisRatio:model.frame.q,
+        passed:Math.abs(observed.axisRatio-model.frame.q)<.01&&faceOn.axisRatio>.99&&inside.litPixels===65536&&!far.visible&&far.litPixels===0};
+    }finally{model.dispose();target.dispose();this.renderer.setRenderTarget(null);this.renderer.setClearColor(0x06090d,1);this.invalidate()}
+  }
+  async probeResolvedPicking(id=this.resolved?.data.galaxy.id){
+    const model=id===undefined?null:this.resolvedFor(id);
+    if(!model)return {available:false};
+    this.visitGalaxy(id);await new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));
+    const point=model.center.clone().addScaledVector(model.frame.major,2*model.radius).project(this.camera),rect=this.canvas.getBoundingClientRect();
+    this.clearSelection();await this.pick(rect.left+(point.x*.5+.5)*rect.width,rect.top+(.5-point.y*.5)*rect.height);
+    return {available:true,passed:this.selected?.targetId===model.data.galaxy.targetId,targetId:this.selected?.targetId};
+  }
+  probeDepthCues(){
+    // Isolated GPU acceptance check: exercise the actual display and ID shaders.
+    const target=new THREE.WebGLRenderTarget(64,64),scene=new THREE.Scene();
+    const camera=new THREE.PerspectiveCamera(50,1,.1,2000);
+    const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(3),3));
+    const material=this.material(pointFragment,8,false,true).clone();
+    const picker=this.pickMaterial.clone();picker.uniforms.uSize.value=8;picker.uniforms.uNode.value=1;
+    const points=new THREE.Points(geometry,material);points.frustumCulled=false;scene.add(points);
+    const pixels=new Uint8Array(64*64*4);
+    const sample=(distance:number,pick=false,enabled=true,minimumOpacity=0)=>{
+      const m=pick?picker:material;points.material=m;
+      m.uniforms.uOrigin.value.set(0,0,-distance);m.uniforms.uFadeRange.value.set(100,1000);m.uniforms.uDepthCues.value=enabled;
+      m.uniforms.uMinOpacity.value=minimumOpacity;
+      this.renderer.setRenderTarget(target);this.renderer.setClearColor(0,0);this.renderer.clear();this.renderer.render(scene,camera);
+      this.renderer.readRenderTargetPixels(target,0,0,64,64,pixels);
+      let maxAlpha=0,coveredPixels=0;
+      for(let i=0;i<pixels.length;i+=4){maxAlpha=Math.max(maxAlpha,pixels[i+3]);if(pick?(pixels[i]||pixels[i+1]||pixels[i+2]):pixels[i+3])coveredPixels++}
+      return {maxAlpha,coveredPixels};
+    };
+    try{
+      const near=sample(10),middle=sample(500),far=sample(1200),uniform=sample(1200,false,false);
+      const nearPick=sample(10,true),farPick=sample(1200,true),uniformPick=sample(1200,true,false);
+      const faintFloor=sample(1200,false,true,.01),faintFloorPick=sample(1200,true,true,.01);
+      return {near,middle,far,uniform,nearPick,farPick,uniformPick,faintFloor,faintFloorPick,passed:near.maxAlpha===255&&middle.maxAlpha>0&&middle.maxAlpha<near.maxAlpha&&near.coveredPixels>middle.coveredPixels&&far.coveredPixels===0&&uniform.coveredPixels>0&&nearPick.coveredPixels>0&&farPick.coveredPixels===0&&uniformPick.coveredPixels>0&&faintFloor.maxAlpha>0&&faintFloor.maxAlpha<10&&faintFloorPick.coveredPixels>0};
+    }finally{
+      this.renderer.setRenderTarget(null);this.renderer.setClearColor(0x06090d,1);
+      target.dispose();geometry.dispose();material.dispose();picker.dispose();this.invalidate();
+    }
+  }
   async probePicking(skipId=-1){
     // Called only by the development acceptance runner. Project actual visible data,
     // then exercise the exact GPU-picking and metadata path used by mouse clicks.
@@ -407,5 +716,5 @@ export class Explorer {
     finally{loader.dispose()}
   }
   get renderingInfo(){const gl=this.renderer.getContext(),debug=gl.getExtension('WEBGL_debug_renderer_info');return {renderer:debug?gl.getParameter(debug.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER),version:gl.getParameter(gl.VERSION),width:this.canvas.width,height:this.canvas.height}}
-  dispose(){this.disposed=true;this.lifecycle.abort();cancelAnimationFrame(this.frame);this.exitFlight();this.loader.dispose();this.controls.dispose();for(const item of this.cache.values()){item.points.geometry.dispose();item.points.material.dispose()}this.pickTarget.dispose();this.pickMaterial.dispose();this.renderer.dispose();this.canvas.remove()}
+  dispose(){this.disposed=true;this.lifecycle.abort();cancelAnimationFrame(this.frame);this.exitFlight();this.loader.dispose();this.modelCatalog?.dispose();this.controls.dispose();this.resolvedGalaxies.forEach(model=>model.dispose());for(const item of this.cache.values()){item.points.geometry.dispose();item.points.material.dispose()}this.pickTarget.dispose();this.pickMaterial.dispose();this.renderer.dispose();this.canvas.remove()}
 }

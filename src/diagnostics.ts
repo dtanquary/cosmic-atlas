@@ -8,7 +8,17 @@ export async function runDiagnostics(atlas:Explorer,parent:HTMLElement){
  const sleep=(ms:number)=>new Promise(resolve=>setTimeout(resolve,ms));
  while(!atlas.stats.drawn){await sleep(100)}
  report.firstCoarseMs=performance.now();report.rendering=atlas.renderingInfo;report.initial=atlas.stats;show();
+ if(query.has('detailtest')){
+  report.profiles=atlas.resolvedGalaxies.map(model=>({name:model.data.name,...atlas.probeGalaxyProfile(model.data.galaxy.id)}));
+  report.resolvedPicking=[];for(const model of atlas.resolvedGalaxies)(report.resolvedPicking as unknown[]).push({name:model.data.name,...await atlas.probeResolvedPicking(model.data.galaxy.id)});
+  report.depthCues=atlas.probeDepthCues();show();
+  atlas.controls.autoRotate=true;atlas.controls.autoRotateSpeed=2;atlas.invalidate();
+  report.status='checking close-up orbit performance';show();await sleep(7000);
+  atlas.controls.autoRotate=false;report.closeupPerformance=atlas.stats;atlas.invalidate();
+  report.context=await atlas.probeContextRecovery();report.profileAfterRecovery=atlas.probeGalaxyProfile();
+ }
  if(query.has('selftest')){
+  report.depthCues=atlas.probeDepthCues();show();
   report.status='testing selection';show();
   atlas.setMeasuring(true);const first=await atlas.probePicking();
   const second=await atlas.probePicking(atlas.selected?.id??-1);

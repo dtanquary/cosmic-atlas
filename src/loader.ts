@@ -1,5 +1,5 @@
 import type { Asset } from './types';
-interface Task {key:string;url:string;asset:Asset;kind:'points'|'metadata';count:number;resolve:(buffer:ArrayBuffer)=>void;reject:(error:Error)=>void}
+interface Task {key:string;url:string;asset:Asset;kind:'points'|'metadata'|'profiles';count:number;resolve:(buffer:ArrayBuffer)=>void;reject:(error:Error)=>void}
 export class ChunkLoader {
   private worker=new Worker(new URL('./data.worker.ts',import.meta.url),{type:'module'});
   private queue:Task[]=[];
@@ -24,7 +24,7 @@ export class ChunkLoader {
   }
   get pending(){return this.active.size+this.queue.length}
   get reservedBytes(){return [...this.active.values(),...this.queue].reduce((sum,t)=>sum+t.asset.bytes*2+t.asset.decodedBytes*3,0)}
-  load(key:string,url:string,asset:Asset,kind:'points'|'metadata',count:number,priority=false){
+  load(key:string,url:string,asset:Asset,kind:'points'|'metadata'|'profiles',count:number,priority=false){
     const existing=this.promises.get(key);if(existing)return existing;
     const promise=new Promise<ArrayBuffer>((resolve,reject)=>{
       const task={key,url,asset,kind,count,resolve,reject};

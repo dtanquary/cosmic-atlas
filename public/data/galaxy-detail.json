@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "catalogId": "dr1",
+  "catalogSourceSha256": "2d95ad99361039b556c402b49e0e7c84df5f00106dc5731d44476a58b128b49b",
+  "name": "NGC 4026",
+  "galaxy": {
+    "ra": 179.85448679932676,
+    "dec": 50.96165741661699,
+    "z": 0.003292937922230409,
+    "zerr": 1.7046352836944344e-06,
+    "distance": 14.579349261873272,
+    "delta": 1087342.4141975024,
+    "id": 13414618,
+    "targetId": "39633263488141603",
+    "position": [
+      -9.182632383624872,
+      0.02332103887801532,
+      11.324139858551472
+    ]
+  },
+  "shape": {
+    "radiusArcsec": 28.66065216064453,
+    "e1": 0.5204411149024963,
+    "e2": -0.031164828687906265,
+    "sersic": 1.8044934272766113,
+    "profileType": "SER"
+  },
+  "gaussians": [
+    {
+      "sigmaRe": 0.007,
+      "peak": 1.5661499126301794
+    },
+    {
+      "sigmaRe": 0.010140164129801869,
+      "peak": 0.6521212190536868
+    },
+    {
+      "sigmaRe": 0.014688989797045792,
+      "peak": 1.5810193677137843
+    },
+    {
+      "sigmaRe": 0.021278395349004192,
+      "peak": 1.2957440013234138
+    },
+    {
+      "sigmaRe": 0.030823774465387904,
+      "peak": 1.798542330949059
+    },
+    {
+      "sigmaRe": 0.044651161739861306,
+      "peak": 1.8121092869217779
+    },
+    {
+      "sigmaRe": 0.06468144408978903,
+      "peak": 2.0753894755798195
+    },
+    {
+      "sigmaRe": 0.09369720846043772,
+      "peak": 2.1221969357192525
+    },
+    {
+      "sigmaRe": 0.13572929604187123,
+      "peak": 2.166475470868534
+    },
+    {
+      "sigmaRe": 0.19661676272672018,
+      "peak": 2.0470992919890607
+    },
+    {
+      "sigmaRe": 0.28481803495989344,
+      "peak": 1.8202859920324108
+    },
+    {
+      "sigmaRe": 0.41258594594585224,
+      "peak": 1.4606674352666966
+    },
+    {
+      "sigmaRe": 0.5976698870772147,
+      "peak": 1.038892002960863
+    },
+    {
+      "sigmaRe": 0.8657815357718722,
+      "peak": 0.6238199844772803
+    },
+    {
+      "sigmaRe": 1.2541666961826743,
+      "peak": 0.3017196306987808
+    },
+    {
+      "sigmaRe": 1.8167794493462388,
+      "peak": 0.10907556730380068
+    },
+    {
+      "sigmaRe": 2.6317774005745598,
+      "peak": 0.026625875349608082
+    },
+    {
+      "sigmaRe": 3.8123792564184793,
+      "peak": 0.004279850635800592
+    },
+    {
+      "sigmaRe": 8.0,
+      "peak": 0.00012645996387522425
+    }
+  ],
+  "fitMaxRelativeError": 0.0005352638350089034,
+  "source": {
+    "url": "https://data.desi.lbl.gov/public/dr1/spectro/redux/iron/zcatalog/v1/zall-pix-iron.fits",
+    "rowZeroBased": 26509104,
+    "rawRowSha256": "943c81eb7648bc2e4d68610b62107bad8c6e942eebabaf64a5a8acb3f976f922",
+    "referenceCatalog": "L3",
+    "sgaId": 801183,
+    "nameMatchUrl": "https://sga.legacysurvey.org/?sgaid__gte=801183&sgaid__lte=801183",
+    "shapeDocumentation": "https://www.legacysurvey.org/dr9/catalogs/",
+    "ellipseConvention": "https://github.com/dstndstn/tractor/blob/main/tractor/ellipses.py"
+  }
+}

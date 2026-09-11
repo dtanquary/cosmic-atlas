@@ -2,7 +2,7 @@
 import { validateBinary } from './format';
 import type { Asset } from './types';
 const active=new Map<string,AbortController>();
-self.onmessage=async(event:MessageEvent<{type:'load'|'cancel';key:string;url:string;asset:Asset;kind:'points'|'metadata';count:number}>)=>{
+self.onmessage=async(event:MessageEvent<{type:'load'|'cancel';key:string;url:string;asset:Asset;kind:'points'|'metadata'|'profiles';count:number}>)=>{
   const message=event.data;
   if(message.type==='cancel'){active.get(message.key)?.abort();return}
   const abort=new AbortController();active.set(message.key,abort);

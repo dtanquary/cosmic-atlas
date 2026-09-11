@@ -236,5 +236,796 @@
       "rejected": true,
       "message": "Data integrity check failed"
     }
+  },
+  {
+    "runId": "chrome-depth-cues",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 176.70000000298023,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 661312,
+      "loaded": 760146,
+      "represented": 14140375,
+      "pending": 7,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 120.23566189731874,
+      "p95": 8.334000000000003,
+      "calls": 60,
+      "managedMiB": 69.10526943206787,
+      "blocked": false,
+      "focusDistance": 16099.11216965502,
+      "budget": 1000000
+    },
+    "depthCues": {
+      "near": {
+        "maxAlpha": 255,
+        "coveredPixels": 124
+      },
+      "middle": {
+        "maxAlpha": 149,
+        "coveredPixels": 52
+      },
+      "far": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniform": {
+        "maxAlpha": 224,
+        "coveredPixels": 52
+      },
+      "nearPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 140
+      },
+      "farPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniformPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "passed": true
+    },
+    "interaction": {
+      "first": {
+        "ok": true,
+        "selected": "39628100723545457",
+        "attempted": 1
+      },
+      "second": {
+        "ok": true,
+        "selected": "39628171032659127",
+        "attempted": 1
+      },
+      "measuredMpc": 489.296569467558,
+      "measurementStable": true,
+      "selectedExactId": "39628171032659127"
+    },
+    "context": {
+      "supported": true,
+      "recovered": true
+    },
+    "integrity": {
+      "rejected": true,
+      "message": "Data integrity check failed"
+    },
+    "benchmark": {
+      "mode": "adaptive",
+      "resolution": [
+        1920,
+        1080
+      ],
+      "frames": 2397,
+      "meanMs": 8.333333333333336,
+      "fps": 119.99999999999997,
+      "p95Ms": 9.299999999999272,
+      "stats": {
+        "drawn": 1990709,
+        "loaded": 14140375,
+        "represented": 14140375,
+        "pending": 0,
+        "failed": 0,
+        "mode": "adaptive",
+        "complete": false,
+        "fps": 119.94602428906983,
+        "p95": 9.299999999999272,
+        "calls": 142,
+        "managedMiB": 438.0460157394409,
+        "blocked": false,
+        "focusDistance": 16099.112169643395,
+        "budget": 2000000
+      }
+    }
+  },
+  {
+    "runId": "chrome-galaxy-detail",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 184.59999999403954,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 598539,
+      "loaded": 729627,
+      "represented": 14140375,
+      "pending": 6,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 119.04761904761907,
+      "p95": 8.600000000000001,
+      "calls": 55,
+      "managedMiB": 64.43769931793213,
+      "blocked": false,
+      "focusDistance": 16099.112169655013,
+      "budget": 1000000
+    },
+    "profile": {
+      "available": true,
+      "observed": {
+        "litPixels": 4404,
+        "axisRatio": 0.3147394872370014,
+        "visible": true,
+        "blend": 1
+      },
+      "faceOn": {
+        "litPixels": 8360,
+        "axisRatio": 0.999993044886123,
+        "visible": true,
+        "blend": 1
+      },
+      "inside": {
+        "litPixels": 65536,
+        "axisRatio": 0.9960748765607642,
+        "visible": true,
+        "blend": 1
+      },
+      "far": {
+        "litPixels": 0,
+        "axisRatio": null,
+        "visible": false,
+        "blend": 0
+      },
+      "expectedAxisRatio": 0.3146016797918665,
+      "passed": true
+    },
+    "resolvedPicking": {
+      "available": true,
+      "passed": true,
+      "targetId": "39633263488141603"
+    },
+    "closeupPerformance": {
+      "drawn": 25836,
+      "loaded": 863579,
+      "represented": 25836,
+      "pending": 0,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": true,
+      "fps": 120.00600030001502,
+      "p95": 9.299999999999272,
+      "calls": 4,
+      "managedMiB": 61.55190944671631,
+      "blocked": false,
+      "focusDistance": 0.024309740407529513,
+      "budget": 1771561
+    },
+    "context": {
+      "supported": true,
+      "recovered": true
+    },
+    "profileAfterRecovery": {
+      "available": true,
+      "observed": {
+        "litPixels": 4404,
+        "axisRatio": 0.3147394872370014,
+        "visible": true,
+        "blend": 1
+      },
+      "faceOn": {
+        "litPixels": 8360,
+        "axisRatio": 0.999993044886123,
+        "visible": true,
+        "blend": 1
+      },
+      "inside": {
+        "litPixels": 65536,
+        "axisRatio": 0.9960748765607642,
+        "visible": true,
+        "blend": 1
+      },
+      "far": {
+        "litPixels": 0,
+        "axisRatio": null,
+        "visible": false,
+        "blend": 0
+      },
+      "expectedAxisRatio": 0.3146016797918665,
+      "passed": true
+    }
+  },
+  {
+    "runId": "chrome-profile-regression",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 185.79999999701977,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 661312,
+      "loaded": 823437,
+      "represented": 14140375,
+      "pending": 7,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 120.48192771084337,
+      "p95": 8.300000000000004,
+      "calls": 60,
+      "managedMiB": 74.00718212127686,
+      "blocked": false,
+      "focusDistance": 16099.112169655013,
+      "budget": 1000000
+    },
+    "depthCues": {
+      "near": {
+        "maxAlpha": 255,
+        "coveredPixels": 124
+      },
+      "middle": {
+        "maxAlpha": 149,
+        "coveredPixels": 52
+      },
+      "far": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniform": {
+        "maxAlpha": 224,
+        "coveredPixels": 52
+      },
+      "nearPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 140
+      },
+      "farPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniformPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "passed": true
+    },
+    "interaction": {
+      "first": {
+        "ok": true,
+        "selected": "39628100723545457",
+        "attempted": 1
+      },
+      "second": {
+        "ok": true,
+        "selected": "39628171032659127",
+        "attempted": 1
+      },
+      "measuredMpc": 489.296569467558,
+      "measurementStable": true,
+      "selectedExactId": "39628171032659127"
+    },
+    "context": {
+      "supported": true,
+      "recovered": true
+    },
+    "integrity": {
+      "rejected": true,
+      "message": "Data integrity check failed"
+    }
+  },
+  {
+    "runId": "chrome-spiral-search-fade",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 162.40000000596046,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 661312,
+      "loaded": 815092,
+      "represented": 14140375,
+      "pending": 6,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 120.23566189731874,
+      "p95": 8.333999999999996,
+      "calls": 60,
+      "managedMiB": 68.33759021759033,
+      "blocked": false,
+      "focusDistance": 16099.112169655016,
+      "budget": 1000000
+    },
+    "profiles": [
+      {
+        "name": "NGC 4026",
+        "available": true,
+        "observed": {
+          "litPixels": 4404,
+          "axisRatio": 0.3147394872370014,
+          "visible": true,
+          "blend": 1
+        },
+        "faceOn": {
+          "litPixels": 8360,
+          "axisRatio": 0.999993044886123,
+          "visible": true,
+          "blend": 1
+        },
+        "inside": {
+          "litPixels": 65536,
+          "axisRatio": 0.9960748765607642,
+          "visible": true,
+          "blend": 1
+        },
+        "far": {
+          "litPixels": 0,
+          "axisRatio": null,
+          "visible": false,
+          "blend": 0
+        },
+        "expectedAxisRatio": 0.3146016797918665,
+        "passed": true
+      },
+      {
+        "name": "NGC 3982",
+        "available": true,
+        "observed": {
+          "litPixels": 5885,
+          "axisRatio": 0.8791599817575738,
+          "visible": true,
+          "blend": 1
+        },
+        "faceOn": {
+          "litPixels": 6448,
+          "axisRatio": 0.9999660595179797,
+          "visible": true,
+          "blend": 1
+        },
+        "inside": {
+          "litPixels": 65536,
+          "axisRatio": 0.9993996531212419,
+          "visible": true,
+          "blend": 1
+        },
+        "far": {
+          "litPixels": 0,
+          "axisRatio": null,
+          "visible": false,
+          "blend": 0
+        },
+        "expectedAxisRatio": 0.8788387644479687,
+        "passed": true
+      }
+    ],
+    "resolvedPicking": [
+      {
+        "name": "NGC 4026",
+        "available": true,
+        "passed": true,
+        "targetId": "39633263488141603"
+      },
+      {
+        "name": "NGC 3982",
+        "available": true,
+        "passed": true,
+        "targetId": "39633325333155389"
+      }
+    ],
+    "depthCues": {
+      "near": {
+        "maxAlpha": 255,
+        "coveredPixels": 124
+      },
+      "middle": {
+        "maxAlpha": 149,
+        "coveredPixels": 52
+      },
+      "far": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniform": {
+        "maxAlpha": 224,
+        "coveredPixels": 52
+      },
+      "nearPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 140
+      },
+      "farPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniformPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "faintFloor": {
+        "maxAlpha": 3,
+        "coveredPixels": 32
+      },
+      "faintFloorPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "passed": true
+    },
+    "closeupPerformance": {
+      "drawn": 25836,
+      "loaded": 950763,
+      "represented": 25836,
+      "pending": 0,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": true,
+      "fps": 119.99400029998502,
+      "p95": 9.300000000000182,
+      "calls": 5,
+      "managedMiB": 65.29669094085693,
+      "blocked": false,
+      "focusDistance": 0.017385163986234436,
+      "budget": 1771561
+    },
+    "context": {
+      "supported": true,
+      "recovered": true
+    },
+    "profileAfterRecovery": {
+      "available": true,
+      "observed": {
+        "litPixels": 5885,
+        "axisRatio": 0.8791599817575738,
+        "visible": true,
+        "blend": 1
+      },
+      "faceOn": {
+        "litPixels": 6448,
+        "axisRatio": 0.9999660595179797,
+        "visible": true,
+        "blend": 1
+      },
+      "inside": {
+        "litPixels": 65536,
+        "axisRatio": 0.9993996531212419,
+        "visible": true,
+        "blend": 1
+      },
+      "far": {
+        "litPixels": 0,
+        "axisRatio": null,
+        "visible": false,
+        "blend": 0
+      },
+      "expectedAxisRatio": 0.8788387644479687,
+      "passed": true
+    },
+    "manualSettings": {
+      "minimumDistantOpacityPercent": 0
+    }
+  },
+  {
+    "runId": "chrome-spiral-floor-2pct",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 94.79999999701977,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 65536,
+      "loaded": 89397,
+      "represented": 14140375,
+      "pending": 12,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 120.48192771084331,
+      "p95": 8.300000000000004,
+      "calls": 9,
+      "managedMiB": 45.04904651641846,
+      "blocked": false,
+      "focusDistance": 16099.112169655047,
+      "budget": 1000000
+    },
+    "profiles": [
+      {
+        "name": "NGC 4026",
+        "available": true,
+        "observed": {
+          "litPixels": 4404,
+          "axisRatio": 0.3147394872370014,
+          "visible": true,
+          "blend": 1
+        },
+        "faceOn": {
+          "litPixels": 8360,
+          "axisRatio": 0.999993044886123,
+          "visible": true,
+          "blend": 1
+        },
+        "inside": {
+          "litPixels": 65536,
+          "axisRatio": 0.9960748765607642,
+          "visible": true,
+          "blend": 1
+        },
+        "far": {
+          "litPixels": 0,
+          "axisRatio": null,
+          "visible": false,
+          "blend": 0
+        },
+        "expectedAxisRatio": 0.3146016797918665,
+        "passed": true
+      },
+      {
+        "name": "NGC 3982",
+        "available": true,
+        "observed": {
+          "litPixels": 5885,
+          "axisRatio": 0.8791599817575738,
+          "visible": true,
+          "blend": 1
+        },
+        "faceOn": {
+          "litPixels": 6448,
+          "axisRatio": 0.9999660595179797,
+          "visible": true,
+          "blend": 1
+        },
+        "inside": {
+          "litPixels": 65536,
+          "axisRatio": 0.9993996531212419,
+          "visible": true,
+          "blend": 1
+        },
+        "far": {
+          "litPixels": 0,
+          "axisRatio": null,
+          "visible": false,
+          "blend": 0
+        },
+        "expectedAxisRatio": 0.8788387644479687,
+        "passed": true
+      }
+    ],
+    "resolvedPicking": [
+      {
+        "name": "NGC 4026",
+        "available": true,
+        "passed": true,
+        "targetId": "39633263488141603"
+      },
+      {
+        "name": "NGC 3982",
+        "available": true,
+        "passed": true,
+        "targetId": "39633325333155389"
+      }
+    ],
+    "depthCues": {
+      "near": {
+        "maxAlpha": 255,
+        "coveredPixels": 124
+      },
+      "middle": {
+        "maxAlpha": 149,
+        "coveredPixels": 52
+      },
+      "far": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniform": {
+        "maxAlpha": 224,
+        "coveredPixels": 52
+      },
+      "nearPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 140
+      },
+      "farPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniformPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "faintFloor": {
+        "maxAlpha": 3,
+        "coveredPixels": 32
+      },
+      "faintFloorPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "passed": true
+    },
+    "closeupPerformance": {
+      "drawn": 1489586,
+      "loaded": 4460540,
+      "represented": 1489586,
+      "pending": 0,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": true,
+      "fps": 119.99999999999999,
+      "p95": 9.300000000000182,
+      "calls": 87,
+      "managedMiB": 166.71574687957764,
+      "blocked": false,
+      "focusDistance": 0.01738516398623432,
+      "budget": 1610510
+    },
+    "context": {
+      "supported": true,
+      "recovered": true
+    },
+    "profileAfterRecovery": {
+      "available": true,
+      "observed": {
+        "litPixels": 5885,
+        "axisRatio": 0.8791599817575738,
+        "visible": true,
+        "blend": 1
+      },
+      "faceOn": {
+        "litPixels": 6448,
+        "axisRatio": 0.9999660595179797,
+        "visible": true,
+        "blend": 1
+      },
+      "inside": {
+        "litPixels": 65536,
+        "axisRatio": 0.9993996531212419,
+        "visible": true,
+        "blend": 1
+      },
+      "far": {
+        "litPixels": 0,
+        "axisRatio": null,
+        "visible": false,
+        "blend": 0
+      },
+      "expectedAxisRatio": 0.8788387644479687,
+      "passed": true
+    },
+    "manualSettings": {
+      "minimumDistantOpacityPercent": 2
+    }
+  },
+  {
+    "runId": "chrome-search-fade-regression",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 223.90000000596046,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 598539,
+      "loaded": 634556,
+      "represented": 14140375,
+      "pending": 12,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 79.52286282306163,
+      "p95": 24.299999999999997,
+      "calls": 55,
+      "managedMiB": 75.68797016143799,
+      "blocked": false,
+      "focusDistance": 16099.112169655013,
+      "budget": 1000000
+    },
+    "depthCues": {
+      "near": {
+        "maxAlpha": 255,
+        "coveredPixels": 124
+      },
+      "middle": {
+        "maxAlpha": 149,
+        "coveredPixels": 52
+      },
+      "far": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniform": {
+        "maxAlpha": 224,
+        "coveredPixels": 52
+      },
+      "nearPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 140
+      },
+      "farPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniformPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "faintFloor": {
+        "maxAlpha": 3,
+        "coveredPixels": 32
+      },
+      "faintFloorPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "passed": true
+    },
+    "interaction": {
+      "first": {
+        "ok": true,
+        "selected": "39628100723545457",
+        "attempted": 1
+      },
+      "second": {
+        "ok": true,
+        "selected": "39627981714364036",
+        "attempted": 2
+      },
+      "measuredMpc": 915.7522950655592,
+      "measurementStable": true,
+      "selectedExactId": "39627981714364036"
+    },
+    "context": {
+      "supported": true,
+      "recovered": true
+    },
+    "integrity": {
+      "rejected": true,
+      "message": "Data integrity check failed"
+    },
+    "manualSettings": {
+      "minimumDistantOpacityPercent": 2
+    }
   }
 ]

@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "catalogId": "dr1",
+  "catalogSourceSha256": "2d95ad99361039b556c402b49e0e7c84df5f00106dc5731d44476a58b128b49b",
+  "name": "NGC 3982",
+  "galaxy": {
+    "ra": 179.11738820825124,
+    "dec": 55.125143810334784,
+    "z": 0.00374319231740685,
+    "zerr": 6.364599061855652e-07,
+    "distance": 16.571087037211587,
+    "delta": 586970.4695699438,
+    "id": 13426480,
+    "targetId": "39633325333155389",
+    "position": [
+      -9.473989742072838,
+      0.1459534473994425,
+      13.594967508351491
+    ]
+  },
+  "shape": {
+    "radiusArcsec": 18.033153533935547,
+    "e1": 0.05487750843167305,
+    "e2": 0.03386843204498291,
+    "sersic": 0.9111405611038208,
+    "profileType": "SER"
+  },
+  "gaussians": [
+    {
+      "sigmaRe": 0.03,
+      "peak": 0.15167515561206268
+    },
+    {
+      "sigmaRe": 0.07909952696191073,
+      "peak": 0.2492084980479452
+    },
+    {
+      "sigmaRe": 0.10079454858851344,
+      "peak": 0.008935377350535402
+    },
+    {
+      "sigmaRe": 0.1284399719615818,
+      "peak": 0.1301875274866937
+    },
+    {
+      "sigmaRe": 0.16366784343505553,
+      "peak": 0.24768711145105882
+    },
+    {
+      "sigmaRe": 0.20855783885326812,
+      "peak": 0.2176804998107051
+    },
+    {
+      "sigmaRe": 0.2657600371230247,
+      "peak": 0.2956397672693936
+    },
+    {
+      "sigmaRe": 0.33865136750540664,
+      "peak": 0.4591811498650763
+    },
+    {
+      "sigmaRe": 0.43153496648629885,
+      "peak": 0.4449401012822494
+    },
+    {
+      "sigmaRe": 0.5498942132497306,
+      "peak": 0.6266222645354081
+    },
+    {
+      "sigmaRe": 0.7007164407270363,
+      "peak": 0.5971594976029893
+    },
+    {
+      "sigmaRe": 0.8929054324893951,
+      "peak": 0.5520078575184411
+    },
+    {
+      "sigmaRe": 1.1378070572196748,
+      "peak": 0.33791940410969185
+    },
+    {
+      "sigmaRe": 1.4498790715715255,
+      "peak": 0.11649364893449023
+    },
+    {
+      "sigmaRe": 1.847544633198078,
+      "peak": 0.013223546947670677
+    },
+    {
+      "sigmaRe": 2.354279911054383,
+      "peak": 0.00018364324072795763
+    },
+    {
+      "sigmaRe": 3.0,
+      "peak": 3.669256258432086e-06
+    }
+  ],
+  "fitMaxRelativeError": 0.0024574423671744894,
+  "source": {
+    "url": "https://data.desi.lbl.gov/public/dr1/spectro/redux/iron/zcatalog/v1/zall-pix-iron.fits",
+    "rowZeroBased": 26540536,
+    "rawRowSha256": "ad42e24d4d3377ff97a21ff301a941dda6e26351612f42660deb3d1c4e370a07",
+    "referenceCatalog": "L3",
+    "sgaId": 678110,
+    "nameMatchUrl": "https://sga.legacysurvey.org/?sgaid__gte=678110&sgaid__lte=678110",
+    "shapeDocumentation": "https://www.legacysurvey.org/dr9/catalogs/",
+    "ellipseConvention": "https://github.com/dstndstn/tractor/blob/main/tractor/ellipses.py"
+  },
+  "spiral": {
+    "arms": 2,
+    "pitchDegrees": 22,
+    "phaseRadians": 0.7,
+    "seed": 3982,
+    "interpretation": "Illustrative arms; measured global shape and size",
+    "morphologySource": "https://esahubble.org/images/opo1036a/"
+  }
+}

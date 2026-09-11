@@ -87,3 +87,21 @@ We would like to acknowledge the countless colleagues, friends, and family membe
               
 
 Processing changes: selection of primary galaxy spectra with no redshift warning and finite positive redshift; coordinate conversion to Planck18 comoving Mpc; spatial chunking and deterministic visualization samples. Original measurements and target identifiers are retained. See the dataset manifest for source checksum, selection accounting, cosmology, and subset status. The atlas is not affiliated with or endorsed by the DESI collaboration.
+
+NGC 4026 AND NGC 3982 RESOLVED PROFILES
+
+Imaging shape measurements in the DESI source are credited to the DESI Legacy Imaging Surveys and the Siena Galaxy Atlas (SGA-2020). SGA reference: Moustakas, Lang, et al. (2023), "Siena Galaxy Atlas 2020", https://www.legacysurvey.org/sga/sga2020/ .
+
+The Siena Galaxy Atlas was made possible by funding support from the U.S. Department of Energy, Office of Science, Office of High Energy Physics under Award Number DE-SC0020086 and from the National Science Foundation under grant AST-1616414.
+
+DESI Legacy Imaging Surveys: DECaLS, BASS and MzLS; imaging obtained at the Blanco, Bok and Mayall telescopes, with pipeline processing supported by NOIRLab and LBNL. The full scientific publication acknowledgment, funding credits and SGA acknowledgment are available at https://www.legacysurvey.org/acknowledgment/ . Publications using these data should include the acknowledgments specified there.
+
+Additional processing: two original DESI imaging profiles are approximated by positive Gaussian components, placed at their original redshift-derived catalog positions, and deprojected under an assumed oblate shape. Sky angle and apparent size follow the measured Tractor shapes. Depth, reflected tilt choice, exposure and colors are model/display assumptions. NGC 4026 remains smooth. NGC 3982 adds illustrative spiral arms and light knots; their pitch, phase, handedness and brightness are not measurements, and knots are not individual observed stars. Hubble morphology reference: https://esahubble.org/images/opo1036a/ . No telescope image is redistributed; comparison links open the original Legacy Surveys viewer.
+
+GALAXY NAME SEARCH
+
+SGA-2020 names and identifiers were joined to exact DESI SGA references, with a central-position check and verification against the existing spatial metadata. Filtered SGA downloads: https://sga.legacysurvey.org/ . Input checksums and exact matched identities are retained in data/galaxy-search.json.
+
+OpenNGC database: Copyright Mattia Verga, https://github.com/mattiaverga/OpenNGC . Licensed under Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0): https://creativecommons.org/licenses/by-sa/4.0/ . A copy is included at licenses/CC-BY-SA-4.0.txt.
+
+Changes to OpenNGC data: selected galaxy names and aliases, normalized catalog names, and joined them with SGA and verified DESI destinations. Entries without verified destinations are explicitly identified as unmatched. The derived galaxy-search.json index is distributed under CC BY-SA 4.0. This data license does not change the application code's licensing. The atlas is not endorsed by the source authors.
