@@ -51,4 +51,16 @@ describe('Measured galaxy deprojection',()=>{
   camera.position.copy(model.center).addScaledVector(model.frame.radial,-1000);camera.lookAt(model.center);camera.updateMatrixWorld();model.update(camera,900);
   expect(model.visible).toBe(false);expect(model.blend.value).toBe(0);model.dispose();
  });
+ it('does not let an incidental foreground model cover or intercept the observer view',()=>{
+  const model=new ResolvedGalaxy(data),camera=new THREE.PerspectiveCamera(50,1,.000001,100000);
+  camera.up.set(0,0,1);
+  for(const distance of [6,2,.25,0]){
+   camera.position.copy(model.center).addScaledVector(model.frame.radial,distance*model.radius);
+   camera.lookAt(0,0,0);camera.updateMatrixWorld();model.update(camera,900);
+   expect(model.blend.value).toBe(0);
+   expect(model.visible).toBe(false);
+   expect(model.hitTest(new THREE.Vector2(.6,.6),camera)).toBe(false);
+  }
+  model.dispose();
+ });
 });

@@ -658,6 +658,26 @@ export class Explorer {
     return {available:true,coverage:{count:catalog.manifest.count,measured:catalog.manifest.measuredShapes,assumed:catalog.manifest.assumedShapes,visualTypes:catalog.manifest.visualTypes},cases,unresolved,automatic,saturation,bounded,
       passed:cases.every(item=>item.family===item.expectedFamily&&item.picking.passed&&item.profile.passed)&&!unresolved.shapeMeasured&&Math.abs(unresolved.radiusMpc-.005)<1e-12&&unresolved.picking.passed&&automatic.loadedWithoutSelection&&automatic.selectionEmpty&&bounded};
   }
+  async probeObserverPass(){
+    const model=this.resolvedGalaxies.find(item=>item.data.spiral)!;
+    this.focusObserver();
+    const target=new THREE.WebGLRenderTarget(256,256),pixels=new Uint8Array(256*256*4);
+    const samples=[];
+    try{
+      for(const radiusMultiple of [60,24,12,6,2,.25,0,-2]){
+        this.camera.position.copy(model.center).addScaledVector(model.frame.radial,model.radius*radiusMultiple);
+        this.controls.target.set(0,0,0);this.controls.update();
+        model.update(this.camera,this.canvas.clientHeight||innerHeight,this.pixelRatio);
+        this.renderer.setRenderTarget(target);this.renderer.setClearColor(0,0);this.renderer.clear();this.renderer.render(model.scene,this.camera);
+        this.renderer.readRenderTargetPixels(target,0,0,256,256,pixels);
+        let bright=0;
+        for(let i=0;i<pixels.length;i+=4)if(Math.max(pixels[i],pixels[i+1],pixels[i+2])>24)bright++;
+        samples.push({radiusMultiple,blend:model.blend.value,brightFraction:bright/65536,bodyIntercepts:model.hitTest(new THREE.Vector2(.6,.6),this.camera)});
+      }
+    }finally{target.dispose();this.renderer.setRenderTarget(null);this.renderer.setClearColor(0x06090d,1)}
+    this.camera.position.copy(model.center).addScaledVector(model.frame.radial,model.radius*.25);this.controls.update();this.invalidate();
+    return {galaxy:model.data.name,samples,passed:samples.filter(sample=>sample.radiusMultiple<=6).every(sample=>sample.brightFraction<.05&&!sample.bodyIntercepts)};
+  }
   probeGalaxyProfile(id=this.resolved?.data.galaxy.id){
     const source=id===undefined?null:this.resolvedFor(id);if(!source)return {available:false};
     // Check the measured smooth component separately from illustrative arm light.

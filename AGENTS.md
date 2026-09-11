@@ -25,3 +25,7 @@ Dave requested on 2026-09-11: **commit early and often, and commit the work you 
 - `npm run build` checks TypeScript and catalog asset presence/sizes, then builds the static app.
 - Use the Sites build helper when required by the active Sites skills.
 - Keep `docs/requirements.md`, `docs/architecture.md`, `docs/galaxy-detail.md`, and `docs/validation.md` consistent with the implemented experience. Record measured performance separately from targets.
+
+## Agent skills
+
+Use [the local engineering workflow](docs/agents/workflow.md) for issue tracking and domain-document locations. UI diagnosis uses `docs/ux-review.md`; the existing product and validation documents remain authoritative. Keep the requested small, frequent commits throughout review and fixes.
