@@ -80,7 +80,7 @@ The main renderer batches point geometry, uses camera-relative coordinates to re
 
 Nearby catalog objects outside the local-distance safeguard crossfade into bounded analytic light volumes and, where appropriate, seeded spiral arms or irregular clumps. There are at most **12 resident DESI models**, plus six fixed nearby models and the Milky Way reference. The nearby layer batches its six distant points into one draw call; its geometry is bounded to about 3.8 MiB in the default spiral appearance (2.6 MiB with catalog types). Models start resolving about 1.6 times farther away than before. Streamed models retain their identity across point-chunk changes and fade in/out over 0.6 seconds; a ranking margin limits repeated replacements within the fixed pool. Automatic display fades incidental models back to points before they fill the view. **Visit** or **Focus** keeps the chosen galaxy visible for deliberate close-ups. Settings also offers **Focused galaxy only** and **Points only**.
 
-**All spirals** is the default appearance for now. Every catalog/nearby model uses an illustrative spiral disk, preserving its adopted center, radius and projected sky ellipse. Settings → **Galaxy appearance → Catalog types** restores the source-based variants. The override changes the light profile and assumed depth; it does not reclassify galaxies or change their source data.
+**All spirals** is the default appearance for now. Every catalog/nearby model uses an illustrative spiral disk, preserving its adopted center, radius and projected sky ellipse. Settings → **Galaxy appearance → Catalog types** restores the source-based variants. The override changes the light profile and assumed depth; it does not reclassify galaxies or change their source data. Galaxy models also receive subtle, stable blue-white to ivory palettes with warmer centers and faint pink accents. These are illustrative colors, not measured photometry; they remain the same when models reload or appearance changes.
 
 The visual direction is a dark, uncluttered atlas with recognizable galaxy shapes, restrained glow and varied orientations. Dense fly-through views with many small galaxy silhouettes are a future intermediate level of detail; currently distant observations remain points.
 
@@ -91,6 +91,7 @@ The visual direction is a dark, uncluttered atlas with recognizable galaxy shape
 | [`src/app.ts`](src/app.ts) | HUD markup, inspector panels, settings, control wiring and optional WebMCP actions |
 | [`src/style.css`](src/style.css) | Layout, theme, responsive controls and scrolling panels |
 | [`src/explorer.ts`](src/explorer.ts) | Camera/navigation, point shaders, streaming decisions, GPU picking, model pool and diagnostic probes |
+| [`src/galaxy-colors.ts`](src/galaxy-colors.ts) | Stable per-galaxy color palettes, restrained tint range and brightness normalization |
 | [`src/galaxy-detail.ts`](src/galaxy-detail.ts) | Shared volume renderer, measured-shape projection, model fading and seeded light geometry |
 | [`src/model-catalog.ts`](src/model-catalog.ts) | Profile sidecar loading, decoding and morphology interpretation |
 | [`src/nearby-galaxies.ts`](src/nearby-galaxies.ts), [`src/data/nearby-sources.json`](src/data/nearby-sources.json) | Nearby entries, independent distance provenance, model inputs and separate identities |
@@ -179,6 +180,7 @@ Run these against `npm run dev`, using a unique `run` name:
 | `?selftest&run=my-points` | Point visibility/picking, measurement persistence, data integrity rejection and graphics recovery |
 | `?hometest&run=my-milky-way` | Core-centered toolbar/search/wheel navigation, separate Sun focus, labels, body picking, inside/near-Sun rendering, display modes, marker clipping and graphics recovery; full data also checks the embedded-position safeguard and raw-position setting |
 | `?uxtest&run=my-navigation` | Foreground obstruction, focus intent, reachable actions, delayed-search cancellation and flight controls; requires full data |
+| `?colortest&run=my-colors` | GPU color variation with identical geometry, stable brightness, deterministic reconstruction, draw/geometry budgets and graphics recovery |
 | `?continuitytest&run=my-spirals` | Saved appearance switch, preserved source properties, and two Andromeda orbits checking model continuity and the 12-model bound; orbit check requires full data |
 | `?nearbytest&run=my-neighbors` | All six search destinations, center framing, model/point picking, projected shapes, independent-distance measurements and graphics recovery; works with subsets |
 | `?modeltest&run=my-models` | All five catalog families, projected shape, body selection, automatic loading and the model pool limit; requires full data |

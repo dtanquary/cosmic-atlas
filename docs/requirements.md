@@ -73,3 +73,7 @@ Preserve cited projected shapes where available and disclose size/orientation as
 Default to spiral illustrations for every DESI and nearby-layer model. Settings offers a saved Galaxy appearance choice to restore Catalog types. Preserve adopted coordinates, distance, radius and projected sky ellipse; disclose the illustrative morphology, light profile and depth. Keep the separate Milky Way spiral reference intact.
 
 Resolve models across a 0.6–5 CSS-pixel half-light-radius range, approximately 60% farther away than before. Prefetch earlier, retain resident models across point-frontier changes, and avoid near-equal candidates constantly replacing each other. Fade automatic pool arrivals and departures over 0.6 seconds, preserving the maximum of 12 resident DESI models and consistent point/body selection. Verify the reported Andromeda orbit with actual streaming; increasing distance alone is insufficient to fix visible model eviction.
+
+## Subtle galaxy colors
+
+Use restrained per-galaxy color variation, spanning blue-white to soft ivory with warmer centers and faint pink accents. Assign a stable palette from the exact target identity, including nearby namespaces, so camera motion, streaming, appearance changes and reloads do not change it. Treat this as an illustrative stellar-population-inspired palette, not measured photometry, inferred age, dust or redshift color. Keep palette luminance controlled, geometry/measurement data unchanged and rendering allocations/draw counts bounded.

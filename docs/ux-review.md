@@ -97,3 +97,9 @@ The targeted trace confirmed visible removals both when the source point node le
 All spirals is now the saved/default appearance, with Catalog types available in Settings. The common disk/arms override leaves original identities, catalog classifications, positions, radii and projected ellipses intact. The inspector explicitly distinguishes the appearance from source properties. Models resolve across 0.6–5 CSS pixels instead of 1–8, approximately 60% farther out, with earlier candidate loading.
 
 Native Chrome review confirmed the Settings layout, both appearance choices, reload persistence and Andromeda framing. The faint cloud-like background texture is also present in Points only; it is submitted survey-point density, not one of the replaced glow models. Automatic close-ups and All spirals were restored with the 2% opacity floor, enlargement off and uncertain-local safeguard on. Full and subset acceptance results are recorded in [validation](validation.md).
+
+## Subtle color variation — verified
+
+Galaxy models now vary gently between blue-white and soft ivory, with warmer centers and sparse muted pink accents. A palette belongs to the exact galaxy identity, so streaming or switching appearance does not reshuffle its tint. The inspector and README disclose that the palettes are illustrative rather than measured photometry.
+
+Native Chrome comparison of Andromeda and the Small Magellanic Cloud confirmed visible but restrained cool/warm differences with the existing spiral shapes. GPU comparison of identical geometry isolates the tint from orientation and size: integrated brightness differs by just 0.0151%, and reconstruction/context recovery reproduce the same colors. Full and subset rendering, navigation and nearby checks pass; the Andromeda continuity replay still records zero abrupt transitions. No new controls were needed. The browser was returned to Andromeda for testing.

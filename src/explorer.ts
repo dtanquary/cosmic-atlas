@@ -7,6 +7,7 @@ import {ResolvedGalaxy, detailBlend, type GalaxyDetailData, type ModelDisplay,ty
 import {ModelCatalog,MODEL_LIMIT,decodeModel,measuredShape} from './model-catalog';
 import {MilkyWay} from './milky-way';
 import {createNearbyGalaxies} from './nearby-galaxies';
+import {galaxyColors} from './galaxy-colors';
 import {LOCAL_REDSHIFT_GUARD_MPC,uncertainLocalDistance,uncertainLocalPosition} from './local-distances';
 import type { Galaxy, Manifest, SpatialNode } from './types';
 
@@ -761,6 +762,27 @@ export class Explorer {
     if(this.wasContinuous)this.invalidate();
   }
   get measurementDistance(){return this.measurement.length===2?separation(this.measurement[0].position,this.measurement[1].position):null}
+  /** Isolate palette changes with identical geometry in the actual GPU pipeline. */
+  probeGalaxyColors(){
+    const source=this.nearbyGalaxies[0].data,target=new THREE.WebGLRenderTarget(256,256),pixels=new Uint8Array(256*256*4);
+    const camera=new THREE.PerspectiveCamera(50,1,.000001,100000);
+    const identities=['nearby:m31','nearby:m33','nearby:lmc','nearby:smc'].sort((a,b)=>{const x=galaxyColors(a).disk,y=galaxyColors(b).disk;return x[0]/x[2]-y[0]/y[2]});
+    const sample=(identity:string)=>{
+      const model=new ResolvedGalaxy({...source,galaxy:{...source.galaxy,targetId:identity}},'spiral');
+      try{
+        camera.up.copy(model.frame.major);camera.position.copy(model.center).addScaledVector(model.frame.normal,12*model.radius);camera.lookAt(model.center);camera.updateMatrixWorld();model.update(camera,256,1,true);
+        this.renderer.setRenderTarget(target);this.renderer.setClearColor(0,0);this.renderer.clear();this.renderer.info.reset();this.renderer.render(model.scene,camera);
+        this.renderer.readRenderTargetPixels(target,0,0,256,256,pixels);
+        const rgb=[0,0,0];let checksum=2166136261;
+        for(let i=0;i<pixels.length;i+=4){for(let c=0;c<3;c++)rgb[c]+=pixels[i+c];checksum=Math.imul(checksum^pixels[i],16777619);checksum=Math.imul(checksum^pixels[i+1],16777619);checksum=Math.imul(checksum^pixels[i+2],16777619)}
+        return {identity,rgb,redBlue:rgb[0]/rgb[2],luminance:rgb[0]*.2126+rgb[1]*.7152+rgb[2]*.0722,checksum:checksum>>>0,calls:this.renderer.info.render.calls,bytes:model.memoryBytes};
+      }finally{model.dispose()}
+    };
+    try{
+      const cool=sample(identities[0]),warm=sample(identities.at(-1)!),repeat=sample(identities[0]),brightnessDifference=Math.abs(cool.luminance-warm.luminance)/cool.luminance;
+      return {cool,warm,repeat,brightnessDifference,passed:warm.redBlue-cool.redBlue>.08&&brightnessDifference<.05&&cool.checksum===repeat.checksum&&cool.bytes===warm.bytes&&cool.calls===2&&warm.calls===2};
+    }finally{target.dispose();this.renderer.setRenderTarget(null);this.renderer.setClearColor(0x06090d,1);this.invalidate()}
+  }
   async probeGalaxyAppearance(){
     const input=document.getElementById('galaxy-appearance') as HTMLSelectElement,saved=input.value as GalaxyAppearance,stored=localStorage.getItem('atlas-galaxy-appearance');
     const change=(value:GalaxyAppearance)=>{input.value=value;input.dispatchEvent(new Event('change',{bubbles:true}))};
