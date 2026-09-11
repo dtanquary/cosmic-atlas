@@ -3,6 +3,7 @@ import {cartesian} from './format';
 import spiralProfile from './data/spiral-profile.json';
 import type {Galaxy} from './types';
 import {galaxyColors,type GalaxyColors} from './galaxy-colors';
+import {galaxyVariant} from './galaxy-variants';
 
 export type GalaxyFamily='spiral'|'barred'|'elliptical'|'lenticular'|'irregular';
 export type GalaxyAppearance='spiral'|'catalog';
@@ -13,7 +14,7 @@ export interface GalaxyDetailData {
   version:1; catalogId:string; catalogSourceSha256:string; name:string; galaxy:Galaxy;
   shape:{radiusArcsec:number; e1:number; e2:number; sersic:number; profileType:string};
   gaussians:{sigmaRe:number; peak:number}[]; fitMaxRelativeError:number;
-  spiral?:{arms:number; pitchDegrees:number; phaseRadians:number; seed:number; bar?:boolean; barRadiusRe?:number};
+  spiral?:{arms:number; pitchDegrees:number; phaseRadians:number; seed:number; bar?:boolean; barRadiusRe?:number;innerStyle?:'ring'};
   model?:{family:GalaxyFamily;typeSource:'catalog'|'proxy';typeLabel:string;shapeMeasured:boolean;sourceName?:string;profileIndex:number};
   knotCount?:number;
 }
@@ -33,7 +34,15 @@ export function spiralSamples(parameters:NonNullable<GalaxyDetailData['spiral']>
     if(r>4.5){i--;continue}
     const arm=i%parameters.arms;
     const phase=parameters.phaseRadians+arm*2*Math.PI/parameters.arms+winding*Math.log(r/start);
-    const angle=random()<.2?random()*2*Math.PI:phase+normal()*(.2+.045*r)+.08*Math.sin(r*10+arm*3);
+    let angle=random()<.2?random()*2*Math.PI:phase+normal()*(.2+.045*r)+.08*Math.sin(r*10+arm*3);
+    // Variants move light around the disk, never toward the core or farther out.
+    // Reuse existing angles: no extra samples, random draws, or concentrated bulge.
+    // Keep half the samples on their spiral paths, balanced across both arms.
+    if(parameters.innerStyle==='ring'&&i%4<2){
+      const strength=THREE.MathUtils.smoothstep(r,.45,.8)*(1-THREE.MathUtils.smoothstep(r,1.25,1.65));
+      const ringAngle=parameters.phaseRadians+i*2.399963229728653;
+      angle+=Math.atan2(Math.sin(ringAngle-angle),Math.cos(ringAngle-angle))*strength;
+    }
     positions.set([r*Math.cos(angle),r*Math.sin(angle),normal()*.035],i*3);
     if(parameters.bar&&random()<.27){
       const x=(random()*2-1)*barRadius,y=normal()*.09,c=Math.cos(parameters.phaseRadians),s=Math.sin(parameters.phaseRadians);
@@ -144,6 +153,13 @@ void main(){
 export interface VolumeFrame {major:THREE.Vector3;minor:THREE.Vector3;normal:THREE.Vector3;thickness:number;q:number}
 export interface GalaxyLight {family:GalaxyFamily;gaussians:GalaxyDetailData['gaussians'];spiral?:GalaxyDetailData['spiral'];seed:number;knotCount?:number;exposure?:number;colors?:GalaxyColors}
 
+/** One shared exposure/profile/point budget for every illustrative disk variant. */
+export function spiralLight(data:GalaxyDetailData):GalaxyLight {
+  return {family:'spiral',colors:galaxyColors(data.galaxy.targetId),gaussians:spiralProfile.gaussians,
+    spiral:galaxyVariant(data.galaxy.targetId).parameters,seed:data.galaxy.id,
+    knotCount:data.knotCount??(data.spiral?24000:12000),exposure:.55};
+}
+
 /** Shared renderer; reference models need no invented catalog identity. */
 export class GalaxyVolume<F extends VolumeFrame=VolumeFrame> {
   readonly scene=new THREE.Scene();
@@ -245,9 +261,7 @@ export class ResolvedGalaxy extends GalaxyVolume<ReturnType<typeof galaxyFrame>>
     const family=appearance==='spiral'?'spiral':data.model?.family??(data.spiral?'spiral':'lenticular');
     const q=(1-Math.hypot(shape.e1,shape.e2))/(1+Math.hypot(shape.e1,shape.e2));
     const intrinsic=Math.min(family==='elliptical'?.65:family==='irregular'?.3:.12,q*.95);
-    const seed=Math.imul(galaxy.id+1,2654435761)>>>0;
-    const spiral=appearance==='spiral'?{arms:2,pitchDegrees:20,phaseRadians:seed/4294967296*Math.PI*2,seed}:data.spiral;
-    super({family,colors:galaxyColors(galaxy.targetId),gaussians:appearance==='spiral'?spiralProfile.gaussians:data.gaussians,spiral,seed:galaxy.id,knotCount:data.knotCount??(data.spiral?24000:12000)},
+    super(appearance==='spiral'?spiralLight(data):{family,colors:galaxyColors(galaxy.targetId),gaussians:data.gaussians,spiral:data.spiral,seed:galaxy.id,knotCount:data.knotCount??(data.spiral?24000:12000)},
       galaxyFrame(galaxy.ra,galaxy.dec,shape.e1,shape.e2,intrinsic),galaxyRadius(galaxy.distance,shape.radiusArcsec),new THREE.Vector3().fromArray(galaxy.position));
   }
 }

@@ -8,6 +8,11 @@ export async function runDiagnostics(atlas:Explorer,parent:HTMLElement){
  const sleep=(ms:number)=>new Promise(resolve=>setTimeout(resolve,ms));
  while(!atlas.stats.drawn){await sleep(100)}
  report.firstCoarseMs=performance.now();report.rendering=atlas.renderingInfo;report.initial=atlas.stats;show();
+ if(query.has('varianttest')){
+  const preview=document.createElement('section');preview.id='variant-preview';preview.style.cssText='position:absolute;inset:120px 40px auto 190px;background:#081017;padding:20px;z-index:21;color:#c9d7dc;font:13px sans-serif;pointer-events:none';
+  report.variants=await atlas.probeGalaxyVariants(preview);show();report.variantContext=await atlas.probeContextRecovery();report.variantsAfterRecovery=await atlas.probeGalaxyVariants();
+  if(query.has('variantpreview'))parent.append(preview);show();
+ }
  if(query.has('colortest')){report.colors=atlas.probeGalaxyColors();show();report.colorContext=await atlas.probeContextRecovery();report.colorsAfterRecovery=atlas.probeGalaxyColors();show()}
  if(query.has('continuitytest')){report.appearance=await atlas.probeGalaxyAppearance();show();report.continuity=await atlas.probeModelContinuity();show()}
  if(query.has('uxtest')){report.observerPass=await atlas.probeObserverPass();const {probeUI,probeSearchAvailability}=await import('./ui-diagnostics');report.ui=await probeUI(atlas);report.searchAvailability=await probeSearchAvailability(atlas);show()}

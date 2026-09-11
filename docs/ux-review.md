@@ -103,3 +103,9 @@ Native Chrome review confirmed the Settings layout, both appearance choices, rel
 Galaxy models now vary gently between blue-white and soft ivory, with warmer centers and sparse muted pink accents. A palette belongs to the exact galaxy identity, so streaming or switching appearance does not reshuffle its tint. The inspector and README disclose that the palettes are illustrative rather than measured photometry.
 
 Native Chrome comparison of Andromeda and the Small Magellanic Cloud confirmed visible but restrained cool/warm differences with the existing spiral shapes. GPU comparison of identical geometry isolates the tint from orientation and size: integrated brightness differs by just 0.0151%, and reconstruction/context recovery reproduce the same colors. Full and subset rendering, navigation and nearby checks pass; the Andromeda continuity replay still records zero abrupt transitions. No new controls were needed. The browser was returned to Andromeda for testing.
+
+## Restrained disk variants — verified
+
+The default appearance now mixes the existing classic spiral with a finer multi-arm disk and a ringed spiral disk. The ring is a partial accent that retains visible spiral arms. Both use the same size/exposure/light-sample template; identity-based assignment persists across loading and dataset row changes. The inspector names the illustration separately from source morphology, and Settings describes the three related styles.
+
+Side-by-side native Chrome review and three-angle GPU readback confirm distinct structure with closely matched total brightness and no added near-white area. The concentrated-bar trial was excluded after failing the highlight check. The existing two-orbit continuity test still reports zero abrupt transitions. The development preview now ignores pointer events, and all nine UI reachability/search/flight checks pass with it visible. See [validation](validation.md) for measurements and raw reports.

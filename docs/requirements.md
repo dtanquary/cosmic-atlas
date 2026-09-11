@@ -77,3 +77,7 @@ Resolve models across a 0.6–5 CSS-pixel half-light-radius range, approximately
 ## Subtle galaxy colors
 
 Use restrained per-galaxy color variation, spanning blue-white to soft ivory with warmer centers and faint pink accents. Assign a stable palette from the exact target identity, including nearby namespaces, so camera motion, streaming, appearance changes and reloads do not change it. Treat this as an illustrative stellar-population-inspired palette, not measured photometry, inferred age, dust or redshift color. Keep palette luminance controlled, geometry/measurement data unchanged and rendering allocations/draw counts bounded.
+
+## Similar galaxy variants
+
+Use the existing common spiral as the size and brightness template for two additional illustrations: fine multi-arm spiral and ringed spiral disk. Mix them into the default appearance with stable identity-based assignment. Preserve the common light profile, exposure, radial sample distribution, depth and light-sample budget; avoid bright concentrated cores or blob-like substitutes. Keep source morphology and measurements separate from the illustration. Verify both total brightness and concentrated highlights at multiple viewing angles, plus existing model continuity and selection.
