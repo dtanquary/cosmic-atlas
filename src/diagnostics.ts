@@ -29,6 +29,7 @@ export async function runDiagnostics(atlas:Explorer,parent:HTMLElement){
   report.context=await atlas.probeContextRecovery();report.profileAfterRecovery=atlas.probeGalaxyProfile();
  }
  if(query.has('selftest')){
+  const {probePointSettings}=await import('./ui-diagnostics');report.pointSettings=await probePointSettings(atlas);show();
   // A preceding home/model probe may leave the camera inside a local volume,
   // where distant catalog points are intentionally faded out.
   atlas.reset();atlas.clearSelection();await sleep(250);

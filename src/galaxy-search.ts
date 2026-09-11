@@ -91,7 +91,7 @@ export class GalaxySearch {
       const recorded=entry.id===undefined?null:this.atlas.modelCatalog?.manifest.namedTypes[String(entry.id)];
       const modelLabel=recorded?`${familyLabels[recorded.family]} model`:model?.data.spiral?'Spiral model':model?'Smooth model':this.atlas.modelCatalog?'3D model':'Catalog point';
       const aliases=entry.aliases.filter(a=>a!==entry.name&&!a.startsWith('PGC')&&!a.startsWith('UGC')&&!a.startsWith('Messier')).slice(0,2).join(' · ');
-      detail.textContent=entry.kind==='observer'?'Our location · Milky Way model':available?[aliases,formatDistance(entry.distance!,this.atlas.units),modelLabel].filter(Boolean).join(' · '):[aliases,'No matched observation in this atlas'].filter(Boolean).join(' · ');
+      detail.textContent=entry.kind==='observer'?'Our home galaxy · Galactic core view':available?[aliases,formatDistance(entry.distance!,this.atlas.units),modelLabel].filter(Boolean).join(' · '):[aliases,'No matched observation in this atlas'].filter(Boolean).join(' · ');
       option.append(title,detail);option.dataset.result=String(i);this.list.append(option);
     }
     this.highlight();
@@ -108,7 +108,7 @@ export class GalaxySearch {
     const controller=new AbortController();this.pendingVisit=controller;
     this.busy=true;this.input.disabled=true;this.dialog.setAttribute('aria-busy','true');this.status.textContent=`Visiting ${entry.name}…`;
     try{
-      if(entry.kind==='observer')this.atlas.focusObserver();
+      if(entry.kind==='observer')this.atlas.visitMilkyWay();
       // Check the actual dialog state as well: its close event is asynchronous.
       else await this.atlas.visitCatalog({id:entry.id!,node:entry.node!,row:entry.row!,targetId:entry.targetId!},()=>this.dialog.open&&this.pendingVisit===controller&&!controller.signal.aborted);
       if(controller.signal.aborted||!this.dialog.open)return;

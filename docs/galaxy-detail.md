@@ -80,8 +80,8 @@ Image-constrained arm and dust geometry, improved distances for very nearby gala
 
 ## Navigation visibility
 
-Automatic close-ups yield to points when they would obstruct the camera. The fade spans projected half-light radii of 6–16% of the shorter viewport side; this is a display cue, not a change in physical size. Visit, Focus, and Observer-facing view explicitly protect the chosen model for full close-up exploration. Observer and Overview remove that exemption without discarding the inspected observation. Settings can limit models to the focused galaxy or show points only.
+Automatic close-ups yield to points when they would obstruct the camera. The fade spans projected half-light radii of 6–16% of the shorter viewport side; this is a display cue, not a change in physical size. Visit, Focus, and Observer-facing view explicitly protect the chosen model for full close-up exploration. Milky Way and Overview remove that catalog exemption without discarding the inspected observation. Settings can limit models to the focused galaxy or show points only.
 
 ## Milky Way
 
-A separate [Milky Way reference model](milky-way.md) is available even with the bootstrap dataset. It shares the volume renderer and uses adopted Galactic geometry, an illustrative bar/spiral disk and bulge. It adds one fixed home model beside the bounded catalog pool. Observer now visits this model around the Solar System; its dedicated inspector supplies sources without manufacturing a DESI record.
+A separate [Milky Way reference model](milky-way.md) is available even with the bootstrap dataset. It shares the volume renderer and uses adopted Galactic geometry, an illustrative bar/spiral disk and bulge. It adds one fixed home model beside the bounded catalog pool. The Milky Way toolbar button and name search center this model on the Galactic core, with Sun / Observer as a separate focus; its dedicated inspector supplies sources without manufacturing a DESI record.

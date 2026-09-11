@@ -16,6 +16,7 @@ uniform vec3 uOrigin;
 uniform float uSize;
 uniform uint uNode;
 uniform bool uDepthCues;
+uniform bool uEnlargePoints;
 uniform vec2 uFadeRange;
 uniform vec3 uDetailOrigins[${MODEL_LIMIT}];
 uniform float uDetailMix[${MODEL_LIMIT}];
@@ -32,11 +33,11 @@ void main(){
   gl_Position = projectionMatrix * vec4(mat3(viewMatrix) * relative, 1.0);
   gl_PointSize = uSize;
   vVisibility = 1.0;
-  if(uDepthCues){
+  if(uDepthCues || uEnlargePoints){
     float distanceToCamera = length(relative);
-    vVisibility = mix(1.0,uMinOpacity,smoothstep(uFadeRange.x, uFadeRange.y, distanceToCamera));
+    if(uDepthCues) vVisibility = mix(1.0,uMinOpacity,smoothstep(uFadeRange.x, uFadeRange.y, distanceToCamera));
     // Screen markers grow by at most 65%, only within 150 Mpc of the camera.
-    gl_PointSize *= 1.0 + .65 * (1.0 - smoothstep(0.0, 150.0, distanceToCamera));
+    if(uEnlargePoints) gl_PointSize *= 1.0 + .65 * (1.0 - smoothstep(0.0, 150.0, distanceToCamera));
   }
   vCode = (uNode << 16u) | uint(gl_VertexID);
 }`;
@@ -88,6 +89,7 @@ export class Explorer {
   readonly milkyWay=new MilkyWay();
   homeSelected=false;
   private homeFocused=false;
+  get homeView(){return !this.homeFocused?null:this.controls.target.distanceToSquared(this.milkyWay.center)<1e-18?'galaxy':this.controls.target.lengthSq()<1e-18?'sun':null}
   onHomeSelection=(active:boolean)=>{};
   // Inspection and navigation focus are independent: Observer preserves details
   // while removing a previous galaxy's intentional close-up exemption.
@@ -109,6 +111,7 @@ export class Explorer {
   onReady=()=>{};
   onError=(message:string)=>{};
   onOrigin=(x:number,y:number,visible:boolean)=>{};
+  onHomeCenter=(x:number,y:number,visible:boolean)=>{};
   private scene=new THREE.Scene();
   private annotations=new THREE.Scene();
   private loader=new ChunkLoader();
@@ -149,6 +152,7 @@ export class Explorer {
   private selectionSerial=0;
   private picking=false;
   private depthCueUniform={value:true};
+  private enlargePointsUniform={value:false};
   private fadeRangeUniform={value:new THREE.Vector2(100,1000)};
   private detailBlendUniform={value:new Float32Array(MODEL_LIMIT)};
   private detailOriginsUniform={value:Array.from({length:MODEL_LIMIT},()=>new THREE.Vector3())};
@@ -162,6 +166,7 @@ export class Explorer {
   private pickTarget=new THREE.WebGLRenderTarget(1,1,{type:THREE.UnsignedByteType,format:THREE.RGBAFormat,minFilter:THREE.NearestFilter,magFilter:THREE.NearestFilter,depthBuffer:true,stencilBuffer:false});
   private pickMaterial=this.material(pickFragment,9,false,true);
   private originMarker=this.marker(0x7299ad,7);
+  private homeCenterMarker=this.marker(0xd4bd96,7);
   private selectionMarker=this.marker(0xb6f1fa,15);
   private measureMarkers=[this.marker(0x9ee4f1,13),this.marker(0x9ee4f1,13)];
   private measureLine=new THREE.Line(new THREE.BufferGeometry(),this.material(lineFragment,1,true));
@@ -180,7 +185,8 @@ export class Explorer {
     this.loader.onChange=()=>{this.dirty=true;this.invalidate()};
     this.pickMaterial.blending=THREE.NoBlending;this.pickMaterial.depthWrite=true;
     this.selectionMarker.visible=false;this.measureMarkers.forEach(m=>m.visible=false);this.measureLine.visible=false;
-    this.annotations.add(this.originMarker,this.selectionMarker,...this.measureMarkers,this.measureLine);
+    this.homeCenterMarker.userData.world.copy(this.milkyWay.center);this.homeCenterMarker.visible=false;
+    this.annotations.add(this.originMarker,this.homeCenterMarker,this.selectionMarker,...this.measureMarkers,this.measureLine);
     this.measureLine.frustumCulled=false;
     const signal=this.lifecycle.signal;
     addEventListener('resize',()=>this.resize(),{signal});
@@ -212,7 +218,7 @@ export class Explorer {
   }
   private material(fragment:string,size:number,transparent:boolean,depthCues=false){
     const material=new THREE.RawShaderMaterial({glslVersion:THREE.GLSL3,vertexShader:vertex,fragmentShader:fragment,
-      uniforms:{uOrigin:{value:new THREE.Vector3()},uSize:{value:size},uNode:{value:0},uColor:{value:new THREE.Color(0x9fe5f1)},uDepthCues:depthCues?this.depthCueUniform:{value:false},uFadeRange:this.fadeRangeUniform,
+      uniforms:{uOrigin:{value:new THREE.Vector3()},uSize:{value:size},uNode:{value:0},uColor:{value:new THREE.Color(0x9fe5f1)},uDepthCues:depthCues?this.depthCueUniform:{value:false},uEnlargePoints:depthCues?this.enlargePointsUniform:{value:false},uFadeRange:this.fadeRangeUniform,
         uDetailOrigins:this.detailOriginsUniform,uDetailMix:this.detailBlendUniform,uMinOpacity:this.minOpacityUniform},
       transparent,depthTest:true,depthWrite:!transparent,toneMapped:false});
     (material.defaultAttributeValues as Record<string,number[]>).detailSlot=[0];return material;
@@ -291,6 +297,7 @@ export class Explorer {
   }
   setMode(mode:'adaptive'|'full'){this.mode=mode;this.blocked=false;this.dirty=true;this.invalidate()}
   setDepthCues(enabled:boolean){this.depthCueUniform.value=enabled;this.dirty=true;this.invalidate()}
+  setEnlargePoints(enabled:boolean){this.enlargePointsUniform.value=enabled;this.invalidate()}
   setMinimumOpacity(value:number){if(!Number.isFinite(value))return;this.minOpacityUniform.value=THREE.MathUtils.clamp(value,0,1);this.dirty=true;this.invalidate()}
   setModelDisplay(display:ModelDisplay){this.modelDisplay=display;this.modelScanNeeded=true;this.dirty=true;this.invalidate()}
   private updateModel(model:ResolvedGalaxy){model.update(this.camera,this.canvas.clientHeight||innerHeight,this.pixelRatio,model.data.galaxy.id===this.focusedGalaxyId,this.modelDisplay)}
@@ -474,11 +481,12 @@ export class Explorer {
   focusObserver(){
     if(!this.ready)return;
     this.focusAt(new THREE.Vector3(0,0,0),.06,this.milkyWay.approachDirection,null,true);
-    this.inspectHome();this.onMessage(this.modelDisplay==='points'?'Milky Way · points-only display is on. Enable models in Settings to see its shape.':'Milky Way · centered on the Sun. Scroll to approach our location.');
+    this.inspectHome();this.onMessage('Sun / Observer · zoom and orbit around our position in the disk.');
   }
   visitMilkyWay(){
     if(!this.ready)return;
     this.focusAt(this.milkyWay.center,.06,this.milkyWay.approachDirection,null,true);this.inspectHome();
+    this.onMessage(this.modelDisplay==='points'?'Milky Way · points-only display is on. Enable models in Settings to see its shape.':'Milky Way · zoom and orbit around the Galactic core.');
   }
   private inspectHome(){this.selectionSerial++;this.homeSelected=true;this.onHomeSelection(true);this.invalidate()}
   clearHomeSelection(){this.homeSelected=false;this.onHomeSelection(false)}
@@ -562,7 +570,8 @@ export class Explorer {
     if(this.measurement.length===2){const [a,b]=this.measurement;this.measureLine.userData.world=new THREE.Vector3().fromArray(a.position);this.measureLine.geometry.dispose();this.measureLine.geometry=new THREE.BufferGeometry();this.measureLine.geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array([0,0,0,b.position[0]-a.position[0],b.position[1]-a.position[1],b.position[2]-a.position[2]]),3))}
   }
   private positionAnnotations(){
-    for(const marker of [this.originMarker,this.selectionMarker,...this.measureMarkers]){
+    this.homeCenterMarker.visible=this.homeFocused&&this.milkyWay.blend.value>.1;
+    for(const marker of [this.originMarker,this.homeCenterMarker,this.selectionMarker,...this.measureMarkers]){
       marker.material.uniforms.uOrigin.value.copy(marker.userData.world).sub(this.camera.position);
       marker.material.uniforms.uSize.value=marker.userData.size*this.pixelRatio;
     }
@@ -570,6 +579,10 @@ export class Explorer {
     const origin=new THREE.Vector3().project(this.camera);
     const observerInFront=this.camera.getWorldDirection(this.scratch).dot(this.camera.position)<0;
     this.onOrigin((origin.x*.5+.5)*this.canvas.clientWidth,(.5-origin.y*.5)*this.canvas.clientHeight,observerInFront&&origin.z>-1&&origin.z<1&&Math.abs(origin.x)<.95&&Math.abs(origin.y)<.9);
+    const center=this.milkyWay.center.clone().project(this.camera);
+    const centerInFront=this.camera.getWorldDirection(this.scratch).dot(this.milkyWay.center.clone().sub(this.camera.position))>0;
+    const separated=Math.hypot((center.x-origin.x)*this.canvas.clientWidth/2,(center.y-origin.y)*this.canvas.clientHeight/2)>90;
+    this.onHomeCenter((center.x*.5+.5)*this.canvas.clientWidth,(.5-center.y*.5)*this.canvas.clientHeight,this.homeCenterMarker.visible&&centerInFront&&center.z>-1&&center.z<1&&Math.abs(center.x)<.95&&Math.abs(center.y)<.9&&separated);
   }
   private async pick(clientX:number,clientY:number){
     if(this.picking||!this.ready||this.contextLost)return;
@@ -803,10 +816,11 @@ export class Explorer {
     const picker=this.pickMaterial.clone();picker.uniforms.uSize.value=8;picker.uniforms.uNode.value=1;
     const points=new THREE.Points(geometry,material);points.frustumCulled=false;scene.add(points);
     const pixels=new Uint8Array(64*64*4);
-    const sample=(distance:number,pick=false,enabled=true,minimumOpacity=0)=>{
+    const sample=(distance:number,pick=false,enabled=true,minimumOpacity=0,enlarge=true)=>{
       const m=pick?picker:material;points.material=m;
       m.uniforms.uOrigin.value.set(0,0,-distance);m.uniforms.uFadeRange.value.set(100,1000);m.uniforms.uDepthCues.value=enabled;
       m.uniforms.uMinOpacity.value=minimumOpacity;
+      m.uniforms.uEnlargePoints.value=enlarge;
       this.renderer.setRenderTarget(target);this.renderer.setClearColor(0,0);this.renderer.clear();this.renderer.render(scene,camera);
       this.renderer.readRenderTargetPixels(target,0,0,64,64,pixels);
       let maxAlpha=0,coveredPixels=0;
@@ -814,10 +828,13 @@ export class Explorer {
       return {maxAlpha,coveredPixels};
     };
     try{
+      const configuredNear=sample(10,false,true,0,this.enlargePointsUniform.value);
       const near=sample(10),middle=sample(500),far=sample(1200),uniform=sample(1200,false,false);
       const nearPick=sample(10,true),farPick=sample(1200,true),uniformPick=sample(1200,true,false);
       const faintFloor=sample(1200,false,true,.01),faintFloorPick=sample(1200,true,true,.01);
-      return {near,middle,far,uniform,nearPick,farPick,uniformPick,faintFloor,faintFloorPick,passed:near.maxAlpha===255&&middle.maxAlpha>0&&middle.maxAlpha<near.maxAlpha&&near.coveredPixels>middle.coveredPixels&&far.coveredPixels===0&&uniform.coveredPixels>0&&nearPick.coveredPixels>0&&farPick.coveredPixels===0&&uniformPick.coveredPixels>0&&faintFloor.maxAlpha>0&&faintFloor.maxAlpha<10&&faintFloorPick.coveredPixels>0};
+      const fixedNear=sample(10,false,true,0,false),fixedNearPick=sample(10,true,true,0,false),enlargedWithoutFade=sample(10,false,false),fixedWithoutFade=sample(10,false,false,0,false);
+      const independentSize=fixedNear.maxAlpha===near.maxAlpha&&fixedNear.coveredPixels===middle.coveredPixels&&fixedNearPick.coveredPixels===uniformPick.coveredPixels&&nearPick.coveredPixels>fixedNearPick.coveredPixels&&enlargedWithoutFade.coveredPixels>fixedWithoutFade.coveredPixels&&enlargedWithoutFade.maxAlpha===fixedWithoutFade.maxAlpha;
+      return {configuredNear,near,middle,far,uniform,nearPick,farPick,uniformPick,faintFloor,faintFloorPick,fixedNear,fixedNearPick,enlargedWithoutFade,fixedWithoutFade,independentSize,passed:independentSize&&near.maxAlpha===255&&middle.maxAlpha>0&&middle.maxAlpha<near.maxAlpha&&near.coveredPixels>middle.coveredPixels&&far.coveredPixels===0&&uniform.coveredPixels>0&&nearPick.coveredPixels>0&&farPick.coveredPixels===0&&uniformPick.coveredPixels>0&&faintFloor.maxAlpha>0&&faintFloor.maxAlpha<10&&faintFloorPick.coveredPixels>0};
     }finally{
       this.renderer.setRenderTarget(null);this.renderer.setClearColor(0x06090d,1);
       target.dispose();geometry.dispose();material.dispose();picker.dispose();this.invalidate();

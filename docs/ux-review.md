@@ -38,8 +38,14 @@ Prevention: navigation intent is now explicit and independent of inspection and 
 
 ## Milky Way zoom framing
 
-Status: reproducing.
+Status: verified.
 
 The actual home controls and wheel handler reproduce the reported drift in `?hometest&run=home-framing-before`. Observer and Milky Way search both target the Sun, 8.122 kpc from the Galactic center. Zooming from 60 to 19.8 kpc grows the center's screen offset from **104.9 to 290.2 CSS pixels**. The Galaxy view button stays centered through the identical wheel sequence (less than 0.001 px error). The new navigation regression fails while the existing geometry/GPU reference checks pass.
 
 Ranked hypotheses: (1) galaxy visits reuse Solar System focus; (2) incorrect physical scale or reference transform; (3) residual orbit damping. The identical wheel comparison isolates the focus target, while the independent frame/dimension tests pass. Both Sun-directed paths produce the same drift, and the center-directed path stays stable with the same camera controls. The intended fix is to center galaxy visits without moving or resizing the physical reference; retain a separate, explicit Solar System view.
+
+The toolbar is now labeled Milky Way, and both it and name search call the core-focused visit path. Sun / Observer is an explicit alternative in the inspector. Active focus buttons, a short zoom/orbit hint and separate core/Sun labels clarify the chosen target. The same wheel regression now holds the core within **0.001 CSS pixels** of center through every tested zoom step on all three galaxy-entry paths. The Sun-directed alternative remains centered on the origin. Existing measured placement and size tests remain unchanged and pass.
+
+The user also requested control over nearby enlargement. Settings now separates **Enlarge nearby points** from **Distance fading**. Enlargement is off by default and persists locally. Actual GPU readback measures 52 covered pixels with it off versus 124 with it on at the diagnostic point size, with identical near opacity; the ID pass follows the size choice. The size boost also works with fading disabled. Galaxy volumes are never resized by this setting.
+
+`?uxtest&hometest&modeltest&selftest&run=home-core-point-size` passes the new core/Sun controls, search and wheel checks, the setting-to-shader/persistence checks, all previous navigation/model/picking cases and graphics recovery. All 27 TypeScript tests and the production build pass. The cause was reuse of the Sun-focused navigation path for a galaxy destination; the regression now checks the caller and zoom behavior instead of only validating the reference's physical coordinates.

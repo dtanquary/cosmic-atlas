@@ -18,9 +18,11 @@ export async function probeHomeNavigation(atlas:Explorer){
   return samples;
  };
  element('observer-button').click();await frame();const observer=await zoom();
+ const coreControlActive=element('home-galaxy-view').getAttribute('aria-pressed')==='true'&&element('home-solar-view').getAttribute('aria-pressed')==='false';
  element('home-galaxy-view').click();await frame();const galaxyView=await zoom();
  element('home-solar-view').click();await frame();
  const solarTargetErrorMpc=atlas.controls.target.distanceTo(origin),sunOffsetPx=(()=>{const p=origin.clone().project(atlas.camera);return Math.hypot(p.x*atlas.canvas.clientWidth/2,p.y*atlas.canvas.clientHeight/2)})();
+ const solarControlActive=element('home-solar-view').getAttribute('aria-pressed')==='true'&&element('home-galaxy-view').getAttribute('aria-pressed')==='false';
  let search:ReturnType<typeof sample>[]|null=null;
  if(!element('visit-galaxy-button').hidden){
   element('visit-galaxy-button').click();const input=element<HTMLInputElement>('galaxy-query');
@@ -30,8 +32,23 @@ export async function probeHomeNavigation(atlas:Explorer){
   await frame();search=await zoom();
  }
  element('home-galaxy-view').click();await frame();
+ const coreLabeled=!element('home-center-label').hidden,sunLabeled=!element('origin-label').hidden;
  const centered=(samples:ReturnType<typeof sample>[])=>samples.every(s=>s.targetErrorMpc<1e-12&&s.centerOffsetPx<1)&&samples.at(-1)!.distanceMpc<samples[0].distanceMpc*.4;
- return {observer,galaxyView,search,solarTargetErrorMpc,sunOffsetPx,passed:centered(observer)&&centered(galaxyView)&&(search===null||centered(search))&&solarTargetErrorMpc<1e-12&&sunOffsetPx<1};
+ return {observer,galaxyView,search,solarTargetErrorMpc,sunOffsetPx,coreControlActive,solarControlActive,coreLabeled,sunLabeled,passed:centered(observer)&&centered(galaxyView)&&(search===null||centered(search))&&solarTargetErrorMpc<1e-12&&sunOffsetPx<1&&coreControlActive&&solarControlActive&&coreLabeled&&sunLabeled};
+}
+
+/** The settings control must update the real shader independently of fading. */
+export async function probePointSettings(atlas:Explorer){
+ const input=document.getElementById('enlarge-points') as HTMLInputElement,fade=document.getElementById('depth-cues') as HTMLInputElement;
+ const saved=input.checked,stored=localStorage.getItem('atlas-enlarge-points'),fading=fade.checked;
+ const change=(node:HTMLInputElement,value:boolean)=>{node.checked=value;node.dispatchEvent(new Event('change',{bubbles:true}))};
+ try{
+  change(input,false);const off=atlas.probeDepthCues();
+  change(input,true);const on=atlas.probeDepthCues(),savedOn=localStorage.getItem('atlas-enlarge-points')==='true';
+  change(fade,false);const independentControl=input.checked&&!input.disabled;
+  change(input,false);const savedOff=localStorage.getItem('atlas-enlarge-points')==='false';
+  return {offPixels:off.configuredNear.coveredPixels,onPixels:on.configuredNear.coveredPixels,savedOn,savedOff,independentControl,passed:off.passed&&on.passed&&on.configuredNear.coveredPixels>off.configuredNear.coveredPixels&&savedOn&&savedOff&&independentControl};
+ }finally{change(input,saved);change(fade,fading);if(stored===null)localStorage.removeItem('atlas-enlarge-points');else localStorage.setItem('atlas-enlarge-points',stored)}
 }
 
 /** Development-only checks against the real controls and async visit path. */

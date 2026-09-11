@@ -2,7 +2,7 @@
 
 A minimal 3D explorer of **14,140,375 accepted DESI DR1 galaxy observations**, built with TypeScript, Three.js and Vite. Browse the cosmic web, inspect catalog measurements, compare distances, fly through space, and approach galaxies to reveal procedural 3D models.
 
-The Milky Way is a separate reference model around the Solar System. **Observer** takes you to it; **Galaxy view** orbits its center, while **Our position** lets you zoom toward the Sun.
+The Milky Way is a separate reference model around the Solar System. **Milky Way** takes you to a view centered on the Galactic core, so the galaxy stays centered as you zoom. **Sun / Observer** switches the focus to our location inside the disk.
 
 The project is being built collaboratively by Dave and **ChatGPT Astra**, through Codex. Dave supplies the product direction, visual references and hands-on feedback; Astra implements and tests the application, data tools and documentation.
 
@@ -111,14 +111,16 @@ Read [`AGENTS.md`](AGENTS.md) before contributing. Make small, coherent commits,
 | Inspect a catalog galaxy | Click its point or visible body |
 | Focus selection / survey overview | **F** / **R** |
 | Visit by name | **Visit**, type a name, arrows to choose, **Enter** |
-| Explore our galaxy | **Observer**, or search **Milky Way** with the full name index available |
+| Explore our galaxy | **Milky Way** in the toolbar, or search its name with the full name index available |
 | Compare two catalog distances | **Measure**, then click two galaxies |
 | Configure flight | **Fly**, adjust speed, then **Start flying** |
 | Manual flight | **WASD**, **Q/E**, **Shift** to accelerate; scroll changes speed |
 | Release the pointer | **Escape**; the speed controls remain available |
 | Slow camera pass with the mouse free | **Auto fly**; **Escape** pauses it |
-| Rendering mode and distant opacity | **Settings**; display choices and opacity floor persist locally |
+| Rendering mode, point enlargement and distant opacity | **Settings**; display choices, enlargement toggle and opacity floor persist locally |
 | Performance readout | **F8** |
+
+**Enlarge nearby points** is off by default. Enable it in Settings to restore the optional marker-size boost; distance fading works independently. The toggle affects point markers, while galaxy models keep their physical dimensions.
 
 Flight speed ranges from 1 parsec/sec to 10,000 megaparsecs/sec. Start low for galaxy-scale passes. The observer marker identifies the Solar System, about 26,500 light-years from the adopted Galactic center, rather than the center itself.
 
@@ -158,7 +160,7 @@ Run these against `npm run dev`, using a unique `run` name:
 | URL query | Checks |
 | --- | --- |
 | `?selftest&run=my-points` | Point visibility/picking, measurement persistence, data integrity rejection and graphics recovery |
-| `?hometest&run=my-milky-way` | Observer arrival, Milky Way body picking, inside/near-Sun rendering, display modes, Sun marker clipping and graphics recovery |
+| `?hometest&run=my-milky-way` | Core-centered toolbar/search/wheel navigation, separate Sun focus, labels, body picking, inside/near-Sun rendering, display modes, marker clipping and graphics recovery |
 | `?uxtest&run=my-navigation` | Foreground obstruction, focus intent, reachable actions, delayed-search cancellation and flight controls; requires full data |
 | `?modeltest&run=my-models` | All five catalog families, projected shape, body selection, automatic loading and the model pool limit; requires full data |
 | `?benchmark=adaptive&run=my-overview` | 1920×1080 overview orbit: 5-second warmup, 20-second measurement |

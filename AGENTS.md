@@ -33,3 +33,5 @@ Use [the local engineering workflow](docs/agents/workflow.md) for issue tracking
 For changes to close-up visibility, camera focus, or search lifecycle, rerun the development `?uxtest` checks on the actual browser GPU. They cover observer obstruction, deliberate focus, display-mode fading, reachable inspector actions, and cancelled/reopened visits. Preserve these checks and record results in the UI review and validation notes.
 
 The Milky Way is a separate reference model, not a fabricated DESI observation. Keep the Solar System at the coordinate origin, preserve sourced frame parameters, and exclude the reference from catalog counts/IDs/pair measurements. Run `?hometest` when changing it, alongside the applicable navigation/model checks.
+
+Milky Way toolbar/search visits target the Galactic core; only Sun / Observer focus targets the origin. Preserve the real-control wheel regression in `?hometest`. Nearby point enlargement is an independent, saved setting, off by default; use the `?selftest` GPU/settings checks when changing its sizing or picking behavior.
