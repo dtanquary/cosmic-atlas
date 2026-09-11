@@ -3,6 +3,7 @@ import {cartesian} from './format';
 import type {Galaxy} from './types';
 
 export type GalaxyFamily='spiral'|'barred'|'elliptical'|'lenticular'|'irregular';
+export type ModelDisplay='automatic'|'focused'|'points';
 export const familyLabels:Record<GalaxyFamily,string>={spiral:'Spiral',barred:'Barred spiral',elliptical:'Elliptical',lenticular:'Lenticular',irregular:'Irregular'};
 
 export interface GalaxyDetailData {
@@ -84,6 +85,15 @@ export function galaxyRadius(distanceMpc:number,radiusArcsec:number){
 export function detailBlend(radiusPixels:number){
   const t=THREE.MathUtils.clamp((radiusPixels-1)/7,0,1);
   return t*t*(3-2*t);
+}
+
+/** Visibility is a navigation cue; measured geometry is never resized. */
+export function modelBlend(radiusPixels:number,shortSide:number,focused=false,display:ModelDisplay='automatic'){
+  if(display==='points'||display==='focused'&&!focused)return 0;
+  const resolved=detailBlend(radiusPixels);
+  // Keep intentional fly-throughs intact. Incidental light (extending to 8 R_e)
+  // returns to its catalog marker before its body occupies the whole viewport.
+  return focused?resolved:resolved*(1-THREE.MathUtils.smoothstep(radiusPixels/Math.max(1,shortSide),.06,.16));
 }
 
 const vertex=`precision highp float;
@@ -179,18 +189,18 @@ export class ResolvedGalaxy {
     }
   }
 
-  update(camera:THREE.PerspectiveCamera,height:number,pixelRatio=1){
+  update(camera:THREE.PerspectiveCamera,height:number,pixelRatio=1,focused=false,display:ModelDisplay='automatic'){
     camera.updateMatrixWorld();
     this.relative.copy(this.center).sub(camera.position);
     const distance=this.relative.length(),tan=Math.tan(THREE.MathUtils.degToRad(camera.fov/2));
-    this.blend.value=detailBlend(this.radius*height/(2*tan*Math.max(distance,1e-10)));
+    this.blend.value=modelBlend(this.radius*height/(2*tan*Math.max(distance,1e-10)),Math.min(height,height*camera.aspect),focused,display);
     this.mesh.visible=this.blend.value>0;
     if(this.arms)this.arms.visible=false;
     if(!this.mesh.visible)return;
     this.rotation.setFromMatrix4(camera.matrixWorldInverse);
     this.viewCenter.copy(this.relative).applyMatrix3(this.rotation);
     const z=-this.viewCenter.z,bound=8*this.radius,bounds=this.material.uniforms.uBounds.value as THREE.Vector4;
-    if(z < -bound){this.mesh.visible=false;return}
+    if(z < -bound){this.mesh.visible=false;this.blend.value=0;return}
     if(z<=bound)bounds.set(-1,-1,1,1);
     else{
       // Conservative projected bounds: include the sphere's near and far depths,
@@ -200,7 +210,7 @@ export class ResolvedGalaxy {
         return [Math.max(-1,Math.min(...values)/(tan*aspect)),Math.min(1,Math.max(...values)/(tan*aspect))];
       };
       const [left,right]=edge(this.viewCenter.x,camera.aspect),[bottom,top]=edge(this.viewCenter.y,1);
-      if(left>=right||bottom>=top){this.mesh.visible=false;return}
+      if(left>=right||bottom>=top){this.mesh.visible=false;this.blend.value=0;return}
       bounds.set(left,bottom,right,top);
     }
     const uniforms=this.material.uniforms;

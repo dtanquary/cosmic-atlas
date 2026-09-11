@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ChunkLoader } from './loader';
 import { chooseFrontier, coveredFrontier } from './spatial';
 import { decodeGalaxy, separation } from './format';
-import {ResolvedGalaxy, type GalaxyDetailData} from './galaxy-detail';
+import {ResolvedGalaxy, type GalaxyDetailData, type ModelDisplay} from './galaxy-detail';
 import {ModelCatalog,MODEL_LIMIT,decodeModel,measuredShape} from './model-catalog';
 import type { Galaxy, Manifest, SpatialNode } from './types';
 
@@ -84,6 +84,10 @@ export class Explorer {
   autoFly=false;
   speed=1000;
   selected:Galaxy|null=null;
+  // Inspection and navigation focus are independent: Observer preserves details
+  // while removing a previous galaxy's intentional close-up exemption.
+  private focusedGalaxyId:number|null=null;
+  private modelDisplay:ModelDisplay='automatic';
   resolvedGalaxies:ResolvedGalaxy[]=[];
   modelCatalog:ModelCatalog|null=null;
   get resolved(){return this.resolvedGalaxies.find(model=>model.data.galaxy.id===this.selected?.id)??this.resolvedGalaxies[0]??null}
@@ -273,15 +277,18 @@ export class Explorer {
     for(const item of this.cache.values())item.points.material.uniforms.uSize.value=1.6*this.pixelRatio;
   }
   reset(){
-    this.selectionSerial++;
+    this.selectionSerial++;this.focusedGalaxyId=null;
     this.exitFlight();this.controls.enabled=true;
+    const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();
     this.camera.position.copy(this.overviewPosition);this.controls.target.copy(this.overviewTarget);
-    this.camera.up.set(0,0,1);this.controls.update();this.focusDistance=this.camera.position.distanceTo(this.controls.target);
+    this.camera.up.set(0,0,1);this.controls.update();this.controls.enableDamping=damping;this.focusDistance=this.camera.position.distanceTo(this.controls.target);
     this.dirty=true;this.invalidate();
   }
   setMode(mode:'adaptive'|'full'){this.mode=mode;this.blocked=false;this.dirty=true;this.invalidate()}
   setDepthCues(enabled:boolean){this.depthCueUniform.value=enabled;this.dirty=true;this.invalidate()}
   setMinimumOpacity(value:number){if(!Number.isFinite(value))return;this.minOpacityUniform.value=THREE.MathUtils.clamp(value,0,1);this.dirty=true;this.invalidate()}
+  setModelDisplay(display:ModelDisplay){this.modelDisplay=display;this.modelScanNeeded=true;this.dirty=true;this.invalidate()}
+  private updateModel(model:ResolvedGalaxy){model.update(this.camera,this.canvas.clientHeight||innerHeight,this.pixelRatio,model.data.galaxy.id===this.focusedGalaxyId,this.modelDisplay)}
   private updateDepthCues(){
     // Expand the fade horizon smoothly outside the survey; use a neighborhood
     // range inside it. This works in both orbit and flight without mode changes.
@@ -359,13 +366,13 @@ export class Explorer {
       if(this.disposed||(!priority&&!this.wantedModels.has(galaxy.id)))throw new DOMException('Model no longer nearby','AbortError');
       const existing=this.resolvedFor(galaxy.id);if(existing)return existing;
       if(this.resolvedGalaxies.length>=MODEL_LIMIT){
-        const removable=this.resolvedGalaxies.filter(model=>!this.pinnedModels.has(model.data.galaxy.id)&&model.data.galaxy.id!==this.selected?.id)
+        const removable=this.resolvedGalaxies.filter(model=>!this.pinnedModels.has(model.data.galaxy.id)&&model.data.galaxy.id!==this.selected?.id&&model.data.galaxy.id!==this.focusedGalaxyId)
           .sort((a,b)=>b.center.distanceToSquared(this.camera.position)/b.radius**2-a.center.distanceToSquared(this.camera.position)/a.radius**2)[0];
         if(!removable)throw new Error('Nearby model budget is occupied');
         this.removeModel(removable);
       }
       const model=new ResolvedGalaxy(decodeModel(catalog.manifest,chunk,row,galaxy));
-      model.update(this.camera,this.canvas.clientHeight||innerHeight,this.pixelRatio);
+      this.updateModel(model);
       this.resolvedGalaxies.push(model);this.modelLocations.set(galaxy.id,{node:node.id,row});this.bindModels();
       if(this.selected?.id===galaxy.id)this.onSelection(this.selected);
       this.invalidate();return model;
@@ -373,11 +380,12 @@ export class Explorer {
     this.modelRequests.set(galaxy.id,promise);return promise;
   }
   private updateModels(){
-    const catalog=this.modelCatalog;if(!catalog)return;
+    const catalog=this.modelCatalog;if(!catalog||this.modelDisplay!=='automatic')return;
     const scale=(this.canvas.clientHeight||innerHeight)/(2*Math.tan(THREE.MathUtils.degToRad(this.camera.fov/2)));
     const camera=this.camera.position,forward=this.camera.getWorldDirection(this.scratch);
     const candidates:{id:number;node:SpatialNode;row:number;score:number}[]=[];
-    const available=MODEL_LIMIT-this.pinnedModels.size-(this.selected&&!this.pinnedModels.has(this.selected.id)?1:0);
+    const protectedIds=new Set(this.pinnedModels);if(this.selected)protectedIds.add(this.selected.id);if(this.focusedGalaxyId!==null)protectedIds.add(this.focusedGalaxyId);
+    const available=MODEL_LIMIT-protectedIds.size;
     let requests=0;
     for(const nodeId of this.drawn){
       const item=this.cache.get(nodeId)!,asset=catalog.manifest.nodes[nodeId];if(!asset)continue;
@@ -390,7 +398,7 @@ export class Explorer {
       const positions=item.points.geometry.getAttribute('position').array as Float32Array;
       const cx=item.node.center[0],cy=item.node.center[1],cz=item.node.center[2];
       for(let row=0;row<item.ids.length;row++){
-        const id=item.ids[row];if(this.pinnedModels.has(id)||id===this.selected?.id)continue;
+        const id=item.ids[row];if(protectedIds.has(id))continue;
         const x=positions[row*3]+cx,y=positions[row*3+1]+cy,z=positions[row*3+2]+cz;
         const dx=x-camera.x,dy=y-camera.y,dz=z-camera.z,distanceSq=dx*dx+dy*dy+dz*dz;
         const radius=measuredShape(chunk,row)?chunk.values[row*5]*Math.sqrt(x*x+y*y+z*z)*Math.PI/(180*3600):catalog.manifest.fallbackRadiusMpc;
@@ -406,7 +414,7 @@ export class Explorer {
     let changed=false;
     for(const model of [...this.resolvedGalaxies]){
       const id=model.data.galaxy.id;
-      if(!this.pinnedModels.has(id)&&id!==this.selected?.id&&!this.wantedModels.has(id)&&!this.modelRequests.has(id)){this.removeModel(model);changed=true}
+      if(!protectedIds.has(id)&&!this.wantedModels.has(id)&&!this.modelRequests.has(id)){this.removeModel(model);changed=true}
     }
     if(changed)this.bindModels();
     for(const candidate of candidates){
@@ -427,13 +435,13 @@ export class Explorer {
   }
   focusSelected(){
     if(!this.selected)return;
-    this.focusAt(new THREE.Vector3().fromArray(this.selected.position),this.resolvedFor(this.selected.id)?this.resolvedFor(this.selected.id)!.radius*12:25);
+    this.focusAt(new THREE.Vector3().fromArray(this.selected.position),this.resolvedFor(this.selected.id)?this.resolvedFor(this.selected.id)!.radius*12:25,undefined,this.selected.id);
   }
   visitGalaxy(id=this.resolved?.data.galaxy.id){
     const model=id===undefined?null:this.resolvedFor(id);
     if(!this.ready||!model)return;
     this.selectionSerial++;this.selectGalaxy(model.data.galaxy);
-    this.focusAt(model.center,model.radius*12,model.frame.radial.clone().negate());
+    this.focusAt(model.center,model.radius*12,model.frame.radial.clone().negate(),id);
     this.onMessage(`${model.data.name} · observer-facing view. Drag to explore its inferred 3D shape.`);
   }
   async visitCatalog(entry:{id:number;node:string;row:number;targetId:string}){
@@ -452,8 +460,8 @@ export class Explorer {
     this.focusAt(new THREE.Vector3(0,0,0));
     this.onMessage('Focused on observer · our location');
   }
-  private focusAt(target:THREE.Vector3,distance=25,direction=this.camera.getWorldDirection(new THREE.Vector3()).negate()){
-    this.selectionSerial++;
+  private focusAt(target:THREE.Vector3,distance=25,direction=this.camera.getWorldDirection(new THREE.Vector3()).negate(),galaxyId:number|null=null){
+    this.selectionSerial++;this.focusedGalaxyId=galaxyId;
     this.exitFlight();this.controls.enabled=true;
     // Consume any remaining orbit/pan damping before setting the exact focus.
     const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();
@@ -605,7 +613,7 @@ export class Explorer {
     const orbitMoved=!this.flight&&!this.autoFly&&this.controls.update();
     const automaticOrbit=!this.flight&&!this.autoFly&&this.controls.autoRotate;
     if((moved||orbitMoved||automaticOrbit)&&this.wasContinuous){this.timings.push(elapsed);if(this.timings.length>240)this.timings.shift()}
-    this.resolvedGalaxies.forEach((model,i)=>{model.update(this.camera,this.canvas.clientHeight||innerHeight,this.pixelRatio);this.detailBlendUniform.value[i]=model.blend.value});
+    this.resolvedGalaxies.forEach((model,i)=>{this.updateModel(model);this.detailBlendUniform.value[i]=model.blend.value});
     this.updateDepthCues();
     if(this.dirty||time-this.lastLOD>200){this.updateLOD();this.lastLOD=time;this.dirty=false}
     if(this.modelScanNeeded||time-this.lastModelScan>250){this.updateModels();this.lastModelScan=time;this.modelScanNeeded=false}
@@ -660,6 +668,9 @@ export class Explorer {
   }
   async probeObserverPass(){
     const model=this.resolvedGalaxies.find(item=>item.data.spiral)!;
+    const previousDisplay=this.modelDisplay;this.setModelDisplay('automatic');
+    // Preserve an inspected galaxy while changing navigation to the observer.
+    this.visitGalaxy(model.data.galaxy.id);
     this.focusObserver();
     const target=new THREE.WebGLRenderTarget(256,256),pixels=new Uint8Array(256*256*4);
     const samples=[];
@@ -667,7 +678,7 @@ export class Explorer {
       for(const radiusMultiple of [60,24,12,6,2,.25,0,-2]){
         this.camera.position.copy(model.center).addScaledVector(model.frame.radial,model.radius*radiusMultiple);
         this.controls.target.set(0,0,0);this.controls.update();
-        model.update(this.camera,this.canvas.clientHeight||innerHeight,this.pixelRatio);
+        this.updateModel(model);
         this.renderer.setRenderTarget(target);this.renderer.setClearColor(0,0);this.renderer.clear();this.renderer.render(model.scene,this.camera);
         this.renderer.readRenderTargetPixels(target,0,0,256,256,pixels);
         let bright=0;
@@ -675,8 +686,15 @@ export class Explorer {
         samples.push({radiusMultiple,blend:model.blend.value,brightFraction:bright/65536,bodyIntercepts:model.hitTest(new THREE.Vector2(.6,.6),this.camera)});
       }
     }finally{target.dispose();this.renderer.setRenderTarget(null);this.renderer.setClearColor(0x06090d,1)}
-    this.camera.position.copy(model.center).addScaledVector(model.frame.radial,model.radius*.25);this.controls.update();this.invalidate();
-    return {galaxy:model.data.name,samples,passed:samples.filter(sample=>sample.radiusMultiple<=6).every(sample=>sample.brightFraction<.05&&!sample.bodyIntercepts)};
+    const close=()=>{this.camera.position.copy(model.center).addScaledVector(model.frame.radial,model.radius*.25);this.controls.update();this.updateModel(model)};
+    this.visitGalaxy(model.data.galaxy.id);close();const deliberate=model.blend.value===1&&model.visible;
+    this.setModelDisplay('points');this.updateModel(model);const pointsOnly=model.blend.value===0&&!model.hitTest(new THREE.Vector2(),this.camera);
+    this.setModelDisplay('focused');this.updateModel(model);const focusedOnly=model.blend.value===1;
+    this.focusObserver();close();const observerClearsFocus=model.blend.value===0&&this.selected?.id===model.data.galaxy.id;
+    this.setModelDisplay('automatic');this.visitGalaxy(model.data.galaxy.id);this.reset();close();const overviewClearsFocus=model.blend.value===0;
+    this.setModelDisplay(previousDisplay);this.focusObserver();close();this.invalidate();
+    return {galaxy:model.data.name,samples,deliberate,pointsOnly,focusedOnly,observerClearsFocus,overviewClearsFocus,
+      passed:samples.filter(sample=>sample.radiusMultiple<=6).every(sample=>sample.brightFraction<.05&&!sample.bodyIntercepts)&&deliberate&&pointsOnly&&focusedOnly&&observerClearsFocus&&overviewClearsFocus};
   }
   probeGalaxyProfile(id=this.resolved?.data.galaxy.id){
     const source=id===undefined?null:this.resolvedFor(id);if(!source)return {available:false};
@@ -686,7 +704,7 @@ export class Explorer {
     camera.up.copy(model.frame.north);
     const sample=(direction:THREE.Vector3,distance:number,zoom=false)=>{
       camera.fov=zoom?THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(25))*24/distance)):50;camera.updateProjectionMatrix();
-      camera.position.copy(model.center).addScaledVector(direction,distance*model.radius);camera.lookAt(model.center);camera.updateMatrixWorld();model.update(camera,256);
+      camera.position.copy(model.center).addScaledVector(direction,distance*model.radius);camera.lookAt(model.center);camera.updateMatrixWorld();model.update(camera,256,1,true);
       this.renderer.setRenderTarget(target);this.renderer.setClearColor(0,0);this.renderer.clear();this.renderer.render(model.scene,camera);
       this.renderer.readRenderTargetPixels(target,0,0,256,256,pixels);
       let weight=0,x=0,y=0,xx=0,yy=0,xy=0,litPixels=0;

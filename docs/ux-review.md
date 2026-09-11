@@ -15,3 +15,5 @@ Acceptance: automatic incidental models smoothly return to points before filling
 ## UI review
 
 Check primary inspector actions at short viewport heights, search cancellation during asynchronous visits, dialog focus restoration, icon-only accessible labels, and error retry hit targets. Record reproduced issues and final evidence here.
+
+First fix evidence: the identical GPU pass now records zero bright pixels and no body interception at 6, 2, 0.25 and 0 radii. Explicit focus, points-only override, focused-only mode, and observer/overview focus clearing all pass. 24 TypeScript tests pass; the original regression was observed failing before implementation.

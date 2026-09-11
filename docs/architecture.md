@@ -55,3 +55,7 @@ Entries without such matches remain searchable with an explicit unavailable expl
 ## Delivery
 
 Static build in `dist`, with a Sites static hosting manifest. Raw downloads, local caches, and generated binary assets stay outside Git; manifests pin the checksum-verified datasets generated from the documented source before packaging. A saved deployment must contain the exact validated generated assets. The application performs no runtime calls to astronomy services and stores no personal data.
+
+## Model visibility and navigation intent
+
+`ResolvedGalaxy.update` combines ordinary point-to-model LOD with a viewport-relative obstruction fade for incidental models. Its single blend drives volume light, arm/clump light, and the complementary catalog point; suppressed bodies do not intercept picking. `Explorer` tracks explicit galaxy focus separately from inspection, protects both identities within the existing 12-model pool, and clears focus intent on observer/overview navigation. Points-only and focused-only display skip automatic candidate scans. Offscreen models reset their blend so they cannot shorten the distance-fading horizon.

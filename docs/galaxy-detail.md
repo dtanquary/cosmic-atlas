@@ -77,3 +77,7 @@ Generic structure uses 12,000 deterministic batched light knots, seeded from the
 ## Next iterations
 
 Image-constrained arm and dust geometry, improved distances for very nearby galaxies, and probabilistic morphology catalogs can replace assumptions as data becomes available. Do not present the current proxy populations as a measured distribution of visual galaxy types.
+
+## Navigation visibility
+
+Automatic close-ups yield to points when they would obstruct the camera. The fade spans projected half-light radii of 6–16% of the shorter viewport side; this is a display cue, not a change in physical size. Visit, Focus, and Observer-facing view explicitly protect the chosen model for full close-up exploration. Observer and Overview remove that exemption without discarding the inspected observation. Settings can limit models to the focused galaxy or show points only.

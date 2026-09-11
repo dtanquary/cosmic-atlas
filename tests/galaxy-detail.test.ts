@@ -2,7 +2,7 @@ import {describe,it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
 import * as THREE from 'three';
 import {cartesian} from '../src/format';
-import {galaxyFrame,galaxyRadius,detailBlend,ResolvedGalaxy,type GalaxyDetailData} from '../src/galaxy-detail';
+import {galaxyFrame,galaxyRadius,detailBlend,modelBlend,ResolvedGalaxy,type GalaxyDetailData} from '../src/galaxy-detail';
 
 const data:GalaxyDetailData=JSON.parse(readFileSync(new URL('../public/data/galaxy-detail.json',import.meta.url),'utf8'));
 
@@ -42,13 +42,13 @@ describe('Measured galaxy deprojection',()=>{
  it('selects the resolved body away from its center and remains finite inside it',()=>{
   const model=new ResolvedGalaxy(data),camera=new THREE.PerspectiveCamera(50,1,.0001,100000);
   camera.up.set(0,0,1);camera.position.copy(model.center).addScaledVector(model.frame.radial,-12*model.radius);camera.lookAt(model.center);camera.updateMatrixWorld();
-  model.update(camera,900);expect(model.visible).toBe(true);expect(model.blend.value).toBe(1);
+  model.update(camera,900,1,true);expect(model.visible).toBe(true);expect(model.blend.value).toBe(1);
   const offset=model.center.clone().addScaledVector(model.frame.major,2*model.radius).project(camera);
   expect(model.hitTest(new THREE.Vector2(offset.x,offset.y),camera)).toBe(true);
   expect(model.hitTest(new THREE.Vector2(.9,.9),camera)).toBe(false);
-  camera.position.copy(model.center);camera.updateMatrixWorld();model.update(camera,900);
+  camera.position.copy(model.center);camera.updateMatrixWorld();model.update(camera,900,1,true);
   expect(model.visible).toBe(true);expect(model.hitTest(new THREE.Vector2(0,0),camera)).toBe(true);
-  camera.position.copy(model.center).addScaledVector(model.frame.radial,-1000);camera.lookAt(model.center);camera.updateMatrixWorld();model.update(camera,900);
+  camera.position.copy(model.center).addScaledVector(model.frame.radial,-1000);camera.lookAt(model.center);camera.updateMatrixWorld();model.update(camera,900,1,true);
   expect(model.visible).toBe(false);expect(model.blend.value).toBe(0);model.dispose();
  });
  it('does not let an incidental foreground model cover or intercept the observer view',()=>{
@@ -62,5 +62,20 @@ describe('Measured galaxy deprojection',()=>{
    expect(model.hitTest(new THREE.Vector2(.6,.6),camera)).toBe(false);
   }
   model.dispose();
+ });
+ it('preserves deliberate close-ups and respects focused-only and point display choices',()=>{
+  for(const shortSide of [320,768,1440]){
+   expect(modelBlend(shortSide*.05,shortSide)).toBe(1);
+   let previous=1;
+   for(let fraction=.06;fraction<=.17;fraction+=.005){
+    const blend=modelBlend(shortSide*fraction,shortSide);
+    expect(blend).toBeLessThanOrEqual(previous);previous=blend;
+   }
+   expect(modelBlend(shortSide,shortSide)).toBe(0);
+   expect(modelBlend(shortSide,shortSide,true)).toBe(1);
+   expect(modelBlend(20,shortSide,false,'focused')).toBe(0);
+   expect(modelBlend(20,shortSide,true,'focused')).toBe(1);
+   expect(modelBlend(20,shortSide,true,'points')).toBe(0);
+  }
  });
 });

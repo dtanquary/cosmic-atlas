@@ -41,3 +41,7 @@ The development subset is explicitly labeled. A full-detail development subset r
 Measured arm/dust/star structure, planets, inferred populations, cosmological/time simulations, merged position catalogs, accounts and mobile-first navigation. Public web hosting and a public GitHub source repository are the agreed delivery goal; the catalog needs a separate asset-hosting path.
 
 Sources: https://data.desi.lbl.gov/doc/releases/dr1/ ; https://data.desi.lbl.gov/doc/organization/ ; https://docs.astropy.org/en/stable/api/astropy.cosmology.realizations.Planck18.html ; https://data.desi.lbl.gov/doc/acknowledgments/
+
+## Clear close-up navigation
+
+Automatic galaxy models fade back to catalog points when their projected half-light radius grows from 6% to 16% of the shorter viewport dimension. A galaxy deliberately opened with Visit or Focus remains fully resolved, including inside its volume. Observer and Overview clear that focus exemption while preserving inspection and measurement. Settings offers Automatic, Focused galaxy only, and Points only; the choice persists locally. Rendering visibility never changes measured positions, sizes, or catalog completeness.
