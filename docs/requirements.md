@@ -45,3 +45,5 @@ Sources: https://data.desi.lbl.gov/doc/releases/dr1/ ; https://data.desi.lbl.gov
 ## Clear close-up navigation
 
 Automatic galaxy models fade back to catalog points when their projected half-light radius grows from 6% to 16% of the shorter viewport dimension. A galaxy deliberately opened with Visit or Focus remains fully resolved, including inside its volume. Observer and Overview clear that focus exemption while preserving inspection and measurement. Settings offers Automatic, Focused galaxy only, and Points only; the choice persists locally. Rendering visibility never changes measured positions, sizes, or catalog completeness.
+
+Primary inspector actions must remain reachable while detail content scrolls. Dismissing or reopening name search must invalidate its pending navigation; older requests must not move the camera, close a new dialog, or disable its input. Model-display choices must preserve local distance fading around an intentionally focused galaxy.

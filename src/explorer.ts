@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ChunkLoader } from './loader';
 import { chooseFrontier, coveredFrontier } from './spatial';
 import { decodeGalaxy, separation } from './format';
-import {ResolvedGalaxy, type GalaxyDetailData, type ModelDisplay} from './galaxy-detail';
+import {ResolvedGalaxy, detailBlend, type GalaxyDetailData, type ModelDisplay} from './galaxy-detail';
 import {ModelCatalog,MODEL_LIMIT,decodeModel,measuredShape} from './model-catalog';
 import type { Galaxy, Manifest, SpatialNode } from './types';
 
@@ -294,6 +294,14 @@ export class Explorer {
     // range inside it. This works in both orbit and flight without mode changes.
     const outside=this.camera.position.distanceTo(this.overviewTarget)-this.overviewRadius;
     let far=Math.max(1500,this.overviewRadius*.4+Math.max(0,outside)*3);
+    // A display-mode switch must not brighten the distant background around an
+    // intentionally focused galaxy. Base this cue on its angular scale even
+    // when the user chooses its point representation.
+    const focused=this.focusedGalaxyId===null?null:this.resolvedFor(this.focusedGalaxyId);
+    if(focused){
+      const distance=this.camera.position.distanceTo(focused.center),scale=(this.canvas.clientHeight||innerHeight)/(2*Math.tan(THREE.MathUtils.degToRad(this.camera.fov/2)));
+      far=THREE.MathUtils.lerp(far,Math.max(1,distance*30),detailBlend(focused.radius*scale/Math.max(distance,1e-10)));
+    }
     // Resolve a galaxy against its local neighborhood rather than a wall of
     // distant screen markers. The same reversible distance-cue setting applies.
     for(const model of this.resolvedGalaxies){const localHorizon=Math.max(1,this.camera.position.distanceTo(model.center)*30);far=Math.min(far,THREE.MathUtils.lerp(far,localHorizon,model.blend.value))}
@@ -444,14 +452,16 @@ export class Explorer {
     this.focusAt(model.center,model.radius*12,model.frame.radial.clone().negate(),id);
     this.onMessage(`${model.data.name} · observer-facing view. Drag to explore its inferred 3D shape.`);
   }
-  async visitCatalog(entry:{id:number;node:string;row:number;targetId:string}){
+  async visitCatalog(entry:{id:number;node:string;row:number;targetId:string},canNavigate:()=>boolean=()=>true){
+    if(!canNavigate())return;
     const node=this.nodes.get(entry.node),serial=++this.selectionSerial;
     if(!node||!Number.isInteger(entry.row)||entry.row<0||entry.row>=node.storedCount)throw new Error('This named observation is unavailable.');
     const metadata=await this.loader.load(`m:${node.id}`,new URL(node.metadata.url,this.base).href,node.metadata,'metadata',node.storedCount,true);
+    if(!canNavigate()||serial!==this.selectionSerial)return;
     const galaxy=decodeGalaxy(metadata,entry.row,entry.id);
     if(galaxy.targetId!==entry.targetId)throw new Error('The name index does not match this catalog.');
-    if(this.modelCatalog)try{await this.ensureModel(galaxy,node,entry.row,true)}catch{this.onMessage('The shape could not load; showing the catalog position. Retry missing detail to try again.')}
-    if(serial!==this.selectionSerial)return;
+    if(this.modelCatalog)try{await this.ensureModel(galaxy,node,entry.row,true)}catch{if(canNavigate()&&serial===this.selectionSerial)this.onMessage('The shape could not load; showing the catalog position. Retry missing detail to try again.')}
+    if(!canNavigate()||serial!==this.selectionSerial)return;
     if(this.resolvedFor(galaxy.id)){this.visitGalaxy(galaxy.id);return}
     this.selectGalaxy(galaxy);this.focusSelected();
   }
@@ -688,13 +698,15 @@ export class Explorer {
     }finally{target.dispose();this.renderer.setRenderTarget(null);this.renderer.setClearColor(0x06090d,1)}
     const close=()=>{this.camera.position.copy(model.center).addScaledVector(model.frame.radial,model.radius*.25);this.controls.update();this.updateModel(model)};
     this.visitGalaxy(model.data.galaxy.id);close();const deliberate=model.blend.value===1&&model.visible;
-    this.setModelDisplay('points');this.updateModel(model);const pointsOnly=model.blend.value===0&&!model.hitTest(new THREE.Vector2(),this.camera);
+    this.updateDepthCues();const focusedHorizon=this.fadeRangeUniform.value.y;
+    this.setModelDisplay('points');this.updateModel(model);this.updateDepthCues();
+    const pointsOnly=model.blend.value===0&&!model.hitTest(new THREE.Vector2(),this.camera),stablePointHorizon=this.fadeRangeUniform.value.y===focusedHorizon;
     this.setModelDisplay('focused');this.updateModel(model);const focusedOnly=model.blend.value===1;
     this.focusObserver();close();const observerClearsFocus=model.blend.value===0&&this.selected?.id===model.data.galaxy.id;
     this.setModelDisplay('automatic');this.visitGalaxy(model.data.galaxy.id);this.reset();close();const overviewClearsFocus=model.blend.value===0;
     this.setModelDisplay(previousDisplay);this.focusObserver();close();this.invalidate();
-    return {galaxy:model.data.name,samples,deliberate,pointsOnly,focusedOnly,observerClearsFocus,overviewClearsFocus,
-      passed:samples.filter(sample=>sample.radiusMultiple<=6).every(sample=>sample.brightFraction<.05&&!sample.bodyIntercepts)&&deliberate&&pointsOnly&&focusedOnly&&observerClearsFocus&&overviewClearsFocus};
+    return {galaxy:model.data.name,samples,deliberate,pointsOnly,stablePointHorizon,focusedOnly,observerClearsFocus,overviewClearsFocus,
+      passed:samples.filter(sample=>sample.radiusMultiple<=6).every(sample=>sample.brightFraction<.05&&!sample.bodyIntercepts)&&deliberate&&pointsOnly&&stablePointHorizon&&focusedOnly&&observerClearsFocus&&overviewClearsFocus};
   }
   probeGalaxyProfile(id=this.resolved?.data.galaxy.id){
     const source=id===undefined?null:this.resolvedFor(id);if(!source)return {available:false};

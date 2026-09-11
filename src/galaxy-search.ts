@@ -35,6 +35,7 @@ export class GalaxySearch {
   private active=0;
   private results:NamedGalaxy[]=[];
   private busy=false;
+  private pendingVisit:AbortController|null=null;
   private readonly dialog=document.getElementById('visit-dialog') as HTMLDialogElement;
   private readonly input=document.getElementById('galaxy-query') as HTMLInputElement;
   private readonly list=document.getElementById('galaxy-results')!;
@@ -48,13 +49,17 @@ export class GalaxySearch {
         event.preventDefault();this.active=(this.active+(event.key==='ArrowDown'?1:-1)+this.results.length)%Math.max(1,this.results.length);this.highlight();
       }else if(event.key==='Enter'){event.preventDefault();void this.choose(this.active)}
     },{signal});
-    this.dialog.addEventListener('close',()=>{this.input.setAttribute('aria-expanded','false')},{signal});
+    const cancelVisit=()=>{this.pendingVisit?.abort();this.pendingVisit=null;this.busy=false;this.input.disabled=false;this.dialog.removeAttribute('aria-busy')};
+    this.dialog.addEventListener('cancel',cancelVisit,{signal});
+    this.dialog.addEventListener('close',()=>{if(this.dialog.open)return;cancelVisit();this.input.setAttribute('aria-expanded','false');this.input.removeAttribute('aria-activedescendant')},{signal});
+    signal.addEventListener('abort',cancelVisit,{once:true});
     this.list.addEventListener('mousedown',event=>event.preventDefault(),{signal});
     this.list.addEventListener('click',event=>{const option=(event.target as HTMLElement).closest<HTMLElement>('[data-result]');if(option)void this.choose(Number(option.dataset.result))},{signal});
     this.retry.onclick=()=>void this.load();
   }
   nameFor(id:number){return this.byId.get(id)?.name}
   open(){
+    this.pendingVisit?.abort();this.pendingVisit=null;this.busy=false;this.input.disabled=false;this.dialog.removeAttribute('aria-busy');
     this.atlas.exitFlight();this.dialog.showModal();this.input.value='';this.active=0;this.input.setAttribute('aria-expanded','true');this.input.focus();
     if(this.loaded)this.render();else void this.load();
   }
@@ -100,12 +105,18 @@ export class GalaxySearch {
     if(this.busy)return;
     const entry=this.results[index];if(!entry)return;
     if(entry.kind!=='observer'&&entry.id===undefined){this.status.textContent='This name has no verified matching observation in the current atlas.';return}
-    this.busy=true;this.input.disabled=true;this.status.textContent=`Visiting ${entry.name}…`;
+    const controller=new AbortController();this.pendingVisit=controller;
+    this.busy=true;this.input.disabled=true;this.dialog.setAttribute('aria-busy','true');this.status.textContent=`Visiting ${entry.name}…`;
     try{
       if(entry.kind==='observer')this.atlas.focusObserver();
-      else await this.atlas.visitCatalog({id:entry.id!,node:entry.node!,row:entry.row!,targetId:entry.targetId!});
+      // Check the actual dialog state as well: its close event is asynchronous.
+      else await this.atlas.visitCatalog({id:entry.id!,node:entry.node!,row:entry.row!,targetId:entry.targetId!},()=>this.dialog.open&&this.pendingVisit===controller&&!controller.signal.aborted);
+      if(controller.signal.aborted||!this.dialog.open)return;
       this.dialog.close();
-    }catch(error){this.status.textContent=error instanceof Error?error.message:'Could not visit this galaxy. Try again.'}
-    finally{this.busy=false;this.input.disabled=false;this.input.focus()}
+    }catch(error){if(!controller.signal.aborted)this.status.textContent=error instanceof Error?error.message:'Could not visit this galaxy. Try again.'}
+    finally{
+      // An earlier request cannot reset a newly opened search or steal its focus.
+      if(this.pendingVisit===controller){this.pendingVisit=null;this.busy=false;this.input.disabled=false;this.dialog.removeAttribute('aria-busy');if(this.dialog.open)this.input.focus()}
+    }
   }
 }

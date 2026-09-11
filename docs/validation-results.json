@@ -1506,5 +1506,635 @@
     "manualSettings": {
       "minimumDistantOpacityPercent": 2
     }
+  },
+  {
+    "runId": "observer-before",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 188.90000000596046,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 804285,
+      "loaded": 823437,
+      "represented": 14140375,
+      "pending": 7,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 119.51715071112703,
+      "p95": 8.433999999999997,
+      "calls": 67,
+      "managedMiB": 82.55315685272217,
+      "blocked": false,
+      "focusDistance": 16099.112169655013,
+      "budget": 1000000,
+      "models": 0
+    },
+    "observerPass": {
+      "galaxy": "NGC 3982",
+      "samples": [
+        {
+          "radiusMultiple": 60,
+          "blend": 1,
+          "brightFraction": 0.0054168701171875,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 24,
+          "blend": 1,
+          "brightFraction": 0.0349884033203125,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 12,
+          "blend": 1,
+          "brightFraction": 0.140411376953125,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 6,
+          "blend": 1,
+          "brightFraction": 0.486572265625,
+          "bodyIntercepts": true
+        },
+        {
+          "radiusMultiple": 2,
+          "blend": 1,
+          "brightFraction": 0.9653472900390625,
+          "bodyIntercepts": true
+        },
+        {
+          "radiusMultiple": 0.25,
+          "blend": 1,
+          "brightFraction": 1,
+          "bodyIntercepts": true
+        },
+        {
+          "radiusMultiple": 0,
+          "blend": 1,
+          "brightFraction": 1,
+          "bodyIntercepts": true
+        },
+        {
+          "radiusMultiple": -2,
+          "blend": 1,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        }
+      ],
+      "passed": false
+    }
+  },
+  {
+    "runId": "points-horizon-before",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 166.3999999910593,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 1512,
+      "height": 811
+    },
+    "initial": {
+      "drawn": 661312,
+      "loaded": 823437,
+      "represented": 14140375,
+      "pending": 7,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 125.78616352201256,
+      "p95": 8.400000000000002,
+      "calls": 60,
+      "managedMiB": 70.83294200897217,
+      "blocked": false,
+      "focusDistance": 16099.112169655013,
+      "budget": 1000000,
+      "models": 0
+    },
+    "observerPass": {
+      "galaxy": "NGC 3982",
+      "samples": [
+        {
+          "radiusMultiple": 60,
+          "blend": 1,
+          "brightFraction": 0.004180908203125,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 24,
+          "blend": 1,
+          "brightFraction": 0.02606201171875,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 12,
+          "blend": 0.7920833213002185,
+          "brightFraction": 0.09381103515625,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 6,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 2,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 0.25,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 0,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": -2,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        }
+      ],
+      "deliberate": true,
+      "pointsOnly": true,
+      "stablePointHorizon": false,
+      "focusedOnly": true,
+      "observerClearsFocus": true,
+      "overviewClearsFocus": true,
+      "passed": false
+    },
+    "ui": {
+      "focusReachable": true,
+      "closeReachableAfterScroll": true,
+      "retryReachable": true,
+      "cancelledVisitStable": true,
+      "searchReusable": true,
+      "reopenedVisitStable": true,
+      "speedEditable": true,
+      "automaticWithFreePointer": true,
+      "escapeKeepsSpeedMenu": true,
+      "passed": true
+    }
+  },
+  {
+    "runId": "ux-release-check",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 169.5,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 661312,
+      "loaded": 815092,
+      "represented": 14140375,
+      "pending": 6,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 120.48192771084337,
+      "p95": 8.399999999999999,
+      "calls": 60,
+      "managedMiB": 75.53629779815674,
+      "blocked": false,
+      "focusDistance": 16099.112169655013,
+      "budget": 1000000,
+      "models": 0
+    },
+    "observerPass": {
+      "galaxy": "NGC 3982",
+      "samples": [
+        {
+          "radiusMultiple": 60,
+          "blend": 1,
+          "brightFraction": 0.0054168701171875,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 24,
+          "blend": 1,
+          "brightFraction": 0.0349884033203125,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 12,
+          "blend": 0.7920833213002185,
+          "brightFraction": 0.1287384033203125,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 6,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 2,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 0.25,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 0,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": -2,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        }
+      ],
+      "deliberate": true,
+      "pointsOnly": true,
+      "stablePointHorizon": true,
+      "focusedOnly": true,
+      "observerClearsFocus": true,
+      "overviewClearsFocus": true,
+      "passed": true
+    },
+    "ui": {
+      "focusReachable": true,
+      "closeReachableAfterScroll": true,
+      "retryReachable": true,
+      "cancelledVisitStable": true,
+      "searchReusable": true,
+      "reopenedVisitStable": true,
+      "speedEditable": true,
+      "automaticWithFreePointer": true,
+      "escapeKeepsSpeedMenu": true,
+      "passed": true
+    },
+    "models": {
+      "available": true,
+      "coverage": {
+        "count": 14140375,
+        "measured": 12097577,
+        "assumed": 2042798,
+        "visualTypes": 3128
+      },
+      "cases": [
+        {
+          "name": "NGC 3982",
+          "family": "spiral",
+          "expectedFamily": "spiral",
+          "picking": {
+            "available": true,
+            "passed": true,
+            "targetId": "39633325333155389"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 5885,
+              "axisRatio": 0.8791599817575738,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 6448,
+              "axisRatio": 0.9999660595179797,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9993996531212419,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.8788387644479687,
+            "passed": true
+          },
+          "residentModels": 6
+        },
+        {
+          "name": "NGC 5107",
+          "family": "barred",
+          "expectedFamily": "barred",
+          "picking": {
+            "available": true,
+            "passed": true,
+            "targetId": "39633049024991434"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2052,
+              "axisRatio": 0.25103487741611674,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 5172,
+              "axisRatio": 0.999981312916783,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9806872897390224,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.25099221046545983,
+            "passed": true
+          },
+          "residentModels": 3
+        },
+        {
+          "name": "NGC 4026",
+          "family": "lenticular",
+          "expectedFamily": "lenticular",
+          "picking": {
+            "available": true,
+            "passed": true,
+            "targetId": "39633263488141603"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 4404,
+              "axisRatio": 0.3147394872370014,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 8360,
+              "axisRatio": 0.999993044886123,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9960748765607642,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.3146016797918665,
+            "passed": true
+          },
+          "residentModels": 2
+        },
+        {
+          "name": "NGC 4121",
+          "family": "elliptical",
+          "expectedFamily": "elliptical",
+          "picking": {
+            "available": true,
+            "passed": true,
+            "targetId": "39633443159541267"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 11070,
+              "axisRatio": 0.7536688112093884,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 12908,
+              "axisRatio": 0.9999897221733564,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.7532394433693744,
+            "passed": true
+          },
+          "residentModels": 3
+        },
+        {
+          "name": "NGC 3738",
+          "family": "irregular",
+          "expectedFamily": "irregular",
+          "picking": {
+            "available": true,
+            "passed": true,
+            "targetId": "39633314813841448"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 4635,
+              "axisRatio": 0.7160326694059478,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 5712,
+              "axisRatio": 0.9999684472191986,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9716583260946057,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.7160761298520021,
+            "passed": true
+          },
+          "residentModels": 3
+        }
+      ],
+      "unresolved": {
+        "id": "39627613664187303",
+        "radiusMpc": 0.004999999999999999,
+        "shapeMeasured": false,
+        "typeSource": "proxy",
+        "picking": {
+          "available": true,
+          "passed": true,
+          "targetId": "39627613664187303"
+        }
+      },
+      "automatic": {
+        "loadedWithoutSelection": true,
+        "selectionEmpty": true,
+        "residentModels": 10
+      },
+      "saturation": {
+        "requested": 24,
+        "peakResidentModels": 12,
+        "limit": 12
+      },
+      "bounded": true,
+      "passed": true
+    },
+    "depthCues": {
+      "near": {
+        "maxAlpha": 255,
+        "coveredPixels": 124
+      },
+      "middle": {
+        "maxAlpha": 149,
+        "coveredPixels": 52
+      },
+      "far": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniform": {
+        "maxAlpha": 224,
+        "coveredPixels": 52
+      },
+      "nearPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 140
+      },
+      "farPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniformPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "faintFloor": {
+        "maxAlpha": 3,
+        "coveredPixels": 32
+      },
+      "faintFloorPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "passed": true
+    },
+    "modelPerformance": {
+      "drawn": 1567051,
+      "loaded": 5092911,
+      "represented": 1567051,
+      "pending": 0,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": true,
+      "fps": 109.50403796139985,
+      "p95": 8.400000000000546,
+      "calls": 90,
+      "managedMiB": 236.14860820770264,
+      "blocked": false,
+      "focusDistance": 0.006268306969322927,
+      "budget": 1610510,
+      "models": 3
+    },
+    "context": {
+      "supported": true,
+      "recovered": true
+    },
+    "profileAfterRecovery": {
+      "available": true,
+      "observed": {
+        "litPixels": 4635,
+        "axisRatio": 0.7160326694059478,
+        "visible": true,
+        "blend": 1
+      },
+      "faceOn": {
+        "litPixels": 5712,
+        "axisRatio": 0.9999684472191986,
+        "visible": true,
+        "blend": 1
+      },
+      "inside": {
+        "litPixels": 65536,
+        "axisRatio": 0.9716583260946057,
+        "visible": true,
+        "blend": 1
+      },
+      "far": {
+        "litPixels": 0,
+        "axisRatio": null,
+        "visible": false,
+        "blend": 0
+      },
+      "expectedAxisRatio": 0.7160761298520021,
+      "passed": true
+    },
+    "interaction": {
+      "first": {
+        "ok": true,
+        "selected": "43978358542916529",
+        "attempted": 1
+      },
+      "second": {
+        "ok": true,
+        "selected": "43978363123169299",
+        "attempted": 2
+      },
+      "measuredMpc": 330.0020606674376,
+      "measurementStable": true,
+      "selectedExactId": "43978363123169299"
+    },
+    "integrity": {
+      "rejected": true,
+      "message": "Data integrity check failed"
+    }
   }
 ]

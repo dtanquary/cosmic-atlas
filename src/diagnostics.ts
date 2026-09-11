@@ -8,7 +8,7 @@ export async function runDiagnostics(atlas:Explorer,parent:HTMLElement){
  const sleep=(ms:number)=>new Promise(resolve=>setTimeout(resolve,ms));
  while(!atlas.stats.drawn){await sleep(100)}
  report.firstCoarseMs=performance.now();report.rendering=atlas.renderingInfo;report.initial=atlas.stats;show();
- if(query.has('uxtest')){report.observerPass=await atlas.probeObserverPass();show()}
+ if(query.has('uxtest')){report.observerPass=await atlas.probeObserverPass();const {probeUI}=await import('./ui-diagnostics');report.ui=await probeUI(atlas);show()}
  if(query.has('modeltest')){
   report.status='checking catalog-wide models';show();report.models=await atlas.probeModelCatalog();report.depthCues=atlas.probeDepthCues();show();
   atlas.controls.autoRotate=true;atlas.controls.autoRotateSpeed=2;atlas.invalidate();report.status='measuring model navigation';show();await sleep(7000);
