@@ -45,3 +45,7 @@ The earliest observed coarse view in the full-catalog Chrome run appeared at 168
 - Mobile navigation, physical galaxy sizes/artwork, and completeness beyond the selected DESI release are outside this prototype's scope.
 
 Raw browser evidence is retained in [validation-results.json](validation-results.json). Reproduction commands and development-only diagnostic routes are in the [README](../README.md).
+
+## Delivery status
+
+The full prototype is running locally at `http://127.0.0.1:5173/`. The production archive passed manifest, file-presence, and declared-size validation, but the hosting connector rejected its 1,063,492,539-byte upload against a 536,870,912-byte limit. No version was saved or deployed. The accepted full catalog remains available locally; it has not been replaced by a smaller sample. Cloud delivery needs a separate object-storage path for the catalog assets, or a hosting service that accepts the complete static bundle.

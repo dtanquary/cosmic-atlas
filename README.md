@@ -13,6 +13,8 @@ npm run dev
 
 Open the localhost URL printed by Vite. The application uses TypeScript, Three.js/WebGL2, a data-decoding worker, and self-hosted fonts. No server, account, API key, or live astronomy-service connection is needed during use.
 
+The complete prototype is available locally. Cloud publication is currently blocked by the hosting connector's 512 MiB upload limit: the validated application and datasets package is approximately 1 GB. A separate catalog object store is the next delivery task; the local full dataset remains intact.
+
 ## Rebuild the data on a fresh checkout
 
 Node 22.12+, 24, or 26+ and Python 3.11+ with `uv` are recommended. The lockfiles pin the dependencies. Large generated binary assets and source downloads are excluded from Git; manifests and their checksums are tracked.
