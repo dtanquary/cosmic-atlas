@@ -2711,5 +2711,228 @@
       "rejected": true,
       "message": "Data integrity check failed"
     }
+  },
+  {
+    "runId": "readme-bootstrap",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 227.90000000596046,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 47589,
+      "loaded": 47589,
+      "represented": 47589,
+      "pending": 0,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": true,
+      "fps": 88.93104879350211,
+      "p95": 17.033999999999992,
+      "calls": 2,
+      "managedMiB": 24.463845252990723,
+      "blocked": false,
+      "focusDistance": 14362.31599346204,
+      "budget": 1000000,
+      "models": 0
+    },
+    "home": {
+      "arrival": {
+        "visible": true,
+        "blend": 1,
+        "focusAtSun": true,
+        "cameraDistance": 0.05999999999999998,
+        "centerNdc": [
+          0.13005636062341464,
+          -0.08983219660523901,
+          0.0015892964657650405
+        ],
+        "sunNdc": [
+          1.0738151835054867e-16,
+          2.537072064185357e-16,
+          0.0016666661800924033
+        ]
+      },
+      "bodyPicking": true,
+      "views": {
+        "outside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 10133
+        },
+        "nearSun": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 649
+        },
+        "inside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 43421
+        },
+        "points": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "focused": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 43421
+        },
+        "noFocus": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "sunMarkerWithinClip": true
+      },
+      "catalogUnchanged": true,
+      "memoryBytes": 1792000,
+      "passed": true
+    },
+    "homePerformance": {
+      "drawn": 47589,
+      "loaded": 47589,
+      "represented": 47589,
+      "pending": 0,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": true,
+      "fps": 119.99999999999999,
+      "p95": 9.100000000000364,
+      "calls": 5,
+      "managedMiB": 24.463845252990723,
+      "blocked": false,
+      "focusDistance": 0.05999999999998423,
+      "budget": 1771561,
+      "models": 1
+    },
+    "homeContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "homeAfterRecovery": {
+      "arrival": {
+        "visible": true,
+        "blend": 1,
+        "focusAtSun": true,
+        "cameraDistance": 0.05999999999999998,
+        "centerNdc": [
+          0.13005636062341464,
+          -0.08983219660523901,
+          0.0015892964657650405
+        ],
+        "sunNdc": [
+          1.0738151835054867e-16,
+          2.537072064185357e-16,
+          0.0016666661800924033
+        ]
+      },
+      "bodyPicking": true,
+      "views": {
+        "outside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 10133
+        },
+        "nearSun": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 649
+        },
+        "inside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 43421
+        },
+        "points": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "focused": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 43421
+        },
+        "noFocus": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "sunMarkerWithinClip": true
+      },
+      "catalogUnchanged": true,
+      "memoryBytes": 1792000,
+      "passed": true
+    },
+    "depthCues": {
+      "near": {
+        "maxAlpha": 255,
+        "coveredPixels": 124
+      },
+      "middle": {
+        "maxAlpha": 149,
+        "coveredPixels": 52
+      },
+      "far": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniform": {
+        "maxAlpha": 224,
+        "coveredPixels": 52
+      },
+      "nearPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 140
+      },
+      "farPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniformPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "faintFloor": {
+        "maxAlpha": 3,
+        "coveredPixels": 32
+      },
+      "faintFloorPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "passed": true
+    },
+    "interaction": {
+      "first": {
+        "ok": true,
+        "selected": "39633279623627732",
+        "attempted": 1
+      },
+      "second": {
+        "ok": true,
+        "selected": "39633035271867131",
+        "attempted": 2
+      },
+      "measuredMpc": 589.0071620993323,
+      "measurementStable": true,
+      "selectedExactId": "39633035271867131"
+    },
+    "context": {
+      "supported": true,
+      "recovered": true
+    },
+    "integrity": {
+      "rejected": true,
+      "message": "Data integrity check failed"
+    }
   }
 ]

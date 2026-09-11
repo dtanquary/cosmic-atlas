@@ -136,4 +136,12 @@ The actual Chrome 152 / M3 Max `?uxtest&hometest&modeltest&selftest&run=milky-wa
 
 The same run passed all five catalog model families, automatic nearby loading, the 12-model catalog pool, ordinary GPU point picking, distance cues, measurement persistence, integrity rejection, the observer obstruction regression and all nine UI checks. The home model is separately bounded at **1,792,000 tracked geometry bytes**. Its seven-second orbit at **2268×1218** measured **109.1 FPS, p95 9.4 ms**, 19 total draw calls, one visible home model, 124.9 MiB tracked allocations, and no pending/failed chunks or memory-limit state. These are short local measurements, not hardware-wide performance guarantees.
 
-The Observer arrival and reference inspector were visually reviewed in native Chrome. Source parameters, frame transformation and scientific/visual assumptions are recorded in [milky-way.md](milky-way.md).
+The Observer arrival and reference inspector were visually reviewed in native Chrome. Searching `Milky Way` and pressing Enter opened the reference; **Galaxy view** centered the Galaxy with the Sun visibly offset, and **Our position** restored the Sun-centered view. Source parameters, frame transformation and scientific/visual assumptions are recorded in [milky-way.md](milky-way.md).
+
+## README clean-checkout verification — 11 September 2026
+
+The documented quick start was executed in an isolated checkout without copying the existing catalog binaries: `npm ci`, `uv sync --frozen`, `npm run data:bootstrap`, and `npm run dev`. Bootstrap downloaded 24 byte ranges from the official DESI source and produced **47,589 accepted observations** in one node, about **2.9 MiB compressed**. The main workspace's full catalog was untouched.
+
+All **27 TypeScript tests**, the **four Python unit checks**, independent validation of the generated bootstrap dataset, and `npm run build` passed. The independent validator confirmed all 47,589 records with maximum reconstructed render-position error **0.00024372 Mpc**. HTTP checks verified that the active manifest and every declared point/metadata asset were served with the expected byte lengths.
+
+The fresh setup's actual Chrome 152 / M3 Max `?hometest&selftest&run=readme-bootstrap` run passed Milky Way arrival, body picking, rendering modes, near-Sun clipping and graphics recovery; point picking returned two distinct exact IDs and their **589.007162 Mpc** separation. Measurement persistence, distance cues, integrity rejection and ordinary graphics recovery also passed. The combined runner resets to the survey overview before point checks so a preceding home test does not leave distant points intentionally faded out. Raw results are retained in [validation-results.json](validation-results.json).
