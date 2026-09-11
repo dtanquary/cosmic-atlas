@@ -9,6 +9,7 @@ export interface ModelManifest {
   version:1;catalogId:string;catalogSourceSha256:string;count:number;measuredShapes:number;assumedShapes:number;visualTypes:number;
   nodes:Record<string,Asset&{maxRadiusMpc:number}>;namedTypes:Record<string,NamedType>;
   library:{n:number;weightedError:number;gaussians:GalaxyDetailData['gaussians']}[];fallbackRadiusMpc:number;
+  unresolvedExample:{id:number;node:string;row:number;targetId:string};
 }
 export interface ProfileChunk {buffer:ArrayBuffer;values:Float32Array;flags:Uint32Array;used:number}
 const familyByCode:Record<number,GalaxyFamily>={1:'spiral',2:'barred',3:'elliptical',4:'lenticular',5:'irregular'};

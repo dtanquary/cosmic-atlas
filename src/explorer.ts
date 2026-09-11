@@ -622,10 +622,45 @@ export class Explorer {
     if(this.wasContinuous)this.invalidate();
   }
   get measurementDistance(){return this.measurement.length===2?separation(this.measurement[0].position,this.measurement[1].position):null}
+  async probeModelCatalog(){
+    const catalog=this.modelCatalog;if(!catalog)return {available:false};
+    const cases=[];
+    for(const name of ['NGC 3982','NGC 5107','NGC 4026','NGC 4121','NGC 3738']){
+      const match=Object.entries(catalog.manifest.namedTypes).find(([,entry])=>entry.name===name)!;
+      const id=Number(match[0]),entry=match[1];await this.visitCatalog({id,...entry});
+      const model=this.resolvedFor(id)!;
+      cases.push({name,family:model.data.model?.family??(model.data.spiral?'spiral':'lenticular'),expectedFamily:entry.family,
+        picking:await this.probeResolvedPicking(id),profile:this.probeGalaxyProfile(id),residentModels:this.resolvedGalaxies.length});
+    }
+    await this.visitCatalog(catalog.manifest.unresolvedExample);
+    const fallback=this.resolvedFor(catalog.manifest.unresolvedExample.id)!;
+    const unresolved={id:fallback.data.galaxy.targetId,radiusMpc:fallback.radius,shapeMeasured:fallback.data.model!.shapeMeasured,typeSource:fallback.data.model!.typeSource,picking:await this.probeResolvedPicking(fallback.data.galaxy.id)};
+    const irregular=Object.entries(catalog.manifest.namedTypes).find(([,entry])=>entry.name==='NGC 3738')!;
+    await this.visitCatalog({id:Number(irregular[0]),...irregular[1]});
+    const model=this.resolvedFor(Number(irregular[0]))!,galaxy=model.data.galaxy,radius=model.radius;
+    this.clearSelection();this.removeModel(model);this.bindModels();
+    this.focusAt(new THREE.Vector3().fromArray(galaxy.position),radius*12);this.modelScanNeeded=true;
+    const deadline=performance.now()+8000;
+    while(!this.resolvedFor(galaxy.id)&&performance.now()<deadline){this.invalidate();await new Promise(resolve=>setTimeout(resolve,100))}
+    const automatic={loadedWithoutSelection:!!this.resolvedFor(galaxy.id),selectionEmpty:this.selected===null,residentModels:this.resolvedGalaxies.length};
+    if(this.resolvedFor(galaxy.id))this.visitGalaxy(galaxy.id);
+    // Saturate the model pool with real root-sample identities in one batch.
+    // All calls use the normal checksum/decoding/construction/eviction path.
+    const root=this.cache.get(this.root)!;
+    const metadata=await this.loader.load(`m:${this.root}`,new URL(root.node.metadata.url,this.base).href,root.node.metadata,'metadata',root.node.storedCount,true);
+    await catalog.read(root.node);
+    const counts:number[]=[];
+    await Promise.all(Array.from({length:24},async(_,row)=>{await this.ensureModel(decodeGalaxy(metadata,row,root.ids[row]),root.node,row,true);counts.push(this.resolvedGalaxies.length)}));
+    const saturation={requested:24,peakResidentModels:Math.max(...counts),limit:MODEL_LIMIT};
+    this.modelScanNeeded=true;this.invalidate();
+    const bounded=cases.every(item=>item.residentModels<=MODEL_LIMIT)&&automatic.residentModels<=MODEL_LIMIT&&saturation.peakResidentModels===MODEL_LIMIT;
+    return {available:true,coverage:{count:catalog.manifest.count,measured:catalog.manifest.measuredShapes,assumed:catalog.manifest.assumedShapes,visualTypes:catalog.manifest.visualTypes},cases,unresolved,automatic,saturation,bounded,
+      passed:cases.every(item=>item.family===item.expectedFamily&&item.picking.passed&&item.profile.passed)&&!unresolved.shapeMeasured&&Math.abs(unresolved.radiusMpc-.005)<1e-12&&unresolved.picking.passed&&automatic.loadedWithoutSelection&&automatic.selectionEmpty&&bounded};
+  }
   probeGalaxyProfile(id=this.resolved?.data.galaxy.id){
     const source=id===undefined?null:this.resolvedFor(id);if(!source)return {available:false};
     // Check the measured smooth component separately from illustrative arm light.
-    const model=new ResolvedGalaxy({...source.data,spiral:undefined}),target=new THREE.WebGLRenderTarget(256,256);
+    const model=new ResolvedGalaxy({...source.data,spiral:undefined,knotCount:0}),target=new THREE.WebGLRenderTarget(256,256);
     const camera=new THREE.PerspectiveCamera(50,1,.000001,100000),pixels=new Uint8Array(256*256*4);
     camera.up.copy(model.frame.north);
     const sample=(direction:THREE.Vector3,distance:number,zoom=false)=>{

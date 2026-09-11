@@ -10,6 +10,8 @@
     "preview": "vite preview --host 127.0.0.1",
     "test": "vitest run",
     "test:data": "uv run python scripts/test_data.py",
+    "test:models": "uv run python scripts/test_model_catalog.py",
+    "data:models": "uv run python scripts/prepare_model_catalog.py",
     "data:bootstrap": "uv run python scripts/prepare_data.py --bootstrap --out public/data/bootstrap --activate",
     "data:download": "uv run python scripts/download_catalog.py",
     "data:prepare": "uv run python scripts/prepare_data.py --emit-development --activate"

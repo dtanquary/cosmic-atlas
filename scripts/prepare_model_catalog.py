@@ -133,7 +133,7 @@ def main():
     valid = (records['radius'] > 0) & np.isfinite(records['radius']) & np.isfinite(records['e1']) & np.isfinite(records['e2']) & (np.hypot(records['e1'], records['e2']) < .999) & np.isin(records['flags'] & 255, [2,3,4,5])
     measured = int(valid.sum())
     records.flush()
-    assets, leaf_count = {}, 0
+    assets, leaf_count, unresolved_example = {}, 0, None
     for i, node in enumerate(manifest['nodes']):
         def payload(asset):
             compressed = (directory / asset['url']).read_bytes()
@@ -143,6 +143,11 @@ def main():
         assert len(ids) == node['storedCount'] and np.all(ids < total)
         subset = records[ids]
         metadata = np.frombuffer(payload(node['metadata']), META, offset=16)
+        if not node['children'] and unresolved_example is None:
+            missing = np.flatnonzero(~valid[ids] & (metadata['distance'] > 10))
+            if len(missing):
+                row = int(missing[0])
+                unresolved_example = dict(id=int(ids[row]), node=node['id'], row=row, targetId=str(int(metadata[row]['targetid'])))
         # Conservative maximum determines whether a chunk might resolve on screen.
         radius = np.where(valid[ids], subset['radius']*metadata['distance']*np.pi/(180*3600), .005)
         binary = struct.pack('<4I', 0x43415331, 1, len(ids), 0)+subset.tobytes()
@@ -159,6 +164,7 @@ def main():
                   measuredShapes=measured, assumedShapes=total-measured, visualTypes=len(known), imagingTypes=counts,
                   families=FAMILIES, nodes=assets, namedTypes=known, library=profile_library(),
                   fallbackRadiusMpc=.005, license='CC-BY-SA-4.0', sources=search['sources'], aliasesSource=search['aliasesSource'],
+                  unresolvedExample=unresolved_example,
                   totalCompressedBytes=sum(asset['bytes'] for asset in assets.values()))
     (destination / 'manifest.json').write_text(json.dumps(result, separators=(',', ':'))+'\n')
     print(json.dumps({k: result[k] for k in ['count','measuredShapes','assumedShapes','visualTypes','imagingTypes','totalCompressedBytes']}, indent=2))
