@@ -175,6 +175,16 @@ Use Automatic model display for the full model suite. Keep the browser tab visib
 
 Measured results and device-specific limitations are in [`docs/validation.md`](docs/validation.md). Performance on one GPU is not a guarantee for other hardware.
 
+## Why familiar nearby galaxies can be missing
+
+The initial atlas imports a filtered **DESI DR1 redshift survey**, not a combined census of all known galaxies. A recognized name without a visit location means our application has not integrated a usable 3D record for it; it does not mean astronomers have failed to catalog the galaxy.
+
+The DESI importer accepts positive redshifts and converts them to Planck18 distances. This works poorly in our immediate neighborhood, where galaxies' own motions matter: Andromeda (M31), for example, is approaching us and has a blueshift. Its measured distance must come from another method. Very small positive redshifts can also produce implausible positions inside the Milky Way, which is why the app hides uncertain redshift-only positions below 1 Mpc by default.
+
+Nearby-galaxy integration is now in progress, beginning with well-known Local Group galaxies. It will use published redshift-independent distances, documented sky positions and projected shapes, with clear provenance and separate counts. Those measured nearby entries will bypass the redshift-only display guard. Original DESI observations will remain intact; the combined view must not claim an independently deduplicated census.
+
+References: [NASA on Andromeda](https://science.nasa.gov/mission/hubble/science/explore-the-night-sky/hubble-messier-catalog/messier-31/), [NASA/IPAC on local distance limitations](https://ned.ipac.caltech.edu/Documents/Overview), and the [confirmed local-position audit](docs/local-distance-audit.md).
+
 ## Scientific boundaries and data credit
 
 This is an observer-centered reconstruction of catalog measurements, not a complete census or a simultaneous snapshot of the universe. Distances are **linear comoving distances inferred with Planck18**; redshift includes local velocity effects. Survey gaps are not proof of empty space. Point size, opacity and color are navigation cues, not measured luminosity.
