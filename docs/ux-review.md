@@ -52,8 +52,12 @@ The user also requested control over nearby enlargement. Settings now separates 
 
 ## Recognized names without visit destinations
 
-Status: reproducing.
+Status: verified.
 
 `?uxtest&run=search-availability-before` reproduces Andromeda as “1 suggestion,” with one disabled but active listbox option. Clicking or pressing Enter changes the count message into a missing-observation message. Mixed queries also put unavailable names into the interactive suggestion list. The fresh no-match query clears the old row correctly, so stale results are not required to reproduce this confusion.
 
 Ranked hypotheses: (1) presentation and keyboard selection conflate a recognized name with a verified visit destination; (2) alias resolution is wrong; (3) stale result state. The checked-in index and alias tests correctly resolve Andromeda to NGC 224, with no verified DESI visit reference. The new real-DOM regression fails on the misleading selectable result and status change. The fix must disclose recognized unavailable names clearly, keep them out of visit selection, and offer a route back to available destinations without inventing coordinates.
+
+The fixed `?uxtest&hometest&run=search-availability-fixed` reports **1 name match · no visit location**, zero visit options and no active keyboard option for Andromeda. Its common name and NGC 224 / M 31 aliases appear in a readable explanation panel. Click, ArrowDown and Enter preserve the explanation and camera. Browse available galaxies restores the nearby list and input focus. Mixed queries contain only available destinations in the interactive list; unknown queries clear both lists and show the distinct no-name-match message. All new checks, the existing nine UI checks, observer obstruction and home navigation/rendering/recovery checks pass. All 27 TypeScript tests and the final production build pass.
+
+Native Chrome review confirmed the Andromeda explanation and recovery button, then a mixed `NGC 398` query showing eight name matches with one available destination (NGC 3982). Catalog/index data was unchanged. Prevention: recognized matches and visit options are now separate collections; result counts, keyboard state and explanatory content are checked together through the actual dialog.

@@ -3845,5 +3845,451 @@
       "rejected": true,
       "message": "Data integrity check failed"
     }
+  },
+  {
+    "runId": "search-availability-before",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 205,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 661312,
+      "loaded": 815092,
+      "represented": 14140375,
+      "pending": 8,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 59.819345576359396,
+      "p95": 25.034000000000006,
+      "calls": 60,
+      "managedMiB": 84.58777141571045,
+      "blocked": false,
+      "focusDistance": 16099.112169655013,
+      "budget": 1000000,
+      "models": 0
+    },
+    "observerPass": {
+      "galaxy": "NGC 3982",
+      "samples": [
+        {
+          "radiusMultiple": 60,
+          "blend": 1,
+          "brightFraction": 0.0054168701171875,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 24,
+          "blend": 1,
+          "brightFraction": 0.0349884033203125,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 12,
+          "blend": 0.7920833213002185,
+          "brightFraction": 0.1287384033203125,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 6,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 2,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 0.25,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 0,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": -2,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        }
+      ],
+      "deliberate": true,
+      "pointsOnly": true,
+      "stablePointHorizon": true,
+      "focusedOnly": true,
+      "observerClearsFocus": true,
+      "overviewClearsFocus": true,
+      "passed": true
+    },
+    "ui": {
+      "focusReachable": true,
+      "closeReachableAfterScroll": true,
+      "retryReachable": true,
+      "cancelledVisitStable": true,
+      "searchReusable": true,
+      "reopenedVisitStable": true,
+      "speedEditable": true,
+      "automaticWithFreePointer": true,
+      "escapeKeepsSpeedMenu": true,
+      "passed": true
+    },
+    "searchAvailability": {
+      "recognized": {
+        "status": "1 suggestion",
+        "visitOptions": 1,
+        "activeOption": "galaxy-option-0",
+        "explanation": ""
+      },
+      "unavailableStable": false,
+      "browseWorks": false,
+      "mixedHasOnlyVisitsInList": false,
+      "noMatch": {
+        "status": "No named match. Try an NGC, IC, UGC or Messier name.",
+        "visitOptions": 0,
+        "unavailableHidden": true,
+        "activeOption": null
+      },
+      "passed": false
+    }
+  },
+  {
+    "runId": "search-availability-fixed",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 125.79999999701977,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 2268,
+      "height": 1218
+    },
+    "initial": {
+      "drawn": 65536,
+      "loaded": 151963,
+      "represented": 14140375,
+      "pending": 6,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 82.18952905399853,
+      "p95": 16.633999999999993,
+      "calls": 9,
+      "managedMiB": 48.29574680328369,
+      "blocked": false,
+      "focusDistance": 16099.112169655042,
+      "budget": 1000000,
+      "models": 0
+    },
+    "observerPass": {
+      "galaxy": "NGC 3982",
+      "samples": [
+        {
+          "radiusMultiple": 60,
+          "blend": 1,
+          "brightFraction": 0.0054168701171875,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 24,
+          "blend": 1,
+          "brightFraction": 0.0349884033203125,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 12,
+          "blend": 0.7920833213002185,
+          "brightFraction": 0.1287384033203125,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 6,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 2,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 0.25,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 0,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": -2,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        }
+      ],
+      "deliberate": true,
+      "pointsOnly": true,
+      "stablePointHorizon": true,
+      "focusedOnly": true,
+      "observerClearsFocus": true,
+      "overviewClearsFocus": true,
+      "passed": true
+    },
+    "ui": {
+      "focusReachable": true,
+      "closeReachableAfterScroll": true,
+      "retryReachable": true,
+      "cancelledVisitStable": true,
+      "searchReusable": true,
+      "reopenedVisitStable": true,
+      "speedEditable": true,
+      "automaticWithFreePointer": true,
+      "escapeKeepsSpeedMenu": true,
+      "passed": true
+    },
+    "searchAvailability": {
+      "recognized": {
+        "status": "1 name match \u00b7 no visit location",
+        "visitOptions": 0,
+        "activeOption": null,
+        "explanation": "Location unavailable in this atlasAndromeda GalaxyNGC 224 \u00b7 M 31We recognize these names, but this atlas has no verified 3D visit location for them yet. They cannot be visited in the current dataset."
+      },
+      "unavailableStable": true,
+      "browseWorks": true,
+      "mixedHasOnlyVisitsInList": true,
+      "noMatch": {
+        "status": "No name matches. Try an NGC, IC, UGC or Messier name.",
+        "visitOptions": 0,
+        "unavailableHidden": true,
+        "activeOption": null
+      },
+      "passed": true
+    },
+    "homeNavigation": {
+      "observer": [
+        {
+          "distanceMpc": 0.05999999999999998,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.745161685740996e-13
+        },
+        {
+          "distanceMpc": 0.04147259479162182,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 4.552317519395365e-14
+        },
+        {
+          "distanceMpc": 0.02866626864583429,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.86280579987963e-13
+        },
+        {
+          "distanceMpc": 0.019814409062274316,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 5.716943238165332e-14
+        }
+      ],
+      "galaxyView": [
+        {
+          "distanceMpc": 0.05999999999999998,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.745161685740996e-13
+        },
+        {
+          "distanceMpc": 0.04147259479162182,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 4.552317519395365e-14
+        },
+        {
+          "distanceMpc": 0.028666268645834294,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 3.951607839385551e-14
+        },
+        {
+          "distanceMpc": 0.019814409062274333,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.220209927077474e-13
+        }
+      ],
+      "search": [
+        {
+          "distanceMpc": 0.05999999999999998,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.745161685740996e-13
+        },
+        {
+          "distanceMpc": 0.04147259479162182,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 4.552317519395365e-14
+        },
+        {
+          "distanceMpc": 0.028666268645834294,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 3.951607839385551e-14
+        },
+        {
+          "distanceMpc": 0.019814409062274333,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.220209927077474e-13
+        }
+      ],
+      "solarTargetErrorMpc": 0,
+      "sunOffsetPx": 1.3114998212710628e-13,
+      "coreControlActive": true,
+      "solarControlActive": true,
+      "coreLabeled": true,
+      "sunLabeled": true,
+      "passed": true
+    },
+    "home": {
+      "arrival": {
+        "visible": true,
+        "blend": 1,
+        "focusAtSun": true,
+        "cameraDistance": 0.05999999999999996,
+        "centerNdc": [
+          0.1300563606234142,
+          -0.08983219660524,
+          0.0015892965182614644
+        ],
+        "sunNdc": [
+          -3.754679097702496e-16,
+          -8.88114735659583e-16,
+          0.0016666662325847592
+        ]
+      },
+      "bodyPicking": true,
+      "views": {
+        "outside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 10133
+        },
+        "nearSun": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 649
+        },
+        "inside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 43421
+        },
+        "points": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "focused": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 43421
+        },
+        "noFocus": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "sunMarkerWithinClip": true
+      },
+      "catalogUnchanged": true,
+      "memoryBytes": 1792000,
+      "passed": true
+    },
+    "homePerformance": {
+      "drawn": 177767,
+      "loaded": 2110048,
+      "represented": 177767,
+      "pending": 0,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": true,
+      "fps": 110.77263915812792,
+      "p95": 9.199999999999818,
+      "calls": 20,
+      "managedMiB": 125.9900770187378,
+      "blocked": false,
+      "focusDistance": 0.059999999999985024,
+      "budget": 1771561,
+      "models": 1
+    },
+    "homeContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "homeAfterRecovery": {
+      "arrival": {
+        "visible": true,
+        "blend": 1,
+        "focusAtSun": true,
+        "cameraDistance": 0.05999999999999996,
+        "centerNdc": [
+          0.1300563606234142,
+          -0.08983219660524,
+          0.0015892965182614644
+        ],
+        "sunNdc": [
+          -3.754679097702496e-16,
+          -8.88114735659583e-16,
+          0.0016666662325847592
+        ]
+      },
+      "bodyPicking": true,
+      "views": {
+        "outside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 10133
+        },
+        "nearSun": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 649
+        },
+        "inside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 43421
+        },
+        "points": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "focused": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 43421
+        },
+        "noFocus": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "sunMarkerWithinClip": true
+      },
+      "catalogUnchanged": true,
+      "memoryBytes": 1792000,
+      "passed": true
+    }
   }
 ]

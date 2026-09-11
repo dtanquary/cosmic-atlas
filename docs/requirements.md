@@ -48,6 +48,8 @@ Automatic galaxy models fade back to catalog points when their projected half-li
 
 Primary inspector actions must remain reachable while detail content scrolls. Dismissing or reopening name search must invalidate its pending navigation; older requests must not move the camera, close a new dialog, or disable its input. Model-display choices must preserve local distance fading around an intentionally focused galaxy.
 
+Name search must distinguish recognized names from verified visit locations. Unavailable names appear as readable explanatory content, never selectable visit options; counts and empty-state messages must agree with the displayed matches. Only available destinations participate in arrow/Enter navigation. An unavailable or unknown query offers Browse available galaxies to restore usable suggestions without inventing positions.
+
 ## Milky Way and visual direction
 
 The Milky Way is a fixed reference model available with every dataset. The observer is the Solar System at the origin; the Galactic center and plane use a pinned, sourced reference frame. Milky Way arrives 60 kpc from the Galactic core in an oblique view and keeps that core centered while zooming and orbiting. The inspector highlights Galactic core or Sun / Observer focus; the latter explicitly targets the origin. Both preserve the home model during close-up navigation. The home inspector distinguishes adopted literature dimensions from illustrative structure, has no DESI ID/redshift, and cannot create catalog pair measurements. Catalog counts are unchanged.

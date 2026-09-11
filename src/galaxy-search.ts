@@ -12,6 +12,7 @@ export function normalizeName(value:string){
 }
 export const observerEntry:NamedGalaxy={name:'Milky Way',aliases:['Observer','Home','Our galaxy'],kind:'observer',distance:0};
 const favorites=['NGC 3982','NGC 5107','NGC 4026','NGC 4121','NGC 3738','NGC 3992'];
+const isVisitable=(entry:NamedGalaxy)=>entry.kind==='observer'||entry.id!==undefined;
 export function namedSuggestions(entries:NamedGalaxy[],query:string,limit=8){
   const needle=normalizeName(query);
   if(!needle)return [observerEntry,...favorites.flatMap(name=>entries.filter(e=>e.name===name&&e.id!==undefined))].slice(0,limit);
@@ -41,11 +42,15 @@ export class GalaxySearch {
   private readonly list=document.getElementById('galaxy-results')!;
   private readonly status=document.getElementById('search-status')!;
   private readonly retry=document.getElementById('search-retry') as HTMLButtonElement;
+  private readonly unavailable=document.getElementById('unavailable-matches')!;
+  private readonly unavailableNames=document.getElementById('unavailable-names')!;
+  private readonly browse=document.getElementById('browse-available') as HTMLButtonElement;
 
   constructor(private atlas:Explorer,private signal:AbortSignal,private onLoaded:()=>void){
     this.input.addEventListener('input',()=>{this.active=0;this.render()},{signal});
     this.input.addEventListener('keydown',event=>{
       if(event.key==='ArrowDown'||event.key==='ArrowUp'){
+        if(!this.results.length)return;
         event.preventDefault();this.active=(this.active+(event.key==='ArrowDown'?1:-1)+this.results.length)%Math.max(1,this.results.length);this.highlight();
       }else if(event.key==='Enter'){event.preventDefault();void this.choose(this.active)}
     },{signal});
@@ -56,6 +61,7 @@ export class GalaxySearch {
     this.list.addEventListener('mousedown',event=>event.preventDefault(),{signal});
     this.list.addEventListener('click',event=>{const option=(event.target as HTMLElement).closest<HTMLElement>('[data-result]');if(option)void this.choose(Number(option.dataset.result))},{signal});
     this.retry.onclick=()=>void this.load();
+    this.browse.onclick=()=>{this.input.value='';this.active=0;this.render();this.input.focus()};
   }
   nameFor(id:number){return this.byId.get(id)?.name}
   open(){
@@ -65,7 +71,7 @@ export class GalaxySearch {
   }
   private async load(){
     if(this.loading)return this.loading;
-    this.retry.hidden=true;this.status.textContent='Loading galaxy names…';this.list.replaceChildren();
+    this.retry.hidden=true;this.status.textContent='Loading galaxy names…';this.results=[];this.list.replaceChildren();this.list.hidden=true;this.unavailable.hidden=true;this.browse.hidden=true;this.highlight();
     this.loading=(async()=>{
       try{
         const response=await fetch(this.atlas.catalogAsset('galaxy-search.json'),{signal:this.signal});if(!response.ok)throw new Error('Galaxy names could not load.');
@@ -78,25 +84,37 @@ export class GalaxySearch {
   }
   private render(){
     if(!this.loaded)return;
-    this.results=namedSuggestions(this.entries,this.input.value);this.active=Math.min(this.active,Math.max(0,this.results.length-1));
-    this.list.replaceChildren();
-    this.status.textContent=this.input.value.trim()?`${this.results.length} suggestion${this.results.length===1?'':'s'}`:'Popular & nearby · available in this atlas';
-    if(!this.results.length)this.status.textContent='No named match. Try an NGC, IC, UGC or Messier name.';
+    const matches=namedSuggestions(this.entries,this.input.value),unavailable=matches.filter(entry=>!isVisitable(entry));
+    this.results=matches.filter(isVisitable);this.active=Math.min(this.active,Math.max(0,this.results.length-1));
+    this.list.replaceChildren();this.list.hidden=!this.results.length;
+    this.unavailableNames.replaceChildren();this.unavailable.hidden=!unavailable.length;
+    this.browse.hidden=!this.input.value.trim()||this.results.length>0;
+    const availability=this.results.length?`${this.results.length} available to visit`:`no visit location${matches.length===1?'':'s'}`;
+    this.status.textContent=this.input.value.trim()?`${matches.length} name match${matches.length===1?'':'es'} · ${availability}`:'Popular & nearby · available in this atlas';
+    if(!matches.length)this.status.textContent='No name matches. Try an NGC, IC, UGC or Messier name.';
+    for(const entry of unavailable){
+      const item=document.createElement('li'),title=document.createElement('span'),aliases=document.createElement('span');
+      const needle=normalizeName(this.input.value);
+      const matchedAlias=entry.aliases.find(alias=>normalizeName(alias).includes(needle)&&!/^(NGC|IC|UGC|PGC|M |Messier )/i.test(alias));
+      title.className='search-result-name';title.textContent=matchedAlias??entry.name;
+      aliases.className='search-result-detail';aliases.textContent=[entry.name,...entry.aliases].filter((name,i,all)=>name!==title.textContent&&!name.startsWith('PGC')&&!name.startsWith('UGC')&&!name.startsWith('Messier')&&all.indexOf(name)===i).slice(0,3).join(' · ');
+      item.append(title,aliases);this.unavailableNames.append(item);
+    }
     for(const [i,entry] of this.results.entries()){
       const option=document.createElement('li');option.id=`galaxy-option-${i}`;option.setAttribute('role','option');
-      const available=entry.kind==='observer'||entry.id!==undefined;option.setAttribute('aria-disabled',String(!available));
       const title=document.createElement('span');title.className='search-result-name';title.textContent=entry.name;
       const detail=document.createElement('span');detail.className='search-result-detail';
       const model=entry.id===undefined?null:this.atlas.resolvedFor(entry.id);
       const recorded=entry.id===undefined?null:this.atlas.modelCatalog?.manifest.namedTypes[String(entry.id)];
       const modelLabel=recorded?`${familyLabels[recorded.family]} model`:model?.data.spiral?'Spiral model':model?'Smooth model':this.atlas.modelCatalog?'3D model':'Catalog point';
       const aliases=entry.aliases.filter(a=>a!==entry.name&&!a.startsWith('PGC')&&!a.startsWith('UGC')&&!a.startsWith('Messier')).slice(0,2).join(' · ');
-      detail.textContent=entry.kind==='observer'?'Our home galaxy · Galactic core view':available?[aliases,formatDistance(entry.distance!,this.atlas.units),modelLabel].filter(Boolean).join(' · '):[aliases,'No matched observation in this atlas'].filter(Boolean).join(' · ');
+      detail.textContent=entry.kind==='observer'?'Our home galaxy · Galactic core view':[aliases,formatDistance(entry.distance!,this.atlas.units),modelLabel].filter(Boolean).join(' · ');
       option.append(title,detail);option.dataset.result=String(i);this.list.append(option);
     }
     this.highlight();
   }
   private highlight(){
+    this.input.setAttribute('aria-expanded',String(this.dialog.open&&this.results.length>0));
     [...this.list.children].forEach((element,i)=>element.setAttribute('aria-selected',String(i===this.active)));
     const selected=this.list.children[this.active];
     if(selected){this.input.setAttribute('aria-activedescendant',selected.id);selected.scrollIntoView({block:'nearest'})}else this.input.removeAttribute('aria-activedescendant');
@@ -104,7 +122,7 @@ export class GalaxySearch {
   private async choose(index:number){
     if(this.busy)return;
     const entry=this.results[index];if(!entry)return;
-    if(entry.kind!=='observer'&&entry.id===undefined){this.status.textContent='This name has no verified matching observation in the current atlas.';return}
+    if(!isVisitable(entry))return;
     const controller=new AbortController();this.pendingVisit=controller;
     this.busy=true;this.input.disabled=true;this.dialog.setAttribute('aria-busy','true');this.status.textContent=`Visiting ${entry.name}…`;
     try{

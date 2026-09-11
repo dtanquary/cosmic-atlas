@@ -58,6 +58,8 @@ Run the commands in order. `data:download` is resumable: rerun it after an inter
 
 The prepared full atlas contains all **14,140,375** accepted observations. Its model sidecars add about **143 MB compressed**. The name index contains **17,320 names** and **3,181 verified catalog destinations**; an unmatched familiar name does not receive a fabricated position.
 
+Search distinguishes names it recognizes from places it can visit. For example, Andromeda appears with its aliases and a location-unavailable explanation because it has no verified destination in this index. Only available galaxies are selectable; **Browse available galaxies** returns to usable suggestions.
+
 To work with the million-object subset after full preparation, open `/?dataset=development`. Full catalog model/name matching is deliberately disabled for subsets. The Milky Way reference model is available independently.
 
 The two original individually fitted previews and the Milky Way reference data are checked in. To regenerate them:
