@@ -1,0 +1,54 @@
+{
+  "dataset": "dr1",
+  "catalogCount": 14140375,
+  "modelBoundingRadiusMpc": 0.034909617392,
+  "withinBoundingSphere": 1107,
+  "withinLightVolumeEllipsoid": 186,
+  "withinBodyPickEllipsoid": 80,
+  "redshiftRange": [
+    1.443212272675632e-09,
+    9.25311435898245e-06
+  ],
+  "closest": [
+    {
+      "targetId": "2305843041061266208",
+      "redshift": 1.4958136835180052e-06,
+      "redshiftError": 8.615161442679454e-07,
+      "sunDistanceMpc": 0.006627727992231257,
+      "coreDistanceMpc": 0.004032322775061789,
+      "diskRadiusUnits": 3.382401806790984
+    },
+    {
+      "targetId": "39627831256286470",
+      "redshift": 1.9597330620912817e-06,
+      "redshiftError": 8.740888948145429e-06,
+      "sunDistanceMpc": 0.008683285770174009,
+      "coreDistanceMpc": 0.004824852117009257,
+      "diskRadiusUnits": 12.900821721098824
+    },
+    {
+      "targetId": "39627861363006874",
+      "redshift": 1.3603510704261136e-06,
+      "redshiftError": 1.5490148241784715e-05,
+      "sunDistanceMpc": 0.006027513297993159,
+      "coreDistanceMpc": 0.004848480091280092,
+      "diskRadiusUnits": 10.545370293416003
+    },
+    {
+      "targetId": "39627891557799474",
+      "redshift": 1.3874164814368507e-06,
+      "redshiftError": 3.101635387385699e-05,
+      "sunDistanceMpc": 0.006147436109339033,
+      "coreDistanceMpc": 0.004863240087472029,
+      "diskRadiusUnits": 10.412142843776515
+    },
+    {
+      "targetId": "39627963754354880",
+      "redshift": 1.6349925018943006e-06,
+      "redshiftError": 1.8950686098257648e-05,
+      "sunDistanceMpc": 0.007244408639455153,
+      "coreDistanceMpc": 0.005156617546835388,
+      "diskRadiusUnits": 12.08490959387332
+    }
+  ]
+}
