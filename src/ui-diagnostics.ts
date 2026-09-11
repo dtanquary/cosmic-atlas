@@ -1,5 +1,39 @@
 import type {Explorer} from './explorer';
 
+/** Exercise the actual home buttons, search and wheel handler at galaxy scales. */
+export async function probeHomeNavigation(atlas:Explorer){
+ const element=<T extends HTMLElement=HTMLElement>(id:string)=>document.getElementById(id) as T;
+ const frame=()=>new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));
+ const center=atlas.milkyWay.center,origin=center.clone().set(0,0,0);
+ const sample=()=>{
+  const projected=center.clone().project(atlas.camera);
+  return {distanceMpc:atlas.camera.position.distanceTo(atlas.controls.target),targetErrorMpc:atlas.controls.target.distanceTo(center),centerOffsetPx:Math.hypot(projected.x*atlas.canvas.clientWidth/2,projected.y*atlas.canvas.clientHeight/2)};
+ };
+ const zoom=async()=>{
+  const samples=[sample()];
+  for(let step=0;step<3;step++){
+   for(let notch=0;notch<8;notch++)atlas.canvas.dispatchEvent(new WheelEvent('wheel',{deltaY:-100,bubbles:true,cancelable:true}));
+   await frame();samples.push(sample());
+  }
+  return samples;
+ };
+ element('observer-button').click();await frame();const observer=await zoom();
+ element('home-galaxy-view').click();await frame();const galaxyView=await zoom();
+ element('home-solar-view').click();await frame();
+ const solarTargetErrorMpc=atlas.controls.target.distanceTo(origin),sunOffsetPx=(()=>{const p=origin.clone().project(atlas.camera);return Math.hypot(p.x*atlas.canvas.clientWidth/2,p.y*atlas.canvas.clientHeight/2)})();
+ let search:ReturnType<typeof sample>[]|null=null;
+ if(!element('visit-galaxy-button').hidden){
+  element('visit-galaxy-button').click();const input=element<HTMLInputElement>('galaxy-query');
+  const deadline=performance.now()+10000;
+  while(input.disabled||!element('galaxy-results').children.length){if(performance.now()>deadline)throw new Error('Milky Way search timed out');await frame()}
+  input.value='Milky Way';input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true,cancelable:true}));
+  await frame();search=await zoom();
+ }
+ element('home-galaxy-view').click();await frame();
+ const centered=(samples:ReturnType<typeof sample>[])=>samples.every(s=>s.targetErrorMpc<1e-12&&s.centerOffsetPx<1)&&samples.at(-1)!.distanceMpc<samples[0].distanceMpc*.4;
+ return {observer,galaxyView,search,solarTargetErrorMpc,sunOffsetPx,passed:centered(observer)&&centered(galaxyView)&&(search===null||centered(search))&&solarTargetErrorMpc<1e-12&&sunOffsetPx<1};
+}
+
 /** Development-only checks against the real controls and async visit path. */
 export async function probeUI(atlas:Explorer){
  const element=<T extends HTMLElement=HTMLElement>(id:string)=>document.getElementById(id) as T;

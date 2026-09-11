@@ -35,3 +35,11 @@ Points-only initially exposed another display dependency: hiding the focused mod
 A seven-second close-up orbit on Chrome 152 / M3 Max at 2268×1218 measured 109.5 FPS, p95 8.4 ms, three visible models, 90 draw calls, 236.1 MiB tracked allocations, and no pending/failed chunks or memory-limit state. This short local measurement does not establish sustained dense-cluster performance on other devices. Raw baseline and final GPU reports are in `docs/validation-results.json`.
 
 Prevention: navigation intent is now explicit and independent of inspection and display mode. The regression runner exercises the production camera/model/picking and UI paths so later visual changes can be checked against the same obstruction and cancellation cases.
+
+## Milky Way zoom framing
+
+Status: reproducing.
+
+The actual home controls and wheel handler reproduce the reported drift in `?hometest&run=home-framing-before`. Observer and Milky Way search both target the Sun, 8.122 kpc from the Galactic center. Zooming from 60 to 19.8 kpc grows the center's screen offset from **104.9 to 290.2 CSS pixels**. The Galaxy view button stays centered through the identical wheel sequence (less than 0.001 px error). The new navigation regression fails while the existing geometry/GPU reference checks pass.
+
+Ranked hypotheses: (1) galaxy visits reuse Solar System focus; (2) incorrect physical scale or reference transform; (3) residual orbit damping. The identical wheel comparison isolates the focus target, while the independent frame/dimension tests pass. Both Sun-directed paths produce the same drift, and the center-directed path stays stable with the same camera controls. The intended fix is to center galaxy visits without moving or resizing the physical reference; retain a separate, explicit Solar System view.
