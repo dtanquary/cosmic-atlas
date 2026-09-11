@@ -31,3 +31,5 @@ Dave requested on 2026-09-11: **commit early and often, and commit the work you 
 Use [the local engineering workflow](docs/agents/workflow.md) for issue tracking and domain-document locations. UI diagnosis uses `docs/ux-review.md`; the existing product and validation documents remain authoritative. Keep the requested small, frequent commits throughout review and fixes.
 
 For changes to close-up visibility, camera focus, or search lifecycle, rerun the development `?uxtest` checks on the actual browser GPU. They cover observer obstruction, deliberate focus, display-mode fading, reachable inspector actions, and cancelled/reopened visits. Preserve these checks and record results in the UI review and validation notes.
+
+The Milky Way is a separate reference model, not a fabricated DESI observation. Keep the Solar System at the coordinate origin, preserve sourced frame parameters, and exclude the reference from catalog counts/IDs/pair measurements. Run `?hometest` when changing it, alongside the applicable navigation/model checks.

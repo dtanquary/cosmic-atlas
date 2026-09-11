@@ -49,3 +49,6 @@
 .visit-dialog .dialog-title{top:-26px}
 .dialog-title .icon-button{flex:none}
 @media(max-height:650px){.inspector{max-height:calc(100vh - 225px)}}
+
+#home-inspector .panel-actions .button{font-size:12px;padding:9px 8px}
+.origin-label{color:#a4cad5;text-shadow:0 1px 4px #000,0 0 8px #000}

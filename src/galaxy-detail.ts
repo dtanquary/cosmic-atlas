@@ -24,7 +24,7 @@ export function spiralSamples(parameters:NonNullable<GalaxyDetailData['spiral']>
   const winding=1/Math.tan(THREE.MathUtils.degToRad(parameters.pitchDegrees));
   for(let i=0;i<count;i++){
     const barRadius=parameters.barRadiusRe??.95;
-    const start=parameters.bar?barRadius*.9:.32;
+    const start=parameters.bar?(parameters.barRadiusRe===undefined?.85:barRadius*.9):.32;
     const r=start-Math.log(random()*random())/1.55;
     // Keep the faint outer skirt bounded; no structure outside the measured scale.
     if(r>4.5){i--;continue}
@@ -36,7 +36,7 @@ export function spiralSamples(parameters:NonNullable<GalaxyDetailData['spiral']>
       const x=(random()*2-1)*barRadius,y=normal()*.09,c=Math.cos(parameters.phaseRadians),s=Math.sin(parameters.phaseRadians);
       positions.set([x*c-y*s,x*s+y*c,normal()*.045],i*3);
     }
-    const young=random(),warm=1-THREE.MathUtils.smoothstep(r,.3,1.1);
+    const young=random(),warm=1-THREE.MathUtils.smoothstep(Math.hypot(positions[i*3],positions[i*3+1]),.3,1.1);
     const color=young<.035?new THREE.Color(.95,.42,.58):new THREE.Color(.45+.45*warm,.68+.18*warm,1-.25*warm);
     colors.set([color.r,color.g,color.b],i*3);sizes[i]=.04+random()*.05;
   }

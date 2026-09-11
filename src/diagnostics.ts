@@ -9,6 +9,10 @@ export async function runDiagnostics(atlas:Explorer,parent:HTMLElement){
  while(!atlas.stats.drawn){await sleep(100)}
  report.firstCoarseMs=performance.now();report.rendering=atlas.renderingInfo;report.initial=atlas.stats;show();
  if(query.has('uxtest')){report.observerPass=await atlas.probeObserverPass();const {probeUI}=await import('./ui-diagnostics');report.ui=await probeUI(atlas);show()}
+ if(query.has('hometest')){
+  report.home=await atlas.probeMilkyWay();show();atlas.controls.autoRotate=true;atlas.controls.autoRotateSpeed=2;atlas.invalidate();await sleep(7000);
+  atlas.controls.autoRotate=false;report.homePerformance=atlas.stats;atlas.invalidate();report.homeContext=await atlas.probeContextRecovery();report.homeAfterRecovery=await atlas.probeMilkyWay();
+ }
  if(query.has('modeltest')){
   report.status='checking catalog-wide models';show();report.models=await atlas.probeModelCatalog();report.depthCues=atlas.probeDepthCues();show();
   atlas.controls.autoRotate=true;atlas.controls.autoRotateSpeed=2;atlas.invalidate();report.status='measuring model navigation';show();await sleep(7000);
@@ -24,6 +28,9 @@ export async function runDiagnostics(atlas:Explorer,parent:HTMLElement){
   report.context=await atlas.probeContextRecovery();report.profileAfterRecovery=atlas.probeGalaxyProfile();
  }
  if(query.has('selftest')){
+  // A preceding home/model probe may leave the camera inside a local volume,
+  // where distant catalog points are intentionally faded out.
+  atlas.reset();atlas.clearSelection();await sleep(250);
   report.depthCues=atlas.probeDepthCues();show();
   report.status='testing selection';show();
   atlas.setMeasuring(true);const first=await atlas.probePicking();

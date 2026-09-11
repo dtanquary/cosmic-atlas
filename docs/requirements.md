@@ -6,7 +6,7 @@ Build a minimal desktop-browser explorer that makes the quantity, arrangement, a
 
 - A full-window point cloud of DESI DR1 galaxies. No generated catalog galaxies, compressed spatial axes, or decorative star field. Point markers do not imply physical size.
 - Orbit/pan/zoom by default, optional pointer-lock WASD flight, vertical movement, speed adjustment, focus on selection, and overview reset.
-- An Observer button focuses the observer marker at the coordinate origin from any view, leaving flight and preserving galaxy selections and measurements.
+- An Observer button opens a Milky Way close-up centered on the Solar System at the coordinate origin, leaving flight and preserving catalog selections and measurements.
 - Flight settings open before pointer capture. Start flying explicitly enters flight; Escape releases the mouse while keeping the speed slider available. Orbit closes flight settings. Scrolling adjusts speed during flight.
 - Auto fly moves straight forward at the current flight speed without capturing the pointer. Speed remains editable during movement. Its toggle and Escape stop it; changing navigation mode, focusing, opening dialogs, or hiding the tab stops it too.
 - Click a visible point for its exact DESI target ID, measured sky position, redshift and fitting error, derived comoving distance, and provenance.
@@ -47,3 +47,9 @@ Sources: https://data.desi.lbl.gov/doc/releases/dr1/ ; https://data.desi.lbl.gov
 Automatic galaxy models fade back to catalog points when their projected half-light radius grows from 6% to 16% of the shorter viewport dimension. A galaxy deliberately opened with Visit or Focus remains fully resolved, including inside its volume. Observer and Overview clear that focus exemption while preserving inspection and measurement. Settings offers Automatic, Focused galaxy only, and Points only; the choice persists locally. Rendering visibility never changes measured positions, sizes, or catalog completeness.
 
 Primary inspector actions must remain reachable while detail content scrolls. Dismissing or reopening name search must invalidate its pending navigation; older requests must not move the camera, close a new dialog, or disable its input. Model-display choices must preserve local distance fading around an intentionally focused galaxy.
+
+## Milky Way and visual direction
+
+The Milky Way is a fixed reference model available with every dataset. The observer is the Solar System at the origin; the Galactic center and plane use a pinned, sourced reference frame. Observer arrives 60 kpc from the origin in an oblique view and protects the home galaxy while zooming in. Galaxy view orbits the Galactic center. The home inspector distinguishes adopted literature dimensions from illustrative structure, has no DESI ID/redshift, and cannot create catalog pair measurements. Catalog counts are unchanged.
+
+The user's supplied galaxy-field image establishes the longer-term fly-through direction: dark space, restrained glow, many recognizable small galaxy shapes and varied orientations. A future intermediate silhouette level should bridge points and full models within a bounded draw budget; it is not yet implemented.

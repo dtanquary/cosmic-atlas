@@ -11,3 +11,7 @@
 ## Acceptance routes
 
 Overview orbit; fly into a dense region; select and focus; select two points and measure; switch units; switch detail modes; keep selections while unloading/refining; reset; reload with cache; retry a failed chunk; recover from context loss. Benchmark after warmup and distinguish startup, streaming, and steady-state costs.
+
+## Next visual milestone: intermediate galaxy silhouettes
+
+The user supplied a galaxy-field fly-through reference on 2026-09-11. Explore a batched intermediate representation between unresolved points and full close-ups, with restrained glow, varied types, and orientation from measurements where available. Keep true positions and physical scale available, disclose any visibility exaggeration, preserve the obstruction fade, and measure dense-flight GPU cost before expanding the representation budget. This remains future work after the Milky Way addition.

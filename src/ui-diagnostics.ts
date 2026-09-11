@@ -6,6 +6,7 @@ export async function probeUI(atlas:Explorer){
  const sleep=(ms:number)=>new Promise(resolve=>setTimeout(resolve,ms));
  const waitFor=async(check:()=>boolean)=>{const end=performance.now()+10000;while(!check()){if(performance.now()>end)throw new Error('UI check timed out');await sleep(20)}};
  const reachable=(node:HTMLElement)=>{const r=node.getBoundingClientRect();return document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)?.closest('button')===node};
+ if(atlas.homeSelected)atlas.visitGalaxy(atlas.resolvedGalaxies.find(model=>model.data.spiral)?.data.galaxy.id);
  const inspector=element('inspector').querySelector<HTMLElement>('.inspector-body')??element('inspector');inspector.scrollTop=0;
  const focusReachable=reachable(element('focus-button'));
  inspector.scrollTop=inspector.scrollHeight;const closeReachableAfterScroll=reachable(element('close-inspector'));inspector.scrollTop=0;
