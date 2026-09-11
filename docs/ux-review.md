@@ -61,3 +61,13 @@ Ranked hypotheses: (1) presentation and keyboard selection conflate a recognized
 The fixed `?uxtest&hometest&run=search-availability-fixed` reports **1 name match · no visit location**, zero visit options and no active keyboard option for Andromeda. Its common name and NGC 224 / M 31 aliases appear in a readable explanation panel. Click, ArrowDown and Enter preserve the explanation and camera. Browse available galaxies restores the nearby list and input focus. Mixed queries contain only available destinations in the interactive list; unknown queries clear both lists and show the distinct no-name-match message. All new checks, the existing nine UI checks, observer obstruction and home navigation/rendering/recovery checks pass. All 27 TypeScript tests and the final production build pass.
 
 Native Chrome review confirmed the Andromeda explanation and recovery button, then a mixed `NGC 398` query showing eight name matches with one available destination (NGC 3982). Catalog/index data was unchanged. Prevention: recognized matches and visit options are now separate collections; result counts, keyboard state and explanatory content are checked together through the actual dialog.
+
+## Unreliable local positions inside the Milky Way
+
+Status: reproducing.
+
+The [float64 catalog audit](local-distance-audit.md) already confirmed that near-zero-redshift distance inference places records within the home model. Additional orbit screenshots rule out a purely projected-background explanation. Physical model dimensions and coordinates remain consistent with their checked-in reference; display enlargement is not the cause of these embedded points.
+
+The new `?hometest&run=local-positions-before` GPU probe loads the checksum-verified metadata of all intersecting leaves, reconstructs the 1,107 actual records within the Milky Way bounding sphere, and renders their positions from four orbit angles using the production point/picking shaders. The baseline draws 8,723–10,934 colored pixels and nonzero pick coverage in every view, even when requesting protection. A control point outside the proposed local guard remains visible. This failing regression isolates actual local positions rather than distant projection or illustrative arm particles.
+
+Planned display safeguard: hide redshift-only positions within 1 Mpc of the observer by default, allow them to be shown as explicitly uncertain amber points, and suppress physical galaxy models for those records. Keep the original records, counts and coordinates intact. The guard radius is a conservative UI policy, not a physical boundary of distance reliability; independent local distances remain a separate data-integration task.

@@ -673,6 +673,53 @@ export class Explorer {
     if(this.wasContinuous)this.invalidate();
   }
   get measurementDistance(){return this.measurement.length===2?separation(this.measurement[0].position,this.measurement[1].position):null}
+  async probeLocalPositions(){
+    const center=this.milkyWay.center,radius=this.milkyWay.radius*8;
+    const nodes=[...this.nodes.values()].filter(node=>!node.children.length&&this.bounds.get(node.id)!.distanceToPoint(center)<=radius);
+    const near:THREE.Vector3[]=[];let far:THREE.Vector3|null=null;let example:Galaxy|null=null;
+    for(const node of nodes){
+      const buffer=await this.loader.load(`m:${node.id}`,new URL(node.metadata.url,this.base).href,node.metadata,'metadata',node.storedCount,true);
+      for(let row=0;row<node.storedCount;row++){
+        const galaxy=decodeGalaxy(buffer,row,0),point=new THREE.Vector3().fromArray(galaxy.position);
+        if(point.distanceTo(center)<=radius){near.push(point);example??=galaxy}
+        else if(!far&&galaxy.distance>1.1)far=point;
+      }
+    }
+    const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(50,1,.000001,100000);
+    camera.up.set(0,0,1);
+    const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(near.flatMap(p=>p.toArray())),3));
+    const controlGeometry=new THREE.BufferGeometry();controlGeometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array((far??new THREE.Vector3(2,0,0)).toArray()),3));
+    const visual=this.material(pointFragment,5,true,true),picker=this.material(pickFragment,5,false,true);
+    // Clone shared uniforms so this isolated probe cannot change user preferences.
+    visual.uniforms=THREE.UniformsUtils.clone(visual.uniforms);picker.uniforms=THREE.UniformsUtils.clone(picker.uniforms);
+    const points=new THREE.Points(geometry,visual);points.frustumCulled=false;scene.add(points);
+    const target=new THREE.WebGLRenderTarget(256,256),pixels=new Uint8Array(256*256*4);
+    const sample=(hide:boolean,pick=false,depth=true)=>{
+      const material=pick?picker:visual;points.material=material;
+      material.uniforms.uOrigin.value.copy(camera.position).negate();material.uniforms.uNode.value=1;
+      material.uniforms.uDepthCues.value=depth;material.uniforms.uMinOpacity.value=1;
+      if(material.uniforms.uLocalChunk)material.uniforms.uLocalChunk.value=true;
+      if(material.uniforms.uHideUncertainLocal)material.uniforms.uHideUncertainLocal.value=hide;
+      this.renderer.setRenderTarget(target);this.renderer.setClearColor(0,0);this.renderer.clear();this.renderer.render(scene,camera);
+      this.renderer.readRenderTargetPixels(target,0,0,256,256,pixels);
+      let covered=0,amber=0;
+      for(let i=0;i<pixels.length;i+=4)if(pixels[i]||pixels[i+1]||pixels[i+2]){covered++;if(pixels[i]>pixels[i+2]*1.2)amber++}
+      return {covered,amber};
+    };
+    const rotations=[];
+    try{
+      for(const angle of [0,Math.PI/2,Math.PI,Math.PI*1.5]){
+        const direction=this.milkyWay.approachDirection.applyAxisAngle(this.milkyWay.frame.normal,angle);
+        camera.position.copy(center).addScaledVector(direction,.06);camera.lookAt(center);camera.updateMatrixWorld();
+        rotations.push({angle,hidden:sample(true),raw:sample(false),hiddenPick:sample(true,true),rawPick:sample(false,true),withoutFading:sample(true,false,false)});
+      }
+      points.geometry=controlGeometry;const control=far??new THREE.Vector3(2,0,0);
+      camera.position.copy(control).add(new THREE.Vector3(0,0,.06));camera.lookAt(control);camera.updateMatrixWorld();
+      const outsideGuard=sample(true),outsideGuardPick=sample(true,true);
+      return {candidateCount:near.length,exampleTargetId:example?.targetId,rotations,outsideGuard,outsideGuardPick,
+        passed:near.length>0&&rotations.every(r=>r.hidden.covered===0&&r.hiddenPick.covered===0&&r.withoutFading.covered===0&&r.raw.covered>0&&r.raw.amber>0&&r.rawPick.covered>0)&&outsideGuard.covered>0&&outsideGuardPick.covered>0};
+    }finally{target.dispose();geometry.dispose();controlGeometry.dispose();visual.dispose();picker.dispose();this.renderer.setRenderTarget(null);this.renderer.setClearColor(0x06090d,1);this.invalidate()}
+  }
   async probeModelCatalog(){
     const catalog=this.modelCatalog;if(!catalog)return {available:false};
     const cases=[];

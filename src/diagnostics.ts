@@ -10,6 +10,7 @@ export async function runDiagnostics(atlas:Explorer,parent:HTMLElement){
  report.firstCoarseMs=performance.now();report.rendering=atlas.renderingInfo;report.initial=atlas.stats;show();
  if(query.has('uxtest')){report.observerPass=await atlas.probeObserverPass();const {probeUI,probeSearchAvailability}=await import('./ui-diagnostics');report.ui=await probeUI(atlas);report.searchAvailability=await probeSearchAvailability(atlas);show()}
  if(query.has('hometest')){
+  report.localPositions=await atlas.probeLocalPositions();show();
   const {probeHomeNavigation}=await import('./ui-diagnostics');report.homeNavigation=await probeHomeNavigation(atlas);show();
   report.home=await atlas.probeMilkyWay();show();atlas.controls.autoRotate=true;atlas.controls.autoRotateSpeed=2;atlas.invalidate();await sleep(7000);
   atlas.controls.autoRotate=false;report.homePerformance=atlas.stats;atlas.invalidate();report.homeContext=await atlas.probeContextRecovery();report.homeAfterRecovery=await atlas.probeMilkyWay();
