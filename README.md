@@ -4,7 +4,7 @@ A minimal 3D explorer of **14,140,375 accepted DESI DR1 galaxy observations**, p
 
 The Milky Way is a separate reference model around the Solar System. Its continuous stellar disk, soft barred center and fine dust lanes take visual cues from [Hubble images of Andromeda](https://esahubble.org/images/heic2501a/), while preserving the Milky Way’s adopted geometry. The texture, arm paths and lighting are illustrative. **Milky Way** takes you to a view centered on the Galactic core, so the galaxy stays centered as you zoom. **Sun / Observer** switches the focus to our location inside the disk.
 
-The project is being built collaboratively by Dave and **ChatGPT Astra**, through Codex. Dave supplies the product direction, visual references and hands-on feedback; Astra implements and tests the application, data tools and documentation.
+The project is being built collaboratively by Dave, **ChatGPT Astra** (through Codex) and **Claude Fable** (through Claude Code). Dave supplies the product direction, visual references and hands-on feedback; Astra and Fable implement and test the application, data tools and documentation, working from the shared instructions in [`AGENTS.md`](AGENTS.md).
 
 ![The revised Milky Way model showing its continuous stellar disk, dust lanes, Galactic core and Sun marker](docs/images/milky-way.jpg)
 
@@ -29,13 +29,13 @@ The project is being built collaboratively by Dave and **ChatGPT Astra**, throug
 
 Screenshots are captured from the running app. [Image credits and reuse terms](docs/images/README.md).
 
-## Built with ChatGPT Astra
+## Built with ChatGPT Astra and Claude Fable
 
-Development began with requirements for a simple, scientifically grounded point map that could handle millions of galaxies. Astra helped choose the stack, research the coordinate conventions, and build the data pipeline and first working explorer. Dave tested the prototype and guided successive additions: distance fading, flight controls, name search, measured-shape galaxy models and the Milky Way reference.
+Development began with requirements for a simple, scientifically grounded point map that could handle millions of galaxies. Astra helped choose the stack, research the coordinate conventions, and build the data pipeline and first working explorer. Dave tested the prototype and guided successive additions: distance fading, flight controls, name search, measured-shape galaxy models and the Milky Way reference. Claude Fable joined in September 2026 to plan and build the next features alongside Astra, with the same review, testing and documentation standards.
 
 The workflow is iterative: describe a feature or reproduce a problem, make a focused change, check the relevant data and automated tests, inspect actual browser rendering, and commit the result. The [requirements](docs/requirements.md), [architecture](docs/architecture.md), [validation evidence](docs/validation.md) and Git history record those decisions. Scientific assumptions are documented alongside their sources so contributors can review and improve them.
 
-There is no runtime OpenAI dependency or API key requirement. ChatGPT Astra helps build the software; the atlas runs locally using prepared astronomy data and deterministic rendering code.
+There is no runtime OpenAI or Anthropic dependency and no API key requirement. ChatGPT Astra and Claude Fable help build the software; the atlas runs locally using prepared astronomy data and deterministic rendering code.
 
 ## Quick start: a small real-data preview
 
