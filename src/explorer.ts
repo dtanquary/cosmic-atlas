@@ -89,7 +89,7 @@ interface Resident {
 }
 export interface AtlasStats {
   drawn:number; loaded:number; represented:number; pending:number; failed:number; mode:'adaptive'|'full'; complete:boolean;
-  fps:number; p95:number; calls:number; managedMiB:number; blocked:boolean; focusDistance:number; budget:number; models:number;
+  fps:number; p95:number; calls:number; managedMiB:number; blocked:boolean; focusDistance:number; focusFromObserver:number; budget:number; models:number;
 }
 export class Explorer {
   readonly renderer:THREE.WebGLRenderer;
@@ -737,7 +737,7 @@ export class Explorer {
     return {drawn:this.drawn.reduce((n,id)=>n+this.nodes.get(id)!.storedCount,0),loaded:this.loadedUnique,represented:this.drawn.reduce((n,id)=>n+this.nodes.get(id)!.count,0),pending:this.loader.pending+(this.modelCatalog?.pendingCount??0),failed:this.failed.size+(this.modelCatalog?.failed.size??0),mode:this.mode,
       complete:this.ready&&this.drawn.length>0&&this.desired.size===this.drawn.length&&this.drawn.every(id=>this.desired.has(id))&&this.drawn.every(id=>!this.nodes.get(id)!.children.length),
       fps:mean?1000/mean:0,p95:sorted[Math.floor(sorted.length*.95)]??0,calls:this.renderer.info.render.calls,managedMiB:this.memoryBytes/1048576,blocked:this.blocked,
-      focusDistance:this.camera.position.distanceTo(this.controls.target),budget:this.sampleBudget,models:this.allModels.filter(model=>model.visible).length+Number(this.milkyWay.visible)};
+      focusDistance:this.camera.position.distanceTo(this.controls.target),focusFromObserver:this.controls.target.length(),budget:this.sampleBudget,models:this.allModels.filter(model=>model.visible).length+Number(this.milkyWay.visible)};
   }
   invalidate(){if(!this.frame&&!document.hidden&&!this.contextLost&&!this.disposed)this.frame=requestAnimationFrame(time=>this.tick(time))}
   private tick(time:number){
