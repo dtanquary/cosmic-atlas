@@ -133,3 +133,7 @@ The layer does not alter or globally deduplicate DESI observations. Depth, ambig
 Milky Way appearance reference
 ------------------------------
 Hubble panoramic view of the Andromeda Galaxy (2025), NASA, ESA, B. Williams (University of Washington): https://esahubble.org/images/heic2501a/ . Used as a visual reference only; no telescope image pixels are redistributed or mapped onto the model. Milky Way structure context: Shen & Zheng (2020), https://arxiv.org/abs/2012.10130 . The original procedural density field, bar/bulge, dust attenuation, emission regions, colors and exposure are illustrative, not an observed external image or calibrated photometry. Adopted Galactic dimensions and coordinate-frame citations remain in src/data/milky-way.json and docs/milky-way.md.
+
+COMA CLUSTER TOUR STOP
+
+Position and redshift of Abell 1656 from NED (refs 2016ApJS..223...15B, 2018A&A...609A..72D; retrieved 2026-09-12). This research has made use of the NASA/IPAC Extragalactic Database (NED), which is funded by the National Aeronautics and Space Administration and operated by the California Institute of Technology.
