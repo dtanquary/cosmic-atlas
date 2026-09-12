@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "cosmology": "Planck18",
+  "lastScatteringRedshift": 1090,
+  "radiusMpc": 13884.42065831242,
+  "lookbackGyr": 13.786513101289533,
+  "ageAtEmissionYears": 372200.52818528906,
+  "sources": {
+    "parameters": "https://doi.org/10.1051/0004-6361/201833910",
+    "calculation": "https://docs.astropy.org/en/stable/api/astropy.cosmology.realizations.Planck18.html",
+    "explanation": "https://www.esa.int/Science_Exploration/Space_Science/Planck/Planck_and_the_cosmic_microwave_background"
+  },
+  "disclosure": "Approximate last-scattering surface centered on the Sun / Observer. Radius is a present-day comoving distance inferred with Planck18 at rounded z=1090, not the light travel time or a physical edge of the universe. The thin shell and its colors/grid are illustrative; no measured CMB temperature map is displayed."
+}
