@@ -1,6 +1,6 @@
 import {afterEach,beforeEach,describe,expect,it,vi} from 'vitest';
 import * as THREE from 'three';
-import {DWELL_SECONDS,Tour,tours,type CatalogEntry,type TourAtlas,type TourState} from '../src/tour';
+import {DWELL_SECONDS,Tour,tourClock,tours,type CatalogEntry,type TourAtlas,type TourState} from '../src/tour';
 import type {Explorer} from '../src/explorer';
 import type {ViewState} from '../src/view-link';
 import {cartesian} from '../src/format';
@@ -124,6 +124,17 @@ describe('Tour runner',()=>{
     atlas.visitMilkyWay=()=>undefined;
     runner.start();await flush();
     expect(runner.state).toMatchObject({index:0,status:'paused',autoplay:false});expect(vi.getTimerCount()).toBe(0);
+  });
+  it('divides travel and dwell by the probe clock speed',async()=>{
+    tourClock.speed=4;
+    try{
+      const {atlas,runner}=setup();
+      runner.start();
+      expect(atlas.last).toEqual({method:'visitMilkyWay',args:[1]});
+      await atlas.settle(true);
+      await vi.advanceTimersByTimeAsync(DWELL_SECONDS*250-1);expect(runner.state.status).toBe('dwelling');
+      await vi.advanceTimersByTimeAsync(1);expect(runner.state).toMatchObject({index:1,status:'travelling'});
+    }finally{tourClock.speed=1}
   });
   it('dwells for the default eight seconds unless a stop sets its own',async()=>{
     const {atlas,runner}=setup({...roadTrip,stops:[roadTrip.stops[0],{...roadTrip.stops[1],dwellSeconds:2}]});

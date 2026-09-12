@@ -92,8 +92,9 @@
 @media(max-width:600px){.save-view-row{flex-direction:column}.saved-views li{grid-template-columns:1fr auto auto;gap:2px 6px;padding:10px 0}}
 
 .tour-title{font-size:13px;line-height:1.5;color:#c6d7df;margin-top:6px}.tour-panel .object-name{margin-top:18px}
-.tour-caption{font-size:13px;line-height:1.7;color:#c6d7df;margin:12px 0 18px}.tour-controls .button{font-size:12px;padding:9px 8px}
-.tour-status{margin-top:14px;min-height:20px}
+.tour-caption{font-size:13px;line-height:1.7;color:#c6d7df;margin:12px 0 4px}.tour-controls .button{font-size:12px;padding:9px 8px}
+.tour-footer{flex:none;padding:14px 20px 16px;border-top:1px solid var(--line)}.tour-status{margin-top:12px;min-height:20px}
+@media(max-height:650px){.tour-panel{max-height:calc(100vh - 245px)}}
 .tours-dialog{width:min(560px,calc(100vw - 32px));padding:26px}.tours-dialog .dialog-title{top:-26px}
 .tour-list{list-style:none;margin:18px 0 0;padding:0}.tour-list li{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;border-top:1px solid var(--line)}
 .dialog .tour-list h3{margin:0 0 6px;font-size:15px}.dialog .tour-list p{margin:0;font-size:13px}.tour-list .button{white-space:nowrap}

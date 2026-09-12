@@ -13,6 +13,8 @@ export interface TourStop{
 export interface TourData{key:string;title:string;summary:string;stops:TourStop[]}
 export const tours=data.tours as unknown as TourData[];
 export const DWELL_SECONDS=8;
+// ponytail: one shared multiplier for the development probes; production leaves it at 1 and no UI exposes it
+export const tourClock={speed:1};
 export interface CatalogEntry{id:number;node:string;row:number;targetId:string}
 type XYZ={x:number;y:number;z:number};
 /** The explorer surface a tour drives; a visit resolves true on arrival, false when taken over by input, flight or a newer focus, and undefined when it could not start. */
@@ -80,7 +82,7 @@ export class Tour{
     const now=this.pose(),then=this.arrival!,scale=1e-6*Math.hypot(...add(now.camera,now.target,-1));
     return Math.hypot(...add(now.camera,then.camera,-1))>scale||Math.hypot(...add(now.target,then.target,-1))>scale;
   }
-  private schedule(){this.clearTimer();this.timer=setTimeout(()=>{this.timer=null;if(this.moved())this.set({status:'paused',autoplay:false});else this.next()},(this.state.stop!.dwellSeconds??DWELL_SECONDS)*1000)}
+  private schedule(){this.clearTimer();this.timer=setTimeout(()=>{this.timer=null;if(this.moved())this.set({status:'paused',autoplay:false});else this.next()},(this.state.stop!.dwellSeconds??DWELL_SECONDS)*1000/tourClock.speed)}
   /** The stop as the panel should show it: the caption's `{catalogCount}` is the active dataset's accepted count. */
   private present(stop:TourStop):TourStop{return {...stop,caption:stop.caption.replaceAll('{catalogCount}',this.atlas.manifest.count.toLocaleString('en-US'))}}
   /** `step` is the direction an unavailable stop is skipped in: forward for start/next/play, backward for previous. */
@@ -99,7 +101,7 @@ export class Tour{
     if(this.state.autoplay)this.schedule();
   }
   private visit(stop:TourStop,serial:number){
-    const {target,distanceMpc}=stop,s=stop.travelSeconds,approach=vec(this.atlas.milkyWay.approachDirection);
+    const {target,distanceMpc}=stop,s=stop.travelSeconds/tourClock.speed,approach=vec(this.atlas.milkyWay.approachDirection);
     switch(target.kind){
       case 'sun':return this.atlas.applyView({target:[0,0,0],camera:add([0,0,0],approach,distanceMpc??.06),identity:'sun'},s);
       case 'core':return this.atlas.visitMilkyWay(s);
