@@ -121,6 +121,7 @@ The visual direction is a dark, uncluttered atlas with recognizable galaxy shape
 | [`src/nearby-galaxies.ts`](src/nearby-galaxies.ts), [`src/data/nearby-sources.json`](src/data/nearby-sources.json) | Nearby entries, independent distance provenance, model inputs and separate identities |
 | [`src/local-distances.ts`](src/local-distances.ts) | Conservative display guard for uncertain local redshift positions |
 | [`src/lookback.ts`](src/lookback.ts), [`src/lookback-rings.ts`](src/lookback-rings.ts) | Planck18 lookback interpolation, ring selection and formatting, and the observer-centered ring overlay |
+| [`src/survey-footprint.ts`](src/survey-footprint.ts), [`src/screen-overlay.ts`](src/screen-overlay.ts), [`scripts/prepare_survey_footprint.py`](scripts/prepare_survey_footprint.py) | Survey footprint sidecar validation and the observer-centered occupancy overlay, the shared full-screen overlay body, and the reproducible 0.5° occupancy grid |
 | [`src/milky-way.ts`](src/milky-way.ts), [`src/milky-way-light.ts`](src/milky-way-light.ts) | Home-galaxy placement, procedural density field, dust/starlight volume and arrival direction |
 | [`src/galaxy-search.ts`](src/galaxy-search.ts) | Name normalization, suggestions and cancellable visits |
 | [`src/loader.ts`](src/loader.ts), [`src/data.worker.ts`](src/data.worker.ts) | Chunk requests, decompression, integrity checks and data lifetimes |
@@ -160,11 +161,14 @@ The generator reads that small source excerpt, converts coordinates/distance mod
 | Slow camera pass with the mouse free | **Auto fly**; **Escape** pauses it |
 | Galaxy appearance, rendering mode, local uncertainty, point enlargement and distant opacity | **Settings**; these choices persist locally |
 | Lookback time rings | **Settings → Lookback time rings**; off by default, saved locally |
+| Survey footprint | **Settings → Survey footprint**; off by default, saved locally |
 | Performance readout | **F8** |
 
 **Enlarge nearby points** is off by default. Enable it in Settings to restore the optional marker-size boost; distance fading works independently. The toggle affects point markers, while galaxy models keep their physical dimensions.
 
 **Lookback time rings** are off by default. The footer always shows how long ago the light from the focus depth left, and the inspector shows a light travel time for the selected galaxy: Planck18 lookback time for DESI records, distance ÷ c for the nearby layer's measured distances. Enabling the rings adds faint observer-centered circles labeled with a lookback time and the present-day comoving distance of that light's source; comoving distance is not the distance the light traveled. Lookback times are model-dependent (Planck18). [Reference and sources](docs/cosmic-horizon.md).
+
+**Survey footprint** is off by default. Enabling it tints the sky directions where this catalog holds accepted DESI DR1 rows, drawn on a sphere at the catalog's farthest distance behind the points. It is occupancy of the accepted rows at 0.5° resolution, not the official survey tiling, depth or completeness: a tinted direction holds at least one accepted row, and dark directions were not surveyed here and are not confirmed empty. Regenerate the sidecar with `uv run python scripts/prepare_survey_footprint.py` after preparing the full catalog.
 
 **Show uncertain local positions** is off by default. Redshift-only positions within 1 Mpc of the observer can land inside the Milky Way because very small redshifts do not establish reliable nearby distances. Enable the setting to inspect these original records as amber points, with no physical models. The full catalog count is preserved. This is a display safeguard, not corrected distance data or a reliability boundary. [Audit and scientific context](docs/local-distance-audit.md).
 
@@ -214,6 +218,7 @@ Run these against `npm run dev`, using a unique `run` name:
 | `?nearbytest&run=my-neighbors` | All six search destinations, center framing, model/point picking, projected shapes, independent-distance measurements and graphics recovery; works with subsets |
 | `?modeltest&run=my-models` | All five catalog families, projected shape, body selection, automatic loading and the model pool limit; requires full data |
 | `?lookbacktest&run=my-lookback` | Lookback rings: exactly one added draw when on and none when off, silhouette pixels and checksums before/after graphics recovery, empty ring set at 10 pc, label count/overlap, table monotonicity and saved-setting sync; works with subsets |
+| `?footprinttest&run=my-footprint` | Survey footprint: exactly one added draw when on and none when off, tinted densest and gap-neighbour cells and a dark unsurveyed direction seen from the observer, checksums before/after graphics recovery, the missing-sidecar failure path and saved-setting sync; works with subsets |
 | `?benchmark=adaptive&run=my-overview` | 1920×1080 overview orbit: 5-second warmup, 20-second measurement |
 | `?benchmark=full&run=my-full-overview` | The same benchmark with full detail in view |
 

@@ -31107,5 +31107,939 @@
       "passed": true
     },
     "lookbackChecksumStable": true
+  },
+  {
+    "runId": "footprint-full",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 300.09999999403954,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 1600,
+      "height": 1000
+    },
+    "initial": {
+      "drawn": 65536,
+      "loaded": 134092,
+      "represented": 14140375,
+      "pending": 6,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 30.022817341179277,
+      "p95": 33.30800000000002,
+      "calls": 11,
+      "managedMiB": 44.56441402435303,
+      "blocked": false,
+      "focusDistance": 16099.112169655042,
+      "focusFromObserver": 1164.5694850205355,
+      "budget": 1000000,
+      "models": 0
+    },
+    "lookback": {
+      "disabledFrame": {
+        "calls": 76,
+        "pending": 0,
+        "rings": 0
+      },
+      "enabledFrame": {
+        "calls": 77,
+        "pending": 0,
+        "rings": 8
+      },
+      "disabledAgain": {
+        "calls": 76,
+        "pending": 0,
+        "rings": 0
+      },
+      "chosen": [
+        {
+          "lookbackGyr": 7,
+          "comovingMpc": 2852.55836664642,
+          "angleDeg": 9.856504960182253
+        },
+        {
+          "lookbackGyr": 8,
+          "comovingMpc": 3435.3183641319533,
+          "angleDeg": 11.896972816146377
+        },
+        {
+          "lookbackGyr": 9,
+          "comovingMpc": 4095.8762402019515,
+          "angleDeg": 14.228665636525054
+        },
+        {
+          "lookbackGyr": 10,
+          "comovingMpc": 4862.08855506514,
+          "angleDeg": 16.96410662563397
+        },
+        {
+          "lookbackGyr": 11,
+          "comovingMpc": 5783.9637426024465,
+          "angleDeg": 20.30967585253314
+        },
+        {
+          "lookbackGyr": 12,
+          "comovingMpc": 6968.738716010081,
+          "angleDeg": 24.720496256827403
+        },
+        {
+          "lookbackGyr": 13,
+          "comovingMpc": 8747.766955894776,
+          "angleDeg": 31.66494654732439
+        },
+        {
+          "lookbackGyr": 13.5,
+          "comovingMpc": 10363.716360529,
+          "angleDeg": 38.456749445221455
+        }
+      ],
+      "labelsVisible": 5,
+      "overlapping": 0,
+      "labelsHidden": true,
+      "disabledSample": {
+        "distanceMpc": 16663.967661389743,
+        "ringCount": 5,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "calls": 0
+      },
+      "overview": {
+        "distanceMpc": 16663.967661389743,
+        "ringCount": 5,
+        "lit": 6844,
+        "peak": 89,
+        "checksum": 2349650824,
+        "calls": 1
+      },
+      "repeat": {
+        "distanceMpc": 16663.967661389743,
+        "ringCount": 5,
+        "lit": 6844,
+        "peak": 89,
+        "checksum": 2349650824,
+        "calls": 1
+      },
+      "local": {
+        "distanceMpc": 1e-05,
+        "ringCount": 0,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "calls": 0
+      },
+      "savedOn": true,
+      "savedOff": true,
+      "poseDelta": {
+        "positionMpc": 1.1647215137477994e-11,
+        "angleRad": 0,
+        "focusMpc": 0
+      },
+      "posePreserved": true,
+      "catalogPreserved": true,
+      "monotonic": true,
+      "geometryBytes": 36,
+      "passed": true
+    },
+    "lookbackContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "lookbackAfterRecovery": {
+      "disabledFrame": {
+        "calls": 76,
+        "pending": 0,
+        "rings": 0
+      },
+      "enabledFrame": {
+        "calls": 77,
+        "pending": 0,
+        "rings": 8
+      },
+      "disabledAgain": {
+        "calls": 76,
+        "pending": 0,
+        "rings": 0
+      },
+      "chosen": [
+        {
+          "lookbackGyr": 7,
+          "comovingMpc": 2852.55836664642,
+          "angleDeg": 9.85650496018224
+        },
+        {
+          "lookbackGyr": 8,
+          "comovingMpc": 3435.3183641319533,
+          "angleDeg": 11.896972816146361
+        },
+        {
+          "lookbackGyr": 9,
+          "comovingMpc": 4095.8762402019515,
+          "angleDeg": 14.228665636525037
+        },
+        {
+          "lookbackGyr": 10,
+          "comovingMpc": 4862.08855506514,
+          "angleDeg": 16.964106625633946
+        },
+        {
+          "lookbackGyr": 11,
+          "comovingMpc": 5783.9637426024465,
+          "angleDeg": 20.309675852533115
+        },
+        {
+          "lookbackGyr": 12,
+          "comovingMpc": 6968.738716010081,
+          "angleDeg": 24.720496256827367
+        },
+        {
+          "lookbackGyr": 13,
+          "comovingMpc": 8747.766955894776,
+          "angleDeg": 31.664946547324345
+        },
+        {
+          "lookbackGyr": 13.5,
+          "comovingMpc": 10363.716360529,
+          "angleDeg": 38.45674944522139
+        }
+      ],
+      "labelsVisible": 5,
+      "overlapping": 0,
+      "labelsHidden": true,
+      "disabledSample": {
+        "distanceMpc": 16663.96766138977,
+        "ringCount": 5,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "calls": 0
+      },
+      "overview": {
+        "distanceMpc": 16663.96766138977,
+        "ringCount": 5,
+        "lit": 6844,
+        "peak": 89,
+        "checksum": 2349650824,
+        "calls": 1
+      },
+      "repeat": {
+        "distanceMpc": 16663.96766138977,
+        "ringCount": 5,
+        "lit": 6844,
+        "peak": 89,
+        "checksum": 2349650824,
+        "calls": 1
+      },
+      "local": {
+        "distanceMpc": 1e-05,
+        "ringCount": 0,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "calls": 0
+      },
+      "savedOn": true,
+      "savedOff": true,
+      "poseDelta": {
+        "positionMpc": 1.7160311712462504e-11,
+        "angleRad": 0,
+        "focusMpc": 0
+      },
+      "posePreserved": true,
+      "catalogPreserved": true,
+      "monotonic": true,
+      "geometryBytes": 36,
+      "passed": true
+    },
+    "lookbackChecksumStable": true,
+    "footprint": {
+      "state": "ready",
+      "disclosure": "Sky occupancy of the accepted DESI DR1 galaxy rows in this catalog at 0.5\u00b0 resolution, not the official survey tiling, depth or completeness. A tinted cell holds at least one accepted row (shade = log row count); dark cells were not surveyed here and are not confirmed empty.",
+      "radiusMpc": 4830.888927271224,
+      "memoryBytes": 259236,
+      "disabledFrame": {
+        "calls": 75,
+        "pending": 0
+      },
+      "enabledFrame": {
+        "calls": 76,
+        "pending": 0
+      },
+      "disabledAgain": {
+        "calls": 75,
+        "pending": 0
+      },
+      "disabledSample": {
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "centerAlpha": 0,
+        "calls": 0
+      },
+      "cosmos": {
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 45300,
+        "peak": 76,
+        "checksum": 1961411294,
+        "centerAlpha": 76,
+        "calls": 1
+      },
+      "repeat": {
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 45300,
+        "peak": 76,
+        "checksum": 1961411294,
+        "centerAlpha": 76,
+        "calls": 1
+      },
+      "gapNeighbour": {
+        "raDeg": 180.75,
+        "decDeg": 30.25,
+        "lit": 57264,
+        "peak": 68,
+        "checksum": 2640716793,
+        "centerAlpha": 27,
+        "calls": 1
+      },
+      "unsurveyed": {
+        "raDeg": 60,
+        "decDeg": -70,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "centerAlpha": 0,
+        "calls": 1
+      },
+      "disabledSampleAgain": {
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "centerAlpha": 0,
+        "calls": 0
+      },
+      "unavailable": {
+        "state": "failed",
+        "memoryBytes": 36,
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "centerAlpha": 0,
+        "calls": 0
+      },
+      "savedOn": true,
+      "savedOff": true,
+      "poseDelta": {
+        "positionMpc": 2.8529734011241312e-11,
+        "angleRad": 0,
+        "focusMpc": 0
+      },
+      "posePreserved": true,
+      "catalogPreserved": true,
+      "passed": true
+    },
+    "footprintContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "footprintAfterRecovery": {
+      "state": "ready",
+      "disclosure": "Sky occupancy of the accepted DESI DR1 galaxy rows in this catalog at 0.5\u00b0 resolution, not the official survey tiling, depth or completeness. A tinted cell holds at least one accepted row (shade = log row count); dark cells were not surveyed here and are not confirmed empty.",
+      "radiusMpc": 4830.888927271224,
+      "memoryBytes": 259236,
+      "disabledFrame": {
+        "calls": 75,
+        "pending": 0
+      },
+      "enabledFrame": {
+        "calls": 76,
+        "pending": 0
+      },
+      "disabledAgain": {
+        "calls": 75,
+        "pending": 0
+      },
+      "disabledSample": {
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "centerAlpha": 0,
+        "calls": 0
+      },
+      "cosmos": {
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 45300,
+        "peak": 76,
+        "checksum": 1961411294,
+        "centerAlpha": 76,
+        "calls": 1
+      },
+      "repeat": {
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 45300,
+        "peak": 76,
+        "checksum": 1961411294,
+        "centerAlpha": 76,
+        "calls": 1
+      },
+      "gapNeighbour": {
+        "raDeg": 180.75,
+        "decDeg": 30.25,
+        "lit": 57264,
+        "peak": 68,
+        "checksum": 2640716793,
+        "centerAlpha": 27,
+        "calls": 1
+      },
+      "unsurveyed": {
+        "raDeg": 60,
+        "decDeg": -70,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "centerAlpha": 0,
+        "calls": 1
+      },
+      "disabledSampleAgain": {
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "centerAlpha": 0,
+        "calls": 0
+      },
+      "unavailable": {
+        "state": "failed",
+        "memoryBytes": 36,
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "centerAlpha": 0,
+        "calls": 0
+      },
+      "savedOn": true,
+      "savedOff": true,
+      "poseDelta": {
+        "positionMpc": 2.8529734011241312e-11,
+        "angleRad": 0,
+        "focusMpc": 0
+      },
+      "posePreserved": true,
+      "catalogPreserved": true,
+      "passed": true
+    },
+    "footprintChecksumStable": true,
+    "cosmicHorizon": {
+      "enabledFromRail": true,
+      "savedOff": true,
+      "posePreserved": true,
+      "catalogPreserved": true,
+      "centered": true,
+      "disabled": {
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "minX": 256,
+        "maxX": -1,
+        "centerAlpha": 0,
+        "cornerAlpha": 0,
+        "calls": 0
+      },
+      "outside": {
+        "lit": 29580,
+        "peak": 63,
+        "checksum": 2159172308,
+        "minX": 31,
+        "maxX": 224,
+        "centerAlpha": 23,
+        "cornerAlpha": 0,
+        "calls": 1
+      },
+      "away": {
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "minX": 256,
+        "maxX": -1,
+        "centerAlpha": 0,
+        "cornerAlpha": 0,
+        "calls": 1
+      },
+      "observer": {
+        "lit": 65536,
+        "peak": 7,
+        "checksum": 4181391725,
+        "minX": 0,
+        "maxX": 255,
+        "centerAlpha": 7,
+        "cornerAlpha": 2,
+        "calls": 1
+      },
+      "inside": {
+        "lit": 65536,
+        "peak": 7,
+        "checksum": 3871213825,
+        "minX": 0,
+        "maxX": 255,
+        "centerAlpha": 7,
+        "cornerAlpha": 2,
+        "calls": 1
+      },
+      "crossing": {
+        "lit": 65536,
+        "peak": 7,
+        "checksum": 3362197178,
+        "minX": 0,
+        "maxX": 255,
+        "centerAlpha": 7,
+        "cornerAlpha": 2,
+        "calls": 1
+      },
+      "boundary": {
+        "lit": 65536,
+        "peak": 7,
+        "checksum": 2131932720,
+        "minX": 0,
+        "maxX": 255,
+        "centerAlpha": 7,
+        "cornerAlpha": 2,
+        "calls": 1
+      },
+      "disabledAgain": {
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "minX": 256,
+        "maxX": -1,
+        "centerAlpha": 0,
+        "cornerAlpha": 0,
+        "calls": 0
+      },
+      "geometryBytes": 36,
+      "passed": true
+    },
+    "cosmicContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "cosmicAfterRecovery": {
+      "enabledFromRail": true,
+      "savedOff": true,
+      "posePreserved": true,
+      "catalogPreserved": true,
+      "centered": true,
+      "disabled": {
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "minX": 256,
+        "maxX": -1,
+        "centerAlpha": 0,
+        "cornerAlpha": 0,
+        "calls": 0
+      },
+      "outside": {
+        "lit": 29580,
+        "peak": 63,
+        "checksum": 2159172308,
+        "minX": 31,
+        "maxX": 224,
+        "centerAlpha": 23,
+        "cornerAlpha": 0,
+        "calls": 1
+      },
+      "away": {
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "minX": 256,
+        "maxX": -1,
+        "centerAlpha": 0,
+        "cornerAlpha": 0,
+        "calls": 1
+      },
+      "observer": {
+        "lit": 65536,
+        "peak": 7,
+        "checksum": 4181391725,
+        "minX": 0,
+        "maxX": 255,
+        "centerAlpha": 7,
+        "cornerAlpha": 2,
+        "calls": 1
+      },
+      "inside": {
+        "lit": 65536,
+        "peak": 7,
+        "checksum": 3871213825,
+        "minX": 0,
+        "maxX": 255,
+        "centerAlpha": 7,
+        "cornerAlpha": 2,
+        "calls": 1
+      },
+      "crossing": {
+        "lit": 65536,
+        "peak": 7,
+        "checksum": 3362197178,
+        "minX": 0,
+        "maxX": 255,
+        "centerAlpha": 7,
+        "cornerAlpha": 2,
+        "calls": 1
+      },
+      "boundary": {
+        "lit": 65536,
+        "peak": 7,
+        "checksum": 2131932720,
+        "minX": 0,
+        "maxX": 255,
+        "centerAlpha": 7,
+        "cornerAlpha": 2,
+        "calls": 1
+      },
+      "disabledAgain": {
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "minX": 256,
+        "maxX": -1,
+        "centerAlpha": 0,
+        "cornerAlpha": 0,
+        "calls": 0
+      },
+      "geometryBytes": 36,
+      "passed": true
+    },
+    "pointSettings": {
+      "offPixels": 52,
+      "onPixels": 124,
+      "savedOn": true,
+      "savedOff": true,
+      "independentControl": true,
+      "passed": true
+    },
+    "depthCues": {
+      "configuredNear": {
+        "maxAlpha": 255,
+        "coveredPixels": 52
+      },
+      "near": {
+        "maxAlpha": 255,
+        "coveredPixels": 124
+      },
+      "middle": {
+        "maxAlpha": 149,
+        "coveredPixels": 52
+      },
+      "far": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniform": {
+        "maxAlpha": 224,
+        "coveredPixels": 52
+      },
+      "nearPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 140
+      },
+      "farPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniformPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "faintFloor": {
+        "maxAlpha": 3,
+        "coveredPixels": 32
+      },
+      "faintFloorPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "fixedNear": {
+        "maxAlpha": 255,
+        "coveredPixels": 52
+      },
+      "fixedNearPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "enlargedWithoutFade": {
+        "maxAlpha": 224,
+        "coveredPixels": 124
+      },
+      "fixedWithoutFade": {
+        "maxAlpha": 224,
+        "coveredPixels": 52
+      },
+      "independentSize": true,
+      "passed": true
+    },
+    "interaction": {
+      "first": {
+        "ok": true,
+        "selected": "39628171032659127",
+        "attempted": 1
+      },
+      "second": {
+        "ok": true,
+        "selected": "39627981714364036",
+        "attempted": 2
+      },
+      "measuredMpc": 1359.647363752044,
+      "measurementStable": true,
+      "selectedExactId": "39627981714364036"
+    },
+    "context": {
+      "supported": true,
+      "recovered": true
+    },
+    "integrity": {
+      "rejected": true,
+      "message": "Data integrity check failed"
+    }
+  },
+  {
+    "runId": "footprint-subset",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 384.5,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 1600,
+      "height": 1000
+    },
+    "initial": {
+      "drawn": 516638,
+      "loaded": 582952,
+      "represented": 1000000,
+      "pending": 10,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 40.046453886508345,
+      "p95": 33.34200000000001,
+      "calls": 46,
+      "managedMiB": 59.85546684265137,
+      "blocked": false,
+      "focusDistance": 16069.490014018393,
+      "focusFromObserver": 1150.0174863046352,
+      "budget": 1000000,
+      "models": 0
+    },
+    "footprint": {
+      "state": "ready",
+      "disclosure": "Sky occupancy of the accepted DESI DR1 galaxy rows in this catalog at 0.5\u00b0 resolution, not the official survey tiling, depth or completeness. A tinted cell holds at least one accepted row (shade = log row count); dark cells were not surveyed here and are not confirmed empty.",
+      "radiusMpc": 4830.852458279897,
+      "memoryBytes": 259236,
+      "disabledFrame": {
+        "calls": 65,
+        "pending": 0
+      },
+      "enabledFrame": {
+        "calls": 66,
+        "pending": 0
+      },
+      "disabledAgain": {
+        "calls": 65,
+        "pending": 0
+      },
+      "disabledSample": {
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "centerAlpha": 0,
+        "calls": 0
+      },
+      "cosmos": {
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 45300,
+        "peak": 76,
+        "checksum": 1961411294,
+        "centerAlpha": 76,
+        "calls": 1
+      },
+      "repeat": {
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 45300,
+        "peak": 76,
+        "checksum": 1961411294,
+        "centerAlpha": 76,
+        "calls": 1
+      },
+      "gapNeighbour": {
+        "raDeg": 180.75,
+        "decDeg": 30.25,
+        "lit": 57264,
+        "peak": 68,
+        "checksum": 2640716793,
+        "centerAlpha": 27,
+        "calls": 1
+      },
+      "unsurveyed": {
+        "raDeg": 60,
+        "decDeg": -70,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "centerAlpha": 0,
+        "calls": 1
+      },
+      "disabledSampleAgain": {
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "centerAlpha": 0,
+        "calls": 0
+      },
+      "unavailable": {
+        "state": "failed",
+        "memoryBytes": 36,
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "centerAlpha": 0,
+        "calls": 0
+      },
+      "savedOn": true,
+      "savedOff": true,
+      "poseDelta": {
+        "positionMpc": 3.032861423077168e-11,
+        "angleRad": 2.9802322387695312e-08,
+        "focusMpc": 0
+      },
+      "posePreserved": true,
+      "catalogPreserved": true,
+      "passed": true
+    },
+    "footprintContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "footprintAfterRecovery": {
+      "state": "ready",
+      "disclosure": "Sky occupancy of the accepted DESI DR1 galaxy rows in this catalog at 0.5\u00b0 resolution, not the official survey tiling, depth or completeness. A tinted cell holds at least one accepted row (shade = log row count); dark cells were not surveyed here and are not confirmed empty.",
+      "radiusMpc": 4830.852458279897,
+      "memoryBytes": 259236,
+      "disabledFrame": {
+        "calls": 65,
+        "pending": 0
+      },
+      "enabledFrame": {
+        "calls": 66,
+        "pending": 0
+      },
+      "disabledAgain": {
+        "calls": 65,
+        "pending": 0
+      },
+      "disabledSample": {
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "centerAlpha": 0,
+        "calls": 0
+      },
+      "cosmos": {
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 45300,
+        "peak": 76,
+        "checksum": 1961411294,
+        "centerAlpha": 76,
+        "calls": 1
+      },
+      "repeat": {
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 45300,
+        "peak": 76,
+        "checksum": 1961411294,
+        "centerAlpha": 76,
+        "calls": 1
+      },
+      "gapNeighbour": {
+        "raDeg": 180.75,
+        "decDeg": 30.25,
+        "lit": 57264,
+        "peak": 68,
+        "checksum": 2640716793,
+        "centerAlpha": 27,
+        "calls": 1
+      },
+      "unsurveyed": {
+        "raDeg": 60,
+        "decDeg": -70,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "centerAlpha": 0,
+        "calls": 1
+      },
+      "disabledSampleAgain": {
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "centerAlpha": 0,
+        "calls": 0
+      },
+      "unavailable": {
+        "state": "failed",
+        "memoryBytes": 36,
+        "raDeg": 149.75,
+        "decDeg": 1.25,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "centerAlpha": 0,
+        "calls": 0
+      },
+      "savedOn": true,
+      "savedOff": true,
+      "poseDelta": {
+        "positionMpc": 2.7284841053187847e-11,
+        "angleRad": 0,
+        "focusMpc": 0
+      },
+      "posePreserved": true,
+      "catalogPreserved": true,
+      "passed": true
+    },
+    "footprintChecksumStable": true
   }
 ]
