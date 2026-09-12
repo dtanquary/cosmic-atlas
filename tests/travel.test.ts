@@ -27,11 +27,20 @@ describe('interpolatePose',()=>{
     const a=pose([5,5,5],.003,[0,0,1]),b=pose([5,5,5],30000,[0,0,1]);
     expect(rel(interpolatePose(a,b,.5).distance,Math.sqrt(.003*30000))).toBeLessThan(1e-9);
   });
-  it('hops high enough at the apex to see both endpoints at fov 50°',()=>{
+  it('hops high enough at the apex to see both endpoints at fov 50°, also when writing into from',()=>{
     const a=pose([0,0,0],.01,[0,0,1]),b=pose([10,0,0],.01,[0,0,1]);
     const apex=interpolatePose(a,b,.5).distance;
     expect(apex).toBeGreaterThanOrEqual(5/Math.tan(25*Math.PI/180));
     expect(Math.abs(apex-13.01)).toBeLessThan(1e-9);
+    const aliased=interpolatePose(a,b,.5,a);
+    expect(aliased).toBe(a);
+    expect(Math.abs(aliased.distance-13.01)).toBeLessThan(1e-9);
+    expect(aliased.target.x).toBeCloseTo(5,12);
+  });
+  it('clamps s outside [0,1] to the endpoints',()=>{
+    expect(interpolatePose(from,to,-.5).target.distanceTo(from.target)).toBe(0);
+    expect(interpolatePose(from,to,1.5).target.distanceTo(to.target)).toBe(0);
+    expect(rel(interpolatePose(from,to,7).distance,to.distance)).toBeLessThan(1e-12);
   });
   it('slerps the direction along the great circle at constant angular speed',()=>{
     const a=pose([0,0,0],1,[1,0,0]),b=pose([0,0,0],1,[0,1,0]);
