@@ -6,6 +6,25 @@ The Milky Way is a separate reference model around the Solar System. **Milky Way
 
 The project is being built collaboratively by Dave and **ChatGPT Astra**, through Codex. Dave supplies the product direction, visual references and hands-on feedback; Astra implements and tests the application, data tools and documentation.
 
+![Cosmic Atlas showing the Milky Way model with spiral arms, the Galactic core and our Sun's position](docs/images/milky-way.jpg)
+
+*Our home galaxy, with separate Galactic core and Sun / Observer markers. Internal structure and light are illustrative.*
+
+<details>
+<summary>More screenshots: the cosmic web and Andromeda</summary>
+
+![The DESI galaxy survey in Cosmic Atlas, showing its large-scale structure and survey footprint](docs/images/cosmic-web.jpg)
+
+*A wide view of the DESI survey. Gaps reflect survey coverage and selection, not necessarily empty space.*
+
+![Andromeda viewed from above its modeled disk, with an inspector showing its independently measured distance](docs/images/andromeda.jpg)
+
+*Orbit around Andromeda's procedural model. Its distance and projected shape use cited measurements; spiral details and colors are illustrative.*
+
+</details>
+
+Screenshots are captured from the running app. [Image credits and reuse terms](docs/images/README.md).
+
 ## Built with ChatGPT Astra
 
 Development began with requirements for a simple, scientifically grounded point map that could handle millions of galaxies. Astra helped choose the stack, research the coordinate conventions, and build the data pipeline and first working explorer. Dave tested the prototype and guided successive additions: distance fading, flight controls, name search, measured-shape galaxy models and the Milky Way reference.
