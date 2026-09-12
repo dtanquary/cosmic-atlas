@@ -29874,5 +29874,1238 @@
       }
     ],
     "errors": []
+  },
+  {
+    "runId": "lookback-full",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 389.20000000298023,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 1600,
+      "height": 1000
+    },
+    "initial": {
+      "drawn": 598539,
+      "loaded": 634366,
+      "represented": 14140375,
+      "pending": 12,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 40.47927461139895,
+      "p95": 32.708,
+      "calls": 57,
+      "managedMiB": 74.0768690109253,
+      "blocked": false,
+      "focusDistance": 16099.11216965503,
+      "focusFromObserver": 1164.5694850205355,
+      "budget": 1000000,
+      "models": 0
+    },
+    "lookback": {
+      "disabledFrame": {
+        "calls": 75,
+        "pending": 0,
+        "rings": 0
+      },
+      "enabledFrame": {
+        "calls": 76,
+        "pending": 0,
+        "rings": 8
+      },
+      "disabledAgain": {
+        "calls": 75,
+        "pending": 0,
+        "rings": 0
+      },
+      "chosen": [
+        {
+          "lookbackGyr": 7,
+          "comovingMpc": 2852.55836664642,
+          "angleDeg": 9.85650496018225
+        },
+        {
+          "lookbackGyr": 8,
+          "comovingMpc": 3435.3183641319533,
+          "angleDeg": 11.89697281614637
+        },
+        {
+          "lookbackGyr": 9,
+          "comovingMpc": 4095.8762402019515,
+          "angleDeg": 14.228665636525047
+        },
+        {
+          "lookbackGyr": 10,
+          "comovingMpc": 4862.08855506514,
+          "angleDeg": 16.964106625633963
+        },
+        {
+          "lookbackGyr": 11,
+          "comovingMpc": 5783.9637426024465,
+          "angleDeg": 20.309675852533132
+        },
+        {
+          "lookbackGyr": 12,
+          "comovingMpc": 6968.738716010081,
+          "angleDeg": 24.720496256827392
+        },
+        {
+          "lookbackGyr": 13,
+          "comovingMpc": 8747.766955894776,
+          "angleDeg": 31.66494654732437
+        },
+        {
+          "lookbackGyr": 13.5,
+          "comovingMpc": 10363.716360529,
+          "angleDeg": 38.45674944522143
+        }
+      ],
+      "labelsVisible": 5,
+      "overlapping": 0,
+      "labelsHidden": true,
+      "disabledSample": {
+        "distanceMpc": 16663.967661389754,
+        "ringCount": 5,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "calls": 0
+      },
+      "overview": {
+        "distanceMpc": 16663.967661389754,
+        "ringCount": 5,
+        "lit": 6844,
+        "peak": 89,
+        "checksum": 2349650824,
+        "calls": 1
+      },
+      "repeat": {
+        "distanceMpc": 16663.967661389754,
+        "ringCount": 5,
+        "lit": 6844,
+        "peak": 89,
+        "checksum": 2349650824,
+        "calls": 1
+      },
+      "local": {
+        "distanceMpc": 1e-05,
+        "ringCount": 0,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "calls": 0
+      },
+      "savedOn": true,
+      "savedOff": true,
+      "poseDelta": {
+        "positionMpc": 1.1647215137477994e-11,
+        "angleRad": 0,
+        "focusMpc": 0
+      },
+      "posePreserved": true,
+      "catalogPreserved": true,
+      "monotonic": true,
+      "geometryBytes": 36,
+      "passed": true
+    },
+    "lookbackContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "lookbackAfterRecovery": {
+      "disabledFrame": {
+        "calls": 75,
+        "pending": 0,
+        "rings": 0
+      },
+      "enabledFrame": {
+        "calls": 76,
+        "pending": 0,
+        "rings": 8
+      },
+      "disabledAgain": {
+        "calls": 75,
+        "pending": 0,
+        "rings": 0
+      },
+      "chosen": [
+        {
+          "lookbackGyr": 7,
+          "comovingMpc": 2852.55836664642,
+          "angleDeg": 9.85650496018224
+        },
+        {
+          "lookbackGyr": 8,
+          "comovingMpc": 3435.3183641319533,
+          "angleDeg": 11.896972816146361
+        },
+        {
+          "lookbackGyr": 9,
+          "comovingMpc": 4095.8762402019515,
+          "angleDeg": 14.228665636525037
+        },
+        {
+          "lookbackGyr": 10,
+          "comovingMpc": 4862.08855506514,
+          "angleDeg": 16.964106625633946
+        },
+        {
+          "lookbackGyr": 11,
+          "comovingMpc": 5783.9637426024465,
+          "angleDeg": 20.309675852533115
+        },
+        {
+          "lookbackGyr": 12,
+          "comovingMpc": 6968.738716010081,
+          "angleDeg": 24.720496256827367
+        },
+        {
+          "lookbackGyr": 13,
+          "comovingMpc": 8747.766955894776,
+          "angleDeg": 31.664946547324345
+        },
+        {
+          "lookbackGyr": 13.5,
+          "comovingMpc": 10363.716360529,
+          "angleDeg": 38.45674944522139
+        }
+      ],
+      "labelsVisible": 5,
+      "overlapping": 0,
+      "labelsHidden": true,
+      "disabledSample": {
+        "distanceMpc": 16663.96766138977,
+        "ringCount": 5,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "calls": 0
+      },
+      "overview": {
+        "distanceMpc": 16663.96766138977,
+        "ringCount": 5,
+        "lit": 6844,
+        "peak": 89,
+        "checksum": 2349650824,
+        "calls": 1
+      },
+      "repeat": {
+        "distanceMpc": 16663.96766138977,
+        "ringCount": 5,
+        "lit": 6844,
+        "peak": 89,
+        "checksum": 2349650824,
+        "calls": 1
+      },
+      "local": {
+        "distanceMpc": 1e-05,
+        "ringCount": 0,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "calls": 0
+      },
+      "savedOn": true,
+      "savedOff": true,
+      "poseDelta": {
+        "positionMpc": 1.7160311712462504e-11,
+        "angleRad": 0,
+        "focusMpc": 0
+      },
+      "posePreserved": true,
+      "catalogPreserved": true,
+      "monotonic": true,
+      "geometryBytes": 36,
+      "passed": true
+    },
+    "lookbackChecksumStable": true,
+    "cosmicHorizon": {
+      "enabledFromRail": true,
+      "savedOff": true,
+      "posePreserved": true,
+      "catalogPreserved": true,
+      "centered": true,
+      "disabled": {
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "minX": 256,
+        "maxX": -1,
+        "centerAlpha": 0,
+        "cornerAlpha": 0,
+        "calls": 0
+      },
+      "outside": {
+        "lit": 29580,
+        "peak": 63,
+        "checksum": 2159172308,
+        "minX": 31,
+        "maxX": 224,
+        "centerAlpha": 23,
+        "cornerAlpha": 0,
+        "calls": 1
+      },
+      "away": {
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "minX": 256,
+        "maxX": -1,
+        "centerAlpha": 0,
+        "cornerAlpha": 0,
+        "calls": 1
+      },
+      "observer": {
+        "lit": 65536,
+        "peak": 7,
+        "checksum": 4181391725,
+        "minX": 0,
+        "maxX": 255,
+        "centerAlpha": 7,
+        "cornerAlpha": 2,
+        "calls": 1
+      },
+      "inside": {
+        "lit": 65536,
+        "peak": 7,
+        "checksum": 3871213825,
+        "minX": 0,
+        "maxX": 255,
+        "centerAlpha": 7,
+        "cornerAlpha": 2,
+        "calls": 1
+      },
+      "crossing": {
+        "lit": 65536,
+        "peak": 7,
+        "checksum": 3362197178,
+        "minX": 0,
+        "maxX": 255,
+        "centerAlpha": 7,
+        "cornerAlpha": 2,
+        "calls": 1
+      },
+      "boundary": {
+        "lit": 65536,
+        "peak": 7,
+        "checksum": 2131932720,
+        "minX": 0,
+        "maxX": 255,
+        "centerAlpha": 7,
+        "cornerAlpha": 2,
+        "calls": 1
+      },
+      "disabledAgain": {
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "minX": 256,
+        "maxX": -1,
+        "centerAlpha": 0,
+        "cornerAlpha": 0,
+        "calls": 0
+      },
+      "geometryBytes": 36,
+      "passed": true
+    },
+    "cosmicContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "cosmicAfterRecovery": {
+      "enabledFromRail": true,
+      "savedOff": true,
+      "posePreserved": true,
+      "catalogPreserved": true,
+      "centered": true,
+      "disabled": {
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "minX": 256,
+        "maxX": -1,
+        "centerAlpha": 0,
+        "cornerAlpha": 0,
+        "calls": 0
+      },
+      "outside": {
+        "lit": 29580,
+        "peak": 63,
+        "checksum": 2159172308,
+        "minX": 31,
+        "maxX": 224,
+        "centerAlpha": 23,
+        "cornerAlpha": 0,
+        "calls": 1
+      },
+      "away": {
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "minX": 256,
+        "maxX": -1,
+        "centerAlpha": 0,
+        "cornerAlpha": 0,
+        "calls": 1
+      },
+      "observer": {
+        "lit": 65536,
+        "peak": 7,
+        "checksum": 4181391725,
+        "minX": 0,
+        "maxX": 255,
+        "centerAlpha": 7,
+        "cornerAlpha": 2,
+        "calls": 1
+      },
+      "inside": {
+        "lit": 65536,
+        "peak": 7,
+        "checksum": 3871213825,
+        "minX": 0,
+        "maxX": 255,
+        "centerAlpha": 7,
+        "cornerAlpha": 2,
+        "calls": 1
+      },
+      "crossing": {
+        "lit": 65536,
+        "peak": 7,
+        "checksum": 3362197178,
+        "minX": 0,
+        "maxX": 255,
+        "centerAlpha": 7,
+        "cornerAlpha": 2,
+        "calls": 1
+      },
+      "boundary": {
+        "lit": 65536,
+        "peak": 7,
+        "checksum": 2131932720,
+        "minX": 0,
+        "maxX": 255,
+        "centerAlpha": 7,
+        "cornerAlpha": 2,
+        "calls": 1
+      },
+      "disabledAgain": {
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "minX": 256,
+        "maxX": -1,
+        "centerAlpha": 0,
+        "cornerAlpha": 0,
+        "calls": 0
+      },
+      "geometryBytes": 36,
+      "passed": true
+    },
+    "localPositions": {
+      "candidateCount": 1107,
+      "exampleTargetId": "2305843034832594809",
+      "rotations": [
+        {
+          "angle": 0,
+          "hidden": {
+            "covered": 0,
+            "amber": 0
+          },
+          "raw": {
+            "covered": 10950,
+            "amber": 10950
+          },
+          "hiddenPick": {
+            "covered": 0,
+            "amber": 0
+          },
+          "rawPick": {
+            "covered": 11136,
+            "amber": 11020
+          },
+          "withoutFading": {
+            "covered": 0,
+            "amber": 0
+          }
+        },
+        {
+          "angle": 1.5707963267948966,
+          "hidden": {
+            "covered": 0,
+            "amber": 0
+          },
+          "raw": {
+            "covered": 10238,
+            "amber": 10238
+          },
+          "hiddenPick": {
+            "covered": 0,
+            "amber": 0
+          },
+          "rawPick": {
+            "covered": 10425,
+            "amber": 10355
+          },
+          "withoutFading": {
+            "covered": 0,
+            "amber": 0
+          }
+        },
+        {
+          "angle": 3.141592653589793,
+          "hidden": {
+            "covered": 0,
+            "amber": 0
+          },
+          "raw": {
+            "covered": 8729,
+            "amber": 8729
+          },
+          "hiddenPick": {
+            "covered": 0,
+            "amber": 0
+          },
+          "rawPick": {
+            "covered": 8872,
+            "amber": 8777
+          },
+          "withoutFading": {
+            "covered": 0,
+            "amber": 0
+          }
+        },
+        {
+          "angle": 4.71238898038469,
+          "hidden": {
+            "covered": 0,
+            "amber": 0
+          },
+          "raw": {
+            "covered": 9956,
+            "amber": 9956
+          },
+          "hiddenPick": {
+            "covered": 0,
+            "amber": 0
+          },
+          "rawPick": {
+            "covered": 10136,
+            "amber": 10061
+          },
+          "withoutFading": {
+            "covered": 0,
+            "amber": 0
+          }
+        }
+      ],
+      "outsideGuard": {
+        "covered": 16,
+        "amber": 0
+      },
+      "outsideGuardPick": {
+        "covered": 16,
+        "amber": 0
+      },
+      "passed": true
+    },
+    "localInteraction": {
+      "node": "701",
+      "nodeCenter": [
+        75.27442906067417,
+        -17.445578152133237,
+        -14.18009294267876
+      ],
+      "targetId": "39628351635193964",
+      "hidden": {
+        "covered": 0,
+        "amber": 0,
+        "code": 0
+      },
+      "hiddenPick": {
+        "covered": 0,
+        "amber": 0,
+        "code": 0
+      },
+      "raw": {
+        "covered": 4,
+        "amber": 4,
+        "code": 923607607
+      },
+      "rawPick": {
+        "covered": 60,
+        "amber": 0,
+        "code": 46006272
+      },
+      "expectedCode": 46006272,
+      "visitRejected": true,
+      "modelWithheld": true,
+      "rawVisitable": true,
+      "rawAnnotated": true,
+      "hiddenAnnotated": true,
+      "recordPreserved": true,
+      "warning": true,
+      "persistedOn": true,
+      "persistedOff": true,
+      "passed": true
+    },
+    "homeNavigation": {
+      "observer": [
+        {
+          "distanceMpc": 0.05999999999999996,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 4.933455200984228e-13
+        },
+        {
+          "distanceMpc": 0.0414725947916218,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 5.014429275138551e-14
+        },
+        {
+          "distanceMpc": 0.02866626864583432,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.2669558229421662e-13
+        },
+        {
+          "distanceMpc": 0.019814409062274354,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.5743194216804707e-13
+        }
+      ],
+      "galaxyView": [
+        {
+          "distanceMpc": 0.05999999999999996,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 4.933455200984228e-13
+        },
+        {
+          "distanceMpc": 0.0414725947916218,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 5.014429275138551e-14
+        },
+        {
+          "distanceMpc": 0.02866626864583432,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.2669558229421662e-13
+        },
+        {
+          "distanceMpc": 0.019814409062274354,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.5743194216804707e-13
+        }
+      ],
+      "search": [
+        {
+          "distanceMpc": 0.05999999999999996,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 4.933455200984228e-13
+        },
+        {
+          "distanceMpc": 0.0414725947916218,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 5.014429275138551e-14
+        },
+        {
+          "distanceMpc": 0.02866626864583432,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.2669558229421662e-13
+        },
+        {
+          "distanceMpc": 0.019814409062274354,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.5743194216804707e-13
+        }
+      ],
+      "solarTargetErrorMpc": 0,
+      "sunOffsetPx": 5.651447846182933e-13,
+      "coreControlActive": true,
+      "solarControlActive": true,
+      "coreLabeled": true,
+      "sunLabeled": true,
+      "passed": true
+    },
+    "home": {
+      "arrival": {
+        "visible": true,
+        "blend": 1,
+        "focusAtSun": true,
+        "cameraDistance": 0.05999999999999996,
+        "centerNdc": [
+          0.15135869555311132,
+          -0.08983219660524,
+          0.0015892965182614644
+        ],
+        "sunNdc": [
+          -4.369669639567559e-16,
+          -8.88114735659583e-16,
+          0.0016666662325847592
+        ]
+      },
+      "bodyPicking": true,
+      "views": {
+        "outside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 9260
+        },
+        "nearSun": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 65536
+        },
+        "inside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 65536
+        },
+        "points": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "focused": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 65536
+        },
+        "noFocus": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "sunMarkerWithinClip": true
+      },
+      "catalogUnchanged": true,
+      "memoryBytes": 2446676,
+      "passed": true
+    },
+    "homeAppearance": {
+      "views": [
+        {
+          "name": "face",
+          "litPixels": 21034,
+          "clippedPixels": 0,
+          "peak": 217,
+          "mean": 14.291009048464966,
+          "drawCalls": 1
+        },
+        {
+          "name": "inclined",
+          "litPixels": 15221,
+          "clippedPixels": 0,
+          "peak": 236,
+          "mean": 12.188150164796005,
+          "drawCalls": 1
+        },
+        {
+          "name": "reverse",
+          "litPixels": 15221,
+          "clippedPixels": 0,
+          "peak": 236,
+          "mean": 12.188166525269613,
+          "drawCalls": 1
+        },
+        {
+          "name": "edge",
+          "litPixels": 3038,
+          "clippedPixels": 0,
+          "peak": 234,
+          "mean": 3.460129312133769,
+          "drawCalls": 1
+        }
+      ],
+      "inside": {
+        "litPixels": 65536,
+        "clippedPixels": 0,
+        "peak": 184,
+        "mean": 165.7226769349617,
+        "drawCalls": 1
+      },
+      "sun": {
+        "litPixels": 65536,
+        "clippedPixels": 0,
+        "peak": 215,
+        "mean": 104.67557301635287,
+        "drawCalls": 1
+      },
+      "dustDifference": 1.7548014322916667,
+      "repeatError": 0,
+      "smallOrbitDifference": 0.033564249674479164,
+      "memoryBytes": 2446676,
+      "passed": true
+    },
+    "homePerformance": {
+      "drawn": 57094,
+      "loaded": 1091563,
+      "represented": 57094,
+      "pending": 0,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": true,
+      "fps": 60.001500037500946,
+      "p95": 16.700000000000728,
+      "calls": 10,
+      "managedMiB": 87.75937557220459,
+      "blocked": false,
+      "focusDistance": 0.05999999999999231,
+      "focusFromObserver": 0,
+      "budget": 1331000,
+      "models": 3
+    },
+    "homeContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "homeAfterRecovery": {
+      "arrival": {
+        "visible": true,
+        "blend": 1,
+        "focusAtSun": true,
+        "cameraDistance": 0.05999999999999996,
+        "centerNdc": [
+          0.15135869555311132,
+          -0.08983219660524,
+          0.0015892965182614644
+        ],
+        "sunNdc": [
+          -4.369669639567559e-16,
+          -8.88114735659583e-16,
+          0.0016666662325847592
+        ]
+      },
+      "bodyPicking": true,
+      "views": {
+        "outside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 9260
+        },
+        "nearSun": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 65536
+        },
+        "inside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 65536
+        },
+        "points": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "focused": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 65536
+        },
+        "noFocus": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "sunMarkerWithinClip": true
+      },
+      "catalogUnchanged": true,
+      "memoryBytes": 2446676,
+      "passed": true
+    },
+    "homeAppearanceAfterRecovery": {
+      "views": [
+        {
+          "name": "face",
+          "litPixels": 21034,
+          "clippedPixels": 0,
+          "peak": 217,
+          "mean": 14.291009048464966,
+          "drawCalls": 1
+        },
+        {
+          "name": "inclined",
+          "litPixels": 15221,
+          "clippedPixels": 0,
+          "peak": 236,
+          "mean": 12.188150164796005,
+          "drawCalls": 1
+        },
+        {
+          "name": "reverse",
+          "litPixels": 15221,
+          "clippedPixels": 0,
+          "peak": 236,
+          "mean": 12.188166525269613,
+          "drawCalls": 1
+        },
+        {
+          "name": "edge",
+          "litPixels": 3038,
+          "clippedPixels": 0,
+          "peak": 234,
+          "mean": 3.460129312133769,
+          "drawCalls": 1
+        }
+      ],
+      "inside": {
+        "litPixels": 65536,
+        "clippedPixels": 0,
+        "peak": 184,
+        "mean": 165.7226769349617,
+        "drawCalls": 1
+      },
+      "sun": {
+        "litPixels": 65536,
+        "clippedPixels": 0,
+        "peak": 215,
+        "mean": 104.67557301635287,
+        "drawCalls": 1
+      },
+      "dustDifference": 1.7548014322916667,
+      "repeatError": 0,
+      "smallOrbitDifference": 0.033564249674479164,
+      "memoryBytes": 2446676,
+      "passed": true
+    },
+    "pointSettings": {
+      "offPixels": 52,
+      "onPixels": 124,
+      "savedOn": true,
+      "savedOff": true,
+      "independentControl": true,
+      "passed": true
+    },
+    "depthCues": {
+      "configuredNear": {
+        "maxAlpha": 255,
+        "coveredPixels": 52
+      },
+      "near": {
+        "maxAlpha": 255,
+        "coveredPixels": 124
+      },
+      "middle": {
+        "maxAlpha": 149,
+        "coveredPixels": 52
+      },
+      "far": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniform": {
+        "maxAlpha": 224,
+        "coveredPixels": 52
+      },
+      "nearPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 140
+      },
+      "farPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 0
+      },
+      "uniformPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "faintFloor": {
+        "maxAlpha": 3,
+        "coveredPixels": 32
+      },
+      "faintFloorPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "fixedNear": {
+        "maxAlpha": 255,
+        "coveredPixels": 52
+      },
+      "fixedNearPick": {
+        "maxAlpha": 0,
+        "coveredPixels": 52
+      },
+      "enlargedWithoutFade": {
+        "maxAlpha": 224,
+        "coveredPixels": 124
+      },
+      "fixedWithoutFade": {
+        "maxAlpha": 224,
+        "coveredPixels": 52
+      },
+      "independentSize": true,
+      "passed": true
+    },
+    "interaction": {
+      "first": {
+        "ok": true,
+        "selected": "39628171032659127",
+        "attempted": 1
+      },
+      "second": {
+        "ok": true,
+        "selected": "39628065227146682",
+        "attempted": 2
+      },
+      "measuredMpc": 743.7310334650739,
+      "measurementStable": true,
+      "selectedExactId": "39628065227146682"
+    },
+    "context": {
+      "supported": true,
+      "recovered": true
+    },
+    "integrity": {
+      "rejected": true,
+      "message": "Data integrity check failed"
+    }
+  },
+  {
+    "runId": "lookback-subset",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 378.5,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 1600,
+      "height": 1000
+    },
+    "initial": {
+      "drawn": 435305,
+      "loaded": 540051,
+      "represented": 1000000,
+      "pending": 10,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 40.046453886508345,
+      "p95": 33.341999999999985,
+      "calls": 39,
+      "managedMiB": 52.4028377532959,
+      "blocked": false,
+      "focusDistance": 16069.490014018393,
+      "focusFromObserver": 1150.0174863046352,
+      "budget": 1000000,
+      "models": 0
+    },
+    "lookback": {
+      "disabledFrame": {
+        "calls": 65,
+        "pending": 0,
+        "rings": 0
+      },
+      "enabledFrame": {
+        "calls": 66,
+        "pending": 0,
+        "rings": 8
+      },
+      "disabledAgain": {
+        "calls": 65,
+        "pending": 0,
+        "rings": 0
+      },
+      "chosen": [
+        {
+          "lookbackGyr": 7,
+          "comovingMpc": 2852.55836664642,
+          "angleDeg": 9.879896893724855
+        },
+        {
+          "lookbackGyr": 8,
+          "comovingMpc": 3435.3183641319533,
+          "angleDeg": 11.925337504240515
+        },
+        {
+          "lookbackGyr": 9,
+          "comovingMpc": 4095.8762402019515,
+          "angleDeg": 14.262806097176716
+        },
+        {
+          "lookbackGyr": 10,
+          "comovingMpc": 4862.08855506514,
+          "angleDeg": 17.005178922858736
+        },
+        {
+          "lookbackGyr": 11,
+          "comovingMpc": 5783.9637426024465,
+          "angleDeg": 20.359510255082963
+        },
+        {
+          "lookbackGyr": 12,
+          "comovingMpc": 6968.738716010081,
+          "angleDeg": 24.782492176811548
+        },
+        {
+          "lookbackGyr": 13,
+          "comovingMpc": 8747.766955894776,
+          "angleDeg": 31.748018123139165
+        },
+        {
+          "lookbackGyr": 13.5,
+          "comovingMpc": 10363.716360529,
+          "angleDeg": 38.5637512327606
+        }
+      ],
+      "labelsVisible": 5,
+      "overlapping": 0,
+      "labelsHidden": true,
+      "disabledSample": {
+        "distanceMpc": 16624.904001000847,
+        "ringCount": 5,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "calls": 0
+      },
+      "overview": {
+        "distanceMpc": 16624.904001000847,
+        "ringCount": 5,
+        "lit": 6800,
+        "peak": 89,
+        "checksum": 368742171,
+        "calls": 1
+      },
+      "repeat": {
+        "distanceMpc": 16624.904001000847,
+        "ringCount": 5,
+        "lit": 6800,
+        "peak": 89,
+        "checksum": 368742171,
+        "calls": 1
+      },
+      "local": {
+        "distanceMpc": 1e-05,
+        "ringCount": 0,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "calls": 0
+      },
+      "savedOn": true,
+      "savedOff": true,
+      "poseDelta": {
+        "positionMpc": 1.5647538506605318e-11,
+        "angleRad": 0,
+        "focusMpc": 0
+      },
+      "posePreserved": true,
+      "catalogPreserved": true,
+      "monotonic": true,
+      "geometryBytes": 36,
+      "passed": true
+    },
+    "lookbackContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "lookbackAfterRecovery": {
+      "disabledFrame": {
+        "calls": 65,
+        "pending": 0,
+        "rings": 0
+      },
+      "enabledFrame": {
+        "calls": 66,
+        "pending": 0,
+        "rings": 8
+      },
+      "disabledAgain": {
+        "calls": 65,
+        "pending": 0,
+        "rings": 0
+      },
+      "chosen": [
+        {
+          "lookbackGyr": 7,
+          "comovingMpc": 2852.55836664642,
+          "angleDeg": 9.87989689372485
+        },
+        {
+          "lookbackGyr": 8,
+          "comovingMpc": 3435.3183641319533,
+          "angleDeg": 11.925337504240506
+        },
+        {
+          "lookbackGyr": 9,
+          "comovingMpc": 4095.8762402019515,
+          "angleDeg": 14.262806097176707
+        },
+        {
+          "lookbackGyr": 10,
+          "comovingMpc": 4862.08855506514,
+          "angleDeg": 17.005178922858722
+        },
+        {
+          "lookbackGyr": 11,
+          "comovingMpc": 5783.9637426024465,
+          "angleDeg": 20.359510255082952
+        },
+        {
+          "lookbackGyr": 12,
+          "comovingMpc": 6968.738716010081,
+          "angleDeg": 24.78249217681153
+        },
+        {
+          "lookbackGyr": 13,
+          "comovingMpc": 8747.766955894776,
+          "angleDeg": 31.748018123139133
+        },
+        {
+          "lookbackGyr": 13.5,
+          "comovingMpc": 10363.716360529,
+          "angleDeg": 38.56375123276057
+        }
+      ],
+      "labelsVisible": 5,
+      "overlapping": 0,
+      "labelsHidden": true,
+      "disabledSample": {
+        "distanceMpc": 16624.904001000858,
+        "ringCount": 5,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "calls": 0
+      },
+      "overview": {
+        "distanceMpc": 16624.904001000858,
+        "ringCount": 5,
+        "lit": 6800,
+        "peak": 89,
+        "checksum": 368742171,
+        "calls": 1
+      },
+      "repeat": {
+        "distanceMpc": 16624.904001000858,
+        "ringCount": 5,
+        "lit": 6800,
+        "peak": 89,
+        "checksum": 368742171,
+        "calls": 1
+      },
+      "local": {
+        "distanceMpc": 1e-05,
+        "ringCount": 0,
+        "lit": 0,
+        "peak": 0,
+        "checksum": 4125924805,
+        "calls": 0
+      },
+      "savedOn": true,
+      "savedOff": true,
+      "poseDelta": {
+        "positionMpc": 1.1647215137477994e-11,
+        "angleRad": 0,
+        "focusMpc": 0
+      },
+      "posePreserved": true,
+      "catalogPreserved": true,
+      "monotonic": true,
+      "geometryBytes": 36,
+      "passed": true
+    },
+    "lookbackChecksumStable": true
   }
 ]

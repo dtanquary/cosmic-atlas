@@ -120,6 +120,7 @@ The visual direction is a dark, uncluttered atlas with recognizable galaxy shape
 | [`src/model-catalog.ts`](src/model-catalog.ts) | Profile sidecar loading, decoding and morphology interpretation |
 | [`src/nearby-galaxies.ts`](src/nearby-galaxies.ts), [`src/data/nearby-sources.json`](src/data/nearby-sources.json) | Nearby entries, independent distance provenance, model inputs and separate identities |
 | [`src/local-distances.ts`](src/local-distances.ts) | Conservative display guard for uncertain local redshift positions |
+| [`src/lookback.ts`](src/lookback.ts), [`src/lookback-rings.ts`](src/lookback-rings.ts) | Planck18 lookback interpolation, ring selection and formatting, and the observer-centered ring overlay |
 | [`src/milky-way.ts`](src/milky-way.ts), [`src/milky-way-light.ts`](src/milky-way-light.ts) | Home-galaxy placement, procedural density field, dust/starlight volume and arrival direction |
 | [`src/galaxy-search.ts`](src/galaxy-search.ts) | Name normalization, suggestions and cancellable visits |
 | [`src/loader.ts`](src/loader.ts), [`src/data.worker.ts`](src/data.worker.ts) | Chunk requests, decompression, integrity checks and data lifetimes |
@@ -158,9 +159,12 @@ The generator reads that small source excerpt, converts coordinates/distance mod
 | Release the pointer | **Escape**; the speed controls remain available |
 | Slow camera pass with the mouse free | **Auto fly**; **Escape** pauses it |
 | Galaxy appearance, rendering mode, local uncertainty, point enlargement and distant opacity | **Settings**; these choices persist locally |
+| Lookback time rings | **Settings → Lookback time rings**; off by default, saved locally |
 | Performance readout | **F8** |
 
 **Enlarge nearby points** is off by default. Enable it in Settings to restore the optional marker-size boost; distance fading works independently. The toggle affects point markers, while galaxy models keep their physical dimensions.
+
+**Lookback time rings** are off by default. The footer always shows how long ago the light from the focus depth left, and the inspector shows a light travel time for the selected galaxy: Planck18 lookback time for DESI records, distance ÷ c for the nearby layer's measured distances. Enabling the rings adds faint observer-centered circles labeled with a lookback time and the present-day comoving distance of that light's source; comoving distance is not the distance the light traveled. Lookback times are model-dependent (Planck18). [Reference and sources](docs/cosmic-horizon.md).
 
 **Show uncertain local positions** is off by default. Redshift-only positions within 1 Mpc of the observer can land inside the Milky Way because very small redshifts do not establish reliable nearby distances. Enable the setting to inspect these original records as amber points, with no physical models. The full catalog count is preserved. This is a display safeguard, not corrected distance data or a reliability boundary. [Audit and scientific context](docs/local-distance-audit.md).
 
@@ -209,6 +213,7 @@ Run these against `npm run dev`, using a unique `run` name:
 | `?continuitytest&run=my-spirals` | Saved appearance switch, preserved source properties, and two Andromeda orbits checking model continuity and the 12-model bound; orbit check requires full data |
 | `?nearbytest&run=my-neighbors` | All six search destinations, center framing, model/point picking, projected shapes, independent-distance measurements and graphics recovery; works with subsets |
 | `?modeltest&run=my-models` | All five catalog families, projected shape, body selection, automatic loading and the model pool limit; requires full data |
+| `?lookbacktest&run=my-lookback` | Lookback rings: exactly one added draw when on and none when off, silhouette pixels and checksums before/after graphics recovery, empty ring set at 10 pc, label count/overlap, table monotonicity and saved-setting sync; works with subsets |
 | `?benchmark=adaptive&run=my-overview` | 1920×1080 overview orbit: 5-second warmup, 20-second measurement |
 | `?benchmark=full&run=my-full-overview` | The same benchmark with full detail in view |
 
