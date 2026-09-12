@@ -6,6 +6,7 @@ import {MODEL_LIMIT} from './model-catalog';
 import {frame,sleep} from './overlay-diagnostics';
 import {decodeView,encodeView,type ViewIdentity,type ViewState} from './view-link';
 import type {SpatialNode,Vec3} from './types';
+import {element} from './overlay-diagnostics';
 
 const MISMATCH='This link points to a galaxy this catalog does not contain.';
 const OFFSET=new THREE.Vector3(.02,-.01,.015);
@@ -13,7 +14,6 @@ const rel=(a:THREE.Vector3,b:THREE.Vector3)=>a.distanceTo(b)/Math.max(1e-6,b.len
 
 /** Links, saved views and camera travel through the real explorer, dialog and localStorage; works on subsets. */
 export async function probeShareViews(atlas:Explorer){
-  const element=<T extends HTMLElement=HTMLElement>(id:string)=>document.getElementById(id) as T;
   const nodes=atlas['nodes'],cache=atlas['cache'],loader=atlas['loader'],base=atlas['base'];
   const metadata=(node:SpatialNode)=>loader.load(`m:${node.id}`,new URL(node.metadata.url,base).href,node.metadata,'metadata',node.storedCount,true);
   const messages:string[]=[],onMessage=atlas.onMessage;atlas.onMessage=message=>{messages.push(message);onMessage(message)};

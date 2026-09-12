@@ -54,9 +54,9 @@
 .dialog-title{position:sticky;top:-30px;z-index:1;background:#0d151e;padding:10px 0;margin-top:-10px;box-shadow:0 -20px 0 #0d151e}
 .visit-dialog .dialog-title{top:-26px}
 .dialog-title .icon-button{flex:none}
-@media(max-height:650px){.inspector{max-height:calc(100vh - 225px)}}
+@media(max-height:650px){.inspector{max-height:calc(100vh - 225px)}.tour-panel{max-height:calc(100vh - 245px)}}
 
-#home-inspector .panel-actions .button{font-size:12px;padding:9px 8px}
+#home-inspector .panel-actions .button,.tour-controls .button{font-size:12px;padding:9px 8px}
 .origin-label{color:#a4cad5;text-shadow:0 1px 4px #000,0 0 8px #000}
 .home-center-label{color:#d4c8ad}
 .home-view-hint{font-size:11px;line-height:1.5;margin-top:10px}
@@ -91,10 +91,8 @@
 .dialog #saved-views-empty{margin-top:18px;font-size:12px}
 @media(max-width:600px){.save-view-row{flex-direction:column}.saved-views li{gap:2px 6px;padding:10px 0}}
 
-.tour-title{font-size:13px;line-height:1.5;color:#c6d7df;margin-top:6px}.tour-panel .object-name{margin-top:18px}
-.tour-caption{font-size:13px;line-height:1.7;color:#c6d7df;margin:12px 0 4px}.tour-controls .button{font-size:12px;padding:9px 8px}
+.tour-title,.tour-caption{font-size:13px;line-height:1.6;color:#c6d7df}.tour-title{margin-top:6px}.tour-caption{margin:12px 0 4px}.tour-panel .object-name{margin-top:18px}
 .tour-footer{flex:none;padding:14px 20px 16px;border-top:1px solid var(--line)}.tour-status{margin-top:12px;min-height:20px}
-@media(max-height:650px){.tour-panel{max-height:calc(100vh - 245px)}}
 .tours-dialog{width:min(560px,calc(100vw - 32px));padding:26px}.tours-dialog .dialog-title{top:-26px}
 .tour-list{list-style:none;margin:18px 0 0;padding:0}.tour-list li{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;border-top:1px solid var(--line)}
 .dialog .tour-list h3{margin:0 0 6px;font-size:15px}.dialog .tour-list p{margin:0;font-size:13px}.tour-list .button{white-space:nowrap}

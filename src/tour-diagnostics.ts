@@ -4,9 +4,8 @@ import type {ResolvedGalaxy} from './galaxy-detail';
 import {MODEL_LIMIT} from './model-catalog';
 import {CMB_RADIUS_MPC} from './cosmic-scale';
 import {tourClock,tours} from './tour';
-import {frame,savedToggle,sleep} from './overlay-diagnostics';
+import {element,frame,savedToggle,sleep} from './overlay-diagnostics';
 
-const element=<T extends HTMLElement=HTMLElement>(id:string)=>document.getElementById(id) as T;
 const statusText=()=>element('tour-status').textContent??'';
 const stopNumber=()=>Number(/· (\d+) \//.exec(element('tour-progress').textContent??'')?.[1]??0);
 const panelOpen=()=>!element('tour-panel').hidden;
@@ -61,9 +60,9 @@ export async function probeTours(atlas:Explorer){
     exitOff.passed=exitOff.panelHidden&&!exitOff.shell&&!exitOff.checkbox&&exitOff.stored===storedOff;
     // 2. Shell saved on: the CMB stop shows it, Prev off that stop and Exit both leave it on and saved.
     shell.set(true);
-    await start('zoom-out');element('tour-play').click(); // autoplay off: every arrival lands Paused, so Next is deterministic
-    for(let n=1;n<zoomOut.stops.length;n++){await until(()=>stopNumber()===n&&settled.test(statusText()),`stop ${n}`);element('tour-next').click();await frame()}
-    await until(()=>stopNumber()===zoomOut.stops.length&&settled.test(statusText()),'the CMB stop');
+    await start('zoom-out');element('tour-play').click(); // autoplay off: every arrival must land Paused, so Next is deterministic
+    for(let n=1;n<zoomOut.stops.length;n++){await until(()=>stopNumber()===n&&/^Paused/.test(statusText()),`stop ${n} paused`);element('tour-next').click();await frame()}
+    await until(()=>stopNumber()===zoomOut.stops.length&&/^Paused/.test(statusText()),'the CMB stop paused');
     const shellAtCmb=atlas.cosmicHorizon.enabled;
     element('tour-previous').click();await until(()=>stopNumber()===zoomOut.stops.length-1&&settled.test(statusText()),'the overview stop again');
     const shellAfterPrev=atlas.cosmicHorizon.enabled;

@@ -3,6 +3,7 @@ import type {Explorer} from './explorer';
 
 /** Shared boilerplate of the observer-centered overlay probes (development only): saved toggles, an isolated
  * 256² readback with renderer-state restore, pose/catalog preservation and settled frame draw counts. */
+export const element=<T extends HTMLElement=HTMLElement>(id:string)=>document.getElementById(id) as T;
 export const sleep=(ms:number)=>new Promise(resolve=>setTimeout(resolve,ms));
 export const frame=()=>new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));
 

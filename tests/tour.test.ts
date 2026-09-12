@@ -118,6 +118,8 @@ describe('Tour runner',()=>{
     runner.pause(); // mid-travel: the explorer's travel is stopped and the cancelled arrival lands paused
     expect(atlas.stops).toBe(1);await flush();
     expect(runner.state).toMatchObject({index:1,status:'paused',autoplay:false});expect(vi.getTimerCount()).toBe(0);
+    runner.next();await atlas.settle(true); // stepping with autoplay off lands paused, never dwelling
+    expect(runner.state).toMatchObject({index:2,status:'paused',autoplay:false});expect(vi.getTimerCount()).toBe(0);
   });
   it('pauses when a visit could not start instead of dwelling at the wrong pose',async()=>{
     const {atlas,runner}=setup();
@@ -164,12 +166,12 @@ describe('Tour runner',()=>{
     expect(notices).toEqual(['NGC 3982 is not available in this dataset; skipping.','NGC 4026 is not available in this dataset; skipping.']);
     expect(runner.state).toMatchObject({index:8,status:'travelling'});expect(atlas.calls.map(c=>c.method)).toEqual(['applyView']);
     await atlas.settle(true);
+    runner.start(6);await flush(); // a start from a later index still skips forward, not back toward it
+    expect(runner.state).toMatchObject({index:8,status:'travelling'});expect(atlas.calls.map(c=>c.method)).toEqual(['applyView','applyView']);expect(notices.length).toBe(4);
+    await atlas.settle(true);
     runner.previous();await flush();
     expect(runner.state).toMatchObject({index:5,status:'travelling'});expect(atlas.last).toEqual({method:'visitNearby',args:[nearbyId('m33'),5]});
-    expect(notices.length).toBe(4);
-    await atlas.settle(true);
-    runner.start(6);await flush(); // a start always skips forward, whatever the previous index was
-    expect(runner.state).toMatchObject({index:8,status:'travelling'});expect(atlas.last.method).toBe('applyView');expect(notices.length).toBe(6);
+    expect(notices.length).toBe(6);
   });
   it('treats a rejected visit like an unavailable stop and passes a live navigation guard to visitCatalog',async()=>{
     const {atlas,runner,notices}=setup();
