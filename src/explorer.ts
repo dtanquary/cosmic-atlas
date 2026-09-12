@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ChunkLoader } from './loader';
 import { chooseFrontier, coveredFrontier } from './spatial';
-import { decodeGalaxy, separation } from './format';
+import { decodeGalaxy, formatDistance, separation } from './format';
 import {ResolvedGalaxy,GalaxyVolume,spiralLight, detailBlend, type GalaxyDetailData, type ModelDisplay,type GalaxyAppearance} from './galaxy-detail';
 import {ModelCatalog,MODEL_LIMIT,decodeModel,measuredShape} from './model-catalog';
 import {MilkyWay} from './milky-way';
@@ -10,6 +10,8 @@ import {createNearbyGalaxies} from './nearby-galaxies';
 import {galaxyColors} from './galaxy-colors';
 import {CosmicHorizon} from './cosmic-horizon';
 import {CMB_RADIUS_MPC} from './cosmic-scale';
+import {LookbackRings} from './lookback-rings';
+import {chooseRings,formatLookback,type LookbackRing} from './lookback';
 import {LOCAL_REDSHIFT_GUARD_MPC,uncertainLocalDistance,uncertainLocalPosition} from './local-distances';
 import type { Galaxy, Manifest, SpatialNode } from './types';
 
@@ -105,6 +107,9 @@ export class Explorer {
   selected:Galaxy|null=null;
   readonly milkyWay=new MilkyWay();
   readonly cosmicHorizon=new CosmicHorizon();
+  readonly lookbackRings=new LookbackRings();
+  /** Rings chosen for the current frame; labels and diagnostics read the same list the shader drew. */
+  rings:LookbackRing[]=[];
   galaxyAppearance:GalaxyAppearance='spiral';
   readonly nearbyGalaxies=createNearbyGalaxies(this.galaxyAppearance);
   private get allModels(){return [...this.resolvedGalaxies,...this.nearbyGalaxies]}
@@ -134,6 +139,7 @@ export class Explorer {
   onError=(message:string)=>{};
   onOrigin=(x:number,y:number,visible:boolean)=>{};
   onHomeCenter=(x:number,y:number,visible:boolean)=>{};
+  onRings=(labels:{x:number;y:number;text:string;visible:boolean}[])=>{};
   private scene=new THREE.Scene();
   private annotations=new THREE.Scene();
   private loader=new ChunkLoader();
@@ -341,6 +347,7 @@ export class Explorer {
   }
   setMode(mode:'adaptive'|'full'){this.mode=mode;this.blocked=false;this.dirty=true;this.invalidate()}
   setCosmicHorizon(enabled:boolean){this.cosmicHorizon.enabled=enabled;this.invalidate()}
+  setLookbackRings(enabled:boolean){this.lookbackRings.enabled=enabled;this.invalidate()}
   viewCosmicHorizon(){
     if(!this.manifest)return;
     this.reset();this.clearSelection();this.clearHomeSelection();
@@ -588,7 +595,7 @@ export class Explorer {
     this.dirty=true;this.invalidate();
   }
   private get memoryBytes(){
-    let bytes=this.references.byteLength+this.pickTarget.width*this.pickTarget.height*8+this.milkyWay.memoryBytes+this.cosmicHorizon.memoryBytes+this.allModels.reduce((sum,model)=>sum+model.memoryBytes,0)+(this.modelCatalog?.memoryBytes??0);
+    let bytes=this.references.byteLength+this.pickTarget.width*this.pickTarget.height*8+this.milkyWay.memoryBytes+this.cosmicHorizon.memoryBytes+this.lookbackRings.memoryBytes+this.allModels.reduce((sum,model)=>sum+model.memoryBytes,0)+(this.modelCatalog?.memoryBytes??0);
     for(const item of this.cache.values())bytes+=item.bytes;
     for(const buffer of this.metadata.values())bytes+=buffer.byteLength;
     return bytes+this.loader.reservedBytes;
@@ -674,6 +681,20 @@ export class Explorer {
     const centerInFront=this.camera.getWorldDirection(this.scratch).dot(this.milkyWay.center.clone().sub(this.camera.position))>0;
     const separated=Math.hypot((center.x-origin.x)*this.canvas.clientWidth/2,(center.y-origin.y)*this.canvas.clientHeight/2)>90;
     this.onHomeCenter((center.x*.5+.5)*this.canvas.clientWidth,(.5-center.y*.5)*this.canvas.clientHeight,this.homeCenterMarker.visible&&centerInFront&&center.z>-1&&center.z<1&&Math.abs(center.x)<.95&&Math.abs(center.y)<.9&&separated);
+    this.onRings(this.ringLabels());
+  }
+  /** Label anchors at the screen-top point of each ring's silhouette circle; float64 on the CPU. */
+  private ringLabels(){
+    if(!this.rings.length)return [];
+    const d=this.camera.position.length(),toCamera=this.camera.position.clone().divideScalar(d);
+    const up=new THREE.Vector3().setFromMatrixColumn(this.camera.matrixWorld,1);up.addScaledVector(toCamera,-up.dot(toCamera));
+    const forward=this.camera.getWorldDirection(new THREE.Vector3()),degenerate=up.lengthSq()<1e-12;up.normalize();
+    return this.rings.map(ring=>{
+      const r=ring.comovingMpc,top=toCamera.clone().multiplyScalar(r*r/d).addScaledVector(up,r*Math.sqrt(1-r*r/(d*d)));
+      const inFront=forward.dot(top.clone().sub(this.camera.position))>0,point=top.project(this.camera);
+      return {x:(point.x*.5+.5)*this.canvas.clientWidth,y:(.5-point.y*.5)*this.canvas.clientHeight,text:`${formatLookback(ring.lookbackGyr)} ago · ${formatDistance(ring.comovingMpc,this.units)} away now`,
+        visible:!degenerate&&inFront&&point.z>-1&&point.z<1&&Math.abs(point.x)<.95&&Math.abs(point.y)<.9};
+    });
   }
   private async pick(clientX:number,clientY:number){
     if(this.picking||!this.ready||this.contextLost)return;
@@ -760,8 +781,9 @@ export class Explorer {
     this.updateDepthCues();
     if(this.dirty||time-this.lastLOD>200){this.updateLOD();this.lastLOD=time;this.dirty=false}
     if(this.modelScanNeeded||time-this.lastModelScan>250){this.updateModels();this.lastModelScan=time;this.modelScanNeeded=false}
+    this.rings=this.lookbackRings.enabled?chooseRings(this.camera.position.length(),this.camera.fov,this.camera.aspect,this.canvas.clientHeight||innerHeight):[];
     this.positionAnnotations();this.renderer.info.reset();this.renderer.autoClear=false;this.renderer.clear();
-    this.cosmicHorizon.render(this.renderer,this.camera);this.renderer.render(this.scene,this.camera);
+    this.cosmicHorizon.render(this.renderer,this.camera);this.lookbackRings.render(this.renderer,this.camera,this.rings);this.renderer.render(this.scene,this.camera);
     this.renderer.render(this.nearbyScene,this.camera);
     for(const model of this.allModels)if(model.visible)this.renderer.render(model.scene,this.camera);
     if(this.milkyWay.visible)this.renderer.render(this.milkyWay.scene,this.camera);
@@ -1170,5 +1192,5 @@ export class Explorer {
     finally{loader.dispose()}
   }
   get renderingInfo(){const gl=this.renderer.getContext(),debug=gl.getExtension('WEBGL_debug_renderer_info');return {renderer:debug?gl.getParameter(debug.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER),version:gl.getParameter(gl.VERSION),width:this.canvas.width,height:this.canvas.height}}
-  dispose(){this.disposed=true;this.lifecycle.abort();cancelAnimationFrame(this.frame);this.exitFlight();this.loader.dispose();this.modelCatalog?.dispose();this.controls.dispose();this.cosmicHorizon.dispose();this.milkyWay.dispose();this.allModels.forEach(model=>model.dispose());this.nearbyPoints.geometry.dispose();this.nearbyPoints.material.dispose();this.nearbyPicker.dispose();for(const item of this.cache.values()){item.points.geometry.dispose();item.points.material.dispose()}this.pickTarget.dispose();this.pickMaterial.dispose();this.renderer.dispose();this.canvas.remove()}
+  dispose(){this.disposed=true;this.lifecycle.abort();cancelAnimationFrame(this.frame);this.exitFlight();this.loader.dispose();this.modelCatalog?.dispose();this.controls.dispose();this.cosmicHorizon.dispose();this.lookbackRings.dispose();this.milkyWay.dispose();this.allModels.forEach(model=>model.dispose());this.nearbyPoints.geometry.dispose();this.nearbyPoints.material.dispose();this.nearbyPicker.dispose();for(const item of this.cache.values()){item.points.geometry.dispose();item.points.material.dispose()}this.pickTarget.dispose();this.pickMaterial.dispose();this.renderer.dispose();this.canvas.remove()}
 }
