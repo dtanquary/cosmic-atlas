@@ -1,7 +1,7 @@
 import {describe,expect,it} from 'vitest';
 import {readFileSync} from 'node:fs';
 import {cartesian,formatDistance,separation} from '../src/format';
-import {formatLookback,lightTravelGyr,lookbackForDistance} from '../src/lookback';
+import {formatLookback,lightTravelGyr,lookbackForDistance,lookbackReference} from '../src/lookback';
 import {CMB_RADIUS_MPC} from '../src/cosmic-scale';
 import {nearbyReference} from '../src/nearby-galaxies';
 import milkyWay from '../src/data/milky-way.json';
@@ -11,7 +11,7 @@ type Kind='sun'|'core'|'localgroup'|'overview'|'cmb'|'nearby'|'catalog'|'cluster
 interface Stop{
   title:string;caption:string;target:{kind:Kind;key?:string;name?:string;positionMpc?:number[];distanceMpc?:number};
   distanceMpc?:number;dwellSeconds:number;travelSeconds:number;
-  factCheck?:{key?:string;distanceMpc:number;lookbackGyr:number;count?:number;redshift?:number};
+  factCheck?:{key?:string;distanceMpc:number;lookbackGyr:number;count?:number;redshift?:number;desiMembers?:{count:number;radiusDeg:number;redshiftWindow:number;catalogId:string;catalogSourceSha256:string}};
 }
 interface Tours{version:number;tours:{key:string;title:string;summary:string;stops:Stop[]}[]}
 const read=(path:string)=>JSON.parse(readFileSync(new URL(path,import.meta.url),'utf8'));
@@ -75,8 +75,8 @@ describe('tour routes',()=>{
   });
   it('ties every factCheck to Planck18 lookback and repeats the number in the caption',()=>{
     const checked=stops.filter(stop=>stop.factCheck);
-    // Only the Sun cites no distance or lookback; the cluster stop is filled by scripts/prepare_tours.py (milestone 2).
-    expect(stops.filter(stop=>!stop.factCheck).map(stop=>stop.target.kind)).toEqual(['sun','cluster']);
+    // Only the Sun cites no distance or lookback.
+    expect(stops.filter(stop=>!stop.factCheck).map(stop=>stop.target.kind)).toEqual(['sun']);
     for(const {title,caption,factCheck} of checked){
       const {distanceMpc,lookbackGyr}=factCheck!;
       expect(two(lookbackForDistance(distanceMpc)),title).toBe(two(lookbackGyr));
@@ -133,6 +133,29 @@ describe('tour routes',()=>{
     expect(framing[0]).toBe(.003);expect(framing[1]).toBe(.06);
     for(let i=1;i<framing.length;i++)expect(framing[i],zoomOut.stops[i].title).toBeGreaterThan(framing[i-1]);
     expect(framing[4]/framing[0]).toBeGreaterThan(1e7);
+  });
+  it('places the Coma cluster stop at its cited NED position on Planck18 axes with enough DESI rows around it',()=>{
+    const sources=read('../src/data/tour-sources.json');
+    const stop=roadTrip.stops.find(stop=>stop.target.kind==='cluster')!,cluster=sources.clusters.find((c:{key:string})=>c.key===stop.target.key);
+    expect(cluster.role).toBe('primary');expect(cluster.verified).toBe(true);expect(cluster.query).toBe('ABELL 1656');
+    expect(stop.factCheck!.redshift).toBe(cluster.redshift);
+    expect(stop.factCheck!.distanceMpc).toBe(stop.target.distanceMpc);
+    const expected=cartesian(cluster.raDeg,cluster.decDeg,stop.target.distanceMpc!);
+    expect(stop.target.positionMpc!.length).toBe(3);
+    stop.target.positionMpc!.forEach((value,i)=>expect(Math.abs(value-expected[i])).toBeLessThan(1e-9));
+    // The comoving distance must be Planck18 at the cited redshift: interpolate the lookback table's redshift column.
+    const {redshift,comovingMpc}=lookbackReference.table;let low=0;while(redshift[low+1]<cluster.redshift)low++;
+    const t=(cluster.redshift-redshift[low])/(redshift[low+1]-redshift[low]),interpolated=comovingMpc[low]+t*(comovingMpc[low+1]-comovingMpc[low]);
+    expect(Math.abs(interpolated-stop.target.distanceMpc!)/stop.target.distanceMpc!).toBeLessThan(1e-3);
+    expect(stop.distanceMpc).toBe(3*cluster.framingRadiusMpc);
+    const members=stop.factCheck!.desiMembers!;
+    expect(sources.membership).toMatchObject({radiusDeg:2,redshiftWindow:.01,minimumRows:200});
+    expect(members.count).toBeGreaterThanOrEqual(sources.membership.minimumRows);
+    expect(members).toMatchObject({radiusDeg:2,redshiftWindow:.01,catalogId:manifest.id,catalogSourceSha256:manifest.source.sha256});
+    expect(cluster.desiMembers).toEqual(members);
+    expect(stop.caption).toContain(`z = ${two(cluster.redshift)}`);
+    expect(stop.caption).toContain(`${sig(stop.target.distanceMpc!,3)} Mpc`);
+    expect(stop.caption).toContain('Abell 1656');
   });
   it('discloses what is illustrative, assumed or only inferred at every stop',()=>{
     const required:Record<Kind,RegExp[]>={

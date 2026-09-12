@@ -1,0 +1,118 @@
+{
+  "source": {
+    "title": "Cited galaxy-cluster stops for the Cosmic road trip tour",
+    "service": "NASA/IPAC Extragalactic Database (NED)",
+    "url": "https://ned.ipac.caltech.edu/",
+    "api": "https://ned.ipac.caltech.edu/srs/ObjectLookup with the form field json={\"name\":{\"v\":\"<query>\"}}",
+    "retrieved": "2026-09-12",
+    "acknowledgment": "This research has made use of the NASA/IPAC Extragalactic Database (NED), which is funded by the National Aeronautics and Space Administration and operated by the California Institute of Technology.",
+    "notes": "raDeg, decDeg, position uncertainty, redshift, redshift uncertainty and the reference codes are the NED 'Preferred' values copied verbatim from the ObjectLookup JSON response on the retrieval date; NED redshifts are heliocentric. sexagesimalJ2000 is the same position as printed by NED's classic object search page on that date. scripts/prepare_tours.py converts the redshift to a Planck18 comoving distance on the catalog's equatorial Cartesian axes with no peculiar-velocity or frame correction, so the cluster center follows the same redshift-space convention as the DESI positions around it and appears stretched along the line of sight like they do. This is a pinned reference for camera framing and captions, not a claim of the best current cluster parameters."
+  },
+  "membership": {
+    "radiusDeg": 2,
+    "redshiftWindow": 0.01,
+    "minimumRows": 200,
+    "notes": "Plausibility check that the framed region holds DESI galaxies: accepted DR1 rows within radiusDeg of the NED center on the sky and |Z - redshift| < redshiftWindow, counted from the checksum-verified leaf metadata by scripts/prepare_tours.py. It is not a cluster membership catalog, a virial radius or a completeness statement; the count depends on the survey's coverage of that sky region."
+  },
+  "clusters": [
+    {
+      "key": "coma",
+      "role": "primary",
+      "name": "Coma cluster",
+      "aliases": [
+        "Abell 1656",
+        "ABELL 1656",
+        "Coma"
+      ],
+      "query": "ABELL 1656",
+      "nedPreferredName": "Coma cluster",
+      "objectType": "GClstr",
+      "raDeg": 194.953,
+      "decDeg": 27.981,
+      "positionUncertaintyDeg": 0.000592166649,
+      "positionRefCode": "2016ApJS..223...15B",
+      "sexagesimalJ2000": "12h59m48.72s +27d58m51.6s",
+      "redshift": 0.023997,
+      "redshiftUncertainty": 6.3e-05,
+      "redshiftRefCode": "2018A&A...609A..72D",
+      "redshiftQualityFlag": "SUN",
+      "verified": true,
+      "framingRadiusMpc": 3,
+      "framingNote": "The tour frames the center from three times this radius so the cluster core and its redshift-space stretch fill the view; 3 Mpc is a round framing choice, not a measured cluster radius.",
+      "desiMembers": {
+        "count": 2110,
+        "radiusDeg": 2,
+        "redshiftWindow": 0.01,
+        "leavesRead": 9,
+        "catalogId": "dr1",
+        "catalogSourceSha256": "2d95ad99361039b556c402b49e0e7c84df5f00106dc5731d44476a58b128b49b"
+      }
+    },
+    {
+      "key": "abell2199",
+      "role": "fallback",
+      "name": "Abell 2199",
+      "aliases": [
+        "ABELL 2199"
+      ],
+      "query": "ABELL 2199",
+      "nedPreferredName": "Abell 2199",
+      "objectType": "GClstr",
+      "raDeg": 247.159375,
+      "decDeg": 39.55119444,
+      "positionUncertaintyDeg": 0.004166666667,
+      "positionRefCode": "2015MNRAS.450.3675S",
+      "redshift": 0.030314,
+      "redshiftUncertainty": 0.000127,
+      "redshiftRefCode": "2014ApJ...797...82L",
+      "redshiftQualityFlag": "UUN",
+      "verified": true,
+      "framingRadiusMpc": 3
+    },
+    {
+      "key": "hercules",
+      "role": "fallback",
+      "name": "Hercules cluster",
+      "aliases": [
+        "Abell 2151",
+        "ABELL 2151"
+      ],
+      "query": "ABELL 2151",
+      "nedPreferredName": "Hercules Cluster",
+      "objectType": "GClstr",
+      "raDeg": 241.3120558,
+      "decDeg": 17.74291778,
+      "positionUncertaintyDeg": 0.004166666667,
+      "positionRefCode": "2013A&A...560A..64H",
+      "redshift": 0.036482,
+      "redshiftUncertainty": 0.000153,
+      "redshiftRefCode": "2014ApJ...797...82L",
+      "redshiftQualityFlag": "UUN",
+      "verified": true,
+      "framingRadiusMpc": 3
+    },
+    {
+      "key": "perseus",
+      "role": "fallback",
+      "name": "Perseus cluster",
+      "aliases": [
+        "Abell 426",
+        "ABELL 0426",
+        "NGC 1275 Cluster"
+      ],
+      "query": "ABELL 426",
+      "nedPreferredName": "NGC 1275 Cluster",
+      "objectType": "GClstr",
+      "raDeg": 49.953188,
+      "decDeg": 41.511541,
+      "positionUncertaintyDeg": 0.003883333206,
+      "positionRefCode": "2024A&A...687A.183S",
+      "redshift": 0.01719522911,
+      "redshiftUncertainty": 0.0001968028162,
+      "redshiftRefCode": "2018MNRAS.481.1507B",
+      "redshiftQualityFlag": "UUN",
+      "verified": true,
+      "framingRadiusMpc": 3
+    }
+  ]
+}

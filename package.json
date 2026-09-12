@@ -22,7 +22,8 @@
     "data:models": "uv run python scripts/prepare_model_catalog.py",
     "data:bootstrap": "uv run python scripts/prepare_data.py --bootstrap --out public/data/bootstrap --activate",
     "data:download": "uv run python scripts/download_catalog.py",
-    "data:prepare": "uv run python scripts/prepare_data.py --emit-development --activate"
+    "data:prepare": "uv run python scripts/prepare_data.py --emit-development --activate",
+    "data:tours": "uv run python scripts/prepare_tours.py"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "5.3.0",

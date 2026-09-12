@@ -110,6 +110,7 @@
             "key": "lmc"
           },
           "factCheck": {
+            "key": "lmc",
             "distanceMpc": 0.04959,
             "lookbackGyr": 0.00016174094770973302
           },
@@ -124,6 +125,7 @@
             "key": "smc"
           },
           "factCheck": {
+            "key": "smc",
             "distanceMpc": 0.062439999999999996,
             "lookbackGyr": 0.00020365204224633452
           },
@@ -138,6 +140,7 @@
             "key": "m31"
           },
           "factCheck": {
+            "key": "m31",
             "distanceMpc": 0.785,
             "lookbackGyr": 0.002560327565076435
           },
@@ -169,6 +172,7 @@
             "key": "m33"
           },
           "factCheck": {
+            "key": "m33",
             "distanceMpc": 0.809,
             "lookbackGyr": 0.002638605095728454
           },
@@ -208,10 +212,30 @@
           "caption": "The Coma cluster (Abell 1656) is centered here from its NED position and redshift z = 0.024, about 106 Mpc away, where light left about 340 million years ago. Because each galaxy's distance comes from its redshift, the cluster's internal motions stretch it along our line of sight; only DESI rows near this redshift and direction are counted as members.",
           "target": {
             "kind": "cluster",
-            "key": "coma"
+            "key": "coma",
+            "positionMpc": [
+              -90.20813805330613,
+              -24.09190415990899,
+              49.60591818932865
+            ],
+            "distanceMpc": 105.72925392955794
           },
           "dwellSeconds": 8,
-          "travelSeconds": 6
+          "travelSeconds": 6,
+          "distanceMpc": 9,
+          "factCheck": {
+            "redshift": 0.023997,
+            "distanceMpc": 105.72925392955794,
+            "lookbackGyr": 0.3407777719292251,
+            "desiMembers": {
+              "count": 2110,
+              "radiusDeg": 2,
+              "redshiftWindow": 0.01,
+              "leavesRead": 9,
+              "catalogId": "dr1",
+              "catalogSourceSha256": "2d95ad99361039b556c402b49e0e7c84df5f00106dc5731d44476a58b128b49b"
+            }
+          }
         },
         {
           "title": "The DESI survey",
