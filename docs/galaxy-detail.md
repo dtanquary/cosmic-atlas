@@ -84,7 +84,7 @@ Automatic close-ups yield to points when they would obstruct the camera. The fad
 
 ## Milky Way
 
-A separate [Milky Way reference model](milky-way.md) is available even with the bootstrap dataset. It shares the volume renderer and uses adopted Galactic geometry, an illustrative bar/spiral disk and bulge. It adds one fixed home model beside the bounded catalog pool. The Milky Way toolbar button and name search center this model on the Galactic core, with Sun / Observer as a separate focus; its dedicated inspector supplies sources without manufacturing a DESI record.
+A separate [Milky Way reference model](milky-way.md) is available even with the bootstrap dataset. It shares camera-relative framing, picking and visibility rules, with a dedicated emission/absorption shader for its adopted Galactic geometry, illustrative bar/spiral disk, bulge and dust. The appearance uses Hubble Andromeda imagery as a guide, with one draw call and no individual light-point sprites. It adds one fixed home model beside the bounded catalog pool. The Milky Way toolbar button and name search center this model on the Galactic core, with Sun / Observer as a separate focus; its dedicated inspector supplies sources without manufacturing a DESI record.
 
 ## Local-distance exception
 

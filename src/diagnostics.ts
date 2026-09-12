@@ -20,8 +20,8 @@ export async function runDiagnostics(atlas:Explorer,parent:HTMLElement){
  if(query.has('hometest')){
   report.localPositions=await atlas.probeLocalPositions();report.localInteraction=await atlas.probeLocalInteraction();show();
   const {probeHomeNavigation}=await import('./ui-diagnostics');report.homeNavigation=await probeHomeNavigation(atlas);show();
-  report.home=await atlas.probeMilkyWay();show();atlas.controls.autoRotate=true;atlas.controls.autoRotateSpeed=2;atlas.invalidate();await sleep(7000);
-  atlas.controls.autoRotate=false;report.homePerformance=atlas.stats;atlas.invalidate();report.homeContext=await atlas.probeContextRecovery();report.homeAfterRecovery=await atlas.probeMilkyWay();
+  report.home=await atlas.probeMilkyWay();report.homeAppearance=await atlas.probeHomeAppearance();show();atlas.controls.autoRotate=true;atlas.controls.autoRotateSpeed=2;atlas.invalidate();await sleep(7000);
+  atlas.controls.autoRotate=false;report.homePerformance=atlas.stats;atlas.invalidate();report.homeContext=await atlas.probeContextRecovery();report.homeAfterRecovery=await atlas.probeMilkyWay();report.homeAppearanceAfterRecovery=await atlas.probeHomeAppearance();
  }
  if(query.has('modeltest')){
   report.status='checking catalog-wide models';show();report.models=await atlas.probeModelCatalog();report.depthCues=atlas.probeDepthCues();show();

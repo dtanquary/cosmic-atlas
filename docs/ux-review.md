@@ -112,3 +112,7 @@ Side-by-side native Chrome review and three-angle GPU readback confirm distinct 
 # Fixed arrow reported during release review — 2026-09-11
 
 The reported stationary arrow was visible at the same screen coordinates in the native atlas preview and Chrome's unrelated New Tab page. Independent page screenshots contain no arrow. This isolates it to an overlay outside the application; the app only renders its explicit flight crosshair and standard browser cursor styles. No atlas UI change or application regression test is appropriate for an external desktop/browser overlay. The native blank-tab comparison and direct page captures are the diagnostic evidence.
+
+# Milky Way appearance review — 11 September 2026
+
+Verified the revised continuous starlight/dust volume in native Chrome and direct production page captures. The core remains centered through real wheel zoom, the Sun marker stays at its independently adopted position, and the inspector links to the Andromeda appearance reference while disclosing reconstructed dust/arms/colors. Face-on, inclined, edge-on, reverse and inside views pass GPU checks with restrained highlights and one fixed model allocation. The full UI/continuity suites pass. Their synthetic Window keyboard event exposed an unsafe Element cast in the shortcut handler; an actual Element guard prevents the exception without changing typing or flight controls.

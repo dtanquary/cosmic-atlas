@@ -228,7 +228,7 @@ export class Explorer {
     document.addEventListener('mousemove',event=>this.look(event),{signal});
     window.addEventListener('keydown',event=>{
       if(event.code==='Escape'&&this.autoFly)this.setAutoFly(false);
-      if((event.target as HTMLElement)?.matches('input,select,textarea')||document.querySelector('dialog[open]'))return;
+      if(event.target instanceof Element&&event.target.matches('input,select,textarea')||document.querySelector('dialog[open]'))return;
       if(this.flight&&['KeyW','KeyA','KeyS','KeyD','KeyQ','KeyE','ShiftLeft','ShiftRight'].includes(event.code)){event.preventDefault();this.keys.add(event.code);this.invalidate()}
       if(event.code==='KeyR'&&!event.metaKey&&!event.ctrlKey)this.reset();
       if(event.code==='KeyF'&&!event.metaKey&&!event.ctrlKey)this.focusSelected();
@@ -1020,6 +1020,10 @@ export class Explorer {
     }finally{target.dispose();this.renderer.setRenderTarget(null);this.renderer.setClearColor(0x06090d,1);this.setModelDisplay(previousDisplay);this.focusObserver();this.invalidate()}
     return {arrival,bodyPicking,views,catalogUnchanged:this.manifest.count===count&&this.selected===selected&&this.measurementDistance===measured,memoryBytes:model.memoryBytes,
       passed:arrival.visible&&arrival.blend===1&&arrival.focusAtSun&&Math.abs(arrival.cameraDistance-.06)<1e-12&&bodyPicking&&views.outside.litPixels>100&&views.inside.litPixels>100&&views.nearSun.litPixels>100&&views.points.litPixels===0&&!views.points.visible&&views.focused.litPixels>100&&views.noFocus.litPixels===0&&views.sunMarkerWithinClip&&this.manifest.count===count&&this.selected===selected&&this.measurementDistance===measured};
+  }
+  async probeHomeAppearance(){
+    const {probeHomeAppearance}=await import('./home-diagnostics');
+    try{return probeHomeAppearance(this.renderer,this.milkyWay)}finally{this.invalidate()}
   }
   async probeObserverPass(){
     const model=this.resolvedGalaxies.find(item=>item.data.spiral)!;

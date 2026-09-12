@@ -52,6 +52,8 @@ Name search must distinguish recognized names from verified visit locations. Una
 
 ## Milky Way and visual direction
 
+The home model uses Andromeda telescope imagery as a visual guide for a continuous stellar disk, fine dust lanes, restrained warm central light and muted blue outer arms. Preserve Milky Way geometry and a softer barred center; disclose the reconstructed appearance. Dust and starlight must work from either side and inside the disk, with bounded allocations and no bright point-sampled bar.
+
 The Milky Way is a fixed reference model available with every dataset. The observer is the Solar System at the origin; the Galactic center and plane use a pinned, sourced reference frame. Milky Way arrives 60 kpc from the Galactic core in an oblique view and keeps that core centered while zooming and orbiting. The inspector highlights Galactic core or Sun / Observer focus; the latter explicitly targets the origin. Both preserve the home model during close-up navigation. The home inspector distinguishes adopted literature dimensions from illustrative structure, has no DESI ID/redshift, and cannot create catalog pair measurements. Catalog counts are unchanged.
 
 The user's supplied galaxy-field image establishes the longer-term fly-through direction: dark space, restrained glow, many recognizable small galaxy shapes and varied orientations. A future intermediate silhouette level should bridge points and full models within a bounded draw budget; it is not yet implemented.
