@@ -115,3 +115,7 @@ The All spirals appearance now mixes three restrained recipes: classic two-arm s
 `galaxy-variants.ts` chooses recipes from a separate hash of the exact public identity: 50% classic, 30% multi-arm and 20% ringed in hash space. These proportions are display choices, not measured population fractions. The same hash seeds the illustrative structure, independent of dense row indices, source morphology, palette hash or residency. Positions, adopted sizes and projected orientation still follow the source. Catalog types retains the original source/proxy renderers, and the Milky Way retains its separate reference recipe.
 
 The inspector names the illustration separately from the source classification. `?varianttest` compares all recipes with identical geometry scale, seed and palette at face-on, 60° and 85° inclinations; it checks total light, peak highlights, near-white pixel area, body selection, draw/memory budgets and reconstruction. Add `&variantpreview` for a development-only side-by-side render. These are renderer regression checks rather than photometric calibration.
+
+## Cosmic-scale context
+
+The optional CMB shell is a separate observer-centered background reference. It changes no galaxy model geometry, appearance, fade range, picking identity, measurement or catalog allocation. Its comparison panel yields to either galaxy inspector. Toggling it does not focus or unfocus a model; View cosmic scale explicitly returns to an external observer-centered view. [Distance convention and scientific limits](cosmic-horizon.md).

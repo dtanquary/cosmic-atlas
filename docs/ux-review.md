@@ -116,3 +116,9 @@ The reported stationary arrow was visible at the same screen coordinates in the 
 # Milky Way appearance review — 11 September 2026
 
 Verified the revised continuous starlight/dust volume in native Chrome and direct production page captures. The core remains centered through real wheel zoom, the Sun marker stays at its independently adopted position, and the inspector links to the Andromeda appearance reference while disclosing reconstructed dust/arms/colors. Face-on, inclined, edge-on, reverse and inside views pass GPU checks with restrained highlights and one fixed model allocation. The full UI/continuity suites pass. Their synthetic Window keyboard event exposed an unsafe Element cast in the shortcut handler; an actual Element guard prevents the exception without changing typing or flight controls.
+
+## CMB shell — 12 September 2026
+
+State: verified on full-data actual-GPU navigation and production controls; final compact layout review pending at this checkpoint.
+
+The visibility toggle preserves the existing camera, selected record and measurements; the dedicated cosmic-scale action cancels earlier focus and frames the sphere about the observer. The comparison panel yields to galaxy inspectors, and Settings provides the same framing action while an inspector is open. Full-data `?uxtest&hometest&continuitytest&selftest` passes with the shell enabled, including search cancellation/reopening, foreground obstruction, display fading, inspector reachability, core/Sun focus, wheel behavior and point/body selection. Production checks pass persistence in both states and units. Visual review prompted a compact short-height toolbar and narrow-width comparison card, plus explicit stacking above observer labels.

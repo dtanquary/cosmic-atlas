@@ -83,3 +83,9 @@ Use restrained per-galaxy color variation, spanning blue-white to soft ivory wit
 ## Similar galaxy variants
 
 Use the existing common spiral as the size and brightness template for two additional illustrations: fine multi-arm spiral and ringed spiral disk. Mix them into the default appearance with stable identity-based assignment. Preserve the common light profile, exposure, radial sample distribution, depth and light-sample budget; avoid bright concentrated cores or blob-like substitutes. Keep source morphology and measurements separate from the illustration. Verify both total brightness and concentrated highlights at multiple viewing angles, plus existing model continuity and selection.
+
+## Experimental cosmic microwave background shell
+
+Offer an off-by-default, saved CMB shell toggle in the map toolbar and Settings. Use the same linear comoving scale as the catalog and the Sun / Observer as the fixed center. A separate View cosmic scale action frames the complete sphere; toggling visibility alone preserves the camera, selection and measurements. Keep the ordinary survey overview available.
+
+The faint shell represents the approximate last-scattering surface at rounded z = 1090 in Planck18 (45.3 billion light-years today), not a physical edge or the entire universe's extent. Disclose the inferred radius and illustrative shell/grid, with no measured temperature map. Show the active catalog's radial reach only, explicitly distinguished from the fraction of galaxies mapped. Preserve bounded rendering and all catalog counts, IDs and picking. See [reference and sources](cosmic-horizon.md).

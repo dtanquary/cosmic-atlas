@@ -8,6 +8,8 @@ import {ModelCatalog,MODEL_LIMIT,decodeModel,measuredShape} from './model-catalo
 import {MilkyWay} from './milky-way';
 import {createNearbyGalaxies} from './nearby-galaxies';
 import {galaxyColors} from './galaxy-colors';
+import {CosmicHorizon} from './cosmic-horizon';
+import {CMB_RADIUS_MPC} from './cosmic-scale';
 import {LOCAL_REDSHIFT_GUARD_MPC,uncertainLocalDistance,uncertainLocalPosition} from './local-distances';
 import type { Galaxy, Manifest, SpatialNode } from './types';
 
@@ -102,6 +104,7 @@ export class Explorer {
   speed=1000;
   selected:Galaxy|null=null;
   readonly milkyWay=new MilkyWay();
+  readonly cosmicHorizon=new CosmicHorizon();
   galaxyAppearance:GalaxyAppearance='spiral';
   readonly nearbyGalaxies=createNearbyGalaxies(this.galaxyAppearance);
   private get allModels(){return [...this.resolvedGalaxies,...this.nearbyGalaxies]}
@@ -287,7 +290,7 @@ export class Explorer {
     const box=this.bounds.get(this.root)!;
     box.getCenter(this.overviewTarget);this.overviewRadius=box.getSize(new THREE.Vector3()).length()/2;
     this.overviewPosition.copy(this.overviewTarget).add(new THREE.Vector3(.85,-1,.58).normalize().multiplyScalar(this.overviewRadius*2.1));
-    this.controls.maxDistance=this.overviewRadius*10;this.camera.far=this.overviewRadius*30;
+    this.controls.maxDistance=Math.max(this.overviewRadius*10,CMB_RADIUS_MPC*6);this.camera.far=Math.max(this.overviewRadius*30,CMB_RADIUS_MPC*12);
     this.camera.updateProjectionMatrix();this.reset();this.invalidate();
     if(manifest.id==='dr1'&&!manifest.subset){
       try{
@@ -337,6 +340,17 @@ export class Explorer {
     this.dirty=true;this.invalidate();
   }
   setMode(mode:'adaptive'|'full'){this.mode=mode;this.blocked=false;this.dirty=true;this.invalidate()}
+  setCosmicHorizon(enabled:boolean){this.cosmicHorizon.enabled=enabled;this.invalidate()}
+  viewCosmicHorizon(){
+    if(!this.manifest)return;
+    this.reset();this.clearSelection();this.clearHomeSelection();
+    const halfFov=Math.atan(Math.tan(THREE.MathUtils.degToRad(this.camera.fov/2))*Math.min(1,this.camera.aspect));
+    const distance=CMB_RADIUS_MPC/Math.sin(halfFov)*1.14;
+    this.controls.maxDistance=Math.max(this.controls.maxDistance,distance*2);
+    this.controls.target.set(0,0,0);
+    this.camera.position.set(.85,-1,.58).normalize().multiplyScalar(distance);
+    this.controls.update();this.dirty=true;this.invalidate();
+  }
   setDepthCues(enabled:boolean){this.depthCueUniform.value=enabled;this.dirty=true;this.invalidate()}
   setEnlargePoints(enabled:boolean){this.enlargePointsUniform.value=enabled;this.invalidate()}
   setShowUncertainLocal(show:boolean){
@@ -574,7 +588,7 @@ export class Explorer {
     this.dirty=true;this.invalidate();
   }
   private get memoryBytes(){
-    let bytes=this.references.byteLength+this.pickTarget.width*this.pickTarget.height*8+this.milkyWay.memoryBytes+this.allModels.reduce((sum,model)=>sum+model.memoryBytes,0)+(this.modelCatalog?.memoryBytes??0);
+    let bytes=this.references.byteLength+this.pickTarget.width*this.pickTarget.height*8+this.milkyWay.memoryBytes+this.cosmicHorizon.memoryBytes+this.allModels.reduce((sum,model)=>sum+model.memoryBytes,0)+(this.modelCatalog?.memoryBytes??0);
     for(const item of this.cache.values())bytes+=item.bytes;
     for(const buffer of this.metadata.values())bytes+=buffer.byteLength;
     return bytes+this.loader.reservedBytes;
@@ -746,7 +760,8 @@ export class Explorer {
     this.updateDepthCues();
     if(this.dirty||time-this.lastLOD>200){this.updateLOD();this.lastLOD=time;this.dirty=false}
     if(this.modelScanNeeded||time-this.lastModelScan>250){this.updateModels();this.lastModelScan=time;this.modelScanNeeded=false}
-    this.positionAnnotations();this.renderer.info.reset();this.renderer.autoClear=true;this.renderer.render(this.scene,this.camera);this.renderer.autoClear=false;
+    this.positionAnnotations();this.renderer.info.reset();this.renderer.autoClear=false;this.renderer.clear();
+    this.cosmicHorizon.render(this.renderer,this.camera);this.renderer.render(this.scene,this.camera);
     this.renderer.render(this.nearbyScene,this.camera);
     for(const model of this.allModels)if(model.visible)this.renderer.render(model.scene,this.camera);
     if(this.milkyWay.visible)this.renderer.render(this.milkyWay.scene,this.camera);
@@ -1155,5 +1170,5 @@ export class Explorer {
     finally{loader.dispose()}
   }
   get renderingInfo(){const gl=this.renderer.getContext(),debug=gl.getExtension('WEBGL_debug_renderer_info');return {renderer:debug?gl.getParameter(debug.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER),version:gl.getParameter(gl.VERSION),width:this.canvas.width,height:this.canvas.height}}
-  dispose(){this.disposed=true;this.lifecycle.abort();cancelAnimationFrame(this.frame);this.exitFlight();this.loader.dispose();this.modelCatalog?.dispose();this.controls.dispose();this.milkyWay.dispose();this.allModels.forEach(model=>model.dispose());this.nearbyPoints.geometry.dispose();this.nearbyPoints.material.dispose();this.nearbyPicker.dispose();for(const item of this.cache.values()){item.points.geometry.dispose();item.points.material.dispose()}this.pickTarget.dispose();this.pickMaterial.dispose();this.renderer.dispose();this.canvas.remove()}
+  dispose(){this.disposed=true;this.lifecycle.abort();cancelAnimationFrame(this.frame);this.exitFlight();this.loader.dispose();this.modelCatalog?.dispose();this.controls.dispose();this.cosmicHorizon.dispose();this.milkyWay.dispose();this.allModels.forEach(model=>model.dispose());this.nearbyPoints.geometry.dispose();this.nearbyPoints.material.dispose();this.nearbyPicker.dispose();for(const item of this.cache.values()){item.points.geometry.dispose();item.points.material.dispose()}this.pickTarget.dispose();this.pickMaterial.dispose();this.renderer.dispose();this.canvas.remove()}
 }

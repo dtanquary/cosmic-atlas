@@ -62,6 +62,16 @@
 .home-view-hint{font-size:11px;line-height:1.5;margin-top:10px}
 
 .local-policy{color:#879da9;font-size:11px;line-height:1.6;margin-top:4px}
+.cosmic-context{position:absolute;z-index:2;right:36px;top:110px;width:280px;padding:20px;background:#0b141bdb;border:1px solid #2c414c;border-radius:10px;backdrop-filter:blur(12px)}
+.cosmic-radius{font-size:25px;font-weight:400;letter-spacing:-.7px;color:#c9dfe7;margin:8px 0 3px}
+.cosmic-context .fineprint{font-size:11px;line-height:1.65;color:#91a8b5;margin:5px 0 12px}
+.cosmic-comparison{margin:20px 0 14px}.cosmic-reach-label{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:#9bb2c0}.cosmic-reach-label strong{font-weight:400;color:#cae3e9}
+.cosmic-reach-track{height:4px;margin:10px 0;background:#34414f;border-radius:3px;overflow:hidden}.cosmic-reach-track span{display:block;height:100%;background:#8ebcc8}
+.cosmic-context .button{width:100%;justify-content:center;font-size:12px;padding:10px}.cosmic-context .profile-source{text-align:center}
+.cosmic-settings-view{margin-top:12px;font-size:12px}.cosmic-settings-rule{margin:22px 0;border-top:1px solid var(--line)}
+@media(max-width:900px){.cosmic-context{right:22px;top:100px;width:250px}}
+@media(max-width:600px){.cosmic-context{left:22px;right:22px;top:90px;width:auto;padding:14px}.cosmic-radius{font-size:22px}.cosmic-context .fineprint{font-size:10px;margin-bottom:8px}.cosmic-comparison{margin:10px 0}.cosmic-context .profile-source,#cosmic-catalog-distance{display:none}}
+@media(max-height:650px){.cosmic-context{top:83px;max-height:calc(100vh - 250px);overflow:auto;scrollbar-width:thin}.rail{gap:3px;top:48%}.rail .button{padding-top:6px;padding-bottom:6px}}
 .local-policy.raw,.local-distance-warning{color:#e4b77f}
 .local-distance-warning{font-size:12px;line-height:1.6;border-left:2px solid #b88648;padding-left:10px;margin-top:16px}
 @media(max-width:600px){.local-policy{font-size:9px;max-width:175px}}

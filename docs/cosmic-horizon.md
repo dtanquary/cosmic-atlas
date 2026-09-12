@@ -10,4 +10,4 @@ The CMB is early light released when the universe became transparent. Its last-s
 
 Compare the active manifest's maximum comoving distance with this radius. The full catalog reaches 4,830.889 Mpc, about **35% of the shell radius**. This is radial reach, not the percentage of the universe, surveyed volume, or known galaxies mapped. Angular coverage, selection effects and variable completeness matter; the displayed DESI sample is not all human galaxy mapping. No unobserved region is labeled empty.
 
-Implementation and actual-GPU verification are pending at this reference-data checkpoint.
+The saved toggle is available in the toolbar and Settings; View cosmic scale frames the shell explicitly. The comparison card yields to galaxy inspectors, and smaller windows retain the compact radius comparison and disclosure. The shell uses one background draw, with no texture or per-galaxy work. See [GPU and production validation](validation.md).
