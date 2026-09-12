@@ -238,6 +238,8 @@ Original application code, tooling and documentation are available under the [MI
 
 Astronomy data and third-party assets keep their own terms: DESI data are **CC BY 4.0**; OpenNGC-derived name indexes, model sidecars and the combined nearby reference are **CC BY-SA 4.0**. MIT does not relicense those datasets, dependencies or fonts. Preserve [data attribution and processing notes](public/acknowledgments.txt), [third-party notices](public/third-party-notices.txt) and the [CC BY-SA license](public/licenses/CC-BY-SA-4.0.txt).
 
+The README screenshots use [separate CC BY-SA 4.0 image terms and source credits](docs/images/README.md).
+
 ## Public hosting and project documents
 
 The intended release is a public URL with the source shared on GitHub. The current full catalog fits Cloudflare Pages' documented per-file and file-count limits for Wrangler Direct Upload, so separate object storage is optional. See [public delivery](docs/public-delivery.md) for release builds, private deployment settings, costs and the publication checklist.
