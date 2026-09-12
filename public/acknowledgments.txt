@@ -86,7 +86,7 @@ We would like to acknowledge the countless colleagues, friends, and family membe
                 
               
 
-Processing changes: selection of primary galaxy spectra with no redshift warning and finite positive redshift; coordinate conversion to Planck18 comoving Mpc; spatial chunking and deterministic visualization samples. Original measurements and target identifiers are retained. See the dataset manifest for source checksum, selection accounting, cosmology, and subset status. The atlas is not affiliated with or endorsed by the DESI collaboration.
+Processing changes: selection of primary galaxy spectra with no redshift warning and finite positive redshift; coordinate conversion to Planck18 comoving Mpc; spatial chunking and deterministic visualization samples. Original measurements and target identifiers are retained. For the optional footprint overlay, a 0.5-degree sky-occupancy grid (survey-footprint.json) was derived from the accepted rows; it records where accepted rows exist, not the official survey tiling, depth or completeness. See the dataset manifest for source checksum, selection accounting, cosmology, and subset status. The atlas is not affiliated with or endorsed by the DESI collaboration.
 
 NGC 4026 AND NGC 3982 RESOLVED PROFILES
 
