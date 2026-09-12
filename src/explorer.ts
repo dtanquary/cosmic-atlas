@@ -592,6 +592,8 @@ export class Explorer {
     if(!this.catalogPositionVisible(galaxy))throw new Error('This name has an uncertain local position. Enable Show uncertain local positions in Settings to inspect the record.');
     if(this.modelCatalog&&!uncertainLocalPosition(galaxy))try{await this.ensureModel(galaxy,node,entry.row,true)}catch{if(canNavigate()&&serial===this.selectionSerial)this.onMessage('The shape could not load; showing the catalog position. Retry missing detail to try again.')}
     if(!canNavigate()||serial!==this.selectionSerial)return;
+    // Pinned profile models load without the model catalog, so record the address here rather than relying on ensureModel.
+    this.modelLocations.set(galaxy.id,{node:node.id,row:entry.row});
     if(this.resolvedFor(galaxy.id))return this.visitGalaxy(galaxy.id,seconds);
     this.selectGalaxy(galaxy,{node:node.id,row:entry.row});return this.focusSelected(seconds);
   }
