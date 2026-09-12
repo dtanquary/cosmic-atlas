@@ -251,3 +251,7 @@ The density field and all mip levels account for **2,446,676 CPU/GPU bytes** (2.
 Native Chrome production review and direct page captures checked the new source disclosure, core/Sun actions, real wheel/orbit controls and the updated README image. Isolated GPU views were also inspected face-on, inclined, edge-on and from the reverse side. Texture filtering includes the ray-cell footprint to suppress steep-angle aliasing. The final production preview has no page or shader errors. [Full and subset reports](validation-results.json); [appearance choices and sources](milky-way.md).
 
 After deployment, live HTTPS checks pass for the new app/attribution assets, unchanged complete catalog, source sidecars and sampled binary hashes. A separate live Chrome check verifies the updated appearance link, core/Sun actions, zoom, orbit and model screenshot without JavaScript or shader errors. Hosting addresses and operational receipts remain in ignored local deployment files.
+
+## README gallery refresh — 11 September 2026
+
+Recaptured four 1920×1080 images from the current production build: cosmic web, Milky Way, an additional inclined Milky Way view, and Andromeda. Each uses real search/navigation controls and was visually inspected for framing, visible source disclosures and clean rendering. The capture session reports no JavaScript or shader errors. README image paths, JPEG dimensions and existing CC BY-SA credits were checked before committing. This update changes documentation and screenshots only; the application and deployed build are unchanged.

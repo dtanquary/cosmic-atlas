@@ -6,16 +6,20 @@ The Milky Way is a separate reference model around the Solar System. Its continu
 
 The project is being built collaboratively by Dave and **ChatGPT Astra**, through Codex. Dave supplies the product direction, visual references and hands-on feedback; Astra implements and tests the application, data tools and documentation.
 
-![Cosmic Atlas showing the Milky Way model with spiral arms, the Galactic core and our Sun's position](docs/images/milky-way.jpg)
+![The revised Milky Way model showing its continuous stellar disk, dust lanes, Galactic core and Sun marker](docs/images/milky-way.jpg)
 
-*Our home galaxy, with separate Galactic core and Sun / Observer markers. Internal structure and light are illustrative.*
+*Our home galaxy's revised stellar disk and dust lanes, with separate Galactic core and Sun / Observer markers. Internal structure and light are illustrative.*
 
 <details>
-<summary>More screenshots: the cosmic web and Andromeda</summary>
+<summary>More screenshots: the cosmic web, Milky Way, and Andromeda</summary>
 
 ![The DESI galaxy survey in Cosmic Atlas, showing its large-scale structure and survey footprint](docs/images/cosmic-web.jpg)
 
 *A wide view of the DESI survey. Gaps reflect survey coverage and selection, not necessarily empty space.*
+
+![An inclined view of the Milky Way model showing its thin disk, central bar and dark dust lanes](docs/images/milky-way-inclined.jpg)
+
+*The same Milky Way model after orbiting the camera. Dust obscures starlight within the reconstructed disk; its distribution is illustrative.*
 
 ![Andromeda viewed from above its modeled disk, with an inspector showing its independently measured distance](docs/images/andromeda.jpg)
 

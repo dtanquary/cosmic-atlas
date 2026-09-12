@@ -1,8 +1,9 @@
 # Cosmic Atlas screenshots
 
-These 1920×1080 JPEGs were captured from the production application on 2026-09-11 using Chrome, with real navigation/zoom controls. They contain no browser chrome, deployment URL or computer-control cursor overlay. No galaxy art was composited into the captures.
+All four 1920×1080 JPEGs were recaptured from the current production build on 2026-09-11 using Chrome, with real navigation, search, zoom and orbit controls. They contain no browser chrome, deployment URL or computer-control cursor overlay. No galaxy art was composited into the captures.
 
-- `milky-way.jpg`: the revised continuous starlight/dust Milky Way reference model and Sun/core markers; recaptured after the appearance update.
+- `milky-way.jpg`: the revised continuous starlight/dust Milky Way reference model and Sun/core markers.
+- `milky-way-inclined.jpg`: the same reference model after orbiting to an inclined view, showing the disk and dust from another angle.
 - `cosmic-web.jpg`: adaptive rendering of the complete accepted DESI DR1 catalog, with visible survey selection and coverage.
 - `andromeda.jpg`: a rotated view of the independently measured M31 entry in the default illustrative spiral appearance.
 
