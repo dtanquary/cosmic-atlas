@@ -475,7 +475,8 @@ export class Explorer {
   }
   private ensureModel(galaxy:Galaxy,node:SpatialNode,row:number,priority=false):Promise<ResolvedGalaxy>{
     if(uncertainLocalPosition(galaxy))return Promise.reject(new Error('Uncertain local distance: physical galaxy model withheld.'));
-    const existing=this.resolvedFor(galaxy.id);if(existing){if(priority)this.modelPresence.set(galaxy.id,{value:1,target:1});return Promise.resolve(existing)}
+    // Record the address for pinned profile models too, so a by-name visit yields a linkable selection.
+    const existing=this.resolvedFor(galaxy.id);if(existing){if(priority)this.modelPresence.set(galaxy.id,{value:1,target:1});this.modelLocations.set(galaxy.id,{node:node.id,row});return Promise.resolve(existing)}
     const pending=this.modelRequests.get(galaxy.id);if(pending)return pending;
     if(!this.modelCatalog)return Promise.reject(new Error('The model catalog is unavailable'));
     const catalog=this.modelCatalog;
@@ -552,8 +553,7 @@ export class Explorer {
       // Metadata supplies the exact float64 center and target identity only for
       // the small nearby set. The candidate scan uses existing packed positions.
       const pending=(async()=>{
-        let metadata=this.metadata.get(node.id);
-        if(!metadata){metadata=await this.loader.load(`m:${node.id}`,new URL(node.metadata.url,this.base).href,node.metadata,'metadata',node.storedCount,true);this.metadata.set(node.id,metadata)}
+        const metadata=await this.metadataFor(node);
         this.modelRequests.delete(id);
         if(this.disposed||!this.wantedModels.has(id))throw new DOMException('Model no longer nearby','AbortError');
         return this.ensureModel(decodeGalaxy(metadata,row,id),node,row);
@@ -585,14 +585,14 @@ export class Explorer {
     if(!canNavigate())return;
     const node=this.nodes.get(entry.node),serial=++this.selectionSerial;
     if(!node||!Number.isInteger(entry.row)||entry.row<0||entry.row>=node.storedCount)throw new Error('This named observation is unavailable.');
-    const metadata=await this.loader.load(`m:${node.id}`,new URL(node.metadata.url,this.base).href,node.metadata,'metadata',node.storedCount,true);
+    const metadata=await this.metadataFor(node);
     if(!canNavigate()||serial!==this.selectionSerial)return;
     const galaxy=decodeGalaxy(metadata,entry.row,entry.id);
     if(galaxy.targetId!==entry.targetId)throw new Error('The name index does not match this catalog.');
     if(!this.catalogPositionVisible(galaxy))throw new Error('This name has an uncertain local position. Enable Show uncertain local positions in Settings to inspect the record.');
     if(this.modelCatalog&&!uncertainLocalPosition(galaxy))try{await this.ensureModel(galaxy,node,entry.row,true)}catch{if(canNavigate()&&serial===this.selectionSerial)this.onMessage('The shape could not load; showing the catalog position. Retry missing detail to try again.')}
     if(!canNavigate()||serial!==this.selectionSerial)return;
-    if(this.resolvedFor(galaxy.id)){const arrival=this.visitGalaxy(galaxy.id,seconds);this.selectedAddress={node:node.id,row:entry.row};return arrival}
+    if(this.resolvedFor(galaxy.id))return this.visitGalaxy(galaxy.id,seconds);
     this.selectGalaxy(galaxy,{node:node.id,row:entry.row});return this.focusSelected(seconds);
   }
   focusObserver(seconds=0){
@@ -623,7 +623,7 @@ export class Explorer {
     const direction=offset.lengthSq()?offset.normalize():this.camera.getWorldDirection(new THREE.Vector3()).negate();
     let exact:{target:THREE.Vector3;galaxyId:number|null;home:boolean}|null=null;
     try{exact=await this.locate(state.identity,serial)}
-    catch(error){if((error as Error).name==='AbortError')return false;this.onMessage(error instanceof DOMException?`This link's galaxy could not load: ${error.message}`:'This link points to a galaxy this catalog does not contain.')}
+    catch(error){if(serial!==this.selectionSerial||(error as Error).name==='AbortError')return false;this.onMessage(error instanceof DOMException?`This link's galaxy could not load: ${error.message}`:'This link points to a galaxy this catalog does not contain.')}
     const arrival=exact?this.focusAt(exact.target,distance,direction,exact.galaxyId,exact.home,seconds):this.focusAt(target,distance,direction,null,false,seconds);
     if(exact?.home)this.inspectHome();
     return arrival;
@@ -636,20 +636,27 @@ export class Explorer {
       this.selectGalaxy(model.data.galaxy);return {target:model.center,galaxyId:model.data.galaxy.id,home:false};
     }
     const node=this.nodes.get(identity.node);if(!node||identity.row>=node.storedCount)throw new Error('Unknown catalog address');
-    const [id,metadata]=await Promise.all([this.denseId(node,identity.row),this.loader.load(`m:${node.id}`,new URL(node.metadata.url,this.base).href,node.metadata,'metadata',node.storedCount,true)]);
+    const [id,metadata]=await Promise.all([this.denseId(node,identity.row),this.metadataFor(node)]);
     if(serial!==this.selectionSerial)throw new DOMException('Superseded','AbortError');
     const galaxy=decodeGalaxy(metadata,identity.row,id);
     if(galaxy.targetId!==identity.targetId)throw new Error('Target ID mismatch');
-    const visible=this.catalogPositionVisible(galaxy);
-    if(this.modelCatalog&&visible&&!uncertainLocalPosition(galaxy))try{await this.ensureModel(galaxy,node,identity.row,true)}catch{/* Point position still applies. */}
+    // Like visitCatalog and pick, a hidden uncertain-local record is never selected through a link.
+    if(!this.catalogPositionVisible(galaxy)){this.onMessage('This uncertain local position is hidden. Show uncertain local positions in Settings to inspect it.');return null}
+    if(this.modelCatalog&&!uncertainLocalPosition(galaxy))try{await this.ensureModel(galaxy,node,identity.row,true)}catch{/* Point position still applies. */}
     if(serial!==this.selectionSerial)throw new DOMException('Superseded','AbortError');
     this.selectGalaxy(galaxy,{node:node.id,row:identity.row});
-    if(!visible){this.onMessage('This uncertain local position is hidden. Show uncertain local positions in Settings to inspect it.');return null}
     return {target:this.resolvedFor(galaxy.id)?.center??new THREE.Vector3().fromArray(galaxy.position),galaxyId:galaxy.id,home:false};
+  }
+  /** Metadata chunk for a node, cached for the current inspection (evict keeps at most four). */
+  private async metadataFor(node:SpatialNode){
+    let metadata=this.metadata.get(node.id);
+    if(!metadata){metadata=await this.loader.load(`m:${node.id}`,new URL(node.metadata.url,this.base).href,node.metadata,'metadata',node.storedCount,true);this.metadata.set(node.id,metadata)}
+    return metadata;
   }
   /** The dense id comes from the node's points chunk (resident or loaded once), never from a link. */
   private async denseId(node:SpatialNode,row:number){
     const resident=this.cache.get(node.id);if(resident)return resident.ids[row];
+    // ponytail: whole chunk for one id; an id sidecar if links into non-resident chunks become common
     const buffer=await this.loader.load(`l:${node.id}`,new URL(node.points.url,this.base).href,node.points,'points',node.storedCount,true);
     return new Uint32Array(buffer,16+node.storedCount*12,node.storedCount)[row];
   }
@@ -815,12 +822,8 @@ export class Explorer {
       const nodeId=String((code>>>16)-1),row=code&65535;
       const item=this.cache.get(nodeId);if(!item||row>=item.node.storedCount)return;
       const id=item.ids[row],node=item.node;
-      let metadata=this.metadata.get(nodeId);
-      if(!metadata){
-        this.onMessage('Reading galaxy measurements…');
-        metadata=await this.loader.load(`m:${nodeId}`,new URL(node.metadata.url,this.base).href,node.metadata,'metadata',node.storedCount,true);
-        this.metadata.set(nodeId,metadata);
-      }
+      if(!this.metadata.has(nodeId))this.onMessage('Reading galaxy measurements…');
+      const metadata=await this.metadataFor(node);
       if(serial!==this.selectionSerial)return;
       const galaxy=decodeGalaxy(metadata,row,id);
       if(!this.catalogPositionVisible(galaxy))return;

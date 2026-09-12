@@ -1,7 +1,9 @@
 import * as THREE from 'three';
 import type {Explorer} from './explorer';
 import {decodeGalaxy} from './format';
+import {uncertainLocalDistance} from './local-distances';
 import {MODEL_LIMIT} from './model-catalog';
+import {frame,sleep} from './overlay-diagnostics';
 import {decodeView,encodeView,type ViewIdentity,type ViewState} from './view-link';
 import type {SpatialNode,Vec3} from './types';
 
@@ -12,8 +14,6 @@ const rel=(a:THREE.Vector3,b:THREE.Vector3)=>a.distanceTo(b)/Math.max(1e-6,b.len
 /** Links, saved views and camera travel through the real explorer, dialog and localStorage; works on subsets. */
 export async function probeShareViews(atlas:Explorer){
   const element=<T extends HTMLElement=HTMLElement>(id:string)=>document.getElementById(id) as T;
-  const sleep=(ms:number)=>new Promise<void>(resolve=>setTimeout(resolve,ms));
-  const frame=()=>new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));
   const nodes=atlas['nodes'],cache=atlas['cache'],loader=atlas['loader'],base=atlas['base'];
   const metadata=(node:SpatialNode)=>loader.load(`m:${node.id}`,new URL(node.metadata.url,base).href,node.metadata,'metadata',node.storedCount,true);
   const messages:string[]=[],onMessage=atlas.onMessage;atlas.onMessage=message=>{messages.push(message);onMessage(message)};
@@ -62,6 +62,20 @@ export async function probeShareViews(atlas:Explorer){
     {const result=await apply({node:resident.node,row:99999,targetId:resident.targetId},new THREE.Vector3(...resident.position));
       cases.rowBeyondChunk={...result,passed:result.arrived&&atlas.selected===null&&result.messages.includes(MISMATCH)}}
     cases.sixDigitRow={decoded:decodeView(`#t=1,2,3&c=0,0,5&g=desi:${resident.node}:123456:${resident.targetId}`),passed:decodeView(`#t=1,2,3&c=0,0,5&g=desi:${resident.node}:123456:${resident.targetId}`)===null};
+    // A hidden uncertain-local record (full data only, with the default setting): the link must not select it, mirroring visitCatalog and pick.
+    let hiddenLocalRecord:Record<string,unknown>={available:false,reason:atlas.showUncertainLocal?'Uncertain local positions are shown':'No record within the local guard'};
+    if(!atlas.showUncertainLocal)search:for(const node of leaves.filter(node=>atlas['bounds'].get(node.id)!.distanceToPoint(atlas.milkyWay.center)<=atlas.milkyWay.radius*8)){
+      const buffer=await metadata(node);
+      for(let localRow=0;localRow<node.storedCount;localRow++){
+        const galaxy=decodeGalaxy(buffer,localRow,0);if(!uncertainLocalDistance(galaxy.distance))continue;
+        atlas.clearSelection();const exact=new THREE.Vector3(...galaxy.position);
+        const result=await apply({node:node.id,row:localRow,targetId:galaxy.targetId},exact),cameraOnlyMpc=atlas.controls.target.distanceTo(exact);
+        hiddenLocalRecord={...result,targetId:galaxy.targetId,distanceMpc:galaxy.distance,cameraOnlyMpc,selectionEmpty:atlas.selected===null,
+          passed:result.arrived&&atlas.selected===null&&result.identity==='null'&&result.messages.some(message=>message.startsWith('This uncertain local position is hidden'))&&Math.abs(cameraOnlyMpc-1e-6)<1e-7};
+        break search;
+      }
+    }
+    cases.hiddenLocalRecord=hiddenLocalRecord;
     // Saved views through the real dialog: save the Andromeda view, re-read the list from storage, open it (1.5 s travel), delete it.
     localStorage.removeItem('atlas-saved-views');
     await apply('nearby:m31',atlas.resolvedFor(-1)!.center);const expected=atlas.camera.position.clone(),expectedTarget=atlas.controls.target.clone();
@@ -113,8 +127,8 @@ export async function probeShareViews(atlas:Explorer){
       await hop;
     }finally{atlas['removeModel']=remove}
     const hop={removed,visibleEvictions:removed.filter(item=>item.blend>0).length,peakResident:peak,passed:removed.every(item=>item.blend===0)&&peak<=MODEL_LIMIT};
-    const caseList=Object.values(cases) as {passed:boolean}[];
-    return {roundTrip,cases,savedViews,travel:{cancel,complete,visitCatalog,stop,hop},passed:roundTrip.passed&&caseList.every(item=>item.passed)&&savedViews.passed&&cancel.passed&&complete.passed&&visitCatalog.passed&&stop.passed&&hop.passed};
+    const caseList=Object.values(cases) as {passed?:boolean;available?:boolean}[];
+    return {roundTrip,cases,savedViews,travel:{cancel,complete,visitCatalog,stop,hop},passed:roundTrip.passed&&caseList.every(item=>item.passed??item.available===false)&&savedViews.passed&&cancel.passed&&complete.passed&&visitCatalog.passed&&stop.passed&&hop.passed};
   }finally{
     atlas.onMessage=onMessage;if(dialog.open)dialog.close();
     if(raw===null)localStorage.removeItem('atlas-saved-views');else localStorage.setItem('atlas-saved-views',raw);

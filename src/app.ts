@@ -69,7 +69,7 @@ function readViews():SavedView[]{
 function writeViews(views:SavedView[]){try{localStorage.setItem('atlas-saved-views',JSON.stringify({version:1,views}))}catch{notify('Saved views could not be stored in this browser.')}}
 function renderViews(){
  const views=readViews();element('saved-views-empty').hidden=views.length>0;
- element('saved-views').innerHTML=views.map((view,i)=>`<li><span class="saved-view-name">${escapeHtml(view.name)}</span><span class="saved-view-when">${escapeHtml(new Date(view.savedAt).toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'}))}</span><button class="button" data-open="${i}">Open</button><button class="button quiet icon-button" data-delete="${i}" aria-label="Delete ${escapeHtml(view.name)}">${icons.close}</button></li>`).join('');
+ element('saved-views').innerHTML=views.map((view,i)=>`<li><span class="saved-view-name">${escapeHtml(view.name)}</span><span class="saved-view-when">${escapeHtml(new Date(view.savedAt).toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'}))}</span><button class="button" data-open="${i}" aria-label="Open ${escapeHtml(view.name)}">Open</button><button class="button quiet icon-button" data-delete="${i}" aria-label="Delete ${escapeHtml(view.name)}">${icons.close}</button></li>`).join('');
 }
 function shareHash(){const hash=encodeView(atlas.viewState());if(!hash)notify('This view is beyond the range a link can carry.');return hash}
 function saveView(){
@@ -279,7 +279,7 @@ async function initialize(){
   element('copy-link-button').onclick=()=>{
    const hash=shareHash();if(!hash)return;
    const link=`${location.origin}${location.pathname}${hash}`,fallback=element<HTMLInputElement>('share-link');
-   navigator.clipboard.writeText(link).then(()=>notify('Link copied')).catch(()=>{fallback.hidden=false;fallback.value=link;fallback.select();notify('Copy was unavailable. The link is shown below.')});
+   Promise.resolve().then(()=>navigator.clipboard.writeText(link)).then(()=>notify('Link copied')).catch(()=>{fallback.hidden=false;fallback.value=link;fallback.select();notify('Copy was unavailable. The link is shown below.')});
   };
   element('save-view-button').onclick=saveView;
   element<HTMLInputElement>('view-name').onkeydown=event=>{if(event.key==='Enter'){event.preventDefault();saveView()}};

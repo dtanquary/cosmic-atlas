@@ -40049,5 +40049,474 @@
       "geometryBytes": 4032000,
       "passed": true
     }
+  },
+  {
+    "runId": "share-fixes",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 415.70000000298023,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 1600,
+      "height": 1000
+    },
+    "initial": {
+      "drawn": 516770,
+      "loaded": 624241,
+      "represented": 14140375,
+      "pending": 5,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 30.01110410852014,
+      "p95": 49.94199999999998,
+      "calls": 49,
+      "managedMiB": 63.08520221710205,
+      "blocked": false,
+      "focusDistance": 16099.11216965503,
+      "focusFromObserver": 1164.5694850205355,
+      "budget": 1000000,
+      "models": 0
+    },
+    "share": {
+      "roundTrip": {
+        "hash": "#t=-0.165598269995,-91.0411029378,1161.00541583&c=9536.81208321,-11219.7789214,6507.47177443",
+        "targetError": 2.7719610927455667e-12,
+        "cameraError": 1.5548995380037285e-12,
+        "passed": true
+      },
+      "cases": {
+        "ngc3982": {
+          "hash": "#t=-9.47398874207,0.145953447399,13.5949675084&c=0.02,-0.01,0.015&g=desi:512:20296:39633325333155389",
+          "arrived": true,
+          "targetError": 2.9630819070991576e-16,
+          "cameraError": 2.9629378893927326e-16,
+          "identity": "{\"node\":\"512\",\"row\":20296,\"targetId\":\"39633325333155389\"}",
+          "messages": [],
+          "passed": true,
+          "modelResident": true,
+          "modelCentered": true
+        },
+        "residentRecord": {
+          "hash": "#t=-99.3362895187,-428.793107745,642.334007667&c=0.02,-0.00999999999999,0.015&g=desi:0:0:39633329527457229",
+          "arrived": true,
+          "targetError": 7.300081986856879e-17,
+          "cameraError": 7.299938275912623e-17,
+          "identity": "{\"node\":\"0\",\"row\":0,\"targetId\":\"39633329527457229\"}",
+          "messages": [],
+          "passed": true
+        },
+        "nonResidentLeaf": {
+          "hash": "#t=-3383.70811676,-3313.82184086,-508.048211429&c=0.02,-0.0100000000002,0.015&g=desi:6:0:39627643703793420",
+          "arrived": true,
+          "targetError": 1.1933626165918107e-17,
+          "cameraError": 1.1933648338723728e-17,
+          "identity": "{\"node\":\"6\",\"row\":0,\"targetId\":\"39627643703793420\"}",
+          "messages": [],
+          "passed": true,
+          "loadedIdFromChunk": true,
+          "allLeavesResident": false
+        },
+        "andromeda": {
+          "hash": "#t=0.579792710714,0.109391213942,0.51778386852&c=0.02,-0.01,0.015&g=nearby:m31",
+          "arrived": true,
+          "targetError": 0,
+          "cameraError": 0,
+          "identity": "\"nearby:m31\"",
+          "messages": [],
+          "passed": true
+        },
+        "core": {
+          "hash": "#t=-0.000444686272058,-0.00709405679403,-0.00392970812529&c=0.02,-0.01,0.015&g=core",
+          "arrived": true,
+          "targetError": 6.674477791710812e-18,
+          "cameraError": 7.165315482633028e-16,
+          "identity": "\"core\"",
+          "messages": [],
+          "passed": true,
+          "homeSelected": true,
+          "homeView": "galaxy"
+        },
+        "wrongTargetId": {
+          "hash": "#t=-99.3362895187,-428.793107745,642.334007667&c=0.02,-0.00999999999999,0.015&g=desi:0:0:1",
+          "arrived": true,
+          "targetError": 1.2841845213518678e-09,
+          "cameraError": 1.2841592406261862e-09,
+          "identity": "null",
+          "messages": [
+            "This link points to a galaxy this catalog does not contain."
+          ],
+          "passed": true,
+          "selectionEmpty": true
+        },
+        "rowBeyondChunk": {
+          "hash": "#t=-99.3362895187,-428.793107745,642.334007667&c=0.02,-0.00999999999999,0.015&g=desi:0:99999:39633329527457229",
+          "arrived": true,
+          "targetError": 1.2841845213518678e-09,
+          "cameraError": 1.2841592406261862e-09,
+          "identity": "null",
+          "messages": [
+            "This link points to a galaxy this catalog does not contain."
+          ],
+          "passed": true
+        },
+        "sixDigitRow": {
+          "decoded": null,
+          "passed": true
+        },
+        "hiddenLocalRecord": {
+          "hash": "#t=-0.088607762288,-0.0242409593399,0.0406698664464&c=0.02,-0.01,0.015&g=desi:701:0:39628351635193964",
+          "arrived": true,
+          "targetError": 9.953735155647954e-06,
+          "cameraError": 1.0553397408239e-05,
+          "identity": "null",
+          "messages": [
+            "This uncertain local position is hidden. Show uncertain local positions in Settings to inspect it."
+          ],
+          "passed": true,
+          "targetId": "39628351635193964",
+          "distanceMpc": 0.10046479433456396,
+          "cameraOnlyMpc": 9.999999552728908e-07,
+          "selectionEmpty": true
+        }
+      },
+      "savedViews": {
+        "placeholder": "Andromeda \u00b7 5:03 PM",
+        "stored": {
+          "version": 1,
+          "views": [
+            {
+              "name": "Probe view",
+              "hash": "#t=0.579791710714,0.109391213942,0.51778386852&c=0.02,-0.01,0.015&g=nearby:m31",
+              "savedAt": "2026-09-12T22:03:19.787Z"
+            }
+          ]
+        },
+        "listed": [
+          "Probe view"
+        ],
+        "closedOnOpen": true,
+        "opened": true,
+        "afterDelete": {
+          "rows": 0,
+          "emptyShown": true,
+          "stored": {
+            "version": 1,
+            "views": []
+          }
+        },
+        "passed": true
+      },
+      "travel": {
+        "cancel": {
+          "resolved": false,
+          "midwayCoreMpc": 925.1787915233032,
+          "driftMpc": 0,
+          "passed": true
+        },
+        "complete": {
+          "arrived": true,
+          "cameraError": 3.408501143762953e-16,
+          "targetError": 0,
+          "passed": true
+        },
+        "visitCatalog": {
+          "arrived": true,
+          "targetError": 7.300081986856879e-17,
+          "selected": "39633329527457229",
+          "passed": true
+        },
+        "stop": {
+          "resolved": false,
+          "cameraDriftMpc": 1.2862197421537486e-12,
+          "targetDriftMpc": 0,
+          "travelCleared": true,
+          "passed": true
+        },
+        "hop": {
+          "removed": [
+            {
+              "id": 1782408,
+              "blend": 0
+            },
+            {
+              "id": 2642551,
+              "blend": 0
+            },
+            {
+              "id": 2660310,
+              "blend": 0
+            },
+            {
+              "id": 2662239,
+              "blend": 0
+            },
+            {
+              "id": 13541604,
+              "blend": 0
+            },
+            {
+              "id": 2280987,
+              "blend": 0
+            },
+            {
+              "id": 3603150,
+              "blend": 0
+            },
+            {
+              "id": 13931838,
+              "blend": 0
+            },
+            {
+              "id": 2660100,
+              "blend": 0
+            },
+            {
+              "id": 13936295,
+              "blend": 0
+            },
+            {
+              "id": 6317,
+              "blend": 0
+            },
+            {
+              "id": 13100576,
+              "blend": 0
+            },
+            {
+              "id": 13100043,
+              "blend": 0
+            },
+            {
+              "id": 13880129,
+              "blend": 0
+            },
+            {
+              "id": 2211704,
+              "blend": 0
+            },
+            {
+              "id": 2221874,
+              "blend": 0
+            }
+          ],
+          "visibleEvictions": 0,
+          "peakResident": 7,
+          "passed": true
+        }
+      },
+      "passed": true
+    },
+    "shareContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "shareAfterRecovery": {
+      "roundTrip": {
+        "hash": "#t=-0.165598269995,-91.0411029378,1161.00541583&c=9536.81208321,-11219.7789214,6507.47177443",
+        "targetError": 2.7719610927455667e-12,
+        "cameraError": 1.5548995380037285e-12,
+        "passed": true
+      },
+      "cases": {
+        "ngc3982": {
+          "hash": "#t=-9.47398874207,0.145953447399,13.5949675084&c=0.02,-0.01,0.015&g=desi:512:20296:39633325333155389",
+          "arrived": true,
+          "targetError": 2.9630819070991576e-16,
+          "cameraError": 2.9629378893927326e-16,
+          "identity": "{\"node\":\"512\",\"row\":20296,\"targetId\":\"39633325333155389\"}",
+          "messages": [],
+          "passed": true,
+          "modelResident": true,
+          "modelCentered": true
+        },
+        "residentRecord": {
+          "hash": "#t=-99.3362895187,-428.793107745,642.334007667&c=0.02,-0.00999999999999,0.015&g=desi:0:0:39633329527457229",
+          "arrived": true,
+          "targetError": 7.300081986856879e-17,
+          "cameraError": 7.299938275912623e-17,
+          "identity": "{\"node\":\"0\",\"row\":0,\"targetId\":\"39633329527457229\"}",
+          "messages": [],
+          "passed": true
+        },
+        "nonResidentLeaf": {
+          "hash": "#t=-2529.30424306,-3326.2956254,212.41407975&c=0.02,-0.0100000000002,0.015&g=desi:7:0:39627861111341096",
+          "arrived": true,
+          "targetError": 0,
+          "cameraError": 0,
+          "identity": "{\"node\":\"7\",\"row\":0,\"targetId\":\"39627861111341096\"}",
+          "messages": [],
+          "passed": true,
+          "loadedIdFromChunk": true,
+          "allLeavesResident": false
+        },
+        "andromeda": {
+          "hash": "#t=0.579792710714,0.109391213942,0.51778386852&c=0.02,-0.01,0.015&g=nearby:m31",
+          "arrived": true,
+          "targetError": 0,
+          "cameraError": 0,
+          "identity": "\"nearby:m31\"",
+          "messages": [],
+          "passed": true
+        },
+        "core": {
+          "hash": "#t=-0.000444686272058,-0.00709405679403,-0.00392970812529&c=0.02,-0.01,0.015&g=core",
+          "arrived": true,
+          "targetError": 6.674477791710812e-18,
+          "cameraError": 7.165315482633028e-16,
+          "identity": "\"core\"",
+          "messages": [],
+          "passed": true,
+          "homeSelected": true,
+          "homeView": "galaxy"
+        },
+        "wrongTargetId": {
+          "hash": "#t=-99.3362895187,-428.793107745,642.334007667&c=0.02,-0.00999999999999,0.015&g=desi:0:0:1",
+          "arrived": true,
+          "targetError": 1.2841845213518678e-09,
+          "cameraError": 1.2841592406261862e-09,
+          "identity": "null",
+          "messages": [
+            "This link points to a galaxy this catalog does not contain."
+          ],
+          "passed": true,
+          "selectionEmpty": true
+        },
+        "rowBeyondChunk": {
+          "hash": "#t=-99.3362895187,-428.793107745,642.334007667&c=0.02,-0.00999999999999,0.015&g=desi:0:99999:39633329527457229",
+          "arrived": true,
+          "targetError": 1.2841845213518678e-09,
+          "cameraError": 1.2841592406261862e-09,
+          "identity": "null",
+          "messages": [
+            "This link points to a galaxy this catalog does not contain."
+          ],
+          "passed": true
+        },
+        "sixDigitRow": {
+          "decoded": null,
+          "passed": true
+        },
+        "hiddenLocalRecord": {
+          "hash": "#t=-0.088607762288,-0.0242409593399,0.0406698664464&c=0.02,-0.01,0.015&g=desi:701:0:39628351635193964",
+          "arrived": true,
+          "targetError": 9.953735155647954e-06,
+          "cameraError": 1.0553397408239e-05,
+          "identity": "null",
+          "messages": [
+            "This uncertain local position is hidden. Show uncertain local positions in Settings to inspect it."
+          ],
+          "passed": true,
+          "targetId": "39628351635193964",
+          "distanceMpc": 0.10046479433456396,
+          "cameraOnlyMpc": 9.999999552728908e-07,
+          "selectionEmpty": true
+        }
+      },
+      "savedViews": {
+        "placeholder": "Andromeda \u00b7 5:03 PM",
+        "stored": {
+          "version": 1,
+          "views": [
+            {
+              "name": "Probe view",
+              "hash": "#t=0.579791710714,0.109391213942,0.51778386852&c=0.02,-0.01,0.015&g=nearby:m31",
+              "savedAt": "2026-09-12T22:03:30.356Z"
+            }
+          ]
+        },
+        "listed": [
+          "Probe view"
+        ],
+        "closedOnOpen": true,
+        "opened": true,
+        "afterDelete": {
+          "rows": 0,
+          "emptyShown": true,
+          "stored": {
+            "version": 1,
+            "views": []
+          }
+        },
+        "passed": true
+      },
+      "travel": {
+        "cancel": {
+          "resolved": false,
+          "midwayCoreMpc": 925.1787915233026,
+          "driftMpc": 2.7755575615628914e-17,
+          "passed": true
+        },
+        "complete": {
+          "arrived": true,
+          "cameraError": 3.408501143762953e-16,
+          "targetError": 0,
+          "passed": true
+        },
+        "visitCatalog": {
+          "arrived": true,
+          "targetError": 7.300081986856879e-17,
+          "selected": "39633329527457229",
+          "passed": true
+        },
+        "stop": {
+          "resolved": false,
+          "cameraDriftMpc": 0,
+          "targetDriftMpc": 0,
+          "travelCleared": true,
+          "passed": true
+        },
+        "hop": {
+          "removed": [
+            {
+              "id": 1782408,
+              "blend": 0
+            },
+            {
+              "id": 2671944,
+              "blend": 0
+            },
+            {
+              "id": 2660565,
+              "blend": 0
+            },
+            {
+              "id": 2662069,
+              "blend": 0
+            },
+            {
+              "id": 5939177,
+              "blend": 0
+            },
+            {
+              "id": 3603150,
+              "blend": 0
+            },
+            {
+              "id": 13541604,
+              "blend": 0
+            },
+            {
+              "id": 2280987,
+              "blend": 0
+            },
+            {
+              "id": 8314668,
+              "blend": 0
+            },
+            {
+              "id": 1005263,
+              "blend": 0
+            }
+          ],
+          "visibleEvictions": 0,
+          "peakResident": 6,
+          "passed": true
+        }
+      },
+      "passed": true
+    }
   }
 ]
