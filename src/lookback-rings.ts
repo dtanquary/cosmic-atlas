@@ -1,10 +1,7 @@
 import * as THREE from 'three';
 import type {LookbackRing} from './lookback';
+import {screenOverlay} from './screen-overlay';
 
-const vertex=`precision highp float;
-in vec3 position;
-out vec2 vNdc;
-void main(){vNdc=position.xy;gl_Position=vec4(position,1.);}`;
 // Each ring is the silhouette of an observer-centered sphere: a cone of half-angle
 // asin(r/d) around the direction to the origin. Comparing angles avoids the float32
 // cancellation of a world-space sphere test near the Sun.
@@ -28,29 +25,17 @@ void main(){
 
 /** Observer-centered lookback rings: one transparent triangle, zero draws when off or when no ring is visible. */
 export class LookbackRings {
-  readonly scene=new THREE.Scene();
-  private geometry=new THREE.BufferGeometry();
-  private material=new THREE.RawShaderMaterial({glslVersion:THREE.GLSL3,vertexShader:vertex,fragmentShader:fragment,
-    uniforms:{uToOrigin:{value:new THREE.Vector3()},uRingAngle:{value:new Float32Array(8)},uCount:{value:0},uRotation:{value:new THREE.Matrix3()},uLens:{value:new THREE.Vector2()}},
-    transparent:true,depthTest:false,depthWrite:false,toneMapped:false});
-  private mesh:THREE.Mesh;
+  private overlay=screenOverlay(fragment,{uToOrigin:{value:new THREE.Vector3()},uRingAngle:{value:new Float32Array(8)},uCount:{value:0}});
   enabled=false;
-  readonly memoryBytes=9*Float32Array.BYTES_PER_ELEMENT;
-  constructor(){
-    this.geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array([-1,-1,0,3,-1,0,-1,3,0]),3));
-    this.mesh=new THREE.Mesh(this.geometry,this.material);this.mesh.frustumCulled=false;this.scene.add(this.mesh);
-  }
+  readonly memoryBytes=this.overlay.geometryBytes;
   render(renderer:THREE.WebGLRenderer,camera:THREE.PerspectiveCamera,rings:LookbackRing[]){
     if(!this.enabled||rings.length===0)return;
-    camera.updateMatrixWorld();
-    const lens=Math.tan(THREE.MathUtils.degToRad(camera.fov/2))/camera.zoom,uniforms=this.material.uniforms;
-    uniforms.uToOrigin.value.copy(camera.position).negate().normalize();
-    const angles=uniforms.uRingAngle.value as Float32Array;
-    rings.forEach((ring,i)=>{if(i<8)angles[i]=ring.angle});
-    uniforms.uCount.value=Math.min(rings.length,8);
-    uniforms.uRotation.value.setFromMatrix4(camera.matrixWorld);
-    uniforms.uLens.value.set(lens*camera.aspect,lens);
-    renderer.render(this.scene,camera);
+    const {uToOrigin,uRingAngle,uCount}=this.overlay.uniforms;
+    uToOrigin.value.copy(camera.position).negate().normalize();
+    rings.forEach((ring,i)=>{if(i<8)uRingAngle.value[i]=ring.angle});
+    uCount.value=Math.min(rings.length,8);
+    this.overlay.setCamera(camera);
+    renderer.render(this.overlay.scene,camera);
   }
-  dispose(){this.geometry.dispose();this.material.dispose()}
+  dispose(){this.overlay.dispose()}
 }

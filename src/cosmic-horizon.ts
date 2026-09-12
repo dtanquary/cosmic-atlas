@@ -1,10 +1,7 @@
 import * as THREE from 'three';
 import {CMB_RADIUS_MPC} from './cosmic-scale';
+import {screenOverlay} from './screen-overlay';
 
-const vertex=`precision highp float;
-in vec3 position;
-out vec2 vNdc;
-void main(){vNdc=position.xy;gl_Position=vec4(position,1.);}`;
 const fragment=`precision highp float;
 in vec2 vNdc;
 uniform vec3 uObserver;
@@ -48,26 +45,14 @@ void main(){
  * have no large-coordinate mesh subtraction or clipped shell geometry.
  */
 export class CosmicHorizon {
-  readonly scene=new THREE.Scene();
-  private geometry=new THREE.BufferGeometry();
-  private material=new THREE.RawShaderMaterial({glslVersion:THREE.GLSL3,vertexShader:vertex,fragmentShader:fragment,
-    uniforms:{uObserver:{value:new THREE.Vector3()},uRotation:{value:new THREE.Matrix3()},uLens:{value:new THREE.Vector2()}},
-    transparent:true,depthTest:false,depthWrite:false,toneMapped:false});
-  private mesh:THREE.Mesh;
+  private overlay=screenOverlay(fragment,{uObserver:{value:new THREE.Vector3()}});
   enabled=false;
-  readonly memoryBytes=9*Float32Array.BYTES_PER_ELEMENT;
-  constructor(){
-    this.geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array([-1,-1,0,3,-1,0,-1,3,0]),3));
-    this.mesh=new THREE.Mesh(this.geometry,this.material);this.mesh.frustumCulled=false;this.scene.add(this.mesh);
-  }
+  readonly memoryBytes=this.overlay.geometryBytes;
   render(renderer:THREE.WebGLRenderer,camera:THREE.PerspectiveCamera){
     if(!this.enabled)return;
-    camera.updateMatrixWorld();
-    const lens=Math.tan(THREE.MathUtils.degToRad(camera.fov/2))/camera.zoom;
-    this.material.uniforms.uObserver.value.copy(camera.position).divideScalar(CMB_RADIUS_MPC);
-    this.material.uniforms.uRotation.value.setFromMatrix4(camera.matrixWorld);
-    this.material.uniforms.uLens.value.set(lens*camera.aspect,lens);
-    renderer.render(this.scene,camera);
+    this.overlay.uniforms.uObserver.value.copy(camera.position).divideScalar(CMB_RADIUS_MPC);
+    this.overlay.setCamera(camera);
+    renderer.render(this.overlay.scene,camera);
   }
-  dispose(){this.geometry.dispose();this.material.dispose()}
+  dispose(){this.overlay.dispose()}
 }

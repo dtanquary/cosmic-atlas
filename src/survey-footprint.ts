@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {screenOverlay} from './screen-overlay';
 
 export const FOOTPRINT_WIDTH=720,FOOTPRINT_HEIGHT=360;
 export interface SurveyFootprintData{version:number;catalogId:string;catalogSourceSha256:string;count:number;width:number;height:number;degreesPerCell:number;maxCellCount:number;occupiedCells:number;cells:string;sources:string[];disclosure:string}
@@ -20,10 +21,6 @@ export function footprintUv(n:{x:number;y:number;z:number}):[number,number]{
   return [(ra<0?ra+2*Math.PI:ra)/(2*Math.PI),(Math.asin(Math.max(-1,Math.min(1,n.z)))+Math.PI/2)/Math.PI];
 }
 
-const vertex=`precision highp float;
-in vec3 position;
-out vec2 vNdc;
-void main(){vNdc=position.xy;gl_Position=vec4(position,1.);}`;
 // The occupancy grid is painted on an observer-centered shell at the catalog's maximum
 // distance, drawing both intersections like the CMB shell. Negative u from atan wraps
 // through RepeatWrapping to RA 180°–360°; Dec clamps at the poles.
@@ -52,23 +49,14 @@ void main(){
 
 /** Sky occupancy of the accepted catalog rows on an observer-centered shell: one triangle, one draw when enabled and loaded. */
 export class SurveyFootprint {
-  readonly scene=new THREE.Scene();
-  private geometry=new THREE.BufferGeometry();
-  private material=new THREE.RawShaderMaterial({glslVersion:THREE.GLSL3,vertexShader:vertex,fragmentShader:fragment,
-    uniforms:{uObserver:{value:new THREE.Vector3()},uRotation:{value:new THREE.Matrix3()},uLens:{value:new THREE.Vector2()},uMask:{value:null as THREE.DataTexture|null}},
-    transparent:true,depthTest:false,depthWrite:false,toneMapped:false});
-  private mesh:THREE.Mesh;
+  private overlay=screenOverlay(fragment,{uObserver:{value:new THREE.Vector3()},uMask:{value:null as THREE.DataTexture|null}});
   private texture:THREE.DataTexture|null=null;
   enabled=false;
   /** Shell radius; the caller sets it from `manifest.maxDistanceMpc`. */
   radiusMpc=1;
   state:'idle'|'loading'|'ready'|'failed'='idle';
   disclosure='';
-  get memoryBytes(){return 9*Float32Array.BYTES_PER_ELEMENT+(this.texture?FOOTPRINT_WIDTH*FOOTPRINT_HEIGHT:0)}
-  constructor(){
-    this.geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array([-1,-1,0,3,-1,0,-1,3,0]),3));
-    this.mesh=new THREE.Mesh(this.geometry,this.material);this.mesh.frustumCulled=false;this.scene.add(this.mesh);
-  }
+  get memoryBytes(){return this.overlay.geometryBytes+(this.texture?FOOTPRINT_WIDTH*FOOTPRINT_HEIGHT:0)}
   /** Fetches and validates the sidecar; a failure leaves the overlay drawing nothing. */
   async load(url:string,manifest:FootprintManifest,signal?:AbortSignal){
     this.state='loading';
@@ -79,17 +67,14 @@ export class SurveyFootprint {
       this.texture=new THREE.DataTexture(cells,data.width,data.height,THREE.RedFormat,THREE.UnsignedByteType);
       this.texture.wrapS=THREE.RepeatWrapping;this.texture.wrapT=THREE.ClampToEdgeWrapping;
       this.texture.minFilter=this.texture.magFilter=THREE.LinearFilter;this.texture.needsUpdate=true;
-      this.material.uniforms.uMask.value=this.texture;this.disclosure=data.disclosure;this.state='ready';
+      this.overlay.uniforms.uMask.value=this.texture;this.disclosure=data.disclosure;this.state='ready';
     }catch{this.state='failed'}
   }
   render(renderer:THREE.WebGLRenderer,camera:THREE.PerspectiveCamera){
     if(!this.enabled||this.state!=='ready')return;
-    camera.updateMatrixWorld();
-    const lens=Math.tan(THREE.MathUtils.degToRad(camera.fov/2))/camera.zoom;
-    this.material.uniforms.uObserver.value.copy(camera.position).divideScalar(this.radiusMpc);
-    this.material.uniforms.uRotation.value.setFromMatrix4(camera.matrixWorld);
-    this.material.uniforms.uLens.value.set(lens*camera.aspect,lens);
-    renderer.render(this.scene,camera);
+    this.overlay.uniforms.uObserver.value.copy(camera.position).divideScalar(this.radiusMpc);
+    this.overlay.setCamera(camera);
+    renderer.render(this.overlay.scene,camera);
   }
-  dispose(){this.geometry.dispose();this.material.dispose();this.texture?.dispose()}
+  dispose(){this.overlay.dispose();this.texture?.dispose()}
 }
