@@ -1,6 +1,6 @@
 import {describe,it,expect} from 'vitest';
 import * as THREE from 'three';
-import {interpolatePose,cameraFromPose,type Pose} from '../src/travel';
+import {interpolatePose,type Pose} from '../src/travel';
 
 const pose=(target:[number,number,number],distance:number,direction:[number,number,number]):Pose=>({target:new THREE.Vector3(...target),distance,direction:new THREE.Vector3(...direction).normalize()});
 const samples=Array.from({length:11},(_,i)=>i/10);
@@ -59,11 +59,9 @@ describe('interpolatePose',()=>{
       expect(interpolatePose(a,b,.5).direction.dot(a.direction)).toBeLessThan(1e-12);
     }
   });
-  it('writes into a provided pose and derives the camera position',()=>{
-    const out=pose([0,0,0],0,[0,0,1]);
+  it('writes into a provided pose',()=>{
+    const out=pose([0,0,0],0,[0,0,1]),fresh=interpolatePose(from,to,.3);
     expect(interpolatePose(from,to,.3,out)).toBe(out);
-    const camera=cameraFromPose(out);
-    expect(camera.distanceTo(out.target.clone().addScaledVector(out.direction,out.distance))).toBeLessThan(1e-12);
-    expect(cameraFromPose(pose([1,2,3],4,[0,0,1])).toArray()).toEqual([1,2,7]);
+    expect(out.target.distanceTo(fresh.target)).toBe(0);expect(out.distance).toBe(fresh.distance);expect(out.direction.distanceTo(fresh.direction)).toBe(0);
   });
 });

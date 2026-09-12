@@ -22,7 +22,3 @@ export function interpolatePose(from:Pose,to:Pose,s:number,out:Pose={target:new 
   out.target.lerpVectors(from.target,to.target,e);
   return out;
 }
-
-export function cameraFromPose(pose:Pose,out=new THREE.Vector3()){
-  return out.copy(pose.target).addScaledVector(pose.direction,pose.distance);
-}

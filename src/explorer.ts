@@ -14,7 +14,10 @@ import {LookbackRings} from './lookback-rings';
 import {SurveyFootprint} from './survey-footprint';
 import {chooseRings,type LookbackRing} from './lookback';
 import {LOCAL_REDSHIFT_GUARD_MPC,uncertainLocalDistance,uncertainLocalPosition} from './local-distances';
+import {interpolatePose,type Pose} from './travel';
 import type { Galaxy, Manifest, SpatialNode } from './types';
+
+const OVERVIEW_DIRECTION=new THREE.Vector3(.85,-1,.58).normalize();
 
 const vertex=`precision highp float;
 precision highp int;
@@ -173,7 +176,6 @@ export class Explorer {
   private timings:number[]=[];
   private adaptationFrames=0;
   private wasContinuous=false;
-  private overviewPosition=new THREE.Vector3();
   private overviewTarget=new THREE.Vector3();
   private overviewRadius=1;
   private keys=new Set<string>();
@@ -209,6 +211,9 @@ export class Explorer {
   private clipMatrix=new THREE.Matrix4();
   private scratch=new THREE.Vector3();
   private lifecycle=new AbortController();
+  /** Frame-loop camera travel; the object itself is the cancel token, independent of selectionSerial. */
+  private travel:{from:Pose;to:Pose;seconds:number;start:number|null;resolve:(arrived:boolean)=>void}|null=null;
+  private travelScratch:Pose={target:new THREE.Vector3(),distance:1,direction:new THREE.Vector3()};
 
   constructor(viewport:HTMLElement){
     this.renderer=new THREE.WebGLRenderer({antialias:false,powerPreference:'high-performance',alpha:false,reversedDepthBuffer:true});
@@ -217,6 +222,8 @@ export class Explorer {
     viewport.append(this.canvas);this.camera.up.set(0,0,1);
     this.controls=new OrbitControls(this.camera,this.canvas);this.controls.enableDamping=true;this.controls.dampingFactor=.09;this.controls.minDistance=.00001;this.controls.zoomSpeed=.9;
     this.controls.addEventListener('change',()=>{this.dirty=true;this.invalidate()});
+    // Any orbit input (pointer down or wheel) takes over from an in-progress travel the same frame.
+    this.controls.addEventListener('start',()=>this.cancelTravel());
     this.loader.onChange=()=>{this.dirty=true;this.invalidate()};
     this.pickMaterial.blending=THREE.NoBlending;this.pickMaterial.depthWrite=true;
     this.nearbyPicker.blending=THREE.NoBlending;this.nearbyPicker.depthWrite=true;this.nearbyScene.add(this.nearbyPoints);
@@ -298,7 +305,6 @@ export class Explorer {
     const root=this.nodes.get(this.root);if(!root)throw new Error('Catalog root is missing');
     const box=this.bounds.get(this.root)!;
     box.getCenter(this.overviewTarget);this.overviewRadius=box.getSize(new THREE.Vector3()).length()/2;
-    this.overviewPosition.copy(this.overviewTarget).add(new THREE.Vector3(.85,-1,.58).normalize().multiplyScalar(this.overviewRadius*2.1));
     this.controls.maxDistance=Math.max(this.overviewRadius*10,CMB_RADIUS_MPC*6);this.camera.far=Math.max(this.overviewRadius*30,CMB_RADIUS_MPC*12);
     this.camera.updateProjectionMatrix();this.reset();this.invalidate();
     if(manifest.id==='dr1'&&!manifest.subset){
@@ -340,13 +346,9 @@ export class Explorer {
     this.renderer.setPixelRatio(1);this.renderer.setSize(width,height,false);this.camera.aspect=width/height;this.camera.updateProjectionMatrix();this.pickTarget.setSize(width,height);this.dirty=true;this.invalidate();
     for(const item of this.cache.values())item.points.material.uniforms.uSize.value=1.6*this.pixelRatio;
   }
-  reset(){
-    this.selectionSerial++;this.focusedGalaxyId=null;this.homeFocused=false;
-    this.exitFlight();this.controls.enabled=true;
-    const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();
-    this.camera.position.copy(this.overviewPosition);this.controls.target.copy(this.overviewTarget);
-    this.camera.up.set(0,0,1);this.controls.update();this.controls.enableDamping=damping;this.focusDistance=this.camera.position.distanceTo(this.controls.target);
-    this.dirty=true;this.invalidate();
+  reset(seconds=0){
+    this.camera.up.set(0,0,1);
+    return this.focusAt(this.overviewTarget,this.overviewRadius*2.1,OVERVIEW_DIRECTION,null,false,seconds);
   }
   setMode(mode:'adaptive'|'full'){this.mode=mode;this.blocked=false;this.dirty=true;this.invalidate()}
   setCosmicHorizon(enabled:boolean){this.cosmicHorizon.enabled=enabled;this.invalidate()}
@@ -354,15 +356,14 @@ export class Explorer {
   setSurveyFootprint(enabled:boolean){this.surveyFootprint.enabled=enabled;if(enabled&&this.manifest)this.loadSurveyFootprint();this.invalidate()}
   /** Lazy sidecar fetch on the first enable (or after a failure); the frame redraws once it settles either way. */
   private loadSurveyFootprint(){if(this.surveyFootprint.state==='loading'||this.surveyFootprint.state==='ready')return;void this.surveyFootprint.load(this.catalogAsset('survey-footprint.json'),this.manifest,this.lifecycle.signal).then(()=>this.invalidate())}
-  viewCosmicHorizon(){
+  viewCosmicHorizon(seconds=0){
     if(!this.manifest)return;
-    this.reset();this.clearSelection();this.clearHomeSelection();
+    this.clearSelection();this.clearHomeSelection();
     const halfFov=Math.atan(Math.tan(THREE.MathUtils.degToRad(this.camera.fov/2))*Math.min(1,this.camera.aspect));
     const distance=CMB_RADIUS_MPC/Math.sin(halfFov)*1.14;
     this.controls.maxDistance=Math.max(this.controls.maxDistance,distance*2);
-    this.controls.target.set(0,0,0);
-    this.camera.position.set(.85,-1,.58).normalize().multiplyScalar(distance);
-    this.controls.update();this.dirty=true;this.invalidate();
+    this.camera.up.set(0,0,1);
+    return this.focusAt(new THREE.Vector3(0,0,0),distance,OVERVIEW_DIRECTION,null,false,seconds);
   }
   setDepthCues(enabled:boolean){this.depthCueUniform.value=enabled;this.dirty=true;this.invalidate()}
   setEnlargePoints(enabled:boolean){this.enlargePointsUniform.value=enabled;this.invalidate()}
@@ -400,12 +401,12 @@ export class Explorer {
     for(const model of [...this.allModels,this.milkyWay]){const localHorizon=Math.max(1,this.camera.position.distanceTo(model.center)*30);far=Math.min(far,THREE.MathUtils.lerp(far,localHorizon,model.blend.value))}
     this.fadeRangeUniform.value.set(far*.08,far);
   }
-  enterFlight(){if(!this.ready)return;this.setAutoFly(false);this.focusDistance=this.camera.position.distanceTo(this.controls.target);void this.canvas.requestPointerLock()?.catch(()=>this.onMessage('Click Start flying again to enter flight.'))}
+  enterFlight(){if(!this.ready)return;this.cancelTravel();this.setAutoFly(false);this.focusDistance=this.camera.position.distanceTo(this.controls.target);void this.canvas.requestPointerLock()?.catch(()=>this.onMessage('Click Start flying again to enter flight.'))}
   exitFlight(){this.setAutoFly(false);if(document.pointerLockElement===this.canvas)document.exitPointerLock()}
   setAutoFly(enabled:boolean){
     if(enabled&&!this.ready||this.autoFly===enabled)return;
     if(enabled){
-      this.exitFlight();
+      this.cancelTravel();this.exitFlight();
       // Finish any residual pan/zoom damping before starting a straight pass.
       const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();this.controls.enableDamping=damping;
     }
@@ -421,7 +422,18 @@ export class Explorer {
     if(Math.abs(this.camera.getWorldDirection(this.scratch).z)>.995)this.camera.quaternion.copy(previous);
     this.dirty=true;this.invalidate();
   }
-  private move(dt:number){
+  private move(dt:number,time:number){
+    const travel=this.travel;
+    if(travel){
+      travel.start??=time;
+      const s=(time-travel.start)/1000/travel.seconds;
+      if(s>=1){this.travel=null;this.place(travel.to.target,travel.to.distance,travel.to.direction);travel.resolve(true)}
+      else{
+        const pose=interpolatePose(travel.from,travel.to,s,this.travelScratch);
+        this.controls.target.copy(pose.target);this.camera.position.copy(pose.target).addScaledVector(pose.direction,pose.distance);this.focusDistance=pose.distance;
+      }
+      this.dirty=true;return true;
+    }
     if(this.autoFly){
       const forward=this.camera.getWorldDirection(this.scratch),distance=this.speed*dt;
       // Translate both camera and orbit target so stopping preserves the view.
@@ -547,24 +559,25 @@ export class Explorer {
       void pending.catch(error=>{if(error.name!=='AbortError')this.onMessage('A close-up model could not load; its catalog point is still available.')}).finally(()=>{if(this.modelRequests.get(id)===pending)this.modelRequests.delete(id);this.invalidate()});
     }
   }
-  focusSelected(){
-    if(this.homeSelected){this.visitMilkyWay();return}
+  focusSelected(seconds=0){
+    if(this.homeSelected)return this.visitMilkyWay(seconds);
     if(!this.selected)return;
     if(!this.catalogPositionVisible(this.selected)){this.onMessage('This uncertain local position is hidden. Show uncertain local positions in Settings to inspect it.');return}
-    this.focusAt(new THREE.Vector3().fromArray(this.selected.position),this.resolvedFor(this.selected.id)?this.resolvedFor(this.selected.id)!.radius*12:25,undefined,this.selected.id);
+    return this.focusAt(new THREE.Vector3().fromArray(this.selected.position),this.resolvedFor(this.selected.id)?this.resolvedFor(this.selected.id)!.radius*12:25,undefined,this.selected.id,false,seconds);
   }
-  visitGalaxy(id=this.resolved?.data.galaxy.id){
+  visitGalaxy(id=this.resolved?.data.galaxy.id,seconds=0){
     const model=id===undefined?null:this.resolvedFor(id);
     if(!this.ready||!model)return;
     this.selectionSerial++;this.selectGalaxy(model.data.galaxy);
-    this.focusAt(model.center,model.radius*12,model.frame.radial.clone().negate(),id);
+    const arrival=this.focusAt(model.center,model.radius*12,model.frame.radial.clone().negate(),id,false,seconds);
     this.onMessage(`${model.data.name} · observer-facing view. Drag to explore its inferred 3D shape.`);
+    return arrival;
   }
-  visitNearby(id:number){
+  visitNearby(id:number,seconds=0){
     if(!this.nearbyGalaxies.some(model=>model.data.galaxy.id===id))throw new Error('Unknown nearby galaxy');
-    this.visitGalaxy(id);
+    return this.visitGalaxy(id,seconds);
   }
-  async visitCatalog(entry:{id:number;node:string;row:number;targetId:string},canNavigate:()=>boolean=()=>true){
+  async visitCatalog(entry:{id:number;node:string;row:number;targetId:string},canNavigate:()=>boolean=()=>true,seconds=0){
     if(!canNavigate())return;
     const node=this.nodes.get(entry.node),serial=++this.selectionSerial;
     if(!node||!Number.isInteger(entry.row)||entry.row<0||entry.row>=node.storedCount)throw new Error('This named observation is unavailable.');
@@ -575,31 +588,45 @@ export class Explorer {
     if(!this.catalogPositionVisible(galaxy))throw new Error('This name has an uncertain local position. Enable Show uncertain local positions in Settings to inspect the record.');
     if(this.modelCatalog&&!uncertainLocalPosition(galaxy))try{await this.ensureModel(galaxy,node,entry.row,true)}catch{if(canNavigate()&&serial===this.selectionSerial)this.onMessage('The shape could not load; showing the catalog position. Retry missing detail to try again.')}
     if(!canNavigate()||serial!==this.selectionSerial)return;
-    if(this.resolvedFor(galaxy.id)){this.visitGalaxy(galaxy.id);return}
-    this.selectGalaxy(galaxy);this.focusSelected();
+    if(this.resolvedFor(galaxy.id)){void this.visitGalaxy(galaxy.id,seconds);return}
+    this.selectGalaxy(galaxy);void this.focusSelected(seconds);
   }
-  focusObserver(){
+  focusObserver(seconds=0){
     if(!this.ready)return;
-    this.focusAt(new THREE.Vector3(0,0,0),.06,this.milkyWay.approachDirection,null,true);
+    const arrival=this.focusAt(new THREE.Vector3(0,0,0),.06,this.milkyWay.approachDirection,null,true,seconds);
     this.inspectHome();this.onMessage('Sun / Observer · zoom and orbit around our position in the disk.');
+    return arrival;
   }
-  visitMilkyWay(){
+  visitMilkyWay(seconds=0){
     if(!this.ready)return;
-    this.focusAt(this.milkyWay.center,.06,this.milkyWay.approachDirection,null,true);this.inspectHome();
+    const arrival=this.focusAt(this.milkyWay.center,.06,this.milkyWay.approachDirection,null,true,seconds);this.inspectHome();
     this.onMessage(this.modelDisplay==='points'?'Milky Way · points-only display is on. Enable models in Settings to see its shape.':'Milky Way · zoom and orbit around the Galactic core.');
+    return arrival;
   }
   private inspectHome(){this.selectionSerial++;this.homeSelected=true;this.onHomeSelection(true);this.invalidate()}
   clearHomeSelection(){this.homeSelected=false;this.onHomeSelection(false)}
-  private focusAt(target:THREE.Vector3,distance=25,direction=this.camera.getWorldDirection(new THREE.Vector3()).negate(),galaxyId:number|null=null,home=false){
+  /** Instant when seconds is 0. Otherwise a frame-loop travel that resolves true on arrival, or false when superseded, taken over by orbit input, flight, auto fly or disposal. */
+  private focusAt(target:THREE.Vector3,distance=25,direction=this.camera.getWorldDirection(new THREE.Vector3()).negate(),galaxyId:number|null=null,home=false,seconds=0):Promise<boolean>{
+    this.cancelTravel();
     this.selectionSerial++;this.focusedGalaxyId=galaxyId;this.homeFocused=home;
     if(galaxyId!==null&&this.modelPresence.has(galaxyId))this.modelPresence.set(galaxyId,{value:1,target:1});
     this.exitFlight();this.controls.enabled=true;
     // Consume any remaining orbit/pan damping before setting the exact focus.
     const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();
-    this.controls.target.copy(target);this.camera.position.copy(target).addScaledVector(direction,distance);
-    this.controls.update();this.controls.enableDamping=damping;this.focusDistance=distance;
+    if(seconds>0&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+      const offset=this.camera.position.clone().sub(this.controls.target),unit=direction.clone().normalize();
+      const from:Pose={target:this.controls.target.clone(),distance:Math.max(this.controls.minDistance,offset.length()),direction:offset.lengthSq()?offset.normalize():unit.clone()};
+      const to:Pose={target:target.clone(),distance:THREE.MathUtils.clamp(distance,this.controls.minDistance,this.controls.maxDistance),direction:unit};
+      this.controls.enableDamping=damping;this.invalidate();
+      return new Promise(resolve=>{this.travel={from,to,seconds,start:null,resolve}});
+    }
+    this.place(target,distance,direction);
+    this.controls.enableDamping=damping;
     this.dirty=true;this.invalidate();
+    return Promise.resolve(true);
   }
+  private place(target:THREE.Vector3,distance:number,direction:THREE.Vector3){this.controls.target.copy(target);this.camera.position.copy(target).addScaledVector(direction,distance);this.controls.update();this.focusDistance=distance}
+  private cancelTravel(){const travel=this.travel;if(!travel)return;this.travel=null;travel.resolve(false)}
   private get memoryBytes(){
     let bytes=this.references.byteLength+this.pickTarget.width*this.pickTarget.height*8+this.milkyWay.memoryBytes+this.cosmicHorizon.memoryBytes+this.lookbackRings.memoryBytes+this.surveyFootprint.memoryBytes+this.allModels.reduce((sum,model)=>sum+model.memoryBytes,0)+(this.modelCatalog?.memoryBytes??0);
     for(const item of this.cache.values())bytes+=item.bytes;
@@ -771,7 +798,7 @@ export class Explorer {
   private tick(time:number){
     this.frame=0;if(this.contextLost)return;
     const elapsed=this.lastTime?time-this.lastTime:16.67;this.lastTime=time;
-    const moved=this.move(Math.min(elapsed/1000,.05));
+    const moved=this.move(Math.min(elapsed/1000,.05),time);
     const orbitMoved=!this.flight&&!this.autoFly&&this.controls.update();
     const automaticOrbit=!this.flight&&!this.autoFly&&this.controls.autoRotate;
     const near=Math.min(.0001,Math.max(1e-8,this.camera.position.distanceTo(this.controls.target)*.01));
@@ -1199,5 +1226,5 @@ export class Explorer {
     finally{loader.dispose()}
   }
   get renderingInfo(){const gl=this.renderer.getContext(),debug=gl.getExtension('WEBGL_debug_renderer_info');return {renderer:debug?gl.getParameter(debug.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER),version:gl.getParameter(gl.VERSION),width:this.canvas.width,height:this.canvas.height}}
-  dispose(){this.disposed=true;this.lifecycle.abort();cancelAnimationFrame(this.frame);this.exitFlight();this.loader.dispose();this.modelCatalog?.dispose();this.controls.dispose();this.cosmicHorizon.dispose();this.lookbackRings.dispose();this.surveyFootprint.dispose();this.milkyWay.dispose();this.allModels.forEach(model=>model.dispose());this.nearbyPoints.geometry.dispose();this.nearbyPoints.material.dispose();this.nearbyPicker.dispose();for(const item of this.cache.values()){item.points.geometry.dispose();item.points.material.dispose()}this.pickTarget.dispose();this.pickMaterial.dispose();this.renderer.dispose();this.canvas.remove()}
+  dispose(){this.disposed=true;this.cancelTravel();this.lifecycle.abort();cancelAnimationFrame(this.frame);this.exitFlight();this.loader.dispose();this.modelCatalog?.dispose();this.controls.dispose();this.cosmicHorizon.dispose();this.lookbackRings.dispose();this.surveyFootprint.dispose();this.milkyWay.dispose();this.allModels.forEach(model=>model.dispose());this.nearbyPoints.geometry.dispose();this.nearbyPoints.material.dispose();this.nearbyPicker.dispose();for(const item of this.cache.values()){item.points.geometry.dispose();item.points.material.dispose()}this.pickTarget.dispose();this.pickMaterial.dispose();this.renderer.dispose();this.canvas.remove()}
 }
