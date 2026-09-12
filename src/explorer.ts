@@ -226,7 +226,7 @@ export class Explorer {
     this.controls=new OrbitControls(this.camera,this.canvas);this.controls.enableDamping=true;this.controls.dampingFactor=.09;this.controls.minDistance=.00001;this.controls.zoomSpeed=.9;
     this.controls.addEventListener('change',()=>{this.dirty=true;this.invalidate()});
     // Any orbit input (pointer down or wheel) takes over from an in-progress travel the same frame.
-    this.controls.addEventListener('start',()=>this.cancelTravel());
+    this.controls.addEventListener('start',()=>this.stopTravel());
     this.loader.onChange=()=>{this.dirty=true;this.invalidate()};
     this.pickMaterial.blending=THREE.NoBlending;this.pickMaterial.depthWrite=true;
     this.nearbyPicker.blending=THREE.NoBlending;this.nearbyPicker.depthWrite=true;this.nearbyScene.add(this.nearbyPoints);
@@ -404,12 +404,12 @@ export class Explorer {
     for(const model of [...this.allModels,this.milkyWay]){const localHorizon=Math.max(1,this.camera.position.distanceTo(model.center)*30);far=Math.min(far,THREE.MathUtils.lerp(far,localHorizon,model.blend.value))}
     this.fadeRangeUniform.value.set(far*.08,far);
   }
-  enterFlight(){if(!this.ready)return;this.cancelTravel();this.setAutoFly(false);this.focusDistance=this.camera.position.distanceTo(this.controls.target);void this.canvas.requestPointerLock()?.catch(()=>this.onMessage('Click Start flying again to enter flight.'))}
+  enterFlight(){if(!this.ready)return;this.stopTravel();this.setAutoFly(false);this.focusDistance=this.camera.position.distanceTo(this.controls.target);void this.canvas.requestPointerLock()?.catch(()=>this.onMessage('Click Start flying again to enter flight.'))}
   exitFlight(){this.setAutoFly(false);if(document.pointerLockElement===this.canvas)document.exitPointerLock()}
   setAutoFly(enabled:boolean){
     if(enabled&&!this.ready||this.autoFly===enabled)return;
     if(enabled){
-      this.cancelTravel();this.exitFlight();
+      this.stopTravel();this.exitFlight();
       // Finish any residual pan/zoom damping before starting a straight pass.
       const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();this.controls.enableDamping=damping;
     }
@@ -580,7 +580,8 @@ export class Explorer {
     if(!this.nearbyGalaxies.some(model=>model.data.galaxy.id===id))throw new Error('Unknown nearby galaxy');
     return this.visitGalaxy(id,seconds);
   }
-  async visitCatalog(entry:{id:number;node:string;row:number;targetId:string},canNavigate:()=>boolean=()=>true,seconds=0){
+  /** Resolves true on arrival, false when the travel is cancelled, undefined when it bails before navigating. */
+  async visitCatalog(entry:{id:number;node:string;row:number;targetId:string},canNavigate:()=>boolean=()=>true,seconds=0):Promise<boolean|undefined>{
     if(!canNavigate())return;
     const node=this.nodes.get(entry.node),serial=++this.selectionSerial;
     if(!node||!Number.isInteger(entry.row)||entry.row<0||entry.row>=node.storedCount)throw new Error('This named observation is unavailable.');
@@ -591,8 +592,8 @@ export class Explorer {
     if(!this.catalogPositionVisible(galaxy))throw new Error('This name has an uncertain local position. Enable Show uncertain local positions in Settings to inspect the record.');
     if(this.modelCatalog&&!uncertainLocalPosition(galaxy))try{await this.ensureModel(galaxy,node,entry.row,true)}catch{if(canNavigate()&&serial===this.selectionSerial)this.onMessage('The shape could not load; showing the catalog position. Retry missing detail to try again.')}
     if(!canNavigate()||serial!==this.selectionSerial)return;
-    if(this.resolvedFor(galaxy.id)){void this.visitGalaxy(galaxy.id,seconds);this.selectedAddress={node:node.id,row:entry.row};return}
-    this.selectGalaxy(galaxy,{node:node.id,row:entry.row});void this.focusSelected(seconds);
+    if(this.resolvedFor(galaxy.id)){const arrival=this.visitGalaxy(galaxy.id,seconds);this.selectedAddress={node:node.id,row:entry.row};return arrival}
+    this.selectGalaxy(galaxy,{node:node.id,row:entry.row});return this.focusSelected(seconds);
   }
   focusObserver(seconds=0){
     if(!this.ready)return;
@@ -654,7 +655,7 @@ export class Explorer {
   }
   /** Instant when seconds is 0. Otherwise a frame-loop travel that resolves true on arrival, or false when superseded, taken over by orbit input, flight, auto fly or disposal. */
   private focusAt(target:THREE.Vector3,distance=25,direction=this.camera.getWorldDirection(new THREE.Vector3()).negate(),galaxyId:number|null=null,home=false,seconds=0):Promise<boolean>{
-    this.cancelTravel();
+    this.stopTravel();
     this.selectionSerial++;this.focusedGalaxyId=galaxyId;this.homeFocused=home;
     if(galaxyId!==null&&this.modelPresence.has(galaxyId))this.modelPresence.set(galaxyId,{value:1,target:1});
     this.exitFlight();this.controls.enabled=true;
@@ -673,7 +674,8 @@ export class Explorer {
     return Promise.resolve(true);
   }
   private place(target:THREE.Vector3,distance:number,direction:THREE.Vector3){this.controls.target.copy(target);this.camera.position.copy(target).addScaledVector(direction,distance);this.controls.update();this.focusDistance=distance}
-  private cancelTravel(){const travel=this.travel;if(!travel)return;this.travel=null;travel.resolve(false)}
+  /** Halt an in-flight travel where it is, without repositioning; its promise resolves false. */
+  stopTravel(){const travel=this.travel;if(!travel)return;this.travel=null;travel.resolve(false)}
   private get memoryBytes(){
     let bytes=this.references.byteLength+this.pickTarget.width*this.pickTarget.height*8+this.milkyWay.memoryBytes+this.cosmicHorizon.memoryBytes+this.lookbackRings.memoryBytes+this.surveyFootprint.memoryBytes+this.allModels.reduce((sum,model)=>sum+model.memoryBytes,0)+(this.modelCatalog?.memoryBytes??0);
     for(const item of this.cache.values())bytes+=item.bytes;
@@ -1273,5 +1275,5 @@ export class Explorer {
     finally{loader.dispose()}
   }
   get renderingInfo(){const gl=this.renderer.getContext(),debug=gl.getExtension('WEBGL_debug_renderer_info');return {renderer:debug?gl.getParameter(debug.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER),version:gl.getParameter(gl.VERSION),width:this.canvas.width,height:this.canvas.height}}
-  dispose(){this.disposed=true;this.cancelTravel();this.lifecycle.abort();cancelAnimationFrame(this.frame);this.exitFlight();this.loader.dispose();this.modelCatalog?.dispose();this.controls.dispose();this.cosmicHorizon.dispose();this.lookbackRings.dispose();this.surveyFootprint.dispose();this.milkyWay.dispose();this.allModels.forEach(model=>model.dispose());this.nearbyPoints.geometry.dispose();this.nearbyPoints.material.dispose();this.nearbyPicker.dispose();for(const item of this.cache.values()){item.points.geometry.dispose();item.points.material.dispose()}this.pickTarget.dispose();this.pickMaterial.dispose();this.renderer.dispose();this.canvas.remove()}
+  dispose(){this.disposed=true;this.stopTravel();this.lifecycle.abort();cancelAnimationFrame(this.frame);this.exitFlight();this.loader.dispose();this.modelCatalog?.dispose();this.controls.dispose();this.cosmicHorizon.dispose();this.lookbackRings.dispose();this.surveyFootprint.dispose();this.milkyWay.dispose();this.allModels.forEach(model=>model.dispose());this.nearbyPoints.geometry.dispose();this.nearbyPoints.material.dispose();this.nearbyPicker.dispose();for(const item of this.cache.values()){item.points.geometry.dispose();item.points.material.dispose()}this.pickTarget.dispose();this.pickMaterial.dispose();this.renderer.dispose();this.canvas.remove()}
 }

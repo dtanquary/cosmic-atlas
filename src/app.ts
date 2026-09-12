@@ -12,7 +12,7 @@ import {CMB_RADIUS_MPC,catalogRadialReach,cosmicHorizonReference} from './cosmic
 import {formatLookback,lightTravelGyr,lookbackForDistance,lookbackReference} from './lookback';
 import {decodeView,encodeView} from './view-link';
 
-const FOOTPRINT_HINT='Tinted sky = directions with accepted DESI DR1 rows in this catalog. Dark = not surveyed here, not confirmed empty. Gaps inside the tint are sampling, distance fading or real structure.';
+const FOOTPRINT_HINT='Tinted sky = directions with accepted DESI DR1 rows in this catalog. Dark = not surveyed here, not confirmed empty. Missing points inside the tint are adaptive sampling, distance fading or real structure.';
 
 const icon=(body:string)=>`<svg viewBox="0 0 24 24" aria-hidden="true">${body}</svg>`;
 const icons={
@@ -163,7 +163,7 @@ function renderStats(stats:AtlasStats){
  text('scale-label',formatDistance(value,units,2));element('scale-rule').style.width=`${Math.max(20,Math.min(160,value/mpcPerPixel))}px`;
  element('lookback-note').hidden=!stats.focusFromObserver;
  text('lookback-note',`Light from this depth left ≈ ${formatLookback(lookbackForDistance(stats.focusFromObserver))} ago`);
- text('survey-footprint-hint',atlas.surveyFootprint.state==='failed'?'Footprint data unavailable for this dataset.':atlas.surveyFootprint.disclosure||FOOTPRINT_HINT);
+ text('survey-footprint-hint',atlas.surveyFootprint.state==='failed'?'Footprint data could not load. Toggle again to retry.':atlas.surveyFootprint.disclosure||FOOTPRINT_HINT);
  text('flight-speed',`${formatDistance(atlas.speed,units,2)} / sec`);element<HTMLInputElement>('speed').value=String(Math.log10(atlas.speed));
  if(diagnostics)element('diagnostics').innerHTML=`${stats.fps?stats.fps.toFixed(0):'—'} FPS · p95 ${stats.p95.toFixed(1)} ms<br>${stats.calls} draw calls · ${stats.models} close-up models · ${stats.managedMiB.toFixed(1)} MiB managed<br>${stats.budget.toLocaleString()} adaptive point budget`;
 }
@@ -263,7 +263,7 @@ async function initialize(){
   text('data-summary',`This atlas contains ${atlas.manifest.count.toLocaleString()} accepted galaxy observations from the DESI DR1 primary redshift catalog.`);
   text('sample-disclosure',atlas.manifest.subset?`${atlas.manifest.subset}. Full detail refers to this included subset, not every galaxy in the release.`:'The full catalog passing the documented filters is available for progressive loading. DESI itself covers only part of the sky and does not include every galaxy.');
   registerAgentTools();
-  if(import.meta.env.DEV&&(new URLSearchParams(location.search).has('benchmark')||new URLSearchParams(location.search).has('selftest')||new URLSearchParams(location.search).has('detailtest')||new URLSearchParams(location.search).has('modeltest')||new URLSearchParams(location.search).has('uxtest')||new URLSearchParams(location.search).has('hometest')||new URLSearchParams(location.search).has('nearbytest')||new URLSearchParams(location.search).has('continuitytest')||new URLSearchParams(location.search).has('colortest')||new URLSearchParams(location.search).has('varianttest')||new URLSearchParams(location.search).has('cosmictest')||new URLSearchParams(location.search).has('lookbacktest')||new URLSearchParams(location.search).has('footprinttest'))){const {runDiagnostics}=await import('./diagnostics');void runDiagnostics(atlas,element('app'))}
+  if(import.meta.env.DEV&&(new URLSearchParams(location.search).has('benchmark')||new URLSearchParams(location.search).has('selftest')||new URLSearchParams(location.search).has('detailtest')||new URLSearchParams(location.search).has('modeltest')||new URLSearchParams(location.search).has('uxtest')||new URLSearchParams(location.search).has('hometest')||new URLSearchParams(location.search).has('nearbytest')||new URLSearchParams(location.search).has('continuitytest')||new URLSearchParams(location.search).has('colortest')||new URLSearchParams(location.search).has('varianttest')||new URLSearchParams(location.search).has('cosmictest')||new URLSearchParams(location.search).has('lookbacktest')||new URLSearchParams(location.search).has('footprinttest')||new URLSearchParams(location.search).has('sharetest'))){const {runDiagnostics}=await import('./diagnostics');void runDiagnostics(atlas,element('app'))}
  }catch(error){if(uiLifecycle.signal.aborted)return;element('loading').hidden=false;element('loading').innerHTML='<div id="load-error"></div><div class="error-actions"><button class="button" id="reload-button">Retry opening atlas</button></div>';text('load-error',error instanceof Error?error.message:'This browser could not open the 3D map.');element('reload-button').onclick=()=>location.reload()}
 }
 function registerAgentTools(){
