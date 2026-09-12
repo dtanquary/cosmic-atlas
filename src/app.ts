@@ -172,7 +172,7 @@ async function initialize(){
   document.querySelectorAll<HTMLDialogElement>('dialog').forEach(dialog=>dialog.addEventListener('click',event=>{if(event.target===dialog){const rect=dialog.getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)dialog.close()}}));
   window.addEventListener('keydown',event=>{if(event.code==='F8'){event.preventDefault();diagnostics=!diagnostics;element('diagnostics').hidden=!diagnostics;renderStats(atlas.stats)}},{signal:uiLifecycle.signal});
   const response=await fetch('/data/catalog.json');if(!response.ok)throw new Error('The catalog index could not be opened.');
-  const catalog=await response.json(),dataset=new URLSearchParams(location.search).get('dataset');
+  const catalog=await response.json(),dataset=import.meta.env.DEV?new URLSearchParams(location.search).get('dataset'):null;
   const path=dataset&&/^[a-z0-9-]+$/.test(dataset)?`/data/${dataset}/manifest.json`:catalog.manifest;
   await atlas.load(path);
   galaxySearch=new GalaxySearch(atlas,uiLifecycle.signal,()=>showSelection(atlas.selected));

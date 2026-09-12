@@ -6,7 +6,7 @@
 4. Add the worker queue, adaptive/full-detail frontier, cache limits, flight, GPU picking, inspection, measurement, units, scale/origin guides, and data/help panels.
 5. Produce the one-million-object development dataset and then the full accepted catalog using the same pipeline and format.
 6. Run numerical/contract tests, browser interaction/error checks, and 1080p navigation benchmarks. Record actual results and unresolved limitations in the validation report. Do not claim cross-browser results from Chrome alone.
-7. Build, package, save, and privately publish the validated Site. Preserve the local preview through hosting and deliver the final URL.
+7. Build and checksum-validate the full Pages package, publish it using ignored local account configuration, and verify the hosted assets and browser behavior. Publish cleaned development history and MIT-licensed application source to GitHub with all separate data credits intact. Preserve the local preview through hosting and deliver the final URL. See [public delivery](public-delivery.md).
 
 ## Acceptance routes
 

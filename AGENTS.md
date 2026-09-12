@@ -19,13 +19,14 @@ Dave requested on 2026-09-11: **commit early and often, and commit the work you 
 - The intended delivery is a **public URL and all application source shared on GitHub**. Keep the code reproducible, document data sources and licenses, and design catalog delivery independently of the source repository.
 - Measured positions, sizes and projected shapes must remain distinguishable from assumed depth, missing-shape fallbacks, and illustrative structure/colors.
 - Use bounded streaming and level of detail. Never create one scene object or DOM element for every catalog galaxy.
-- The existing full static archive exceeds the current Sites upload limit. Preserve the local catalog while arranging a separate public catalog-storage path; do not replace it with a small sample and call it complete.
+- The full archive exceeds the old Sites upload limit, but fits Cloudflare Pages' documented Wrangler Direct Upload limits. `npm run build:pages` packages the full catalog with fingerprints and an explicit allowlist. Preserve full coverage; consider separate object storage if it outgrows Pages.
 
 ## Checks and documentation
 
 - `npm test` checks TypeScript data, interaction logic, and model geometry.
 - `npm run test:models` verifies every profile sidecar, complete catalog coverage, and visual-type parsing.
 - `npm run build` checks TypeScript and catalog asset presence/sizes, then builds the static app.
+- `npm run build:pages` validates full-data hashes and builds the isolated public package; `npm run release:audit` checks tracked files and reachable history for known private hosting values/configs. Keep deployed URLs and operational reports in ignored `.deploy/`.
 - Use the Sites build helper when required by the active Sites skills.
 - Keep `docs/requirements.md`, `docs/architecture.md`, `docs/galaxy-detail.md`, and `docs/validation.md` consistent with the implemented experience. Record measured performance separately from targets.
 

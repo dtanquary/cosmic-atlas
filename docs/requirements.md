@@ -38,7 +38,7 @@ The development subset is explicitly labeled. A full-detail development subset r
 
 ## Deferred
 
-Measured arm/dust/star structure, planets, inferred populations, cosmological/time simulations, merged position catalogs, accounts and mobile-first navigation. Public web hosting and a public GitHub source repository are the agreed delivery goal; the catalog needs a separate asset-hosting path.
+Measured arm/dust/star structure, planets, inferred populations, cosmological/time simulations, merged position catalogs, accounts and mobile-first navigation. Public web hosting and a public GitHub source repository are the agreed delivery goal. The full catalog can use the same Cloudflare Pages deployment while it fits the documented asset limits; never reduce coverage to fit. Original code is MIT licensed; data and third-party attribution retain their separate terms. Personal deployment details stay in ignored local configuration.
 
 Sources: https://data.desi.lbl.gov/doc/releases/dr1/ ; https://data.desi.lbl.gov/doc/organization/ ; https://docs.astropy.org/en/stable/api/astropy.cosmology.realizations.Planck18.html ; https://data.desi.lbl.gov/doc/acknowledgments/
 

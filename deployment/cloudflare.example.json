@@ -1,0 +1,5 @@
+{
+  "accountId": "YOUR_CLOUDFLARE_ACCOUNT_ID",
+  "projectName": "YOUR_PAGES_PROJECT_NAME",
+  "branch": "main"
+}

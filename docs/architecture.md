@@ -54,7 +54,7 @@ Entries without such matches remain searchable in a separate, noninteractive exp
 
 ## Delivery
 
-Static build in `dist`, with a Sites static hosting manifest. Raw downloads, local caches, and generated binary assets stay outside Git; manifests pin the checksum-verified datasets generated from the documented source before packaging. A saved deployment must contain the exact validated generated assets. The application performs no runtime calls to astronomy services and stores no personal data.
+Ordinary local builds use `dist`. Cloudflare Pages release builds use isolated `dist-pages`, with an allowlist of full-data assets, complete attribution and a content-fingerprinted `/data/releases/<fingerprint>/` hierarchy. Release packaging verifies every binary SHA-256 and matching catalog/model/search provenance, independently of the active local subset. The catalog pointer is generated in output only; production ignores development dataset-switch queries. Direct Upload serves the complete static package without a backend or separate storage account. Raw downloads, local caches, binary assets and private deployment configuration stay outside Git. `scripts/deploy-pages.mjs` reads ignored `.deploy/cloudflare.json` solely for Wrangler; hosting account values never enter client builds. The application performs no runtime calls to astronomy services and stores no personal data. See [public delivery](public-delivery.md) for caching, old-tab behavior, limits and license boundaries.
 
 ## Model visibility and navigation intent
 
