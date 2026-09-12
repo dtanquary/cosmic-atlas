@@ -15,6 +15,7 @@ import {SurveyFootprint} from './survey-footprint';
 import {chooseRings,type LookbackRing} from './lookback';
 import {LOCAL_REDSHIFT_GUARD_MPC,uncertainLocalDistance,uncertainLocalPosition} from './local-distances';
 import {interpolatePose,type Pose} from './travel';
+import type {ViewIdentity,ViewState} from './view-link';
 import type { Galaxy, Manifest, SpatialNode } from './types';
 
 const OVERVIEW_DIRECTION=new THREE.Vector3(.85,-1,.58).normalize();
@@ -109,6 +110,8 @@ export class Explorer {
   autoFly=false;
   speed=1000;
   selected:Galaxy|null=null;
+  /** Node/row of the selected DESI record so a link can name it; nearby and home selections have none. */
+  private selectedAddress:{node:string;row:number}|null=null;
   readonly milkyWay=new MilkyWay();
   readonly cosmicHorizon=new CosmicHorizon();
   readonly lookbackRings=new LookbackRings();
@@ -451,7 +454,7 @@ export class Explorer {
     this.dirty=true;return movement.lengthSq()>0;
   }
   setMeasuring(enabled:boolean){this.measuring=enabled;this.measurement=[];this.updateAnnotations();this.onMeasure(this.measurement,enabled);this.invalidate()}
-  clearSelection(){this.clearHomeSelection();this.selectionSerial++;this.selected=null;this.selectionMarker.visible=false;this.onSelection(null);this.invalidate()}
+  clearSelection(){this.clearHomeSelection();this.selectionSerial++;this.selected=null;this.selectedAddress=null;this.selectionMarker.visible=false;this.onSelection(null);this.invalidate()}
   private bindModels(only?:Resident){
     this.detailBlendUniform.value.fill(0);
     this.resolvedGalaxies.forEach((model,i)=>this.detailBlendUniform.value[i]=model.blend.value);
@@ -588,8 +591,8 @@ export class Explorer {
     if(!this.catalogPositionVisible(galaxy))throw new Error('This name has an uncertain local position. Enable Show uncertain local positions in Settings to inspect the record.');
     if(this.modelCatalog&&!uncertainLocalPosition(galaxy))try{await this.ensureModel(galaxy,node,entry.row,true)}catch{if(canNavigate()&&serial===this.selectionSerial)this.onMessage('The shape could not load; showing the catalog position. Retry missing detail to try again.')}
     if(!canNavigate()||serial!==this.selectionSerial)return;
-    if(this.resolvedFor(galaxy.id)){void this.visitGalaxy(galaxy.id,seconds);return}
-    this.selectGalaxy(galaxy);void this.focusSelected(seconds);
+    if(this.resolvedFor(galaxy.id)){void this.visitGalaxy(galaxy.id,seconds);this.selectedAddress={node:node.id,row:entry.row};return}
+    this.selectGalaxy(galaxy,{node:node.id,row:entry.row});void this.focusSelected(seconds);
   }
   focusObserver(seconds=0){
     if(!this.ready)return;
@@ -605,6 +608,50 @@ export class Explorer {
   }
   private inspectHome(){this.selectionSerial++;this.homeSelected=true;this.onHomeSelection(true);this.invalidate()}
   clearHomeSelection(){this.homeSelected=false;this.onHomeSelection(false)}
+  /** What a link needs: orbit target, camera, and the exact identity being looked at (a panned home view has none). */
+  viewState():ViewState{
+    const selected=this.selected,address=this.selectedAddress,t=this.controls.target,c=this.camera.position;
+    const identity:ViewIdentity=this.homeSelected?(this.homeView==='galaxy'?'core':this.homeView==='sun'?'sun':null):!selected?null:selected.targetId.startsWith('nearby:')?selected.targetId as `nearby:${string}`:address?{node:address.node,row:address.row,targetId:selected.targetId}:null;
+    return {target:[t.x,t.y,t.z],camera:[c.x,c.y,c.z],identity};
+  }
+  /** Focus a decoded link. The identity is re-verified against the catalog and the link's camera offset is applied from the exact position; an unverifiable identity falls back to the camera alone. */
+  async applyView(state:ViewState,seconds=0):Promise<boolean>{
+    const serial=++this.selectionSerial;
+    const target=new THREE.Vector3().fromArray(state.target),offset=new THREE.Vector3().fromArray(state.camera).sub(target);
+    const distance=THREE.MathUtils.clamp(offset.length(),this.controls.minDistance,this.controls.maxDistance);
+    const direction=offset.lengthSq()?offset.normalize():this.camera.getWorldDirection(new THREE.Vector3()).negate();
+    let exact:{target:THREE.Vector3;galaxyId:number|null;home:boolean}|null=null;
+    try{exact=await this.locate(state.identity,serial)}
+    catch(error){if((error as Error).name==='AbortError')return false;this.onMessage(error instanceof DOMException?`This link's galaxy could not load: ${error.message}`:'This link points to a galaxy this catalog does not contain.')}
+    const arrival=exact?this.focusAt(exact.target,distance,direction,exact.galaxyId,exact.home,seconds):this.focusAt(target,distance,direction,null,false,seconds);
+    if(exact?.home)this.inspectHome();
+    return arrival;
+  }
+  private async locate(identity:ViewIdentity,serial:number):Promise<{target:THREE.Vector3;galaxyId:number|null;home:boolean}|null>{
+    if(identity===null)return null;
+    if(identity==='core'||identity==='sun')return {target:identity==='core'?this.milkyWay.center:new THREE.Vector3(),galaxyId:null,home:true};
+    if(typeof identity==='string'){
+      const model=this.nearbyGalaxies.find(model=>model.data.galaxy.targetId===identity);if(!model)throw new Error('Unknown nearby galaxy');
+      this.selectGalaxy(model.data.galaxy);return {target:model.center,galaxyId:model.data.galaxy.id,home:false};
+    }
+    const node=this.nodes.get(identity.node);if(!node||identity.row>=node.storedCount)throw new Error('Unknown catalog address');
+    const [id,metadata]=await Promise.all([this.denseId(node,identity.row),this.loader.load(`m:${node.id}`,new URL(node.metadata.url,this.base).href,node.metadata,'metadata',node.storedCount,true)]);
+    if(serial!==this.selectionSerial)throw new DOMException('Superseded','AbortError');
+    const galaxy=decodeGalaxy(metadata,identity.row,id);
+    if(galaxy.targetId!==identity.targetId)throw new Error('Target ID mismatch');
+    const visible=this.catalogPositionVisible(galaxy);
+    if(this.modelCatalog&&visible&&!uncertainLocalPosition(galaxy))try{await this.ensureModel(galaxy,node,identity.row,true)}catch{/* Point position still applies. */}
+    if(serial!==this.selectionSerial)throw new DOMException('Superseded','AbortError');
+    this.selectGalaxy(galaxy,{node:node.id,row:identity.row});
+    if(!visible){this.onMessage('This uncertain local position is hidden. Show uncertain local positions in Settings to inspect it.');return null}
+    return {target:this.resolvedFor(galaxy.id)?.center??new THREE.Vector3().fromArray(galaxy.position),galaxyId:galaxy.id,home:false};
+  }
+  /** The dense id comes from the node's points chunk (resident or loaded once), never from a link. */
+  private async denseId(node:SpatialNode,row:number){
+    const resident=this.cache.get(node.id);if(resident)return resident.ids[row];
+    const buffer=await this.loader.load(`l:${node.id}`,new URL(node.points.url,this.base).href,node.points,'points',node.storedCount,true);
+    return new Uint32Array(buffer,16+node.storedCount*12,node.storedCount)[row];
+  }
   /** Instant when seconds is 0. Otherwise a frame-loop travel that resolves true on arrival, or false when superseded, taken over by orbit input, flight, auto fly or disposal. */
   private focusAt(target:THREE.Vector3,distance=25,direction=this.camera.getWorldDirection(new THREE.Vector3()).negate(),galaxyId:number|null=null,home=false,seconds=0):Promise<boolean>{
     this.cancelTravel();
@@ -777,13 +824,13 @@ export class Explorer {
       if(!this.catalogPositionVisible(galaxy))return;
       if(this.modelCatalog&&!uncertainLocalPosition(galaxy))try{await this.ensureModel(galaxy,node,row,true)}catch{this.onMessage('The shape could not load; the catalog measurements are still available.')}
       if(serial!==this.selectionSerial)return;
-      this.selectGalaxy(galaxy);
+      this.selectGalaxy(galaxy,{node:nodeId,row});
     }catch(error){this.onMessage(`Could not inspect this point. ${error instanceof Error?error.message:'Try again.'}`)}
     finally{this.scene.overrideMaterial=null;this.renderer.setRenderTarget(null);this.renderer.setScissorTest(false);this.renderer.setClearColor(0x06090d,1);this.picking=false;this.invalidate()}
   }
-  private selectGalaxy(galaxy:Galaxy){
+  private selectGalaxy(galaxy:Galaxy,address=this.modelLocations.get(galaxy.id)??null){
     this.clearHomeSelection();
-    this.selected=galaxy;this.onSelection(galaxy);
+    this.selected=galaxy;this.selectedAddress=address;this.onSelection(galaxy);
     if(this.measuring){if(this.measurement.length===2)this.measurement=[];if(!this.measurement.length||this.measurement[0].id!==galaxy.id)this.measurement.push(galaxy);this.onMeasure(this.measurement,true)}
     this.updateAnnotations();this.invalidate();
   }

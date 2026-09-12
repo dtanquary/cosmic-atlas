@@ -1,5 +1,5 @@
 import type { Asset } from './types';
-interface Task {key:string;url:string;asset:Asset;kind:'points'|'metadata'|'profiles';count:number;resolve:(buffer:ArrayBuffer)=>void;reject:(error:Error)=>void}
+interface Task {key:string;url:string;asset:Asset;kind:'points'|'metadata'|'profiles';count:number;priority:boolean;resolve:(buffer:ArrayBuffer)=>void;reject:(error:Error)=>void}
 export class ChunkLoader {
   private worker=new Worker(new URL('./data.worker.ts',import.meta.url),{type:'module'});
   private queue:Task[]=[];
@@ -27,15 +27,16 @@ export class ChunkLoader {
   load(key:string,url:string,asset:Asset,kind:'points'|'metadata'|'profiles',count:number,priority=false){
     const existing=this.promises.get(key);if(existing)return existing;
     const promise=new Promise<ArrayBuffer>((resolve,reject)=>{
-      const task={key,url,asset,kind,count,resolve,reject};
+      const task={key,url,asset,kind,count,priority,resolve,reject};
       if(priority)this.queue.unshift(task);else this.queue.push(task);
     });
     this.promises.set(key,promise);this.pump();return promise;
   }
   private pump(){while(this.active.size<6&&this.queue.length){const task=this.queue.shift()!;this.active.set(task.key,task);this.worker.postMessage({type:'load',key:task.key,url:task.url,asset:task.asset,kind:task.kind,count:task.count})}}
   retain(keys:Set<string>){
-    this.queue=this.queue.filter(t=>{if(keys.has(t.key)||t.kind==='metadata')return true;t.reject(new DOMException('Cancelled','AbortError'));this.promises.delete(t.key);return false});
-    for(const task of this.active.values())if(!keys.has(task.key)&&task.kind==='points')this.worker.postMessage({type:'cancel',key:task.key});
+    // Frontier retention drops streamed point requests only; metadata and explicit priority loads (a link's identity chunk) finish.
+    this.queue=this.queue.filter(t=>{if(keys.has(t.key)||t.kind==='metadata'||t.priority)return true;t.reject(new DOMException('Cancelled','AbortError'));this.promises.delete(t.key);return false});
+    for(const task of this.active.values())if(!keys.has(task.key)&&task.kind==='points'&&!task.priority)this.worker.postMessage({type:'cancel',key:task.key});
   }
   dispose(){this.worker.terminate();for(const task of [...this.active.values(),...this.queue])task.reject(new DOMException('Disposed','AbortError'));this.active.clear();this.queue=[];this.promises.clear()}
 }
