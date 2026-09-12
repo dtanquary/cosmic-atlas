@@ -70,7 +70,7 @@
 .cosmic-context .button{width:100%;justify-content:center;font-size:12px;padding:10px}.cosmic-context .profile-source{text-align:center}
 .cosmic-settings-view{margin-top:12px;font-size:12px}.cosmic-settings-rule{margin:22px 0;border-top:1px solid var(--line)}
 @media(max-width:900px){.cosmic-context{right:22px;top:100px;width:250px}}
-@media(max-width:600px){.cosmic-context{left:22px;right:22px;top:90px;width:auto;padding:14px}.cosmic-radius{font-size:22px}.cosmic-context .fineprint{font-size:10px;margin-bottom:8px}.cosmic-comparison{margin:10px 0}.cosmic-context .profile-source,#cosmic-catalog-distance{display:none}}
+@media(max-width:600px){.cosmic-context{left:82px;right:16px;top:90px;width:auto;padding:14px}.cosmic-radius{font-size:22px}.cosmic-context .fineprint{font-size:10px;margin-bottom:8px}.cosmic-comparison{margin:10px 0}.cosmic-context .profile-source,#cosmic-catalog-distance{display:none}.cosmic-context:not([hidden])~.status{bottom:210px;font-size:10px;max-width:calc(100vw - 110px);left:auto;right:22px;transform:none}}
 @media(max-height:650px){.cosmic-context{top:83px;max-height:calc(100vh - 250px);overflow:auto;scrollbar-width:thin}.rail{gap:3px;top:48%}.rail .button{padding-top:6px;padding-bottom:6px}}
 .local-policy.raw,.local-distance-warning{color:#e4b77f}
 .local-distance-warning{font-size:12px;line-height:1.6;border-left:2px solid #b88648;padding-left:10px;margin-top:16px}

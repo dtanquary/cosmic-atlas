@@ -119,6 +119,8 @@ Verified the revised continuous starlight/dust volume in native Chrome and direc
 
 ## CMB shell — 12 September 2026
 
-State: verified on full-data actual-GPU navigation and production controls; final compact layout review pending at this checkpoint.
+State: verified on full-data actual-GPU navigation, production controls and final compact layouts.
 
 The visibility toggle preserves the existing camera, selected record and measurements; the dedicated cosmic-scale action cancels earlier focus and frames the sphere about the observer. The comparison panel yields to galaxy inspectors, and Settings provides the same framing action while an inspector is open. Full-data `?uxtest&hometest&continuitytest&selftest` passes with the shell enabled, including search cancellation/reopening, foreground obstruction, display fading, inspector reachability, core/Sun focus, wheel behavior and point/body selection. Production checks pass persistence in both states and units. Visual review prompted a compact short-height toolbar and narrow-width comparison card, plus explicit stacking above observer labels.
+
+Final production screenshots were visually reviewed at 1600×1000, 1000×600 and 390×844. The compact card preserves access to all six toolbar buttons; the frame action and all toolbar hit tests pass at both smaller sizes. The card no longer draws observer labels over its text, and the short-window rail clears the catalog count. Production controls report no JavaScript/shader errors. [GPU and production reports](validation-results.json).
