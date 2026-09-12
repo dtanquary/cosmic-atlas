@@ -1,5 +1,13 @@
 # Milky Way reference model
 
+## Photographic appearance revision
+
+The next visual revision uses [Hubble's 2025 Andromeda panorama](https://esahubble.org/images/heic2501a/) (NASA, ESA, B. Williams / University of Washington) as a reference for continuous starlight, warm inner light, muted blue outer populations, and dark filamentary dust. It does not copy Andromeda's dimensions, bulge-to-disk ratio, or viewing angle. No telescope image is distributed as a texture.
+
+The implementation target is one bounded, camera-relative volume with a deterministic procedural disk field and front-to-back dust attenuation. Replace the bright point-sampled bar and isolated blue clumps with a softly integrated bar/bulge, a filled stellar disk and finer, less uniform arms. Retain the adopted core, Sun position, disk scale and bar geometry below. Arm details, dust distribution, colors and exposure remain illustrative. [Shen & Zheng's review](https://arxiv.org/abs/2012.10130) describes the Milky Way's box/peanut bar-bulge, four-arm structure and Local arm; it also explains why an external view remains a reconstruction.
+
+Acceptance: inspect face-on, inclined, edge-on and inside-disk views on the actual GPU; check restrained highlights and dust contrast, one fixed resource budget, context recovery, home navigation/picking, and existing close-up visibility rules. Do not change catalog-wide galaxy appearance.
+
 The observer remains at the atlas origin (the Solar System). The Galactic center is offset by 8.122 kpc in the ICRS direction RA 266.4051°, Dec −28.936175°. The physical midplane includes a 20.8 pc solar height. These are adopted reference parameters, not an assertion of uniquely known or latest Galactic parameters.
 
 `uv run python scripts/prepare_milky_way.py` reproduces `src/data/milky-way.json` using Astropy's pinned `Galactocentric` **v4.0** frame. Transforming its origin and three Cartesian basis endpoints to ICRS supplies the atlas center and right-handed basis. The full reference citations are retained in the JSON. See [Astropy's frame definition](https://docs.astropy.org/en/stable/coordinates/galactocentric.html).
