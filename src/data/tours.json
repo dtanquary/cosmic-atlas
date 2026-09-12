@@ -1,0 +1,233 @@
+{
+  "version": 1,
+  "notes": "Stop captions are hand-written; every number they cite is repeated in factCheck so tests/tours.test.ts can compare it with the live data (nearby-galaxies.json, milky-way.json, the dr1 manifest, cosmic-horizon.json, galaxy-search.json, tour-sources.json). scripts/prepare_tours.py regenerates the factCheck values and the cluster stop with Astropy Planck18. Travel paths are camera motion, not physical trajectories. A factCheck lookback is Planck18 for redshift-derived positions and distance ÷ c for the independently measured nearby layer and the Milky Way.",
+  "tours": [
+    {
+      "key": "zoom-out",
+      "title": "Guided zoom-out: from the Sun to the CMB",
+      "summary": "Five stops that climb from the Solar System to the last-scattering surface, more than ten million times farther out.",
+      "stops": [
+        {
+          "title": "The Sun",
+          "caption": "The Solar System sits at the coordinate origin of this atlas; the Sun marker is not to scale. The disk around us is the illustrative Milky Way reference, drawn with adopted dimensions rather than measured star positions.",
+          "target": {
+            "kind": "sun"
+          },
+          "distanceMpc": 0.003,
+          "dwellSeconds": 8,
+          "travelSeconds": 4
+        },
+        {
+          "title": "The Milky Way",
+          "caption": "We look at the Galactic core from 60 kpc away; the Sun orbits about 8.1 kpc from it, so the core's light seen now left about 26,000 years ago. The disk size and bar are adopted literature values, while the arms, dust and colors are illustrative.",
+          "target": {
+            "kind": "core"
+          },
+          "distanceMpc": 0.06,
+          "factCheck": {
+            "distanceMpc": 0.008122,
+            "lookbackGyr": 2.6490420998153896e-05
+          },
+          "dwellSeconds": 8,
+          "travelSeconds": 5
+        },
+        {
+          "title": "The Local Group",
+          "caption": "Six nearby galaxies with independently measured distances surround us here; Andromeda is about 785 kpc away, so its light left about 2.6 million years ago. DESI positions come from redshift alone, and those inferred within 1 Mpc are hidden by default as a display safeguard, not as corrected distances.",
+          "target": {
+            "kind": "localgroup",
+            "positionMpc": [
+              0.28989585535714674,
+              0.05469560697111434,
+              0.2588919342598561
+            ],
+            "comment": "Midpoint of the Sun and Andromeda (half of M31's Cartesian position from nearby-galaxies.json)."
+          },
+          "distanceMpc": 1.2,
+          "comment": "The farthest of the six nearby galaxies and the Sun from this midpoint is Triangulum at 0.441 Mpc; 0.441 / sin(25°) × 1.14 = 1.19 Mpc fits all of them inside a 50° field at aspect 1 with the same 14% margin the CMB view uses, rounded up to 1.2 Mpc.",
+          "factCheck": {
+            "key": "m31",
+            "distanceMpc": 0.785,
+            "lookbackGyr": 0.002560327565076435
+          },
+          "dwellSeconds": 8,
+          "travelSeconds": 6
+        },
+        {
+          "title": "The DESI survey",
+          "caption": "This is the full map: 14,140,375 accepted DESI DR1 observations, each placed at a comoving distance inferred from its measured redshift; the farthest is about 4,831 Mpc away, where the light left about 10 billion years ago. The sky coverage is uneven because the survey observed selected regions, so the dark gaps were not surveyed here and are not confirmed empty.",
+          "target": {
+            "kind": "overview"
+          },
+          "factCheck": {
+            "count": 14140375,
+            "distanceMpc": 4830.888927271224,
+            "lookbackGyr": 9.962409876336379
+          },
+          "dwellSeconds": 8,
+          "travelSeconds": 6
+        },
+        {
+          "title": "The cosmic microwave background",
+          "caption": "The faint shell marks the approximate last-scattering surface at z ≈ 1090: about 13,884 Mpc away in today's comoving distance (45.3 billion ly), though its light travelled for 13.8 billion years. It is an inferred, illustrative shell, not a physical edge of the universe, and no measured temperature map is shown.",
+          "target": {
+            "kind": "cmb"
+          },
+          "factCheck": {
+            "redshift": 1090,
+            "distanceMpc": 13884.42065831242,
+            "lookbackGyr": 13.786513101289533
+          },
+          "dwellSeconds": 8,
+          "travelSeconds": 6
+        }
+      ]
+    },
+    {
+      "key": "road-trip",
+      "title": "Cosmic road trip",
+      "summary": "From the Galactic core past the Magellanic Clouds and Andromeda to two named DESI galaxies, the Coma cluster and the whole survey.",
+      "stops": [
+        {
+          "title": "The Milky Way",
+          "caption": "Our trip starts 60 kpc from the Galactic core, whose light reaches us after about 26,000 years; the Sun is about 8.1 kpc from it. The disk dimensions are adopted from the literature, and the arms, dust and colors are illustrative.",
+          "target": {
+            "kind": "core"
+          },
+          "distanceMpc": 0.06,
+          "factCheck": {
+            "distanceMpc": 0.008122,
+            "lookbackGyr": 2.6490420998153896e-05
+          },
+          "dwellSeconds": 8,
+          "travelSeconds": 4
+        },
+        {
+          "title": "Large Magellanic Cloud",
+          "caption": "The Large Magellanic Cloud is about 49.6 kpc away by eclipsing-binary measurement, so its light left about 160,000 years ago. Its round shape and 1.5 kpc size are assumed, its orientation is not measured, and the clumpy structure is illustrative.",
+          "target": {
+            "kind": "nearby",
+            "key": "lmc"
+          },
+          "factCheck": {
+            "distanceMpc": 0.04959,
+            "lookbackGyr": 0.00016174094770973302
+          },
+          "dwellSeconds": 8,
+          "travelSeconds": 5
+        },
+        {
+          "title": "Small Magellanic Cloud",
+          "caption": "The Small Magellanic Cloud is about 62.4 kpc away, also from eclipsing binaries, so its light left about 200,000 years ago. Its projected ellipse and angle are measured, but its half-light size is assumed from a catalog diameter and its depth is illustrative.",
+          "target": {
+            "kind": "nearby",
+            "key": "smc"
+          },
+          "factCheck": {
+            "distanceMpc": 0.062439999999999996,
+            "lookbackGyr": 0.00020365204224633452
+          },
+          "dwellSeconds": 8,
+          "travelSeconds": 5
+        },
+        {
+          "title": "Andromeda",
+          "caption": "Andromeda (M31) lies about 785 kpc away by the tip of the red giant branch, so we see it as it was about 2.6 million years ago. Its disk size, axis ratio and sky angle are measured; the spiral arms and colors are illustrative.",
+          "target": {
+            "kind": "nearby",
+            "key": "m31"
+          },
+          "factCheck": {
+            "distanceMpc": 0.785,
+            "lookbackGyr": 0.002560327565076435
+          },
+          "dwellSeconds": 8,
+          "travelSeconds": 5
+        },
+        {
+          "title": "M32 and M110",
+          "caption": "M32 (about 805 kpc, from RR Lyrae stars) and M110 (about 824 kpc, tip of the red giant branch) have separately measured distances and are not forced onto Andromeda's distance shell. Their smooth elliptical shapes are illustrative; M110's light left about 2.7 million years ago.",
+          "target": {
+            "kind": "nearby",
+            "key": "m31"
+          },
+          "distanceMpc": 0.16,
+          "comment": "Pulled back from the standard Andromeda visit so both satellites stay in frame: M110 is 0.040 Mpc from M31 in 3D, and 0.040 / sin(25°) × 1.14 = 0.108 Mpc is the minimum; 0.16 Mpc leaves room for the depth offsets.",
+          "factCheck": {
+            "key": "m110",
+            "distanceMpc": 0.824,
+            "lookbackGyr": 0.002687528552385965
+          },
+          "dwellSeconds": 8,
+          "travelSeconds": 4
+        },
+        {
+          "title": "Triangulum",
+          "caption": "Triangulum (M33) is about 809 kpc away by the tip of the red giant branch; its light left about 2.6 million years ago. The disk scale, projected ellipse and angle are measured, while the arms and colors are illustrative.",
+          "target": {
+            "kind": "nearby",
+            "key": "m33"
+          },
+          "factCheck": {
+            "distanceMpc": 0.809,
+            "lookbackGyr": 0.002638605095728454
+          },
+          "dwellSeconds": 8,
+          "travelSeconds": 5
+        },
+        {
+          "title": "NGC 3982",
+          "caption": "NGC 3982 is a DESI DR1 galaxy whose position comes from its measured redshift: about 16.6 Mpc, so its light left about 54 million years ago. Its individually fitted shape is one of the two original close-up previews; the spiral detail and colors are illustrative.",
+          "target": {
+            "kind": "catalog",
+            "name": "NGC 3982"
+          },
+          "factCheck": {
+            "distanceMpc": 16.571087037211587,
+            "lookbackGyr": 0.053946782624706285
+          },
+          "dwellSeconds": 8,
+          "travelSeconds": 6
+        },
+        {
+          "title": "NGC 4026",
+          "caption": "NGC 4026 is the second original close-up preview, placed at about 14.6 Mpc from its measured redshift; the light left about 47 million years ago. Redshift distances carry peculiar-velocity and fitting error, so this position is inferred rather than directly measured.",
+          "target": {
+            "kind": "catalog",
+            "name": "NGC 4026"
+          },
+          "factCheck": {
+            "distanceMpc": 14.579349261873272,
+            "lookbackGyr": 0.047473377156157966
+          },
+          "dwellSeconds": 8,
+          "travelSeconds": 5
+        },
+        {
+          "title": "Coma cluster",
+          "caption": "The Coma cluster (Abell 1656) is centered here from its NED position and redshift z = 0.024, about 106 Mpc away, where light left about 340 million years ago. Because each galaxy's distance comes from its redshift, the cluster's internal motions stretch it along our line of sight; only DESI rows near this redshift and direction are counted as members.",
+          "target": {
+            "kind": "cluster",
+            "key": "coma"
+          },
+          "dwellSeconds": 8,
+          "travelSeconds": 6
+        },
+        {
+          "title": "The DESI survey",
+          "caption": "The road ends at the full survey: 14,140,375 accepted DESI DR1 observations placed by measured redshift, reaching about 4,831 Mpc where light left about 10 billion years ago. Coverage follows where DESI pointed, so dark regions were not surveyed here and are not confirmed empty.",
+          "target": {
+            "kind": "overview"
+          },
+          "factCheck": {
+            "count": 14140375,
+            "distanceMpc": 4830.888927271224,
+            "lookbackGyr": 9.962409876336379
+          },
+          "dwellSeconds": 8,
+          "travelSeconds": 6
+        }
+      ]
+    }
+  ]
+}
