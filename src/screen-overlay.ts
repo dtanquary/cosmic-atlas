@@ -15,11 +15,13 @@ export function screenOverlay<U extends Record<string,THREE.IUniform>>(fragment:
     uniforms:{...uniforms,uRotation:{value:new THREE.Matrix3()},uLens:{value:new THREE.Vector2()}},
     transparent:true,depthTest:false,depthWrite:false,toneMapped:false});
   const mesh=new THREE.Mesh(geometry,material);mesh.frustumCulled=false;scene.add(mesh);
-  return {scene,material,uniforms:material.uniforms as U&{uRotation:THREE.IUniform<THREE.Matrix3>;uLens:THREE.IUniform<THREE.Vector2>},geometryBytes:9*Float32Array.BYTES_PER_ELEMENT,
-    setCamera(camera:THREE.PerspectiveCamera){
+  return {uniforms:material.uniforms as U&{uRotation:THREE.IUniform<THREE.Matrix3>;uLens:THREE.IUniform<THREE.Vector2>},geometryBytes:9*Float32Array.BYTES_PER_ELEMENT,
+    /** Updates the camera rotation/lens uniforms and draws the triangle; callers set their own observer uniforms first. */
+    render(renderer:THREE.WebGLRenderer,camera:THREE.PerspectiveCamera){
       camera.updateMatrixWorld();
       const lens=Math.tan(THREE.MathUtils.degToRad(camera.fov/2))/camera.zoom;
       material.uniforms.uRotation.value.setFromMatrix4(camera.matrixWorld);material.uniforms.uLens.value.set(lens*camera.aspect,lens);
+      renderer.render(scene,camera);
     },
     dispose(){geometry.dispose();material.dispose()}};
 }

@@ -34,8 +34,7 @@ export class LookbackRings {
     uToOrigin.value.copy(camera.position).negate().normalize();
     rings.forEach((ring,i)=>{if(i<8)uRingAngle.value[i]=ring.angle});
     uCount.value=Math.min(rings.length,8);
-    this.overlay.setCamera(camera);
-    renderer.render(this.overlay.scene,camera);
+    this.overlay.render(renderer,camera);
   }
   dispose(){this.overlay.dispose()}
 }

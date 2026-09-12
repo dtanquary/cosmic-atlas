@@ -51,8 +51,7 @@ export class CosmicHorizon {
   render(renderer:THREE.WebGLRenderer,camera:THREE.PerspectiveCamera){
     if(!this.enabled)return;
     this.overlay.uniforms.uObserver.value.copy(camera.position).divideScalar(CMB_RADIUS_MPC);
-    this.overlay.setCamera(camera);
-    renderer.render(this.overlay.scene,camera);
+    this.overlay.render(renderer,camera);
   }
   dispose(){this.overlay.dispose()}
 }

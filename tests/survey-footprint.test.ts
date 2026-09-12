@@ -15,7 +15,7 @@ describe('survey footprint sidecar',()=>{
     expect(cells.length).toBe(FOOTPRINT_WIDTH*FOOTPRINT_HEIGHT);
     expect(cells[182*FOOTPRINT_WIDTH+299]).toBe(255);
     expect(cells.reduce((occupied,value)=>occupied+(value?1:0),0)).toBe(footprint.occupiedCells);
-    expect(footprint.sources.every(source=>typeof source==='string')).toBe(true);
+    expect(footprint.sources).toContain('https://data.desi.lbl.gov/doc/releases/dr1/');
     expect(footprint.disclosure).toContain('not the official survey tiling');
   });
   it('maps sky directions to the sidecar convention: row = Dec south to north, column = RA',()=>{

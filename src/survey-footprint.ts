@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import {screenOverlay} from './screen-overlay';
 
+// ponytail: fixed 0.5° grid; memoryBytes and ?footprinttest assume 720×360.
 export const FOOTPRINT_WIDTH=720,FOOTPRINT_HEIGHT=360;
 export interface SurveyFootprintData{version:number;catalogId:string;catalogSourceSha256:string;count:number;width:number;height:number;degreesPerCell:number;maxCellCount:number;occupiedCells:number;cells:string;sources:string[];disclosure:string}
 /** Structural subset of `Manifest`; subsets share the source hash and accepted count, so they keep the footprint. */
@@ -10,6 +11,7 @@ export type FootprintManifest={source:{sha256:string;acceptedRows:number}};
 export function decodeFootprint(data:SurveyFootprintData,manifest:FootprintManifest){
   if(data.version!==1||data.catalogSourceSha256!==manifest.source.sha256||data.count!==manifest.source.acceptedRows)throw new Error('Survey footprint does not match this catalog.');
   if(data.width!==FOOTPRINT_WIDTH||data.height!==FOOTPRINT_HEIGHT)throw new Error('Unexpected survey footprint resolution.');
+  if(typeof data.disclosure!=='string')throw new Error('Survey footprint disclosure missing.');
   const cells=Uint8Array.from(atob(data.cells),c=>c.charCodeAt(0));
   if(cells.length!==data.width*data.height)throw new Error('Survey footprint grid is incomplete.');
   return cells;
@@ -71,10 +73,10 @@ export class SurveyFootprint {
     }catch{this.state='failed'}
   }
   render(renderer:THREE.WebGLRenderer,camera:THREE.PerspectiveCamera){
-    if(!this.enabled||this.state!=='ready')return;
+    // A non-positive radius (missing manifest.maxDistanceMpc) would make every ray NaN and tint the whole triangle.
+    if(!this.enabled||this.state!=='ready'||!(this.radiusMpc>0))return;
     this.overlay.uniforms.uObserver.value.copy(camera.position).divideScalar(this.radiusMpc);
-    this.overlay.setCamera(camera);
-    renderer.render(this.overlay.scene,camera);
+    this.overlay.render(renderer,camera);
   }
   dispose(){this.overlay.dispose();this.texture?.dispose()}
 }
