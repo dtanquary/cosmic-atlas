@@ -8,6 +8,7 @@ export async function runDiagnostics(atlas:Explorer,parent:HTMLElement){
  const sleep=(ms:number)=>new Promise(resolve=>setTimeout(resolve,ms));
  while(!atlas.stats.drawn){await sleep(100)}
  report.firstCoarseMs=performance.now();report.rendering=atlas.renderingInfo;report.initial=atlas.stats;show();
+ if(query.has('lookbacktest')){const {probeLookbackRings}=await import('./lookback-diagnostics');report.lookback=await probeLookbackRings(atlas);show();report.lookbackContext=await atlas.probeContextRecovery();report.lookbackAfterRecovery=await probeLookbackRings(atlas);report.lookbackChecksumStable=(report.lookback as {overview:{checksum:number}}).overview.checksum===(report.lookbackAfterRecovery as {overview:{checksum:number}}).overview.checksum;show()}
  if(query.has('cosmictest')){const {probeCosmicHorizon}=await import('./cosmic-diagnostics');report.cosmicHorizon=await probeCosmicHorizon(atlas);show();report.cosmicContext=await atlas.probeContextRecovery();report.cosmicAfterRecovery=await probeCosmicHorizon(atlas);show()}
  if(query.has('varianttest')){
   const preview=document.createElement('section');preview.id='variant-preview';preview.style.cssText='position:absolute;inset:120px 40px auto 190px;background:#081017;padding:20px;z-index:21;color:#c9d7dc;font:13px sans-serif;pointer-events:none';

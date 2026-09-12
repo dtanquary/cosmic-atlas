@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ChunkLoader } from './loader';
 import { chooseFrontier, coveredFrontier } from './spatial';
-import { decodeGalaxy, formatDistance, separation } from './format';
+import { decodeGalaxy, separation } from './format';
 import {ResolvedGalaxy,GalaxyVolume,spiralLight, detailBlend, type GalaxyDetailData, type ModelDisplay,type GalaxyAppearance} from './galaxy-detail';
 import {ModelCatalog,MODEL_LIMIT,decodeModel,measuredShape} from './model-catalog';
 import {MilkyWay} from './milky-way';
@@ -11,7 +11,7 @@ import {galaxyColors} from './galaxy-colors';
 import {CosmicHorizon} from './cosmic-horizon';
 import {CMB_RADIUS_MPC} from './cosmic-scale';
 import {LookbackRings} from './lookback-rings';
-import {chooseRings,formatLookback,type LookbackRing} from './lookback';
+import {chooseRings,type LookbackRing} from './lookback';
 import {LOCAL_REDSHIFT_GUARD_MPC,uncertainLocalDistance,uncertainLocalPosition} from './local-distances';
 import type { Galaxy, Manifest, SpatialNode } from './types';
 
@@ -139,7 +139,7 @@ export class Explorer {
   onError=(message:string)=>{};
   onOrigin=(x:number,y:number,visible:boolean)=>{};
   onHomeCenter=(x:number,y:number,visible:boolean)=>{};
-  onRings=(labels:{x:number;y:number;text:string;visible:boolean}[])=>{};
+  onRings=(labels:{x:number;y:number;lookbackGyr:number;comovingMpc:number;visible:boolean}[])=>{};
   private scene=new THREE.Scene();
   private annotations=new THREE.Scene();
   private loader=new ChunkLoader();
@@ -692,8 +692,9 @@ export class Explorer {
     return this.rings.map(ring=>{
       const r=ring.comovingMpc,top=toCamera.clone().multiplyScalar(r*r/d).addScaledVector(up,r*Math.sqrt(1-r*r/(d*d)));
       const inFront=forward.dot(top.clone().sub(this.camera.position))>0,point=top.project(this.camera);
-      return {x:(point.x*.5+.5)*this.canvas.clientWidth,y:(.5-point.y*.5)*this.canvas.clientHeight,text:`${formatLookback(ring.lookbackGyr)} ago · ${formatDistance(ring.comovingMpc,this.units)} away now`,
-        visible:!degenerate&&inFront&&point.z>-1&&point.z<1&&Math.abs(point.x)<.95&&Math.abs(point.y)<.9};
+      // Anchors stay out of the top/bottom 10% so labels never sit on the header or footer bands.
+      return {x:(point.x*.5+.5)*this.canvas.clientWidth,y:(.5-point.y*.5)*this.canvas.clientHeight,lookbackGyr:ring.lookbackGyr,comovingMpc:ring.comovingMpc,
+        visible:!degenerate&&inFront&&point.z>-1&&point.z<1&&Math.abs(point.x)<.95&&Math.abs(point.y)<.8};
     });
   }
   private async pick(clientX:number,clientY:number){
