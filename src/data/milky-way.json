@@ -32,76 +32,12 @@
   "radiusMpc": 0.004363702174,
   "barHalfLengthMpc": 0.005,
   "barAngleDeg": 28,
-  "gaussians": [
-    {
-      "sigmaRe": 0.015,
-      "peak": 0.026871487138780552
-    },
-    {
-      "sigmaRe": 0.021354689384786074,
-      "peak": 0.0
-    },
-    {
-      "sigmaRe": 0.030401517248046333,
-      "peak": 0.0
-    },
-    {
-      "sigmaRe": 0.043280997177216396,
-      "peak": 0.04923507005406972
-    },
-    {
-      "sigmaRe": 0.061616816732217285,
-      "peak": 0.0006427784185450472
-    },
-    {
-      "sigmaRe": 0.08772053214638595,
-      "peak": 0.061471675339776814
-    },
-    {
-      "sigmaRe": 0.12488298111028094,
-      "peak": 0.04607632397463781
-    },
-    {
-      "sigmaRe": 0.1777891514037437,
-      "peak": 0.08554796596047086
-    },
-    {
-      "sigmaRe": 0.2531088069474434,
-      "peak": 0.10820666224052487
-    },
-    {
-      "sigmaRe": 0.3603373301944293,
-      "peak": 0.1414093239366206
-    },
-    {
-      "sigmaRe": 0.5129927840030089,
-      "peak": 0.16840147996020963
-    },
-    {
-      "sigmaRe": 0.7303201039347275,
-      "peak": 0.16231792166787962
-    },
-    {
-      "sigmaRe": 1.0397172647327195,
-      "peak": 0.10763207384694637
-    },
-    {
-      "sigmaRe": 1.4801892824244407,
-      "peak": 0.031867884411379784
-    },
-    {
-      "sigmaRe": 2.1072654904575545,
-      "peak": 0.0019317027298716637
-    },
-    {
-      "sigmaRe": 3.0,
-      "peak": 9.319463458521528e-06
-    }
-  ],
   "sources": {
     "frame": "https://docs.astropy.org/en/stable/coordinates/galactocentric.html",
     "disk": "https://arxiv.org/abs/astro-ph/0510520",
-    "bar": "https://arxiv.org/abs/1504.01401"
+    "bar": "https://arxiv.org/abs/1504.01401",
+    "structure": "https://arxiv.org/abs/2012.10130",
+    "appearanceReference": "https://esahubble.org/images/heic2501a/"
   },
   "frameReferences": {
     "galcen_coord": "https://ui.adsabs.harvard.edu/abs/2004ApJ...616..872R",
@@ -114,5 +50,5 @@
     "z_sun": "https://ui.adsabs.harvard.edu/abs/2019MNRAS.482.1417B",
     "roll": null
   },
-  "assumptions": "Disk scale and bar dimensions are adopted literature estimates. The smooth light mixture, oblate depth, bulge, arms, knots, outer extent, and colors are illustrative; not a star catalog or observed image."
+  "assumptions": "Disk scale and bar dimensions are adopted literature estimates. The bar/bulge light profile, arm paths, local spur, vertical profiles, dust, outer taper, emission regions, colors and exposure are illustrative. Appearance is guided by Hubble images of Andromeda, without copying its dimensions or redistributing telescope pixels. This is not a star catalog, calibrated photometry or an observed external image of the Milky Way."
 }

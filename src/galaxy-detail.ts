@@ -164,7 +164,7 @@ export function spiralLight(data:GalaxyDetailData):GalaxyLight {
 export class GalaxyVolume<F extends VolumeFrame=VolumeFrame> {
   readonly scene=new THREE.Scene();
   readonly blend={value:0};
-  private readonly material:THREE.RawShaderMaterial;
+  protected readonly material:THREE.RawShaderMaterial;
   private readonly mesh:THREE.Mesh<THREE.PlaneGeometry,THREE.RawShaderMaterial>;
   private readonly toModel:THREE.Matrix3;
   private readonly relative=new THREE.Vector3();
