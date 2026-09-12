@@ -9,3 +9,23 @@ playwright-report/
 *.log
 public/data/**/*.bin
 public/data/**/*.bin.gz
+
+# Deployment is local; only sanitized templates belong in the public repo.
+.deploy/
+.openai/
+.wrangler/
+dist-pages/
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+wrangler.toml
+wrangler.json
+wrangler.jsonc
+*.local
+*.pem
+*.key
+*.p12
+*.pfx

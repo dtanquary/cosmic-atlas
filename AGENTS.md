@@ -8,6 +8,8 @@ Dave requested on 2026-09-11: **commit early and often, and commit the work you 
 - Include related source, tests, requirements, and validation notes. Describe unfinished checkpoints honestly in the commit message.
 - Before committing, review the staged changes and run checks appropriate to that milestone. Finish production and actual-GPU validation before describing a feature as complete.
 - Keep generated catalog binaries, raw FITS downloads, local caches, credentials, and dependencies out of Git. Track reproducible preparation scripts, compact sidecars, manifests, and attribution.
+- Public-release privacy: keep host account/project IDs, tokens, domains and deployment notes in ignored `.deploy/`, `.env.*`, `.openai/` or local Wrangler files. Commit only sanitized examples. Never put secrets in `VITE_*` variables or browser assets. Git ignores do not remove older commits; audit history before the initial public push.
+- Original code, tools and documentation are MIT licensed. Preserve the separate DESI, OpenNGC-derived data, font and dependency licenses/credits.
 - Preserve existing user work and the full accepted catalog.
 
 ## Product and delivery

@@ -6,7 +6,7 @@ Dave's intended release is a public web URL and all application source on GitHub
 
 Publish the TypeScript application, tests, Python data tools, dependency lockfiles, compact profile/name sidecars, dataset manifests, documentation and attribution. Raw FITS downloads, generated binary catalogs, caches, dependencies and build output remain ignored. Contributors can prepare a small real-data point preview or reproduce the full catalog and models with the README commands.
 
-The data have their own licenses: DESI CC BY 4.0 and OpenNGC-derived indexes CC BY-SA 4.0. Preserve source credits and processing notes. Public source visibility and application-code licensing are separate choices; an application-code license has not yet been selected.
+The original application code, tooling and documentation use the root MIT license. The data have their own licenses: DESI CC BY 4.0 and OpenNGC-derived indexes CC BY-SA 4.0. Preserve source credits and processing notes; MIT does not replace these data or third-party licenses.
 
 ## Hosting layout
 

@@ -211,13 +211,19 @@ This is an observer-centered reconstruction of catalog measurements, not a compl
 
 Of the catalog profile records, **12,097,577 (85.6%)** have usable measured sizes and projected ellipses. Models for the remainder disclose an assumed 5 kpc half-light radius. Records inside the local-distance safeguard are excluded from model rendering regardless of their profile. **3,128** have matched visual classifications; other families are labeled approximations in Catalog types mode. The default All spirals mode deliberately overrides their rendered morphology and light profile, with an explicit inspector disclosure. Inferred depth, near side, spiral structure, clumps and colors remain illustrative. The Milky Way uses separately documented literature-based geometry and is excluded from DESI counts and pair measurements.
 
-See [galaxy model provenance](docs/galaxy-detail.md), [Milky Way assumptions and sources](docs/milky-way.md), and [data credits and processing notes](public/acknowledgments.txt). DESI and OpenNGC-derived data have their own licenses; preserve their attribution. An application-source license has not yet been selected.
+See [galaxy model provenance](docs/galaxy-detail.md), [Milky Way assumptions and sources](docs/milky-way.md), and [data credits and processing notes](public/acknowledgments.txt).
+
+## License
+
+Original application code, tooling and documentation are available under the [MIT License](LICENSE). You can use, modify and redistribute them, including commercially, while retaining the license notice.
+
+Astronomy data and third-party assets keep their own terms: DESI data are **CC BY 4.0**; OpenNGC-derived name indexes, model sidecars and the combined nearby reference are **CC BY-SA 4.0**. MIT does not relicense those datasets, dependencies or fonts. Preserve [data attribution and processing notes](public/acknowledgments.txt), [third-party notices](public/third-party-notices.txt) and the [CC BY-SA license](public/licenses/CC-BY-SA-4.0.txt).
 
 ## Public hosting and project documents
 
-The intended release is a public URL with the source shared on GitHub. The full catalog exceeds the current Sites upload limit, so public delivery needs separate object storage/CDN hosting for the data. Keep relative asset paths and manifest-pinned bytes intact. Binary gzip payloads are decompressed by the worker and must not receive an extra HTTP `Content-Encoding: gzip` layer.
+The intended release is a public URL with the source shared on GitHub. The current full catalog fits Cloudflare Pages' documented per-file and file-count limits for Wrangler Direct Upload, so separate object storage is optional. See [public delivery](docs/public-delivery.md) for release builds, private deployment settings, costs and the publication checklist.
 
-The repository includes `.openai/hosting.json` for the current Sites integration; ordinary local development and `npm run build` do not require a Codex plugin or hosting account. Public deployment is not yet configured. See [public delivery](docs/public-delivery.md) before changing packaging or data origins.
+Hosting account details, tokens, project configuration and build output stay local in ignored files. Only generic instructions and sanitized templates belong in Git. The public application and its data URLs are necessarily visible to visitors; `.gitignore` protects repository contents, not deployed browser assets or old Git commits. Local development requires no hosting account.
 
 - [Requirements](docs/requirements.md) and [build plan](docs/build-plan.md)
 - [Architecture and coordinate conventions](docs/architecture.md)

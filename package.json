@@ -1,6 +1,8 @@
 {
   "name": "cosmic-atlas",
   "version": "0.1.0",
+  "description": "A clean, interactive 3D atlas of over 14 million galaxy observations.",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {
