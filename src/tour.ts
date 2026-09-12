@@ -15,20 +15,23 @@ export const tours=data.tours as unknown as TourData[];
 export const DWELL_SECONDS=8;
 export interface CatalogEntry{id:number;node:string;row:number;targetId:string}
 type XYZ={x:number;y:number;z:number};
-/** The explorer surface a tour drives; every visit resolves true on arrival, false when taken over by input, flight or a newer focus. */
+/** The explorer surface a tour drives; a visit resolves true on arrival, false when taken over by input, flight or a newer focus, and undefined when it could not start. */
 export interface TourAtlas{
   manifest:{count:number};camera:{position:XYZ};controls:{target:XYZ};milkyWay:{approachDirection:XYZ};
   reset(seconds:number):Promise<boolean>|undefined;
   viewCosmicHorizon(seconds:number):Promise<boolean>|undefined;
   visitMilkyWay(seconds:number):Promise<boolean>|undefined;
   visitNearby(id:number,seconds:number):Promise<boolean>|undefined;
-  visitCatalog(entry:CatalogEntry,canNavigate:()=>boolean,seconds:number):Promise<boolean|void>;
+  visitCatalog(entry:CatalogEntry,canNavigate:()=>boolean,seconds:number):Promise<boolean|undefined>;
   applyView(state:ViewState,seconds:number):Promise<boolean>;
+  stopTravel():void;
 }
 export type TourStatus='idle'|'travelling'|'dwelling'|'paused'|'finished';
 export interface TourState{index:number;status:TourStatus;stop:TourStop|null;autoplay:boolean}
 export interface TourHooks{
+  /** `true` shows the CMB shell for the stop without saving the setting; `false` RESTORES the user's saved choice and never force-hides. */
   showCosmicHorizon(visible:boolean):void;
+  /** The loaded name index's verified visit reference, or null when the name is unmatched or the index is unavailable (subsets). */
   resolveCatalog(name:string):CatalogEntry|null;
   onChange(state:TourState):void;
   notify(message:string):void;
@@ -44,12 +47,12 @@ const add=(a:Vec3,b:Vec3,k:number):Vec3=>[a[0]+b[0]*k,a[1]+b[1]*k,a[2]+b[2]*k];
 export class Tour{
   state:TourState={index:-1,status:'idle',stop:null,autoplay:false};
   private timer:ReturnType<typeof setTimeout>|null=null;
-  private serial=0;private step=1;
+  private serial=0;
   private arrival:{target:Vec3;camera:Vec3}|null=null;
   constructor(private atlas:TourAtlas,readonly tour:TourData,private hooks:TourHooks){}
   start(index=0){if(!this.tour.stops[index])return;this.set({autoplay:true});void this.goTo(index)}
   next(){if(this.state.index+1<this.tour.stops.length)void this.goTo(this.state.index+1);else this.finish()}
-  previous(){void this.goTo(this.state.index-1)}
+  previous(){void this.goTo(this.state.index-1,-1)}
   play(){
     if(this.state.status==='idle'||this.state.status==='finished')return this.start(0);
     this.set({autoplay:true});
@@ -57,8 +60,17 @@ export class Tour{
     if(this.arrival&&!this.moved()){this.set({status:'dwelling'});this.schedule()}
     else void this.goTo(this.state.index); // taken over mid-travel or moved since: travel back to the stop
   }
-  pause(){this.clearTimer();this.set({autoplay:false,status:this.state.status==='dwelling'?'paused':this.state.status})}
-  exit(){this.clearTimer();this.serial++;if(this.state.stop?.target.kind==='cmb')this.hooks.showCosmicHorizon(false);this.arrival=null;this.set({index:-1,status:'idle',stop:null,autoplay:false})}
+  pause(){
+    this.clearTimer();
+    if(this.state.status==='travelling')this.atlas.stopTravel(); // the cancelled arrival lands the stop as paused
+    this.set({autoplay:false,status:this.state.status==='dwelling'?'paused':this.state.status});
+  }
+  exit(){
+    this.clearTimer();this.serial++;
+    if(this.state.status==='travelling')this.atlas.stopTravel();
+    if(this.state.stop?.target.kind==='cmb')this.hooks.showCosmicHorizon(false);
+    this.arrival=null;this.set({index:-1,status:'idle',stop:null,autoplay:false});
+  }
   private finish(){this.clearTimer();this.serial++;this.set({status:'finished',autoplay:false})}
   private set(patch:Partial<TourState>){this.state={...this.state,...patch};this.hooks.onChange(this.state)}
   private clearTimer(){if(this.timer!==null)clearTimeout(this.timer);this.timer=null}
@@ -70,22 +82,22 @@ export class Tour{
   }
   private schedule(){this.clearTimer();this.timer=setTimeout(()=>{this.timer=null;if(this.moved())this.set({status:'paused',autoplay:false});else this.next()},(this.state.stop!.dwellSeconds??DWELL_SECONDS)*1000)}
   /** The stop as the panel should show it: the caption's `{catalogCount}` is the active dataset's accepted count. */
-  private present(stop:TourStop):TourStop{return {...stop,caption:stop.caption.replaceAll('{catalogCount}',this.atlas.manifest?.count.toLocaleString('en-US')??'all')}}
-  private async goTo(index:number):Promise<void>{
+  private present(stop:TourStop):TourStop{return {...stop,caption:stop.caption.replaceAll('{catalogCount}',this.atlas.manifest.count.toLocaleString('en-US'))}}
+  /** `step` is the direction an unavailable stop is skipped in: forward for start/next/play, backward for previous. */
+  private async goTo(index:number,step=1):Promise<void>{
     const stop=this.tour.stops[index];if(!stop)return;
-    this.clearTimer();const serial=++this.serial;this.step=index<this.state.index?-1:1;
+    this.clearTimer();const serial=++this.serial;
     if(this.state.stop?.target.kind==='cmb'&&stop.target.kind!=='cmb')this.hooks.showCosmicHorizon(false);
     this.set({index,stop:this.present(stop),status:'travelling'});
-    let arrived:boolean|void|'skipped';
+    let arrived:boolean|undefined|'skipped';
     try{arrived=await this.visit(stop,serial)}
     catch(error){arrived='skipped';if(serial===this.serial)this.hooks.notify(`${stop.title}: ${error instanceof Error?error.message:'unavailable'} Skipping.`)}
     if(serial!==this.serial)return; // superseded by a newer stop, exit or finish
-    if(arrived==='skipped'){const following=index+this.step;if(this.tour.stops[following])return this.goTo(following);this.set({status:this.step>0?'finished':'paused',autoplay:false});return}
-    if(arrived===false){this.set({status:'paused',autoplay:false});return} // orbit input, flight or another focus took over
+    if(arrived==='skipped'){const following=index+step;if(this.tour.stops[following])return this.goTo(following,step);this.set({status:step>0?'finished':'paused',autoplay:false});return}
+    if(arrived!==true){this.set({status:'paused',autoplay:false});return} // input, flight or another focus took over, or the visit could not start
     this.arrival=this.pose();this.set({status:this.state.autoplay?'dwelling':'paused'});
     if(this.state.autoplay)this.schedule();
   }
-  /** visitCatalog resolves when its travel starts (Phase 3 voids the inner arrival), so only an explicit false counts as cancelled. */
   private visit(stop:TourStop,serial:number){
     const {target,distanceMpc}=stop,s=stop.travelSeconds,approach=vec(this.atlas.milkyWay.approachDirection);
     switch(target.kind){

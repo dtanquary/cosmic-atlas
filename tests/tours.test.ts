@@ -45,6 +45,7 @@ describe('tour routes',()=>{
         if(stop.dwellSeconds!==undefined)expect(stop.dwellSeconds).toBeGreaterThan(0);
         if(stop.distanceMpc!==undefined)expect(stop.distanceMpc).toBeGreaterThan(0);
         if(stop.target.kind==='nearby'||stop.target.kind==='cluster')expect(stop.target.key).toBeTruthy();
+        if(stop.target.kind==='nearby')expect(nearby.has(stop.target.key!),stop.title).toBe(true);
         if(stop.target.kind==='catalog')expect(stop.target.name).toBeTruthy();
         if(stop.target.kind==='localgroup'||stop.target.kind==='cluster')expect(stop.target.positionMpc!.length).toBe(3);
         if(stop.cites!==undefined)expect(nearby.has(stop.cites)).toBe(true);

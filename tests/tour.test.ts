@@ -15,15 +15,18 @@ class FakeAtlas implements TourAtlas{
   milkyWay={approachDirection:new THREE.Vector3(.6,0,.8)};
   calls:{method:string;args:unknown[]}[]=[];
   canNavigate:(()=>boolean)|null=null;
+  stops=0;
   private pending:((arrived:boolean)=>void)|null=null;
+  /** Like the explorer: a running travel resolves false; nothing pending is a no-op. */
+  stopTravel(){this.stops++;const resolve=this.pending;if(resolve){this.pending=null;resolve(false)}}
   private visit(method:string,...args:unknown[]){this.calls.push({method,args});return new Promise<boolean>(resolve=>{this.pending=resolve})}
   reset(s:number){return this.visit('reset',s)}
   viewCosmicHorizon(s:number){return this.visit('viewCosmicHorizon',s)}
-  visitMilkyWay(s:number){return this.visit('visitMilkyWay',s)}
+  visitMilkyWay(s:number):Promise<boolean>|undefined{return this.visit('visitMilkyWay',s)}
   visitNearby(id:number,s:number){return this.visit('visitNearby',id,s)}
   visitCatalog(entry:CatalogEntry,canNavigate:()=>boolean,s:number){this.canNavigate=canNavigate;return this.visit('visitCatalog',entry,s)}
   applyView(state:ViewState,s:number){return this.visit('applyView',state,s)}
-  settle(arrived:boolean){const resolve=this.pending!;this.pending=null;resolve(arrived);return flush()}
+  settle(arrived:boolean){const resolve=this.pending;this.pending=null;resolve?.(arrived);return flush()}
   get last(){return this.calls[this.calls.length-1]}
 }
 const flush=async()=>{for(let i=0;i<4;i++)await Promise.resolve()};
@@ -112,9 +115,15 @@ describe('Tour runner',()=>{
     expect(runner.state).toMatchObject({status:'dwelling',autoplay:true});expect(vi.getTimerCount()).toBe(1);expect(atlas.calls.length).toBe(1);
     await dwell(runner);
     expect(runner.state).toMatchObject({index:1,status:'travelling'});
-    runner.pause();expect(runner.state.status).toBe('travelling');
-    await atlas.settle(true);
+    runner.pause(); // mid-travel: the explorer's travel is stopped and the cancelled arrival lands paused
+    expect(atlas.stops).toBe(1);await flush();
     expect(runner.state).toMatchObject({index:1,status:'paused',autoplay:false});expect(vi.getTimerCount()).toBe(0);
+  });
+  it('pauses when a visit could not start instead of dwelling at the wrong pose',async()=>{
+    const {atlas,runner}=setup();
+    atlas.visitMilkyWay=()=>undefined;
+    runner.start();await flush();
+    expect(runner.state).toMatchObject({index:0,status:'paused',autoplay:false});expect(vi.getTimerCount()).toBe(0);
   });
   it('dwells for the default eight seconds unless a stop sets its own',async()=>{
     const {atlas,runner}=setup({...roadTrip,stops:[roadTrip.stops[0],{...roadTrip.stops[1],dwellSeconds:2}]});
@@ -147,6 +156,9 @@ describe('Tour runner',()=>{
     runner.previous();await flush();
     expect(runner.state).toMatchObject({index:5,status:'travelling'});expect(atlas.last).toEqual({method:'visitNearby',args:[nearbyId('m33'),5]});
     expect(notices.length).toBe(4);
+    await atlas.settle(true);
+    runner.start(6);await flush(); // a start always skips forward, whatever the previous index was
+    expect(runner.state).toMatchObject({index:8,status:'travelling'});expect(atlas.last.method).toBe('applyView');expect(notices.length).toBe(6);
   });
   it('treats a rejected visit like an unavailable stop and passes a live navigation guard to visitCatalog',async()=>{
     const {atlas,runner,notices}=setup();
@@ -168,8 +180,8 @@ describe('Tour runner',()=>{
     expect(runner.state).toMatchObject({index:9,status:'finished',autoplay:false});expect(vi.getTimerCount()).toBe(0);
     runner.play();
     expect(runner.state).toMatchObject({index:0,status:'travelling'});
-    runner.exit();
-    await atlas.settle(true);
+    runner.exit(); // stops the explorer's travel; the cancelled arrival is ignored
+    expect(atlas.stops).toBe(1);await atlas.settle(true);
     expect(runner.state.status).toBe('idle');expect(vi.getTimerCount()).toBe(0);
   });
 });

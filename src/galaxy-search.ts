@@ -70,6 +70,10 @@ export class GalaxySearch {
     this.browse.onclick=()=>{this.input.value='';this.active=0;this.render();this.input.focus()};
   }
   nameFor(id:number){return this.byId.get(id)?.name}
+  /** The verified visit reference for an exact index name, or null when the name is unmatched or the DESI index is not loaded (subsets). */
+  find(name:string){const entry=this.entries.find(entry=>entry.name===name&&entry.id!==undefined&&entry.node!==undefined);return entry?{id:entry.id!,node:entry.node!,row:entry.row!,targetId:entry.targetId!}:null}
+  /** Resolves once the name index has loaded (or fallen back to nearby names), without opening the dialog. */
+  ready(){return this.loaded?Promise.resolve():this.load()}
   open(){
     this.pendingVisit?.abort();this.pendingVisit=null;this.busy=false;this.input.disabled=false;this.dialog.removeAttribute('aria-busy');
     this.atlas.exitFlight();this.dialog.showModal();this.input.value='';this.active=0;this.input.setAttribute('aria-expanded','true');this.input.focus();
