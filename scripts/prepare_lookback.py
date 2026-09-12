@@ -17,8 +17,9 @@ comoving = Planck18.comoving_distance(redshift).value
 lookback = Planck18.lookback_time(redshift).value
 
 # Measure the browser's actual path: exact comoving distance -> interpolated lookback.
+# Geometric midpoints of the log-spaced rows make the maximum deterministic; random samples add coverage.
 rng = np.random.default_rng(20260912)
-check_z = np.concatenate(([1e-4, 1100], [ring["redshift"] for ring in rings], 10 ** rng.uniform(-4, np.log10(1100), 512)))
+check_z = np.concatenate(([1e-4, 1100], [ring["redshift"] for ring in rings], np.sqrt(redshift[:-1] * redshift[1:]), 10 ** rng.uniform(-4, np.log10(1100), 512)))
 exact = Planck18.lookback_time(check_z).value
 approximate = np.interp(Planck18.comoving_distance(check_z).value, comoving, lookback)
 max_error = float(np.max(np.abs(exact - approximate)))

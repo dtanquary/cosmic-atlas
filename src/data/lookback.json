@@ -879,7 +879,7 @@
       13.786518777284867
     ]
   },
-  "maxInterpolationErrorGyr": 0.0011053114949604037,
+  "maxInterpolationErrorGyr": 0.001115586174149641,
   "sources": {
     "parameters": "https://doi.org/10.1051/0004-6361/201833910",
     "calculation": "https://docs.astropy.org/en/stable/api/astropy.cosmology.realizations.Planck18.html",

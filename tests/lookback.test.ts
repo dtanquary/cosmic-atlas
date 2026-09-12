@@ -35,6 +35,8 @@ describe('formatLookback',()=>{
     expect(formatLookback(.82)).toBe('820 million years');
     expect(formatLookback(2.1)).toBe('2.1 billion years');
     expect(formatLookback(13.7865)).toBe('13.8 billion years');
+    expect(formatLookback(.005)).toBe('5 million years');
+    expect(formatLookback(.0009)).toBe('900,000 years');
     expect(formatLookback(NaN)).toBe('Unavailable');
   });
 });
@@ -62,11 +64,8 @@ describe('chooseRings',()=>{
     expect(chooseRings(0,fov,aspect,height)).toEqual([]);
     expect(chooseRings(NaN,fov,aspect,height)).toEqual([]);
   });
-  it('prefers the larger lookback when rings crowd each other',()=>{
-    const crowded=chooseRings(10000,fov,aspect,120);
-    const largest=rings.filter(ring=>ring.comovingMpc<10000).at(-1)!;
-    const largestVisible=Math.asin(largest.comovingMpc/10000)<=Math.atan(tanHalf*Math.sqrt(1+aspect*aspect));
-    if(largestVisible)expect(crowded.at(-1)?.lookbackGyr).toBe(largest.lookbackGyr);
-    expect(crowded.length).toBeLessThan(chooseRings(10000,fov,aspect,height).length);
+  it('keeps exact ring sets: larger lookbacks survive crowding, the overview shows eight',()=>{
+    expect(chooseRings(30000,fov,aspect,120).map(ring=>ring.lookbackGyr)).toEqual([9,13.5]);
+    expect(chooseRings(16664,fov,aspect,height).map(ring=>ring.lookbackGyr)).toEqual([7,8,9,10,11,12,13,13.5]);
   });
 });

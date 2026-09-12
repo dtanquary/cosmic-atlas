@@ -45,8 +45,9 @@ export async function probeLookbackRings(atlas:Explorer){
     const disabledAgain=await frameCalls(),labelsHidden=labelRects().length===0;
     const savedOff=!rings.enabled&&localStorage.getItem('atlas-lookback-rings')==='false';
     // Real frames ran between toggles; OrbitControls re-derives the position from spherical coordinates, so compare within float noise.
+    // Quaternion.angleTo uses acos near 1, whose own rounding floor is ~3e-8 rad; 1e-6 rad is still far below one pixel at any viewport.
     const poseDelta={positionMpc:position.distanceTo(atlas.camera.position),angleRad:rotation.angleTo(atlas.camera.quaternion),focusMpc:focus.distanceTo(atlas.controls.target)};
-    const posePreserved=poseDelta.positionMpc<=position.length()*1e-9&&poseDelta.angleRad<=1e-9&&poseDelta.focusMpc<=Math.max(1,focus.length())*1e-9;
+    const posePreserved=poseDelta.positionMpc<=position.length()*1e-9&&poseDelta.angleRad<=1e-6&&poseDelta.focusMpc<=Math.max(1,focus.length())*1e-9;
     const catalogPreserved=count===atlas.manifest.count&&selected===atlas.selected&&measured===atlas.measurementDistance;
     const {comovingMpc,lookbackGyr}=lookbackReference.table;
     const monotonic=comovingMpc.every((value,i)=>!i||value>comovingMpc[i-1])&&lookbackGyr.every((value,i)=>!i||value>lookbackGyr[i-1]);

@@ -39,6 +39,7 @@ export function chooseRings(dOriginMpc:number,fovDeg:number,aspect:number,height
     const ring=reference.rings[i];if(ring.comovingMpc>=dOriginMpc)continue;
     const angle=Math.asin(ring.comovingMpc/dOriginMpc);
     if(angle<minAngle||angle>maxAngle)continue;
+    // ponytail: fixed 28 px ring spacing stands in for label collision layout; add rect-based culling if oblique views overlap
     if(kept.length&&pixels(kept[kept.length-1].angle)-pixels(angle)<28)continue;
     kept.push({lookbackGyr:ring.lookbackGyr,comovingMpc:ring.comovingMpc,angle});
   }
