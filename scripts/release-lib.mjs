@@ -51,7 +51,7 @@ export async function planRelease(publicRoot) {
   }
   for (const name of ['galaxy-detail.json', 'galaxy-spiral.json', 'survey-footprint.json']) {
     const detail = JSON.parse(await add(`data/${name}`));
-    if (detail.catalogSourceSha256 !== manifest.source.sha256) throw new Error(`Mismatched ${name}`);
+    if (detail.catalogSourceSha256 !== manifest.source.sha256 || ('count' in detail && detail.count !== manifest.count)) throw new Error(`Mismatched ${name}`);
   }
   // An explicit allowlist prevents unrelated public files from being published.
   for (const name of ['favicon.svg', 'acknowledgments.txt', 'third-party-notices.txt', 'licenses/CC-BY-SA-4.0.txt']) await add(name);

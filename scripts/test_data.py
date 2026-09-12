@@ -45,7 +45,8 @@ class Footprint(unittest.TestCase):
   self.assertEqual((f['version'],f['catalogId'],f['catalogSourceSha256'],f['count']),(1,m['id'],m['source']['sha256'],m['count']))
   self.assertEqual((f['width'],f['height'],f['degreesPerCell']),(720,360,.5));self.assertEqual(self.grid.shape,(360,720))
   self.assertEqual(int(np.count_nonzero(self.grid)),f['occupiedCells']);self.assertEqual(int(self.grid.max()),255)
-  self.assertGreater(f['maxCellCount'],0);self.assertEqual(encode(np.array([0,1,f['maxCellCount']]),f['maxCellCount']).tolist()[::2],[0,255])
+  none,one,densest=encode(np.array([0,1,f['maxCellCount']]),f['maxCellCount']).tolist()
+  self.assertEqual((none,densest),(0,255));self.assertGreater(one,0) # so occupiedCells == count_nonzero holds
   self.assertIn('not the official survey tiling',f['disclosure'])
  def test_leaf_cells_match_convention(self):
   # Re-bin one leaf independently (row = Dec south→north, col = RA): the sidecar holds at least that
@@ -59,7 +60,6 @@ class Footprint(unittest.TestCase):
   occupied=leaf_counts>0;self.assertGreaterEqual(int(occupied.sum()),3)
   self.assertLessEqual(int(leaf_counts.max()),self.footprint['maxCellCount'])
   self.assertTrue(np.all(self.grid[occupied]>=encode(leaf_counts,self.footprint['maxCellCount'])[occupied]))
-  self.assertTrue(np.all(self.grid[occupied]>0))
 
 def validate_dataset(path):
  manifest=json.loads((path/'manifest.json').read_text());nodes={n['id']:n for n in manifest['nodes']}
