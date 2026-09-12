@@ -27,6 +27,15 @@ SOURCE = 'https://data.desi.lbl.gov/public/dr1/spectro/redux/iron/zcatalog/v1/za
 SOURCE_BYTES = 22_371_272_640
 META = np.dtype([('targetid','<i8'), ('ra','<f8'), ('dec','<f8'), ('z','<f8'),
                  ('zerr','<f8'), ('distance','<f8'), ('delta','<f8')])
+
+
+def leaf_metadata(directory, node):
+    """Checksum-verified metadata rows of one leaf node of a prepared catalog."""
+    compressed = (directory / node['metadata']['url']).read_bytes()
+    assert hashlib.sha256(compressed).hexdigest() == node['metadata']['sha256']
+    rows = np.frombuffer(gzip.decompress(compressed), META, offset=16)
+    assert len(rows) == node['count']
+    return rows
 FILTERS = ["ZCAT_PRIMARY = true", "SPECTYPE = GALAXY", "OBJTYPE = TGT", "ZWARN = 0",
            "finite Z > 0", "finite 0 <= RA < 360 and -90 <= DEC <= 90"]
 

@@ -5,18 +5,19 @@ import {nearbyReference} from './nearby-galaxies';
 import data from './data/tours.json';
 
 export type StopKind='sun'|'core'|'localgroup'|'overview'|'cmb'|'nearby'|'catalog'|'cluster';
+/** `cites` names the nearby galaxy whose distance the caption quotes when it is not the target; `{catalogCount}` in a caption is filled from the active manifest. */
 export interface TourStop{
-  title:string;caption:string;target:{kind:StopKind;key?:string;name?:string;positionMpc?:number[];distanceMpc?:number};
-  distanceMpc?:number;dwellSeconds:number;travelSeconds:number;
-  factCheck?:{key?:string;distanceMpc:number;lookbackGyr:number;count?:number;redshift?:number};
+  title:string;caption:string;target:{kind:StopKind;key?:string;name?:string;positionMpc?:number[]};
+  distanceMpc?:number;cites?:string;dwellSeconds?:number;travelSeconds:number;
 }
 export interface TourData{key:string;title:string;summary:string;stops:TourStop[]}
 export const tours=data.tours as unknown as TourData[];
+export const DWELL_SECONDS=8;
 export interface CatalogEntry{id:number;node:string;row:number;targetId:string}
 type XYZ={x:number;y:number;z:number};
 /** The explorer surface a tour drives; every visit resolves true on arrival, false when taken over by input, flight or a newer focus. */
 export interface TourAtlas{
-  camera:{position:XYZ};controls:{target:XYZ};milkyWay:{approachDirection:XYZ};
+  manifest:{count:number};camera:{position:XYZ};controls:{target:XYZ};milkyWay:{approachDirection:XYZ};
   reset(seconds:number):Promise<boolean>|undefined;
   viewCosmicHorizon(seconds:number):Promise<boolean>|undefined;
   visitMilkyWay(seconds:number):Promise<boolean>|undefined;
@@ -67,12 +68,14 @@ export class Tour{
     const now=this.pose(),then=this.arrival!,scale=1e-6*Math.hypot(...add(now.camera,now.target,-1));
     return Math.hypot(...add(now.camera,then.camera,-1))>scale||Math.hypot(...add(now.target,then.target,-1))>scale;
   }
-  private schedule(){this.clearTimer();this.timer=setTimeout(()=>{this.timer=null;if(this.moved())this.set({status:'paused',autoplay:false});else this.next()},this.state.stop!.dwellSeconds*1000)}
+  private schedule(){this.clearTimer();this.timer=setTimeout(()=>{this.timer=null;if(this.moved())this.set({status:'paused',autoplay:false});else this.next()},(this.state.stop!.dwellSeconds??DWELL_SECONDS)*1000)}
+  /** The stop as the panel should show it: the caption's `{catalogCount}` is the active dataset's accepted count. */
+  private present(stop:TourStop):TourStop{return {...stop,caption:stop.caption.replaceAll('{catalogCount}',this.atlas.manifest?.count.toLocaleString('en-US')??'all')}}
   private async goTo(index:number):Promise<void>{
     const stop=this.tour.stops[index];if(!stop)return;
     this.clearTimer();const serial=++this.serial;this.step=index<this.state.index?-1:1;
     if(this.state.stop?.target.kind==='cmb'&&stop.target.kind!=='cmb')this.hooks.showCosmicHorizon(false);
-    this.set({index,stop,status:'travelling'});
+    this.set({index,stop:this.present(stop),status:'travelling'});
     let arrived:boolean|void|'skipped';
     try{arrived=await this.visit(stop,serial)}
     catch(error){arrived='skipped';if(serial===this.serial)this.hooks.notify(`${stop.title}: ${error instanceof Error?error.message:'unavailable'} Skipping.`)}

@@ -10,7 +10,7 @@ import unittest
 
 import numpy as np
 from astropy.cosmology import Planck18
-from prepare_data import META, accepted_mask, distance_lookup, hash_ids, project
+from prepare_data import META, accepted_mask, distance_lookup, hash_ids, leaf_metadata, project
 from prepare_survey_footprint import encode
 
 ROOT=Path(__file__).resolve().parent.parent
@@ -54,7 +54,7 @@ class Footprint(unittest.TestCase):
   leaf=max((n for n in self.manifest['nodes'] if not n['children']),key=lambda n:n['metadata']['bytes'])
   path=ROOT/'public/data/dr1'/leaf['metadata']['url']
   if not path.exists():self.skipTest('full dr1 binaries are not present')
-  rows=np.frombuffer(gzip.decompress(path.read_bytes()),META,offset=16)
+  rows=leaf_metadata(ROOT/'public/data/dr1',leaf)
   row=np.floor((rows['dec']+90)*2).astype(int).clip(0,359);col=np.floor(rows['ra']*2).astype(int)
   leaf_counts=np.zeros((360,720),np.int64);np.add.at(leaf_counts,(row,col),1)
   occupied=leaf_counts>0;self.assertGreaterEqual(int(occupied.sum()),3)

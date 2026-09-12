@@ -13,7 +13,7 @@ from pathlib import Path
 
 import numpy as np
 from astropy.io import fits
-from prepare_data import META, accepted_mask, header
+from prepare_data import accepted_mask, header, leaf_metadata
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -84,9 +84,7 @@ def main():
         matches = np.flatnonzero(np.isin(ids, wanted))
         if not len(matches):
             continue
-        compressed = (directory / node['metadata']['url']).read_bytes()
-        assert hashlib.sha256(compressed).hexdigest() == node['metadata']['sha256']
-        metadata = np.frombuffer(gzip.decompress(compressed), META, offset=16)
+        metadata = leaf_metadata(directory, node)
         for index in matches:
             sga_id, record = by_id[int(ids[index])]
             assert str(int(metadata[index]['targetid'])) == record['targetId']

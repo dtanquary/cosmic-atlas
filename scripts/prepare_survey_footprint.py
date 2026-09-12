@@ -6,13 +6,11 @@ this catalog's rows, not the official DESI tiling: dark cells were not surveyed
 here and are not confirmed empty.
 """
 import base64
-import gzip
-import hashlib
 import json
 from pathlib import Path
 
 import numpy as np
-from prepare_data import META
+from prepare_data import leaf_metadata
 
 ROOT = Path(__file__).resolve().parent.parent
 WIDTH, HEIGHT = 720, 360  # 0.5° cells; rows = Dec south→north, columns = RA 0→360
@@ -35,10 +33,7 @@ def main():
     for node in manifest['nodes']:
         if node['children']:
             continue
-        compressed = (directory / node['metadata']['url']).read_bytes()
-        assert hashlib.sha256(compressed).hexdigest() == node['metadata']['sha256']
-        rows = np.frombuffer(gzip.decompress(compressed), META, offset=16)
-        assert len(rows) == node['count']
+        rows = leaf_metadata(directory, node)
         # numpy includes the right edge in the last bin: Dec exactly +90 lands in the northernmost row; RA 360 is excluded by the catalog filter.
         counts += np.histogram2d(rows['dec'], rows['ra'], bins=[HEIGHT, WIDTH], range=[[-90, 90], [0, 360]])[0].astype(np.int64)
     assert int(counts.sum()) == manifest['count'], 'Leaf-once coverage broken or rows fell outside the sky range'

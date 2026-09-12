@@ -1,6 +1,6 @@
 import {afterEach,beforeEach,describe,expect,it,vi} from 'vitest';
 import * as THREE from 'three';
-import {Tour,tours,type CatalogEntry,type TourAtlas,type TourState} from '../src/tour';
+import {DWELL_SECONDS,Tour,tours,type CatalogEntry,type TourAtlas,type TourState} from '../src/tour';
 import type {Explorer} from '../src/explorer';
 import type {ViewState} from '../src/view-link';
 import {cartesian} from '../src/format';
@@ -10,6 +10,7 @@ import {nearbyReference} from '../src/nearby-galaxies';
 const _explorerIsATourAtlas:TourAtlas=null as unknown as Explorer;void _explorerIsATourAtlas;
 
 class FakeAtlas implements TourAtlas{
+  manifest={count:1000000};
   camera={position:new THREE.Vector3(0,0,1)};controls={target:new THREE.Vector3()};
   milkyWay={approachDirection:new THREE.Vector3(.6,0,.8)};
   calls:{method:string;args:unknown[]}[]=[];
@@ -35,7 +36,7 @@ function setup(tour=roadTrip,available=true){
   const runner=new Tour(atlas,tour,{showCosmicHorizon:v=>shell.push(v),resolveCatalog:()=>available?entry:null,onChange:s=>states.push(s),notify:m=>notices.push(m)});
   return {atlas,runner,shell,notices,states};
 }
-const dwell=(runner:Tour)=>vi.advanceTimersByTimeAsync(runner.state.stop!.dwellSeconds*1000);
+const dwell=(runner:Tour)=>vi.advanceTimersByTimeAsync((runner.state.stop!.dwellSeconds??DWELL_SECONDS)*1000);
 
 beforeEach(()=>vi.useFakeTimers());
 afterEach(()=>vi.useRealTimers());
@@ -50,7 +51,7 @@ describe('Tour runner',()=>{
       ['visitCatalog',[entry,6]],['visitCatalog',[entry,5]],['applyView',[expect.objectContaining({identity:null}),6]],['reset',[6]],
     ];
     for(const [i,[method,args]] of expected.entries()){
-      expect(runner.state).toMatchObject({index:i,status:'travelling',autoplay:true,stop:roadTrip.stops[i]});
+      expect(runner.state).toMatchObject({index:i,status:'travelling',autoplay:true});expect(runner.state.stop!.title).toBe(roadTrip.stops[i].title);
       expect(atlas.calls.length).toBe(i+1);expect(atlas.last.method).toBe(method);expect(atlas.last.args).toEqual(args);
       await atlas.settle(true);
       expect(runner.state.status).toBe('dwelling');expect(vi.getTimerCount()).toBe(1);
@@ -58,6 +59,10 @@ describe('Tour runner',()=>{
     }
     expect(runner.state).toMatchObject({index:9,status:'finished',autoplay:false});
     expect(vi.getTimerCount()).toBe(0);expect(atlas.calls.length).toBe(10);expect(shell).toEqual([]);
+    // The overview caption names the active dataset's accepted count, not the full-release figure.
+    expect(roadTrip.stops[9].caption).toContain('{catalogCount}');
+    expect(runner.state.stop!.caption).toContain('1,000,000 accepted DESI DR1 observations in this dataset');
+    expect(runner.state.stop!.caption).not.toContain('{catalogCount}');
     // Satellite framing: observer-facing from Andromeda, pulled back to the stop's 0.16 Mpc.
     const m31=nearbyReference.entries.find(e=>e.key==='m31')!,at=cartesian(m31.raDeg,m31.decDeg,m31.distanceMpc),satellites=atlas.calls[4].args[0] as ViewState;
     expect(satellites.target).toEqual(at);
@@ -110,6 +115,15 @@ describe('Tour runner',()=>{
     runner.pause();expect(runner.state.status).toBe('travelling');
     await atlas.settle(true);
     expect(runner.state).toMatchObject({index:1,status:'paused',autoplay:false});expect(vi.getTimerCount()).toBe(0);
+  });
+  it('dwells for the default eight seconds unless a stop sets its own',async()=>{
+    const {atlas,runner}=setup({...roadTrip,stops:[roadTrip.stops[0],{...roadTrip.stops[1],dwellSeconds:2}]});
+    runner.start();await atlas.settle(true);
+    await vi.advanceTimersByTimeAsync(DWELL_SECONDS*1000-1);expect(runner.state.status).toBe('dwelling');
+    await vi.advanceTimersByTimeAsync(1);expect(runner.state).toMatchObject({index:1,status:'travelling'});
+    await atlas.settle(true);
+    await vi.advanceTimersByTimeAsync(1999);expect(runner.state.status).toBe('dwelling');
+    await vi.advanceTimersByTimeAsync(1);expect(runner.state.status).toBe('finished');
   });
   it('pauses instead of hopping when the pose changed during the dwell',async()=>{
     const {atlas,runner}=setup();
