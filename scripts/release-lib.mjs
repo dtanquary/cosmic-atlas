@@ -49,7 +49,7 @@ export async function planRelease(publicRoot) {
     if (!profile) throw new Error(`Missing model profile for node ${node.id}`);
     await add(assetPath('data/models', profile.url), profile);
   }
-  for (const name of ['galaxy-detail.json', 'galaxy-spiral.json']) {
+  for (const name of ['galaxy-detail.json', 'galaxy-spiral.json', 'survey-footprint.json']) {
     const detail = JSON.parse(await add(`data/${name}`));
     if (detail.catalogSourceSha256 !== manifest.source.sha256) throw new Error(`Mismatched ${name}`);
   }

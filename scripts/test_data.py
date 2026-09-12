@@ -1,4 +1,5 @@
 """Numerical and end-to-end dataset validation, without an external test framework."""
+import base64
 import gzip
 import hashlib
 import json
@@ -10,6 +11,9 @@ import unittest
 import numpy as np
 from astropy.cosmology import Planck18
 from prepare_data import META, accepted_mask, distance_lookup, hash_ids, project
+from prepare_survey_footprint import encode
+
+ROOT=Path(__file__).resolve().parent.parent
 
 class Numerics(unittest.TestCase):
  def test_axes(self):
@@ -28,6 +32,34 @@ class Numerics(unittest.TestCase):
  def test_hash(self):
   ids=np.array([1,9007199254740993,4000000000000000000],dtype='i8')
   np.testing.assert_equal(hash_ids(ids),hash_ids(ids));self.assertEqual(len(set(map(int,hash_ids(ids)))),3)
+
+class Footprint(unittest.TestCase):
+ """The survey-footprint sidecar must describe the tracked dr1 manifest, cell for cell."""
+ @classmethod
+ def setUpClass(cls):
+  cls.manifest=json.loads((ROOT/'public/data/dr1/manifest.json').read_text())
+  cls.footprint=f=json.loads((ROOT/'public/data/survey-footprint.json').read_text())
+  cls.grid=np.frombuffer(base64.b64decode(f['cells']),np.uint8).reshape(f['height'],f['width'])
+ def test_header_and_grid(self):
+  f,m=self.footprint,self.manifest
+  self.assertEqual((f['version'],f['catalogId'],f['catalogSourceSha256'],f['count']),(1,m['id'],m['source']['sha256'],m['count']))
+  self.assertEqual((f['width'],f['height'],f['degreesPerCell']),(720,360,.5));self.assertEqual(self.grid.shape,(360,720))
+  self.assertEqual(int(np.count_nonzero(self.grid)),f['occupiedCells']);self.assertEqual(int(self.grid.max()),255)
+  self.assertGreater(f['maxCellCount'],0);self.assertEqual(encode(np.array([0,1,f['maxCellCount']]),f['maxCellCount']).tolist()[::2],[0,255])
+  self.assertIn('not the official survey tiling',f['disclosure'])
+ def test_leaf_cells_match_convention(self):
+  # Re-bin one leaf independently (row = Dec south→north, col = RA): the sidecar holds at least that
+  # leaf's galaxies in every cell, so a transposed or flipped grid fails here.
+  leaf=max((n for n in self.manifest['nodes'] if not n['children']),key=lambda n:n['metadata']['bytes'])
+  path=ROOT/'public/data/dr1'/leaf['metadata']['url']
+  if not path.exists():self.skipTest('full dr1 binaries are not present')
+  rows=np.frombuffer(gzip.decompress(path.read_bytes()),META,offset=16)
+  row=np.floor((rows['dec']+90)*2).astype(int).clip(0,359);col=np.floor(rows['ra']*2).astype(int)
+  leaf_counts=np.zeros((360,720),np.int64);np.add.at(leaf_counts,(row,col),1)
+  occupied=leaf_counts>0;self.assertGreaterEqual(int(occupied.sum()),3)
+  self.assertLessEqual(int(leaf_counts.max()),self.footprint['maxCellCount'])
+  self.assertTrue(np.all(self.grid[occupied]>=encode(leaf_counts,self.footprint['maxCellCount'])[occupied]))
+  self.assertTrue(np.all(self.grid[occupied]>0))
 
 def validate_dataset(path):
  manifest=json.loads((path/'manifest.json').read_text());nodes={n['id']:n for n in manifest['nodes']}

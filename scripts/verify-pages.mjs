@@ -27,7 +27,7 @@ const prefix = `data/releases/${report.releaseId}`;
 const manifest = JSON.parse((await exact(manifestPath)).bytes);
 const models = JSON.parse((await exact(`${prefix}/models/manifest.json`)).bytes);
 if (manifest.count !== report.count || models.count !== report.count) throw new Error('Hosted catalog coverage differs');
-for (const name of ['galaxy-search.json', 'galaxy-detail.json', 'galaxy-spiral.json']) await exact(`${prefix}/${name}`);
+for (const name of ['galaxy-search.json', 'galaxy-detail.json', 'galaxy-spiral.json', 'survey-footprint.json']) await exact(`${prefix}/${name}`);
 // All app/credit assets plus root/middle/last catalog chunks, not a full CDN re-download.
 for (const asset of report.assets) if (!asset.path.startsWith('data/') && !['_headers', '404.html'].includes(asset.path)) await exact(asset.path);
 let chunks = 0;
