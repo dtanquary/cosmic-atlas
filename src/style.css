@@ -97,3 +97,5 @@
 .tour-list{list-style:none;margin:18px 0 0;padding:0}.tour-list li{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;border-top:1px solid var(--line)}
 .dialog .tour-list h3{margin:0 0 6px;font-size:15px}.dialog .tour-list p{margin:0;font-size:13px}.tour-list .button{white-space:nowrap}
 @media(max-width:600px){.tour-list li{flex-direction:column;align-items:stretch}}
+
+.share-actions{flex-wrap:wrap}.share-actions .button{min-width:170px}.share-tour-hint{margin:-10px 0 24px}

@@ -31,3 +31,9 @@ export function decodeView(hash:string):ViewState|null{
   const identity:ViewIdentity=!match?null:match[2]!==undefined?{node:match[2],row:Number(match[3]),targetId:match[4]}:match[1] as 'sun'|'core'|`nearby:${string}`;
   return {target,camera:target.map((v,i)=>v+offset[i]) as Vec3,identity};
 }
+
+/** A tour invitation carries no camera/selection and always starts at stop one. */
+export const ROAD_TRIP_HASH='#tour=road-trip';
+export function decodeTourLink(hash:string):'road-trip'|null{
+  return hash===ROAD_TRIP_HASH?'road-trip':null;
+}
