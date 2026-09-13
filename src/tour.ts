@@ -111,7 +111,9 @@ export class Tour{
       case 'core':return this.atlas.visitMilkyWay(s);
       case 'overview':return this.atlas.reset(s);
       case 'cmb':this.hooks.showCosmicHorizon(true);return this.atlas.viewCosmicHorizon(s);
-      case 'localgroup':case 'cluster':{const at=target.positionMpc as Vec3;return this.atlas.applyView({target:at,camera:add(at,approach,distanceMpc!),identity:null},s)}
+      case 'localgroup':{const at=target.positionMpc as Vec3;return this.atlas.applyView({target:at,camera:add(at,approach,distanceMpc!),identity:null},s)}
+      // Look outward along the observed sky direction: a Milky Way angle looks across the cluster's redshift elongation.
+      case 'cluster':{const at=target.positionMpc as Vec3;return this.atlas.applyView({target:at,camera:add(at,at,-distanceMpc!/Math.hypot(...at)),identity:null},s)}
       case 'nearby':{
         const entry=nearbyReference.entries.find(entry=>entry.key===target.key);if(!entry)throw new Error('Unknown nearby galaxy.');
         if(distanceMpc===undefined)return this.atlas.visitNearby(entry.id,s);

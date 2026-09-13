@@ -138,7 +138,7 @@
         },
         {
           "title": "Coma cluster",
-          "caption": "The Coma cluster (Abell 1656) is centered here from its NED position and redshift z = 0.024, about 106 Mpc away, where light left about 340 million years ago. Because each galaxy's distance comes from its redshift, the cluster's internal motions stretch it along our line of sight; only DESI rows near this redshift and direction are counted, a sky-and-redshift window rather than true membership.",
+          "caption": "Look for the central gathering of galaxy points: the Coma cluster (Abell 1656), centered on its NED position and redshift z = 0.024, about 106 Mpc away, where light left about 340 million years ago. Each survey point is a galaxy observation; internal motions stretch redshift distances along our line of sight, and a sky-and-redshift window indicates possible association rather than true membership.",
           "target": {
             "kind": "cluster",
             "key": "coma",
@@ -148,7 +148,7 @@
               49.60591818932865
             ]
           },
-          "distanceMpc": 9,
+          "distanceMpc": 15,
           "travelSeconds": 6
         },
         {

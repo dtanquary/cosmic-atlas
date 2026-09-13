@@ -83,9 +83,14 @@ export async function probeTours(atlas:Explorer){
     // 4. Road trip: every stop arrives, or is skipped with the notice (catalog stops on subsets), through to Finished.
     notices.length=0;await start('road-trip');
     const seen=new Map<number,string>();
-    await until(()=>{track();const n=stopNumber(),s=statusText();if(n&&settled.test(s)&&!seen.has(n))seen.set(n,s);return /^Finished/.test(s)},'the road trip to finish',90000);
+    const clusterFramings:{targetErrorMpc:number;distanceError:number;outwardAlignment:number;observerBehind:boolean;passed:boolean}[]=[];
+    await until(()=>{track();const n=stopNumber(),s=statusText();if(n&&settled.test(s)&&!seen.has(n)){seen.set(n,s);const stop=roadTrip.stops[n-1];if(stop.target.kind==='cluster'){
+      const center=new THREE.Vector3().fromArray(stop.target.positionMpc!),forward=atlas.camera.getWorldDirection(new THREE.Vector3()),targetErrorMpc=atlas.controls.target.distanceTo(center),distanceError=Math.abs(atlas.camera.position.distanceTo(center)-stop.distanceMpc!)/stop.distanceMpc!,outwardAlignment=forward.dot(center.clone().normalize()),observerBehind=atlas.camera.position.clone().negate().dot(forward)<0;
+      clusterFramings.push({targetErrorMpc,distanceError,outwardAlignment,observerBehind,passed:targetErrorMpc<1e-9&&distanceError<1e-6&&outwardAlignment>1-1e-9&&observerBehind});
+    }}return /^Finished/.test(s)},'the road trip to finish',90000);
     const skipped=notices.filter(text=>/not available in this dataset/.test(text));
-    const road={arrived:[...seen.keys()].sort((a,b)=>a-b),skipped,total:roadTrip.stops.length,passed:seen.size+skipped.length>=roadTrip.stops.length&&[...seen.values()].every(s=>!/^Paused/.test(s))};
+    const clusterFraming=clusterFramings[0];
+    const road={clusterFraming,arrived:[...seen.keys()].sort((a,b)=>a-b),skipped,total:roadTrip.stops.length,passed:clusterFraming?.passed===true&&seen.size+skipped.length>=roadTrip.stops.length&&[...seen.values()].every(s=>!/^Paused/.test(s))};
     escape();await frame();
     // 5. Hold a real catalog metadata lookup, pause before an animation exists, then release it.
     // Subsets have no matching catalog stops, so the skipping checks above cover that case.

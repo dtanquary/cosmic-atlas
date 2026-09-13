@@ -70,10 +70,13 @@ describe('Tour runner',()=>{
     const m31=nearbyReference.entries.find(e=>e.key==='m31')!,at=cartesian(m31.raDeg,m31.decDeg,m31.distanceMpc),satellites=atlas.calls[4].args[0] as ViewState;
     expect(satellites.target).toEqual(at);
     satellites.camera.forEach((v,i)=>expect(v).toBeCloseTo(at[i]*(1-.16/.785),12));
-    // Cluster framing: the NED center, camera along the Milky Way approach direction at the stop distance.
+    // Cluster framing: retain the NED center, looking outward from the observer side instead of back toward the Sun.
     const coma=roadTrip.stops[8],cluster=atlas.calls[8].args[0] as ViewState;
     expect(cluster.target).toEqual(coma.target.positionMpc);
-    cluster.camera.forEach((v,i)=>expect(v).toBeCloseTo(coma.target.positionMpc![i]+[.6,0,.8][i]*coma.distanceMpc!,12));
+    const center=new THREE.Vector3().fromArray(cluster.target),camera=new THREE.Vector3().fromArray(cluster.camera),forward=center.clone().sub(camera).normalize();
+    expect(camera.clone().negate().dot(forward)).toBeLessThan(0); // Sun is behind the camera
+    expect(forward.dot(center.clone().normalize())).toBeCloseTo(1,12);
+    expect(camera.distanceTo(center)).toBeCloseTo(coma.distanceMpc!,12);
   });
   it('frames the zoom-out: Sun view from the origin, Local Group midpoint, overview reset and the CMB shell hook',async()=>{
     const {atlas,runner,shell}=setup(zoomOut);

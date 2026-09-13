@@ -204,3 +204,9 @@ Share now distinguishes Copy view link from Copy cosmic road trip link, with sta
 ## Default background opacity — 13 September 2026
 
 State: verified. Fresh Settings opens at 0.5%; saved values, including 0%, remain unchanged. Chrome and WebKit production checks verify both the displayed percentage and the renderer's uniform. The full-data self/UI/home GPU suites pass with the positive default and the existing local-position guard.
+
+## Coma stop framing — 13 September 2026
+
+State: implementation checked on the development GPU; production phone/desktop review pending. The reported sparse stop was reproduced twice after all visible detail loaded. Its 9 Mpc Milky Way approach looked obliquely toward the observer through the cluster’s redshift-distance elongation. Full detail produced the same 537,633 submitted observations at that pose. An outward view from 15 Mpc in front of the unchanged NED center produces a recognizable central gathering. The caption now identifies the galaxy points and preserves the redshift/membership caveat.
+
+The existing runner regression failed with the old camera direction and passes with the fix. All 92 tests, strict TypeScript and the full-data package pass. Full-data UI/home/share/tour GPU checks pass, including outward Coma framing and context recovery. No catalog positions, rendering settings, model allocations or assets were changed.
