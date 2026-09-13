@@ -336,3 +336,17 @@ Four-second full-app orbit samples after three-second settling measure **57.7 FP
 Development-subset `?dataset=development&nearbytest&cloudtest&portraittest&tourtest` passes with both nearby disks/clouds and expected notices for the two unavailable DESI stops. The production package passes **54 real-control checks**, including all **ten road-trip stops**, all eight named treatments/reference links/disclosures, cloud mode changes, share restoration and persisted Catalog types. Visually inspected every stop and separate M32/M110 close-ups; the smooth dwarfs retain their small adopted scale. The Milky Way, Coma and survey keep their existing reference/catalog appearance. Operational deployment receipts remain in ignored local files.
 
 Final dwarf-light refinement at `debd77a`: the compact M32 and diffuse M110 profiles keep their coefficients and adopted geometry, with illustrative exposures of 8 and 6 so their smooth bodies remain legible. `image-portraits-dwarfs-full` adds all three smooth portraits to the multi-angle GPU suite and passes alongside nearby, continuity, UI and home checks; `image-portraits-dwarfs-subset` passes the four available disk/smooth portraits and nearby checks. Smooth-model face-view peaks are 179–230/255; all external/inside views remain unclipped, forward-only, pickable and deterministic across reconstruction/context recovery. The rebuilt production package passes all 54 real-control checks and all ten road-trip stops again. Separate M32/M110 screenshots confirm visible smooth bodies with their different adopted sky ellipses. No other model, source measurement or size changed.
+
+## Mobile interface browser checks
+
+`scripts/check-mobile-ui.mjs` exercises the public controls in Chrome and WebKit: compact/scrolling inspectors, orbit/pinch/pan camera changes through saved views, settings, home/CMB/flight/tours, search cancellation, reduced viewport, portrait/landscape widths and repeated desktop restoration. Chrome touch gestures use browser-level touch injection; WebKit checks native button taps and responsive layout. Reduced-height search simulates available keyboard space; it does not exercise a physical iPhone keyboard or its safe-area hardware.
+
+Use a separately installed Playwright (validated with 1.63.0) so browser tooling stays outside the application dependencies:
+
+```sh
+npm install --prefix .cache/capture-tools --no-save playwright@1.63.0
+.cache/capture-tools/node_modules/.bin/playwright install webkit
+PLAYWRIGHT_MODULE="$PWD/.cache/capture-tools/node_modules/playwright/index.mjs" node scripts/check-mobile-ui.mjs
+```
+
+The script uses installed Chrome and downloaded WebKit, a running full-data dev server at `http://127.0.0.1:5173/`, and ignored `.cache/mobile-ui/checks` output. `ATLAS_TEST_URL`, `ATLAS_TEST_OUTPUT` and `ATLAS_TEST_ENGINE=chrome|webkit` can select a production preview, output folder or engine. Browser assertions are supplemental to the existing shared GPU suites. Final browser/production results are recorded below when complete.

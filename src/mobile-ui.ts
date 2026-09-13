@@ -53,7 +53,7 @@ export function setupMobileUI(signal:AbortSignal){
   summaries.get('home-inspector')!.textContent=`Sun to core · ${element('home-distance').textContent}`;
   const active=!element('flight-controls').hidden?element('flight-controls'):sheets.find(p=>p.id==='tour-panel'&&!p.hidden)??sheets.find(p=>!p.hidden);
   const identity=active?.id==='inspector'?element('object-name').textContent:active?.id==='tour-panel'?element('tour-stop-title').textContent:active?.id;
-  if(active&&(active.id!==lastPanel||identity!==lastIdentity)&&toggles.has(active))collapse(active);
+  if(active&&(active.id!==lastPanel||identity!==lastIdentity)&&toggles.has(active)){collapse(active);const body=active.querySelector('.inspector-body,.mobile-cosmic-body');if(body)body.scrollTop=0}
   lastPanel=active?.id??'';lastIdentity=identity??'';
   root.toggleAttribute('data-mobile-sheet',!!active);
   for(const panel of [...sheets,element('flight-controls')])panel.toggleAttribute('data-mobile-active',panel===active);
@@ -82,7 +82,7 @@ export function setupMobileUI(signal:AbortSignal){
    const display=menu.querySelector('.mobile-menu-display')!;
    move(document.querySelector('.mode-switch')!,display);
    display.append(unitsLabel);move(element('units'),display);
-   move(document.querySelector('.footer>div')!,menu.querySelector('.mobile-menu-catalog')!);move(element('detail-status'),menu.querySelector('.mobile-menu-catalog')!);
+   move(document.querySelector('.footer>div')!,menu.querySelector('.mobile-menu-catalog')!);move(element('detail-status'),menu.querySelector('.mobile-menu-catalog')!);move(element('lookback-note'),menu.querySelector('.mobile-menu-catalog')!);
    for(const [id,summary] of summaries)element(id).querySelector('.inspector-header')!.append(summary);
    move(element('tour-stop-title'),element('tour-panel').querySelector('.inspector-header')!);
    for(const panel of sheets){

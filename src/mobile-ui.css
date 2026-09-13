@@ -61,7 +61,7 @@
 [data-mobile] .mobile-menu-grid #help-button{width:auto}[data-mobile] .mobile-menu-grid .button[aria-pressed=true]{background:#173541;color:#b8eff7;border-color:#345e70}
 [data-mobile] .mobile-menu-display{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center;border-top:1px solid var(--line);margin-top:22px;padding-top:16px}
 [data-mobile] .mobile-menu-display h3{grid-column:1/-1;margin:0;font-size:13px;color:#a7bdc9}
-[data-mobile] .mobile-menu-display .mode-switch{grid-column:1/-1}[data-mobile] .mode-switch button{flex:1;min-height:40px;font-size:13px}
+[data-mobile] .mobile-menu-display .mode-switch{grid-column:1/-1}[data-mobile] .mode-switch button{flex:1;min-height:44px;font-size:13px}
 [data-mobile] .mobile-units-label{font-size:13px;color:#a7bdc9}[data-mobile] #units{width:100%;min-height:44px;font-size:16px;appearance:auto}
 [data-mobile] .mobile-menu-catalog{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
 [data-mobile] .mobile-menu-catalog .count-value{font-size:25px;margin:5px 0}[data-mobile] .mobile-menu-catalog .count-caption{font-size:11px}[data-mobile] .mobile-menu-catalog .count-meta{flex-direction:row;gap:16px;margin:10px 0;font-size:10px}
@@ -77,3 +77,7 @@
 @media(max-height:540px){[data-mobile]{--mobile-nav-height:56px}[data-mobile] .mobile-nav .button{height:48px;gap:2px;padding:4px}[data-mobile] .inspector,[data-mobile] .cosmic-context,[data-mobile] .flight-controls{left:auto;right:max(8px,env(safe-area-inset-right,0px));width:min(340px,45vw);max-height:calc(100dvh - var(--mobile-bottom) - 20px)}[data-mobile] .topbar{height:54px}[data-mobile] .dialog{max-width:560px}[data-mobile] .measurement{left:16px;right:auto;width:calc(50vw - 32px);top:60px}}
 
 [data-mobile] .mobile-sheet-summary{grid-column:1;grid-row:2;font-size:12px;color:#91b3c3;margin:-3px 0 5px}[data-mobile] .mobile-sheet-summary[data-uncertain]{color:#e4b77f}
+
+[data-mobile] .mobile-menu-catalog .lookback-note{display:block;max-width:none;text-align:left;font-size:11px;margin-top:12px}
+[data-mobile] #minimum-opacity{height:44px}
+@media(max-height:540px){[data-mobile] .toast{left:max(16px,env(safe-area-inset-left,0px));transform:none;max-width:calc(50vw - 32px)}}
