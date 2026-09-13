@@ -161,8 +161,10 @@ Reviewed captures at 1600×1000 of the dialog and all five zoom-out stops: the S
 
 ## Handoff review: pause while a tour stop loads — 12 September 2026
 
-State: fixing; unit regression passes, final GPU and production checks pending.
+State: verified at `d70630b` on full-data and subset GPU runs, including context recovery, and the rebuilt production package.
 
 Read through `33f60bd`, `0ac380b` and `5a6cfda`: R/F capture matches the explorer's shortcut guards, the autoplay-off and forward-skip assertions cover their intended cases, shared diagnostic helpers and merged CSS preserve behavior, and the committed `tour-final` report exactly matches the saved report. `npm test` correctly confines discovery to `tests/` (84 tests before this fix).
 
 The read-through also found an uncovered pause path: a catalog stop can still be waiting for metadata before an animation exists. In that state `stopTravel()` does nothing, the panel stays Travelling and the pending visit remains authorized to move later. A deferred-visit unit test reproduced the failure. Pause now invalidates the tour visit token, drops the previous arrival pose and enters Paused immediately; Play retries the same destination with a fresh token. The new test verifies late completion cannot change state or schedule a dwell, and resume remains possible. The real-GPU tour probe now holds an actual metadata lookup at NGC 3982, pauses through the panel, releases the lookup, checks the camera stays put and resumes the stop.
+
+The held NGC 3982 lookup now produces zero target and camera drift after Pause, both before and after context recovery, and Play resumes successfully. All shared navigation/home/nearby/CMB/continuity probes pass. Production R/F checks pass during travel, all five zoom-out stops remain paused when stepped with autoplay off, shell restoration passes, and Andromeda/NGC 3982 links retain their camera and verified selection in fresh tabs. Tour controls remain reachable at 1000×600, 800×600 and 390×844. Screenshots of the stacked overlays and CMB tour panel were inspected; the existing narrow status-text crowding remains deferred. Final reports are linked in [validation](validation.md).
