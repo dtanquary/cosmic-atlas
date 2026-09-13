@@ -23,6 +23,7 @@ export async function runDiagnostics(atlas:Explorer,parent:HTMLElement){
   report.portraits=await atlas.probeGalaxyPortraits(preview);show();report.portraitContext=await atlas.probeContextRecovery();report.portraitsAfterRecovery=await atlas.probeGalaxyPortraits();
   const before=report.portraits as Awaited<ReturnType<Explorer['probeGalaxyPortraits']>>,after=report.portraitsAfterRecovery as typeof before;
   report.portraitRecovery={passed:before.cases.every((c,i)=>c.views.every((v,j)=>v.checksum===after.cases[i].views[j].checksum))};
+  report.portraitPerformance=await atlas.probeVolumePerformance('portrait');
   if(query.has('portraitpreview'))parent.append(preview);show();
  }
  if(query.has('cloudtest')){
@@ -30,7 +31,7 @@ export async function runDiagnostics(atlas:Explorer,parent:HTMLElement){
   report.clouds=await atlas.probeCloudModels(preview);show();report.cloudContext=await atlas.probeContextRecovery();report.cloudsAfterRecovery=await atlas.probeCloudModels();
   const before=report.clouds as Awaited<ReturnType<Explorer['probeCloudModels']>>,after=report.cloudsAfterRecovery as typeof before;
   report.cloudRecovery={passed:before.cases.every((c,i)=>c.views.every((v,j)=>v.checksum===after.cases[i].views[j].checksum))};
-  report.cloudPerformance=await atlas.probeCloudPerformance();
+  report.cloudPerformance=await atlas.probeVolumePerformance('cloud');
   if(query.has('cloudpreview'))parent.append(preview);show();
  }
  if(query.has('colortest')){report.colors=atlas.probeGalaxyColors();show();report.colorContext=await atlas.probeContextRecovery();report.colorsAfterRecovery=atlas.probeGalaxyColors();show()}

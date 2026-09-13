@@ -900,12 +900,12 @@ export class Explorer {
     const {probeCloudModels}=await import('./cloud-diagnostics');
     try{return probeCloudModels(this.renderer,preview)}finally{this.invalidate()}
   }
-  async probeCloudPerformance(){
+  async probeVolumePerformance(kind:'cloud'|'portrait'){
     const savedRotate=this.controls.autoRotate,savedSpeed=this.controls.autoRotateSpeed,cases=[];
     const sleep=(ms:number)=>new Promise<void>(resolve=>setTimeout(resolve,ms));
     try{
-      for(const model of this.nearbyGalaxies.filter(m=>m.data.cloud)){
-        this.visitNearby(model.data.galaxy.id);this.controls.autoRotate=true;this.controls.autoRotateSpeed=2;this.invalidate();await sleep(3000);
+      for(const model of this.allModels.filter(m=>kind==='cloud'?m.data.cloud:galaxyPortrait(m.data.galaxy.targetId)?.disk)){
+        this.visitGalaxy(model.data.galaxy.id);this.controls.autoRotate=true;this.controls.autoRotateSpeed=2;this.invalidate();await sleep(3000);
         const samples:number[]=[];let previous=performance.now();const end=previous+4000;
         await new Promise<void>(resolve=>{const frame=(now:number)=>{samples.push(now-previous);previous=now;if(now<end)requestAnimationFrame(frame);else resolve()};requestAnimationFrame(frame)});
         const sorted=samples.slice(5).sort((a,b)=>a-b),mean=sorted.reduce((a,b)=>a+b,0)/sorted.length;
