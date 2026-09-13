@@ -9,7 +9,7 @@ export function probeGalaxyVariants(renderer:THREE.WebGLRenderer,source:GalaxyDe
  const previousTarget=renderer.getRenderTarget(),previousColor=renderer.getClearColor(new THREE.Color()),previousAlpha=renderer.getClearAlpha();
  const grid=document.createElement('div');grid.style.cssText=`display:grid;grid-template-columns:repeat(${galaxyVariants.length},minmax(0,1fr));gap:12px;white-space:normal`;
  const sample=(variant:GalaxyVariant,angle:number,show=false)=>{
-  const model=new GalaxyVolume({...light,spiral:{...light.spiral!,...variant,innerStyle:'innerStyle' in variant?variant.innerStyle:undefined}},template.frame,template.radius,template.center);
+  const model=new GalaxyVolume({...light,spiral:{...light.spiral!,...variant,innerStyle:'innerStyle' in variant?variant.innerStyle:undefined,armStyle:'armStyle' in variant?variant.armStyle:undefined}},template.frame,template.radius,template.center);
   try{
    const radians=angle*Math.PI/180;
    camera.up.copy(model.frame.major);camera.position.copy(model.center).addScaledVector(model.frame.normal,12*model.radius*Math.cos(radians)).addScaledVector(model.frame.minor,12*model.radius*Math.sin(radians));

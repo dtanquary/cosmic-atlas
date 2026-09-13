@@ -14,7 +14,7 @@ export interface GalaxyDetailData {
   version:1; catalogId:string; catalogSourceSha256:string; name:string; galaxy:Galaxy;
   shape:{radiusArcsec:number; e1:number; e2:number; sersic:number; profileType:string};
   gaussians:{sigmaRe:number; peak:number}[]; fitMaxRelativeError:number;
-  spiral?:{arms:number; pitchDegrees:number; phaseRadians:number; seed:number; bar?:boolean; barRadiusRe?:number;innerStyle?:'ring'};
+  spiral?:{arms:number; pitchDegrees:number; phaseRadians:number; seed:number; bar?:boolean; barRadiusRe?:number;innerStyle?:'ring';armStyle?:'feathered'};
   model?:{family:GalaxyFamily;typeSource:'catalog'|'proxy';typeLabel:string;shapeMeasured:boolean;sourceName?:string;profileIndex:number};
   knotCount?:number;
 }
@@ -42,6 +42,13 @@ export function spiralSamples(parameters:NonNullable<GalaxyDetailData['spiral']>
       const strength=THREE.MathUtils.smoothstep(r,.45,.8)*(1-THREE.MathUtils.smoothstep(r,1.25,1.65));
       const ringAngle=parameters.phaseRadians+i*2.399963229728653;
       angle+=Math.atan2(Math.sin(ringAngle-angle),Math.cos(ringAngle-angle))*strength;
+    }
+    if(parameters.armStyle==='feathered'){
+      // Short branching arm segments. Only azimuth changes: the radial profile,
+      // thickness, random sequence, colors and total light budget stay shared.
+      const outer=THREE.MathUtils.smoothstep(r,.6,1.3);
+      angle+=outer*(.28*Math.sin(r*7+arm*2)+.13*Math.sin(r*15-arm));
+      if(i%4===0)angle+=outer*.42*Math.sin(r*4+arm);
     }
     positions.set([r*Math.cos(angle),r*Math.sin(angle),normal()*.035],i*3);
     if(parameters.bar&&random()<.27){

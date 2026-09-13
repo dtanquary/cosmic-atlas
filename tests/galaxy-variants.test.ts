@@ -4,6 +4,12 @@ import {galaxyColors} from '../src/galaxy-colors';
 import {spiralSamples,spiralLight} from '../src/galaxy-detail';
 import {nearbyDetails} from '../src/nearby-galaxies';
 
+it('gives named road trip destinations distinct stable illustrations',()=>{
+ expect(galaxyVariant('nearby:m31').variant.key).toBe('tight');
+ expect(galaxyVariant('nearby:m33').variant.key).toBe('feathered');
+ expect(galaxyVariant('39633325333155389').variant.key).toBe('multi');
+});
+
 it('assigns every variant across stable identities without depending on the dataset row or source type',()=>{
  const source=nearbyDetails()[0],light=spiralLight(source);
  expect(spiralLight({...source,galaxy:{...source.galaxy,id:314}}).spiral).toEqual(light.spiral);
