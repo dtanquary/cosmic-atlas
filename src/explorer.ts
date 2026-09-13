@@ -19,6 +19,8 @@ import {interpolatePose,type Pose} from './travel';
 import type {ViewIdentity,ViewState} from './view-link';
 import type { Galaxy, Manifest, SpatialNode } from './types';
 
+export const DEFAULT_MINIMUM_OPACITY=0.005;
+
 const OVERVIEW_DIRECTION=new THREE.Vector3(.85,-1,.58).normalize();
 
 const vertex=`precision highp float;
@@ -200,7 +202,7 @@ export class Explorer {
   private wantedModels=new Set<number>();
   private lastModelScan=0;
   private modelScanNeeded=true;
-  private minOpacityUniform={value:0};
+  private minOpacityUniform={value:DEFAULT_MINIMUM_OPACITY};
   private pickTarget=new THREE.WebGLRenderTarget(1,1,{type:THREE.UnsignedByteType,format:THREE.RGBAFormat,minFilter:THREE.NearestFilter,magFilter:THREE.NearestFilter,depthBuffer:true,stencilBuffer:false});
   private pickMaterial=this.material(pickFragment,9,false,true);
   private originMarker=this.marker(0x7299ad,7);
@@ -1265,7 +1267,7 @@ export class Explorer {
       const configuredNear=sample(10,false,true,0,this.enlargePointsUniform.value);
       const near=sample(10),middle=sample(500),far=sample(1200),uniform=sample(1200,false,false);
       const nearPick=sample(10,true),farPick=sample(1200,true),uniformPick=sample(1200,true,false);
-      const faintFloor=sample(1200,false,true,.01),faintFloorPick=sample(1200,true,true,.01);
+      const faintFloor=sample(1200,false,true,DEFAULT_MINIMUM_OPACITY),faintFloorPick=sample(1200,true,true,DEFAULT_MINIMUM_OPACITY);
       const fixedNear=sample(10,false,true,0,false),fixedNearPick=sample(10,true,true,0,false),enlargedWithoutFade=sample(10,false,false),fixedWithoutFade=sample(10,false,false,0,false);
       const independentSize=fixedNear.maxAlpha===near.maxAlpha&&fixedNear.coveredPixels===middle.coveredPixels&&fixedNearPick.coveredPixels===uniformPick.coveredPixels&&nearPick.coveredPixels>fixedNearPick.coveredPixels&&enlargedWithoutFade.coveredPixels>fixedWithoutFade.coveredPixels&&enlargedWithoutFade.maxAlpha===fixedWithoutFade.maxAlpha;
       return {configuredNear,near,middle,far,uniform,nearPick,farPick,uniformPick,faintFloor,faintFloorPick,fixedNear,fixedNearPick,enlargedWithoutFade,fixedWithoutFade,independentSize,passed:independentSize&&near.maxAlpha===255&&middle.maxAlpha>0&&middle.maxAlpha<near.maxAlpha&&near.coveredPixels>middle.coveredPixels&&far.coveredPixels===0&&uniform.coveredPixels>0&&nearPick.coveredPixels>0&&farPick.coveredPixels===0&&uniformPick.coveredPixels>0&&faintFloor.maxAlpha>0&&faintFloor.maxAlpha<10&&faintFloorPick.coveredPixels>0};
