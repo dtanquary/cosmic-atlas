@@ -87,8 +87,33 @@ export async function probeTours(atlas:Explorer){
     const skipped=notices.filter(text=>/not available in this dataset/.test(text));
     const road={arrived:[...seen.keys()].sort((a,b)=>a-b),skipped,total:roadTrip.stops.length,passed:seen.size+skipped.length>=roadTrip.stops.length&&[...seen.values()].every(s=>!/^Paused/.test(s))};
     escape();await frame();
+    // 5. Hold a real catalog metadata lookup, pause before an animation exists, then release it.
+    // Subsets have no matching catalog stops, so the skipping checks above cover that case.
+    let pendingVisit:{skipped:boolean;passed:boolean;status?:string;targetDriftMpc?:number;cameraDriftMpc?:number;resumed?:boolean}={skipped:skipped.length>0,passed:true};
+    if(!pendingVisit.skipped){
+      await start('road-trip');
+      await until(()=>stopNumber()===1&&/^Arrived/.test(statusText()),'the first road-trip arrival');
+      element('tour-play').click();
+      for(let n=2;n<=6;n++){element('tour-next').click();await until(()=>stopNumber()===n&&/^Paused/.test(statusText()),`road-trip stop ${n} paused`)}
+      const metadataFor=atlas['metadataFor'];let release!:()=>void,entered=false;
+      const gate=new Promise<void>(resolve=>{release=resolve});
+      atlas['metadataFor']=async node=>{entered=true;await gate;return metadataFor.call(atlas,node)};
+      try{
+        element('tour-play').click();element('tour-next').click();
+        await until(()=>entered,'the pending catalog lookup');
+        element('tour-play').click();
+        const status=statusText(),target=atlas.controls.target.clone(),camera=atlas.camera.position.clone();
+        release();await sleep(900);
+        const targetDriftMpc=atlas.controls.target.distanceTo(target),cameraDriftMpc=atlas.camera.position.distanceTo(camera);
+        pendingVisit={skipped:false,status,targetDriftMpc,cameraDriftMpc,
+          passed:/^Paused/.test(status)&&/^Paused/.test(statusText())&&targetDriftMpc===0&&cameraDriftMpc<1e-9};
+      }finally{release();atlas['metadataFor']=metadataFor}
+      element('tour-play').click();
+      await until(()=>stopNumber()===7&&/^Arrived/.test(statusText()),'the resumed catalog stop');
+      pendingVisit.resumed=true;escape();await frame();
+    }
     const visibleEvictions=removed.filter(item=>item.onScreen&&item.blend>.05);
-    return {speed:tourClock.speed,stops,finished,exitOff,exitOn,wheel,escapeExits,roadTrip:road,maxResident,removals:removed.length,visibleEvictions,
-      passed:stops.every(stop=>stop.passed)&&finished.shell&&finished.checkbox&&finished.nextDisabled&&exitOff.passed&&exitOn.passed&&wheel.passed&&escapeExits&&road.passed&&maxResident<=MODEL_LIMIT&&visibleEvictions.length===0};
+    return {speed:tourClock.speed,stops,finished,exitOff,exitOn,wheel,escapeExits,roadTrip:road,pendingVisit,maxResident,removals:removed.length,visibleEvictions,
+      passed:stops.every(stop=>stop.passed)&&finished.shell&&finished.checkbox&&finished.nextDisabled&&exitOff.passed&&exitOn.passed&&wheel.passed&&escapeExits&&road.passed&&pendingVisit.passed&&maxResident<=MODEL_LIMIT&&visibleEvictions.length===0};
   }finally{if(panelOpen()){escape();await frame()}atlas['removeModel']=remove;tourClock.speed=previousSpeed;observer.disconnect();shell.restore()}
 }

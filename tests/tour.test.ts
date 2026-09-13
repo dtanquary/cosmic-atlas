@@ -184,6 +184,28 @@ describe('Tour runner',()=>{
     expect(notices).toEqual(['NGC 4026: The name index does not match this catalog. Skipping.']);
     expect(runner.state).toMatchObject({index:8,status:'travelling'});expect(atlas.last.method).toBe('applyView');
   });
+  it('pauses a catalog visit still loading data and ignores its late completion',async()=>{
+    const {atlas,runner}=setup();
+    let complete!:(arrived:boolean)=>void;
+    atlas.visitCatalog=(_entry,canNavigate)=>{
+      atlas.canNavigate=canNavigate;
+      return new Promise<boolean>(resolve=>{complete=resolve});
+    };
+    runner.start(6);
+    const guard=atlas.canNavigate!;
+    expect(guard()).toBe(true);
+    runner.pause(); // No animation exists yet for stopTravel() to cancel.
+    expect(runner.state).toMatchObject({index:6,status:'paused',autoplay:false});
+    expect(guard()).toBe(false);
+    complete(true);await flush();
+    expect(runner.state).toMatchObject({index:6,status:'paused',autoplay:false});
+    expect(vi.getTimerCount()).toBe(0);
+    runner.play(); // Resume retries the same destination with a fresh guard.
+    expect(runner.state).toMatchObject({index:6,status:'travelling',autoplay:true});
+    expect(atlas.canNavigate!()).toBe(true);expect(guard()).toBe(false);
+    complete(true);await flush();
+    expect(runner.state.status).toBe('dwelling');
+  });
   it('ignores out-of-range stops, finishes after the last stop and drops late arrivals after exit',async()=>{
     const {atlas,runner,states}=setup();
     runner.start(99);runner.previous();

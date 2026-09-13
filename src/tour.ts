@@ -64,8 +64,12 @@ export class Tour{
   }
   pause(){
     this.clearTimer();
-    if(this.state.status==='travelling')this.atlas.stopTravel(); // the cancelled arrival lands the stop as paused
-    this.set({autoplay:false,status:this.state.status==='dwelling'?'paused':this.state.status});
+    const travelling=this.state.status==='travelling';
+    if(travelling){
+      // A catalog stop may still be awaiting data, with no animation for stopTravel() to cancel.
+      this.serial++;this.arrival=null;this.atlas.stopTravel();
+    }
+    this.set({autoplay:false,status:travelling||this.state.status==='dwelling'?'paused':this.state.status});
   }
   exit(){
     this.clearTimer();this.serial++;
