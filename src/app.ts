@@ -233,6 +233,7 @@ async function initialize(){
    tour.start();
   };
   const startSharedTour=()=>{if(!atlasReady||!galaxySearch||!pendingSharedTour)return;const key=pendingSharedTour;pendingSharedTour=null;void startTour(key)};
+  window.addEventListener('hashchange',()=>{const key=decodeTourLink(location.hash);if(!key)return;pendingSharedTour=key;if(hashApplied){history.replaceState(null,'',location.pathname+location.search);startSharedTour()}},{signal:uiLifecycle.signal});
   // Input wins while a linked or manually chosen tour waits for catalog names.
   const cancelPendingTour=()=>{pendingSharedTour=null;tourStartSerial++};
   for(const type of ['pointerdown','wheel','keydown'])window.addEventListener(type,cancelPendingTour,{passive:true,signal:uiLifecycle.signal});
