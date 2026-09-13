@@ -894,7 +894,7 @@ export class Explorer {
   }
   async probeGalaxyPortraits(preview?:HTMLElement){
     const {probeVolumes}=await import('./volume-diagnostics');
-    try{return probeVolumes(this.renderer,this.allModels.filter(m=>galaxyPortrait(m.data.galaxy.targetId)?.disk).map(m=>m.data),{calls:1,maxBytes:1.4*1048576},preview)}finally{this.invalidate()}
+    try{return probeVolumes(this.renderer,this.allModels.filter(m=>{const p=galaxyPortrait(m.data.galaxy.targetId);return p?.disk||p?.smooth}).map(m=>m.data),{calls:1,maxBytes:1.4*1048576},preview)}finally{this.invalidate()}
   }
   async probeCloudModels(preview?:HTMLElement){
     const {probeCloudModels}=await import('./cloud-diagnostics');

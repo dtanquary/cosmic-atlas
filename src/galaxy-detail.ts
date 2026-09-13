@@ -304,7 +304,7 @@ export class ResolvedGalaxy extends GalaxyVolume<ReturnType<typeof galaxyFrame>>
     const family=data.cloud?'irregular':portrait?.smooth??(portrait?.disk||appearance==='spiral'?'spiral':data.model?.family??(data.spiral?'spiral':'lenticular'));
     const q=(1-Math.hypot(shape.e1,shape.e2))/(1+Math.hypot(shape.e1,shape.e2));
     const intrinsic=Math.min(family==='elliptical'?.65:family==='irregular'?.3:.12,q*.95);
-    super(data.cloud?{family,cloud:data.cloud,colors:galaxyColors(galaxy.targetId),gaussians:data.gaussians,seed:galaxy.id,knotCount:4096}:portrait?.disk?{family,portrait:portrait.disk,colors:galaxyColors(galaxy.targetId),gaussians:[],seed:galaxy.id}:appearance==='spiral'&&!portrait?.smooth?spiralLight(data):{family,colors:galaxyColors(galaxy.targetId),gaussians:data.gaussians,spiral:portrait?.smooth?undefined:data.spiral,seed:galaxy.id,knotCount:data.knotCount??(data.spiral?24000:12000)},
+    super(data.cloud?{family,cloud:data.cloud,colors:galaxyColors(galaxy.targetId),gaussians:data.gaussians,seed:galaxy.id,knotCount:4096}:portrait?.disk?{family,portrait:portrait.disk,colors:galaxyColors(galaxy.targetId),gaussians:[],seed:galaxy.id}:appearance==='spiral'&&!portrait?.smooth?spiralLight(data):{family,colors:galaxyColors(galaxy.targetId),gaussians:data.gaussians,exposure:portrait?.exposure,spiral:portrait?.smooth?undefined:data.spiral,seed:galaxy.id,knotCount:data.knotCount??(data.spiral?24000:12000)},
       galaxyFrame(galaxy.ra,galaxy.dec,shape.e1,shape.e2,intrinsic),galaxyRadius(galaxy.distance,shape.radiusArcsec),new THREE.Vector3().fromArray(galaxy.position));
   }
 }
