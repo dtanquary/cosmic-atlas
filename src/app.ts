@@ -1,4 +1,5 @@
 import './style.css';
+import {setupMobileUI} from './mobile-ui';
 import { Explorer, type AtlasStats } from './explorer';
 import { formatDistance, niceScale, MLY_PER_MPC, type Units } from './format';
 import {GalaxySearch} from './galaxy-search';
@@ -57,6 +58,7 @@ let atlas:Explorer,units:Units='ly',diagnostics=false,flightControlsOpen=false;
 let tour:Tour|null=null,pausedByInput=false,atlasReady=false;
 const tourActive=()=>tour!==null&&tour.state.status!=='idle';
 const uiLifecycle=new AbortController();
+setupMobileUI(uiLifecycle.signal);
 let toastTimer:ReturnType<typeof setTimeout>;
 function notify(message:string){text('toast',message);element('toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>element('toast').hidden=true,4000)}
 function pressed(id:string,value:boolean){element(id).classList.toggle('active',value);element(id).setAttribute('aria-pressed',String(value))}
