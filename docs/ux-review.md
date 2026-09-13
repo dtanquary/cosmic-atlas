@@ -172,3 +172,6 @@ The held NGC 3982 lookup now produces zero target and camera drift after Pause, 
 ## Road trip model expansion — implementing
 
 Dave requested more galaxy and cloud models for the cosmic road trip. Baseline captures show the Magellanic Clouds currently inherit generic spiral illustrations. First checkpoint adds tightly wound and feathered recipes, choosing Andromeda, Triangulum and NGC 3982 by exact public identity. Unit checks preserve each sample's radius, depth, size and color across recipes. GPU appearance/brightness, cloud renderer and production review are still pending.
+
+
+Cloud renderer checkpoint: LMC now has a soft offset bar with broken outer patches; SMC has a fragmented elongated stellar body. Both use static 48³ fields and 4,096 light knots, replacing the generic spiral in either appearance mode. Inspector, Settings and tour captions disclose the illustration and preserve distance/shape provenance. Refined isolated `?cloudtest` passed on the actual Apple M3 Max GPU, including front/reverse/edge/inside/behind views, attenuation, repeat/reconstruction, highlights and picking, before and after graphics recovery. Unit suite: 88 tests across 18 files; strict TypeScript passes. Full tour/shared regressions and the final production package are pending.

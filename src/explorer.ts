@@ -891,6 +891,24 @@ export class Explorer {
     const {probeGalaxyVariants}=await import('./variant-diagnostics');
     try{return probeGalaxyVariants(this.renderer,this.nearbyGalaxies[0].data,preview)}finally{this.invalidate()}
   }
+  async probeCloudModels(preview?:HTMLElement){
+    const {probeCloudModels}=await import('./cloud-diagnostics');
+    try{return probeCloudModels(this.renderer,preview)}finally{this.invalidate()}
+  }
+  async probeCloudPerformance(){
+    const savedRotate=this.controls.autoRotate,savedSpeed=this.controls.autoRotateSpeed,cases=[];
+    const sleep=(ms:number)=>new Promise<void>(resolve=>setTimeout(resolve,ms));
+    try{
+      for(const model of this.nearbyGalaxies.filter(m=>m.data.cloud)){
+        this.visitNearby(model.data.galaxy.id);this.controls.autoRotate=true;this.controls.autoRotateSpeed=2;this.invalidate();await sleep(3000);
+        const samples:number[]=[];let previous=performance.now();const end=previous+4000;
+        await new Promise<void>(resolve=>{const frame=(now:number)=>{samples.push(now-previous);previous=now;if(now<end)requestAnimationFrame(frame);else resolve()};requestAnimationFrame(frame)});
+        const sorted=samples.slice(5).sort((a,b)=>a-b),mean=sorted.reduce((a,b)=>a+b,0)/sorted.length;
+        cases.push({name:model.data.name,frames:sorted.length,meanMs:mean,fps:1000/mean,p95Ms:sorted[Math.floor(sorted.length*.95)],stats:this.stats});
+      }
+      return {cases}; // Measurements, not a claim about untested devices.
+    }finally{this.controls.autoRotate=savedRotate;this.controls.autoRotateSpeed=savedSpeed;this.invalidate()}
+  }
   /** Isolate palette changes with identical geometry in the actual GPU pipeline. */
   probeGalaxyColors(){
     const source=this.nearbyGalaxies[0].data,target=new THREE.WebGLRenderTarget(256,256),pixels=new Uint8Array(256*256*4);
@@ -1185,7 +1203,7 @@ export class Explorer {
   probeGalaxyProfile(id=this.resolved?.data.galaxy.id){
     const source=id===undefined?null:this.resolvedFor(id);if(!source)return {available:false};
     // Check the measured smooth component separately from illustrative arm light.
-    const model=new ResolvedGalaxy({...source.data,spiral:undefined,knotCount:0}),target=new THREE.WebGLRenderTarget(256,256);
+    const model=new ResolvedGalaxy({...source.data,spiral:undefined,cloud:undefined,knotCount:0}),target=new THREE.WebGLRenderTarget(256,256);
     const camera=new THREE.PerspectiveCamera(50,1,.000001,100000),pixels=new Uint8Array(256*256*4);
     camera.up.copy(model.frame.north);
     const sample=(direction:THREE.Vector3,distance:number,zoom=false)=>{

@@ -73,7 +73,7 @@
         },
         {
           "title": "Large Magellanic Cloud",
-          "caption": "The Large Magellanic Cloud is about 49.6 kpc away by eclipsing-binary measurement, so its light left about 160,000 years ago. Its round shape and 1.5 kpc size are assumed, its orientation is not measured, and the clumpy structure is illustrative.",
+          "caption": "The Large Magellanic Cloud is about 49.6 kpc away by eclipsing-binary measurement, so its light left about 160,000 years ago. Its round shape and 1.5 kpc size are assumed, its orientation is not measured, and the soft bar, stellar haze and dust are illustrative, not a measured gas map.",
           "target": {
             "kind": "nearby",
             "key": "lmc"
@@ -82,7 +82,7 @@
         },
         {
           "title": "Small Magellanic Cloud",
-          "caption": "The Small Magellanic Cloud is about 62.4 kpc away, also from eclipsing binaries, so its light left about 200,000 years ago. Its projected ellipse and angle are measured, but its half-light size is assumed from a catalog diameter and its depth is illustrative.",
+          "caption": "The Small Magellanic Cloud is about 62.4 kpc away, also from eclipsing binaries, so its light left about 200,000 years ago. Its projected ellipse and angle are measured, but its half-light size is assumed from a catalog diameter and its fragmented stellar clouds, dust and depth are illustrative, not a measured gas map.",
           "target": {
             "kind": "nearby",
             "key": "smc"

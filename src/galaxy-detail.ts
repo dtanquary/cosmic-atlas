@@ -4,6 +4,7 @@ import spiralProfile from './data/spiral-profile.json';
 import type {Galaxy} from './types';
 import {galaxyColors,type GalaxyColors} from './galaxy-colors';
 import {galaxyVariant} from './galaxy-variants';
+import {CLOUD_FIELD_SIZE,cloudDensityField,cloudLightSamples,cloudFragment,type MagellanicCloudKind} from './magellanic-clouds';
 
 export type GalaxyFamily='spiral'|'barred'|'elliptical'|'lenticular'|'irregular';
 export type GalaxyAppearance='spiral'|'catalog';
@@ -17,6 +18,7 @@ export interface GalaxyDetailData {
   spiral?:{arms:number; pitchDegrees:number; phaseRadians:number; seed:number; bar?:boolean; barRadiusRe?:number;innerStyle?:'ring';armStyle?:'feathered'};
   model?:{family:GalaxyFamily;typeSource:'catalog'|'proxy';typeLabel:string;shapeMeasured:boolean;sourceName?:string;profileIndex:number};
   knotCount?:number;
+  cloud?:MagellanicCloudKind;
 }
 
 /** Deterministic illustrative arm knots in galaxy coordinates, in units of R_e. */
@@ -158,7 +160,11 @@ void main(){
 }`;
 
 export interface VolumeFrame {major:THREE.Vector3;minor:THREE.Vector3;normal:THREE.Vector3;thickness:number;q:number}
-export interface GalaxyLight {family:GalaxyFamily;gaussians:GalaxyDetailData['gaussians'];spiral?:GalaxyDetailData['spiral'];seed:number;knotCount?:number;exposure?:number;colors?:GalaxyColors}
+export interface GalaxyLight {family:GalaxyFamily;gaussians:GalaxyDetailData['gaussians'];spiral?:GalaxyDetailData['spiral'];cloud?:MagellanicCloudKind;seed:number;knotCount?:number;exposure?:number;colors?:GalaxyColors}
+
+// At most two immutable CPU fields. Rebuilding appearance never regenerates
+// these, and each model owns/disposes its GPU texture alongside its geometry.
+const cloudFields:Partial<Record<MagellanicCloudKind,Uint8Array>>={};
 
 /** One shared exposure/profile/point budget for every illustrative disk variant. */
 export function spiralLight(data:GalaxyDetailData):GalaxyLight {
@@ -181,6 +187,7 @@ export class GalaxyVolume<F extends VolumeFrame=VolumeFrame> {
   private readonly rayOrigin=new THREE.Vector3();
   private readonly rayDirection=new THREE.Vector3();
   private arms:THREE.Points<THREE.BufferGeometry,THREE.RawShaderMaterial>|null=null;
+  private cloudDensity:THREE.Data3DTexture|null=null;
 
   constructor(data:GalaxyLight,readonly frame:F,readonly radius:number,readonly center:THREE.Vector3){
     const family=data.family;
@@ -196,8 +203,22 @@ export class GalaxyVolume<F extends VolumeFrame=VolumeFrame> {
         uProjection:{value:new THREE.Vector2()},uGaussians:{value:gaussians},uMix:this.blend,uNormalization:{value:this.frame.q/this.frame.thickness},uExposure:{value:data.exposure??(family==='irregular'?.2:.55)},uPalette:{value:family==='elliptical'?1:family==='irregular'?2:0}},
       transparent:true,blending:THREE.AdditiveBlending,depthTest:false,depthWrite:false,toneMapped:false});
     this.mesh=new THREE.Mesh(new THREE.PlaneGeometry(2,2),this.material);this.mesh.frustumCulled=false;this.mesh.visible=false;this.scene.add(this.mesh);
-    if(data.spiral||family==='irregular'){
-      const samples=family==='irregular'?irregularSamples(data.seed,data.knotCount,data.colors):spiralSamples(data.spiral!,data.knotCount,data.colors),position=new THREE.Vector3();
+    let cloudSamples:ReturnType<typeof spiralSamples>|undefined;
+    if(data.cloud){
+      const field=cloudFields[data.cloud]??=cloudDensityField(data.cloud);
+      this.cloudDensity=new THREE.Data3DTexture(field,CLOUD_FIELD_SIZE,CLOUD_FIELD_SIZE,CLOUD_FIELD_SIZE);
+      this.cloudDensity.format=THREE.RGFormat;this.cloudDensity.minFilter=THREE.LinearFilter;this.cloudDensity.magFilter=THREE.LinearFilter;this.cloudDensity.unpackAlignment=1;this.cloudDensity.needsUpdate=true;
+      this.material.fragmentShader=cloudFragment;
+      Object.assign(this.material.uniforms,{uCloudDensity:{value:this.cloudDensity},uThickness:{value:thickness},uDustStrength:{value:.85},uEmissionColor:{value:new THREE.Vector3().fromArray(data.colors?.emission??[.86,.57,.64])}});
+      const samples=cloudLightSamples(data.cloud,field,data.knotCount??4096),colors=new Float32Array(samples.positions.length);
+      for(let i=0;i<samples.sizes.length;i++){
+        samples.positions[i*3+2]*=thickness;
+        colors.set(samples.emission[i]?(data.colors?.emission??[.86,.57,.64]):disk,i*3);
+      }
+      cloudSamples={positions:samples.positions,sizes:samples.sizes,colors};
+    }
+    if(data.spiral||family==='irregular'||cloudSamples){
+      const samples=cloudSamples??(family==='irregular'?irregularSamples(data.seed,data.knotCount,data.colors):spiralSamples(data.spiral!,data.knotCount,data.colors)),position=new THREE.Vector3();
       for(let i=0;i<samples.positions.length;i+=3){
         position.copy(x).multiplyScalar(samples.positions[i]).addScaledVector(y,samples.positions[i+1]).addScaledVector(z,samples.positions[i+2]).multiplyScalar(this.radius);
         samples.positions.set(position.toArray(),i);
@@ -257,18 +278,18 @@ export class GalaxyVolume<F extends VolumeFrame=VolumeFrame> {
   }
 
   get visible(){return this.mesh.visible}
-  get memoryBytes(){return this.arms?this.arms.geometry.getAttribute('position').array.byteLength*2+this.arms.geometry.getAttribute('color').array.byteLength*2+this.arms.geometry.getAttribute('size').array.byteLength*2:0}
-  dispose(){this.mesh.geometry.dispose();this.material.dispose();this.arms?.geometry.dispose();this.arms?.material.dispose()}
+  get memoryBytes(){return (this.cloudDensity?this.cloudDensity.image.data!.byteLength*2:0)+(this.arms?this.arms.geometry.getAttribute('position').array.byteLength*2+this.arms.geometry.getAttribute('color').array.byteLength*2+this.arms.geometry.getAttribute('size').array.byteLength*2:0)}
+  dispose(){this.cloudDensity?.dispose();this.mesh.geometry.dispose();this.material.dispose();this.arms?.geometry.dispose();this.arms?.material.dispose()}
 }
 
 /** A measured catalog observation using the shared light renderer. */
 export class ResolvedGalaxy extends GalaxyVolume<ReturnType<typeof galaxyFrame>> {
   constructor(readonly data:GalaxyDetailData,readonly appearance:GalaxyAppearance='catalog'){
     const {galaxy,shape}=data;
-    const family=appearance==='spiral'?'spiral':data.model?.family??(data.spiral?'spiral':'lenticular');
+    const family=data.cloud?'irregular':appearance==='spiral'?'spiral':data.model?.family??(data.spiral?'spiral':'lenticular');
     const q=(1-Math.hypot(shape.e1,shape.e2))/(1+Math.hypot(shape.e1,shape.e2));
     const intrinsic=Math.min(family==='elliptical'?.65:family==='irregular'?.3:.12,q*.95);
-    super(appearance==='spiral'?spiralLight(data):{family,colors:galaxyColors(galaxy.targetId),gaussians:data.gaussians,spiral:data.spiral,seed:galaxy.id,knotCount:data.knotCount??(data.spiral?24000:12000)},
+    super(data.cloud?{family,cloud:data.cloud,colors:galaxyColors(galaxy.targetId),gaussians:data.gaussians,seed:galaxy.id,knotCount:4096}:appearance==='spiral'?spiralLight(data):{family,colors:galaxyColors(galaxy.targetId),gaussians:data.gaussians,spiral:data.spiral,seed:galaxy.id,knotCount:data.knotCount??(data.spiral?24000:12000)},
       galaxyFrame(galaxy.ra,galaxy.dec,shape.e1,shape.e2,intrinsic),galaxyRadius(galaxy.distance,shape.radiusArcsec),new THREE.Vector3().fromArray(galaxy.position));
   }
 }

@@ -18,6 +18,14 @@ export async function runDiagnostics(atlas:Explorer,parent:HTMLElement){
   report.variants=await atlas.probeGalaxyVariants(preview);show();report.variantContext=await atlas.probeContextRecovery();report.variantsAfterRecovery=await atlas.probeGalaxyVariants();
   if(query.has('variantpreview'))parent.append(preview);show();
  }
+ if(query.has('cloudtest')){
+  const preview=document.createElement('section');preview.id='cloud-preview';preview.style.cssText='display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;position:absolute;inset:120px 40px auto 190px;background:#081017;padding:20px;z-index:21;color:#c9d7dc;font:13px sans-serif;pointer-events:none';
+  report.clouds=await atlas.probeCloudModels(preview);show();report.cloudContext=await atlas.probeContextRecovery();report.cloudsAfterRecovery=await atlas.probeCloudModels();
+  const before=report.clouds as Awaited<ReturnType<Explorer['probeCloudModels']>>,after=report.cloudsAfterRecovery as typeof before;
+  report.cloudRecovery={passed:before.cases.every((c,i)=>c.views.every((v,j)=>v.checksum===after.cases[i].views[j].checksum))};
+  report.cloudPerformance=await atlas.probeCloudPerformance();
+  if(query.has('cloudpreview'))parent.append(preview);show();
+ }
  if(query.has('colortest')){report.colors=atlas.probeGalaxyColors();show();report.colorContext=await atlas.probeContextRecovery();report.colorsAfterRecovery=atlas.probeGalaxyColors();show()}
  if(query.has('continuitytest')){report.appearance=await atlas.probeGalaxyAppearance();show();report.continuity=await atlas.probeModelContinuity();show()}
  if(query.has('uxtest')){report.observerPass=await atlas.probeObserverPass();const {probeUI,probeSearchAvailability}=await import('./ui-diagnostics');report.ui=await probeUI(atlas);report.searchAvailability=await probeSearchAvailability(atlas);show()}

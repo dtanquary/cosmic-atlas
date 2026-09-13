@@ -13,6 +13,7 @@ export function nearbyDetails():GalaxyDetailData[]{
   gaussians:entry.gaussians,fitMaxRelativeError:entry.profileFitMaxRelativeError,
   model:{family:entry.family as GalaxyFamily,typeSource:entry.family==='irregular'?'proxy':'catalog',typeLabel:entry.typeLabel,shapeMeasured:entry.shapeMeasured,sourceName:'Nearby-galaxy literature',profileIndex:0},
   spiral:entry.family==='spiral'?{arms:2,pitchDegrees:entry.key==='m31'?12:20,phaseRadians:.4,seed:100-entry.id}:undefined,knotCount:12000,
+  cloud:entry.key==='lmc'||entry.key==='smc'?entry.key:undefined,
  }));
 }
 export function createNearbyGalaxies(appearance:GalaxyAppearance='catalog'){return nearbyDetails().map(data=>new ResolvedGalaxy(data,appearance))}

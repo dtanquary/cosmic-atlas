@@ -7,6 +7,7 @@ export const galaxyVariants=[
  {key:'feathered',label:'Feathered spiral',arms:3,pitchDegrees:26,armStyle:'feathered'},
 ] as const;
 export type GalaxyVariant=typeof galaxyVariants[number];
+const namedRecipes=new Map<string,number>([['nearby:m31',3],['nearby:m33',4],['39633325333155389',1]]);
 
 /** Independent of color, dense row indices, camera position and source classification. */
 export function galaxyVariant(identity:string){
@@ -16,7 +17,6 @@ export function galaxyVariant(identity:string){
  const fraction=seed/4294967296;
  // Named illustrations are deliberate display recipes, not morphology fits.
  // Exact public IDs keep the same destination stable in subsets and both tours.
- const named:Record<string,number>={'nearby:m31':3,'nearby:m33':4,'39633325333155389':1};
- const variant=galaxyVariants[named[identity]??(fraction<.4?0:fraction<.65?1:fraction<.8?2:fraction<.9?3:4)];
+ const variant=galaxyVariants[namedRecipes.get(identity)??(fraction<.4?0:fraction<.65?1:fraction<.8?2:fraction<.9?3:4)];
  return {variant,parameters:{...variant,seed,phaseRadians:(Math.imul(seed,2654435761)>>>0)/4294967296*Math.PI*2}};
 }
