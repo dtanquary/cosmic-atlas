@@ -81,3 +81,6 @@
 [data-mobile] .mobile-menu-catalog .lookback-note{display:block;max-width:none;text-align:left;font-size:11px;margin-top:12px}
 [data-mobile] #minimum-opacity{height:44px}
 @media(max-height:540px){[data-mobile] .toast{left:max(16px,env(safe-area-inset-left,0px));transform:none;max-width:calc(50vw - 32px)}}
+[data-mobile] #inspector[data-expanded=true] .inspector-header>.object-kind{display:block;grid-column:1/-1;grid-row:3;margin:0 0 5px;font-size:11px;line-height:1.5;overflow-wrap:anywhere}
+[data-mobile] #inspector[data-expanded=true] .inspector-header .panel-actions{grid-row:4}
+[data-mobile] .dialog .share-link{font-size:16px}

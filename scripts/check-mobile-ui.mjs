@@ -33,7 +33,7 @@ try{
    check('responsiveLayout',await page.locator('html').evaluate(e=>e.hasAttribute('data-mobile')));
    for(const id of ['visit-galaxy-button','observer-button','tours-button','mobile-menu-button'])check(`${id}TouchTarget`,await reachable(`#${id}`));
    await visit('Andromeda');check('compactSelection',(await page.locator('#inspector').boundingBox()).height<=160);check('distanceKept',!!(await page.locator('#inspector .mobile-sheet-summary').textContent()));await screen('galaxy-compact');
-   await tap('#inspector .mobile-sheet-toggle');check('boundedDetails',(await page.locator('#inspector').boundingBox()).height<=480);check('detailsVisible',await page.locator('#profile-appearance').isVisible());
+   await tap('#inspector .mobile-sheet-toggle');check('boundedDetails',(await page.locator('#inspector').boundingBox()).height<=480);check('detailsVisible',await page.locator('#profile-appearance').isVisible());check('exactIdentityAvailable',await page.locator('#object-kind').isVisible()&&(await page.locator('#object-kind').textContent()).includes('nearby:m31'));
    await page.locator('#inspector .inspector-body').evaluate(e=>e.scrollTop=e.scrollHeight);check('detailsScrollable',await page.locator('#inspector .inspector-body').evaluate(e=>e.scrollTop>0));check('focusStaysReachable',await reachable('#focus-button'));check('closeStaysReachable',await reachable('#close-inspector'));await screen('galaxy-details');
    await mapDrag();check('mapDragFoldsDetails',await page.locator('#inspector .mobile-sheet-toggle').getAttribute('aria-expanded')==='false');
    // Chromium CDP injects real touchscreen input into OrbitControls. Camera
@@ -63,6 +63,7 @@ try{
    // Reduced visual viewport simulation checks keyboard placement; this is not
    // a claim that a physical iOS software keyboard was exercised.
    await tap('#visit-galaxy-button');await page.setViewportSize({width:402,height:480});await page.fill('#galaxy-query','Andromeda');check('searchKeyboardCloseReachable',await reachable('#visit-dialog [data-close]'));check('searchInputAtLeast16px',await page.locator('#galaxy-query').evaluate(e=>parseFloat(getComputedStyle(e).fontSize)>=16));await screen('short-search');await close('#visit-dialog');await page.setViewportSize({width:402,height:874});
+   await page.evaluate(()=>{navigator.clipboard.writeText=async()=>{throw new Error('Injected unavailable clipboard')}});await menu('#share-button');await tap('#copy-link-button');await page.locator('#share-link').waitFor({state:'visible'});check('clipboardFallbackAvailable',(await page.inputValue('#share-link')).includes('#t='));check('fallbackLinkAtLeast16px',await page.locator('#share-link').evaluate(e=>parseFloat(getComputedStyle(e).fontSize)>=16));await close('#share-dialog');
    await page.reload();await page.waitForFunction(()=>!document.getElementById('visit-galaxy-button')?.hidden);check('preferencePersists',await page.inputValue('#model-display')==='automatic');
    await page.close();
    // Wide layout uses the same original DOM before/after repeated phone widths.
