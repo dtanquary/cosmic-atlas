@@ -45516,5 +45516,4569 @@
     "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
     "rendering": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
     "status": "complete"
+  },
+  {
+    "runId": "roadtrip-models-full",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 476.39999997615814,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 1600,
+      "height": 1000
+    },
+    "initial": {
+      "drawn": 516770,
+      "loaded": 628116,
+      "represented": 14140375,
+      "pending": 3,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 39.937697192379865,
+      "p95": 33.27800000000002,
+      "calls": 49,
+      "managedMiB": 62.76475811004639,
+      "blocked": false,
+      "focusDistance": 16099.11216965503,
+      "focusFromObserver": 1164.5694850205355,
+      "budget": 1000000,
+      "models": 0
+    },
+    "tours": {
+      "speed": 10,
+      "stops": [
+        {
+          "title": "The Sun",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 0,
+          "distanceError": 0,
+          "shell": false,
+          "resident": 6,
+          "passed": true
+        },
+        {
+          "title": "The Milky Way",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 5.421010862427522e-20,
+          "distanceError": 3.469446951953614e-16,
+          "shell": false,
+          "resident": 12,
+          "passed": true
+        },
+        {
+          "title": "The Local Group",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 0,
+          "distanceError": 0,
+          "shell": false,
+          "resident": 10,
+          "passed": true
+        },
+        {
+          "title": "The DESI survey",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 0,
+          "distanceError": 9.038955114428922e-16,
+          "shell": false,
+          "resident": 2,
+          "passed": true
+        },
+        {
+          "title": "The cosmic microwave background",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 0,
+          "distanceError": 7.770801167367227e-16,
+          "shell": true,
+          "resident": 2,
+          "passed": true
+        }
+      ],
+      "finished": {
+        "shell": true,
+        "checkbox": true,
+        "nextDisabled": true
+      },
+      "exitOff": {
+        "panelHidden": true,
+        "shell": false,
+        "checkbox": false,
+        "stored": "false",
+        "passed": true
+      },
+      "exitOn": {
+        "shellAtCmb": true,
+        "shellAfterPrev": true,
+        "shell": true,
+        "checkbox": true,
+        "stored": "true",
+        "passed": true
+      },
+      "wheel": {
+        "status": "Paused · drag or scroll moved the view",
+        "targetDriftMpc": 0,
+        "distanceDrift": 4.9958766264024764e-15,
+        "playPressed": "false",
+        "passed": true
+      },
+      "escapeExits": true,
+      "roadTrip": {
+        "arrived": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "skipped": [],
+        "total": 10,
+        "passed": true
+      },
+      "pendingVisit": {
+        "skipped": false,
+        "status": "Paused",
+        "targetDriftMpc": 0,
+        "cameraDriftMpc": 0,
+        "passed": true,
+        "resumed": true
+      },
+      "maxResident": 12,
+      "removals": 279,
+      "visibleEvictions": [],
+      "passed": true
+    },
+    "tourContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "toursAfterRecovery": {
+      "speed": 10,
+      "stops": [
+        {
+          "title": "The Sun",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 0,
+          "distanceError": 1.4456028966473392e-16,
+          "shell": false,
+          "resident": 6,
+          "passed": true
+        },
+        {
+          "title": "The Milky Way",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 5.421010862427522e-20,
+          "distanceError": 3.469446951953614e-16,
+          "shell": false,
+          "resident": 12,
+          "passed": true
+        },
+        {
+          "title": "The Local Group",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 0,
+          "distanceError": 0,
+          "shell": false,
+          "resident": 10,
+          "passed": true
+        },
+        {
+          "title": "The DESI survey",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 0,
+          "distanceError": 9.038955114428922e-16,
+          "shell": false,
+          "resident": 2,
+          "passed": true
+        },
+        {
+          "title": "The cosmic microwave background",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 0,
+          "distanceError": 7.770801167367227e-16,
+          "shell": true,
+          "resident": 2,
+          "passed": true
+        }
+      ],
+      "finished": {
+        "shell": true,
+        "checkbox": true,
+        "nextDisabled": true
+      },
+      "exitOff": {
+        "panelHidden": true,
+        "shell": false,
+        "checkbox": false,
+        "stored": "false",
+        "passed": true
+      },
+      "exitOn": {
+        "shellAtCmb": true,
+        "shellAfterPrev": true,
+        "shell": true,
+        "checkbox": true,
+        "stored": "true",
+        "passed": true
+      },
+      "wheel": {
+        "status": "Paused · drag or scroll moved the view",
+        "targetDriftMpc": 0,
+        "distanceDrift": 4.995876626402479e-15,
+        "playPressed": "false",
+        "passed": true
+      },
+      "escapeExits": true,
+      "roadTrip": {
+        "arrived": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "skipped": [],
+        "total": 10,
+        "passed": true
+      },
+      "pendingVisit": {
+        "skipped": false,
+        "status": "Paused",
+        "targetDriftMpc": 0,
+        "cameraDriftMpc": 0,
+        "passed": true,
+        "resumed": true
+      },
+      "maxResident": 12,
+      "removals": 256,
+      "visibleEvictions": [],
+      "passed": true
+    },
+    "variants": {
+      "cases": [
+        {
+          "variant": "classic",
+          "views": [
+            {
+              "angle": 0,
+              "luminance": 167203.57319998156,
+              "peak": 118.64699999999999,
+              "hotPixels": 0,
+              "checksum": 2982273858,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 60,
+              "luminance": 171523.85339998614,
+              "peak": 157.85039999999998,
+              "hotPixels": 0,
+              "checksum": 3950566826,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 85,
+              "luminance": 172521.9457999933,
+              "peak": 254.99999999999997,
+              "hotPixels": 32,
+              "checksum": 4037640470,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            }
+          ]
+        },
+        {
+          "variant": "multi",
+          "views": [
+            {
+              "angle": 0,
+              "luminance": 167506.66079997734,
+              "peak": 81.5748,
+              "hotPixels": 0,
+              "checksum": 542644172,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 60,
+              "luminance": 171944.95699998183,
+              "peak": 112.79140000000001,
+              "hotPixels": 0,
+              "checksum": 3111417710,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 85,
+              "luminance": 173238.11999999266,
+              "peak": 254.99999999999997,
+              "hotPixels": 23,
+              "checksum": 3913498369,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            }
+          ]
+        },
+        {
+          "variant": "ringed",
+          "views": [
+            {
+              "angle": 0,
+              "luminance": 167275.25079998016,
+              "peak": 95.14039999999999,
+              "hotPixels": 0,
+              "checksum": 742457052,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 60,
+              "luminance": 171503.66619998505,
+              "peak": 149.5708,
+              "hotPixels": 0,
+              "checksum": 643108442,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 85,
+              "luminance": 172525.64779999322,
+              "peak": 254.99999999999997,
+              "hotPixels": 20,
+              "checksum": 3484491150,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            }
+          ]
+        },
+        {
+          "variant": "tight",
+          "views": [
+            {
+              "angle": 0,
+              "luminance": 167580.03759997984,
+              "peak": 109.3622,
+              "hotPixels": 0,
+              "checksum": 3369852768,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 60,
+              "luminance": 171841.13379998264,
+              "peak": 153.533,
+              "hotPixels": 0,
+              "checksum": 813312211,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 85,
+              "luminance": 172457.70079999295,
+              "peak": 254.99999999999997,
+              "hotPixels": 28,
+              "checksum": 1140884840,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            }
+          ]
+        },
+        {
+          "variant": "feathered",
+          "views": [
+            {
+              "angle": 0,
+              "luminance": 167494.74819997788,
+              "peak": 87.5748,
+              "hotPixels": 0,
+              "checksum": 371814224,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 60,
+              "luminance": 171846.68239998378,
+              "peak": 135.3622,
+              "hotPixels": 0,
+              "checksum": 2309138716,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 85,
+              "luminance": 172361.10159999295,
+              "peak": 254.99999999999997,
+              "hotPixels": 36,
+              "checksum": 3615793052,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            }
+          ]
+        }
+      ],
+      "comparisons": [
+        {
+          "variant": "multi",
+          "views": [
+            {
+              "angle": 0,
+              "lightRatio": 1.0018126861417804,
+              "peakRatio": 0.6875420364610989,
+              "extraHotPixels": 0
+            },
+            {
+              "angle": 60,
+              "lightRatio": 1.0024550731087745,
+              "peakRatio": 0.7145461779000878,
+              "extraHotPixels": 0
+            },
+            {
+              "angle": 85,
+              "lightRatio": 1.0041512063678533,
+              "peakRatio": 1,
+              "extraHotPixels": -9
+            }
+          ]
+        },
+        {
+          "variant": "ringed",
+          "views": [
+            {
+              "angle": 0,
+              "lightRatio": 1.000428684618557,
+              "peakRatio": 0.8018778393048286,
+              "extraHotPixels": 0
+            },
+            {
+              "angle": 60,
+              "lightRatio": 0.9998823067485896,
+              "peakRatio": 0.9475478047569091,
+              "extraHotPixels": 0
+            },
+            {
+              "angle": 85,
+              "lightRatio": 1.0000214581396167,
+              "peakRatio": 1,
+              "extraHotPixels": -12
+            }
+          ]
+        },
+        {
+          "variant": "tight",
+          "views": [
+            {
+              "angle": 0,
+              "lightRatio": 1.0022515332226065,
+              "peakRatio": 0.9217443340328876,
+              "extraHotPixels": 0
+            },
+            {
+              "angle": 60,
+              "lightRatio": 1.001849774207536,
+              "peakRatio": 0.9726487864459007,
+              "extraHotPixels": 0
+            },
+            {
+              "angle": 85,
+              "lightRatio": 0.9996276125932707,
+              "peakRatio": 1,
+              "extraHotPixels": -4
+            }
+          ]
+        },
+        {
+          "variant": "feathered",
+          "views": [
+            {
+              "angle": 0,
+              "lightRatio": 1.001741440056715,
+              "peakRatio": 0.7381122152266808,
+              "extraHotPixels": 0
+            },
+            {
+              "angle": 60,
+              "lightRatio": 1.0018821230610113,
+              "peakRatio": 0.8575347290852606,
+              "extraHotPixels": 0
+            },
+            {
+              "angle": 85,
+              "lightRatio": 0.9990676884656355,
+              "peakRatio": 1,
+              "extraHotPixels": 4
+            }
+          ]
+        }
+      ],
+      "reconstructed": true,
+      "passed": true
+    },
+    "variantContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "variantsAfterRecovery": {
+      "cases": [
+        {
+          "variant": "classic",
+          "views": [
+            {
+              "angle": 0,
+              "luminance": 167203.57319998156,
+              "peak": 118.64699999999999,
+              "hotPixels": 0,
+              "checksum": 2982273858,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 60,
+              "luminance": 171523.85339998614,
+              "peak": 157.85039999999998,
+              "hotPixels": 0,
+              "checksum": 3950566826,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 85,
+              "luminance": 172521.9457999933,
+              "peak": 254.99999999999997,
+              "hotPixels": 32,
+              "checksum": 4037640470,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            }
+          ]
+        },
+        {
+          "variant": "multi",
+          "views": [
+            {
+              "angle": 0,
+              "luminance": 167506.66079997734,
+              "peak": 81.5748,
+              "hotPixels": 0,
+              "checksum": 542644172,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 60,
+              "luminance": 171944.95699998183,
+              "peak": 112.79140000000001,
+              "hotPixels": 0,
+              "checksum": 3111417710,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 85,
+              "luminance": 173238.11999999266,
+              "peak": 254.99999999999997,
+              "hotPixels": 23,
+              "checksum": 3913498369,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            }
+          ]
+        },
+        {
+          "variant": "ringed",
+          "views": [
+            {
+              "angle": 0,
+              "luminance": 167275.25079998016,
+              "peak": 95.14039999999999,
+              "hotPixels": 0,
+              "checksum": 742457052,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 60,
+              "luminance": 171503.66619998505,
+              "peak": 149.5708,
+              "hotPixels": 0,
+              "checksum": 643108442,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 85,
+              "luminance": 172525.64779999322,
+              "peak": 254.99999999999997,
+              "hotPixels": 20,
+              "checksum": 3484491150,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            }
+          ]
+        },
+        {
+          "variant": "tight",
+          "views": [
+            {
+              "angle": 0,
+              "luminance": 167580.03759997984,
+              "peak": 109.3622,
+              "hotPixels": 0,
+              "checksum": 3369852768,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 60,
+              "luminance": 171841.13379998264,
+              "peak": 153.533,
+              "hotPixels": 0,
+              "checksum": 813312211,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 85,
+              "luminance": 172457.70079999295,
+              "peak": 254.99999999999997,
+              "hotPixels": 28,
+              "checksum": 1140884840,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            }
+          ]
+        },
+        {
+          "variant": "feathered",
+          "views": [
+            {
+              "angle": 0,
+              "luminance": 167494.74819997788,
+              "peak": 87.5748,
+              "hotPixels": 0,
+              "checksum": 371814224,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 60,
+              "luminance": 171846.68239998378,
+              "peak": 135.3622,
+              "hotPixels": 0,
+              "checksum": 2309138716,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            },
+            {
+              "angle": 85,
+              "luminance": 172361.10159999295,
+              "peak": 254.99999999999997,
+              "hotPixels": 36,
+              "checksum": 3615793052,
+              "calls": 2,
+              "bytes": 672000,
+              "pickable": true
+            }
+          ]
+        }
+      ],
+      "comparisons": [
+        {
+          "variant": "multi",
+          "views": [
+            {
+              "angle": 0,
+              "lightRatio": 1.0018126861417804,
+              "peakRatio": 0.6875420364610989,
+              "extraHotPixels": 0
+            },
+            {
+              "angle": 60,
+              "lightRatio": 1.0024550731087745,
+              "peakRatio": 0.7145461779000878,
+              "extraHotPixels": 0
+            },
+            {
+              "angle": 85,
+              "lightRatio": 1.0041512063678533,
+              "peakRatio": 1,
+              "extraHotPixels": -9
+            }
+          ]
+        },
+        {
+          "variant": "ringed",
+          "views": [
+            {
+              "angle": 0,
+              "lightRatio": 1.000428684618557,
+              "peakRatio": 0.8018778393048286,
+              "extraHotPixels": 0
+            },
+            {
+              "angle": 60,
+              "lightRatio": 0.9998823067485896,
+              "peakRatio": 0.9475478047569091,
+              "extraHotPixels": 0
+            },
+            {
+              "angle": 85,
+              "lightRatio": 1.0000214581396167,
+              "peakRatio": 1,
+              "extraHotPixels": -12
+            }
+          ]
+        },
+        {
+          "variant": "tight",
+          "views": [
+            {
+              "angle": 0,
+              "lightRatio": 1.0022515332226065,
+              "peakRatio": 0.9217443340328876,
+              "extraHotPixels": 0
+            },
+            {
+              "angle": 60,
+              "lightRatio": 1.001849774207536,
+              "peakRatio": 0.9726487864459007,
+              "extraHotPixels": 0
+            },
+            {
+              "angle": 85,
+              "lightRatio": 0.9996276125932707,
+              "peakRatio": 1,
+              "extraHotPixels": -4
+            }
+          ]
+        },
+        {
+          "variant": "feathered",
+          "views": [
+            {
+              "angle": 0,
+              "lightRatio": 1.001741440056715,
+              "peakRatio": 0.7381122152266808,
+              "extraHotPixels": 0
+            },
+            {
+              "angle": 60,
+              "lightRatio": 1.0018821230610113,
+              "peakRatio": 0.8575347290852606,
+              "extraHotPixels": 0
+            },
+            {
+              "angle": 85,
+              "lightRatio": 0.9990676884656355,
+              "peakRatio": 1,
+              "extraHotPixels": 4
+            }
+          ]
+        }
+      ],
+      "reconstructed": true,
+      "passed": true
+    },
+    "clouds": {
+      "cases": [
+        {
+          "name": "Large Magellanic Cloud",
+          "views": [
+            {
+              "name": "face",
+              "litPixels": 13921,
+              "clippedPixels": 0,
+              "peak": 130,
+              "mean": 5.647325583985037,
+              "checksum": 2501454587,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "inclined",
+              "litPixels": 8954,
+              "clippedPixels": 0,
+              "peak": 147,
+              "mean": 4.4969499960937025,
+              "checksum": 2380972923,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "reverse",
+              "litPixels": 9041,
+              "clippedPixels": 0,
+              "peak": 149,
+              "mean": 4.527445142577961,
+              "checksum": 4279800746,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "edge",
+              "litPixels": 5059,
+              "clippedPixels": 0,
+              "peak": 174,
+              "mean": 2.9442265253905493,
+              "checksum": 3792342404,
+              "calls": 2,
+              "pickable": true
+            }
+          ],
+          "inside": {
+            "litPixels": 102400,
+            "clippedPixels": 0,
+            "peak": 64,
+            "mean": 46.73210832812576,
+            "checksum": 2842575158,
+            "calls": 2,
+            "pickable": true
+          },
+          "behind": {
+            "litPixels": 0,
+            "clippedPixels": 0,
+            "peak": 0,
+            "mean": 0,
+            "checksum": 3053477317,
+            "calls": 0,
+            "pickable": false
+          },
+          "dustDifference": 0.6454329427083333,
+          "repeatError": 0,
+          "smallOrbitDifference": 0.013958333333333333,
+          "reconstructed": true,
+          "memoryBytes": 671744,
+          "passed": true
+        },
+        {
+          "name": "Small Magellanic Cloud",
+          "views": [
+            {
+              "name": "face",
+              "litPixels": 11072,
+              "clippedPixels": 0,
+              "peak": 109,
+              "mean": 4.96562196289038,
+              "checksum": 295907634,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "inclined",
+              "litPixels": 7878,
+              "clippedPixels": 0,
+              "peak": 128,
+              "mean": 4.180876138671764,
+              "checksum": 3477908995,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "reverse",
+              "litPixels": 8022,
+              "clippedPixels": 0,
+              "peak": 138,
+              "mean": 4.160127191406088,
+              "checksum": 3321794455,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "edge",
+              "litPixels": 5660,
+              "clippedPixels": 0,
+              "peak": 141,
+              "mean": 3.347205968749902,
+              "checksum": 4198134538,
+              "calls": 2,
+              "pickable": true
+            }
+          ],
+          "inside": {
+            "litPixels": 102400,
+            "clippedPixels": 0,
+            "peak": 65,
+            "mean": 47.92356299807365,
+            "checksum": 408730655,
+            "calls": 2,
+            "pickable": true
+          },
+          "behind": {
+            "litPixels": 0,
+            "clippedPixels": 0,
+            "peak": 0,
+            "mean": 0,
+            "checksum": 3053477317,
+            "calls": 0,
+            "pickable": false
+          },
+          "dustDifference": 0.594453125,
+          "repeatError": 0,
+          "smallOrbitDifference": 0.011142578125,
+          "reconstructed": true,
+          "memoryBytes": 671744,
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "cloudContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "cloudsAfterRecovery": {
+      "cases": [
+        {
+          "name": "Large Magellanic Cloud",
+          "views": [
+            {
+              "name": "face",
+              "litPixels": 13921,
+              "clippedPixels": 0,
+              "peak": 130,
+              "mean": 5.647325583985037,
+              "checksum": 2501454587,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "inclined",
+              "litPixels": 8954,
+              "clippedPixels": 0,
+              "peak": 147,
+              "mean": 4.4969499960937025,
+              "checksum": 2380972923,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "reverse",
+              "litPixels": 9041,
+              "clippedPixels": 0,
+              "peak": 149,
+              "mean": 4.527445142577961,
+              "checksum": 4279800746,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "edge",
+              "litPixels": 5059,
+              "clippedPixels": 0,
+              "peak": 174,
+              "mean": 2.9442265253905493,
+              "checksum": 3792342404,
+              "calls": 2,
+              "pickable": true
+            }
+          ],
+          "inside": {
+            "litPixels": 102400,
+            "clippedPixels": 0,
+            "peak": 64,
+            "mean": 46.73210832812576,
+            "checksum": 2842575158,
+            "calls": 2,
+            "pickable": true
+          },
+          "behind": {
+            "litPixels": 0,
+            "clippedPixels": 0,
+            "peak": 0,
+            "mean": 0,
+            "checksum": 3053477317,
+            "calls": 0,
+            "pickable": false
+          },
+          "dustDifference": 0.6454329427083333,
+          "repeatError": 0,
+          "smallOrbitDifference": 0.013958333333333333,
+          "reconstructed": true,
+          "memoryBytes": 671744,
+          "passed": true
+        },
+        {
+          "name": "Small Magellanic Cloud",
+          "views": [
+            {
+              "name": "face",
+              "litPixels": 11072,
+              "clippedPixels": 0,
+              "peak": 109,
+              "mean": 4.96562196289038,
+              "checksum": 295907634,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "inclined",
+              "litPixels": 7878,
+              "clippedPixels": 0,
+              "peak": 128,
+              "mean": 4.180876138671764,
+              "checksum": 3477908995,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "reverse",
+              "litPixels": 8022,
+              "clippedPixels": 0,
+              "peak": 138,
+              "mean": 4.160127191406088,
+              "checksum": 3321794455,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "edge",
+              "litPixels": 5660,
+              "clippedPixels": 0,
+              "peak": 141,
+              "mean": 3.347205968749902,
+              "checksum": 4198134538,
+              "calls": 2,
+              "pickable": true
+            }
+          ],
+          "inside": {
+            "litPixels": 102400,
+            "clippedPixels": 0,
+            "peak": 65,
+            "mean": 47.92356299807365,
+            "checksum": 408730655,
+            "calls": 2,
+            "pickable": true
+          },
+          "behind": {
+            "litPixels": 0,
+            "clippedPixels": 0,
+            "peak": 0,
+            "mean": 0,
+            "checksum": 3053477317,
+            "calls": 0,
+            "pickable": false
+          },
+          "dustDifference": 0.594453125,
+          "repeatError": 0,
+          "smallOrbitDifference": 0.011142578125,
+          "reconstructed": true,
+          "memoryBytes": 671744,
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "cloudRecovery": {
+      "passed": true
+    },
+    "cloudPerformance": {
+      "cases": [
+        {
+          "name": "Large Magellanic Cloud",
+          "frames": 236,
+          "meanMs": 16.66610169491524,
+          "fps": 60.002033967253176,
+          "p95Ms": 16.70000000001164,
+          "stats": {
+            "drawn": 57094,
+            "loaded": 7412803,
+            "represented": 57094,
+            "pending": 0,
+            "failed": 0,
+            "mode": "adaptive",
+            "complete": true,
+            "fps": 60.00300015000745,
+            "p95": 16.70000000001164,
+            "calls": 12,
+            "managedMiB": 325.1234121322632,
+            "blocked": false,
+            "focusDistance": 0.017999999999997362,
+            "focusFromObserver": 0.04959,
+            "budget": 332750,
+            "models": 4
+          }
+        },
+        {
+          "name": "Small Magellanic Cloud",
+          "frames": 227,
+          "meanMs": 17.3264317180617,
+          "fps": 57.715288195062335,
+          "p95Ms": 16.80000000000291,
+          "stats": {
+            "drawn": 57094,
+            "loaded": 7412803,
+            "represented": 57094,
+            "pending": 0,
+            "failed": 0,
+            "mode": "adaptive",
+            "complete": true,
+            "fps": 57.83411248734875,
+            "p95": 16.80000000000291,
+            "calls": 11,
+            "managedMiB": 325.1234121322632,
+            "blocked": false,
+            "focusDistance": 0.00817119731991949,
+            "focusFromObserver": 0.06244000000000001,
+            "budget": 442889,
+            "models": 3
+          }
+        }
+      ]
+    },
+    "colors": {
+      "cool": {
+        "identity": "nearby:m31",
+        "rgb": [
+          62187,
+          75981,
+          90443
+        ],
+        "redBlue": 0.6875822341143041,
+        "luminance": 74092.552,
+        "checksum": 737436162,
+        "calls": 2,
+        "bytes": 672000
+      },
+      "warm": {
+        "identity": "nearby:smc",
+        "rgb": [
+          76725,
+          73940,
+          67589
+        ],
+        "redBlue": 1.1351699241000754,
+        "luminance": 74073.54879999999,
+        "checksum": 3483523495,
+        "calls": 2,
+        "bytes": 672000
+      },
+      "repeat": {
+        "identity": "nearby:m31",
+        "rgb": [
+          62187,
+          75981,
+          90443
+        ],
+        "redBlue": 0.6875822341143041,
+        "luminance": 74092.552,
+        "checksum": 737436162,
+        "calls": 2,
+        "bytes": 672000
+      },
+      "brightnessDifference": 0.000256479220745514,
+      "passed": true
+    },
+    "colorContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "colorsAfterRecovery": {
+      "cool": {
+        "identity": "nearby:m31",
+        "rgb": [
+          62187,
+          75981,
+          90443
+        ],
+        "redBlue": 0.6875822341143041,
+        "luminance": 74092.552,
+        "checksum": 737436162,
+        "calls": 2,
+        "bytes": 672000
+      },
+      "warm": {
+        "identity": "nearby:smc",
+        "rgb": [
+          76725,
+          73940,
+          67589
+        ],
+        "redBlue": 1.1351699241000754,
+        "luminance": 74073.54879999999,
+        "checksum": 3483523495,
+        "calls": 2,
+        "bytes": 672000
+      },
+      "repeat": {
+        "identity": "nearby:m31",
+        "rgb": [
+          62187,
+          75981,
+          90443
+        ],
+        "redBlue": 0.6875822341143041,
+        "luminance": 74092.552,
+        "checksum": 737436162,
+        "calls": 2,
+        "bytes": 672000
+      },
+      "brightnessDifference": 0.000256479220745514,
+      "passed": true
+    },
+    "appearance": {
+      "catalog": true,
+      "catalogHidden": true,
+      "spiral": true,
+      "disclosed": true,
+      "savedSpiral": true,
+      "unchanged": true,
+      "body": {
+        "available": true,
+        "passed": true,
+        "targetId": "nearby:m31"
+      },
+      "nearbyBytes": 4031488,
+      "passed": true
+    },
+    "continuity": {
+      "available": true,
+      "events": [],
+      "removed": [
+        {
+          "id": 2741722,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6081409,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6190134,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6109534,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 95754,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6205188,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6181120,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6162938,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6158945,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9383580,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9389683,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9482281,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3054359,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9281857,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8832190,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8817623,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8700795,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9277544,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9275904,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9269533,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8676554,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2943577,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9441983,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8254118,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2741722,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8380171,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3581897,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3446377,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3190733,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3430400,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8241556,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8990752,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8948236,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9160936,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8892703,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9006139,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9098584,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9067206,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8218803,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8215435,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8206309,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3865982,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3805868,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3853729,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6490,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2281916,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929751,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929375,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 1060722,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2188,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 981894,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2177,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6158945,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9383580,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6081409,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6119414,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6190134,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6109534,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6127107,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 13108902,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 95754,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6205188,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6181120,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6162938,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6158945,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9383580,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9482281,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3054359,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9281857,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8817623,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8832190,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8700795,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9277544,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9275904,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9269533,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8676554,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2943577,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9441983,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8254118,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2741722,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8380171,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3581897,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8990752,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3446377,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8948236,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8234969,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8902125,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8241556,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9160936,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8892703,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9006139,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9098584,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8215435,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9067206,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8206309,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 8218803,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3865982,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3805868,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 3853729,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6490,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2281916,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 13018430,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 1060722,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929751,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6929375,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2188,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 981894,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 2177,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 6158945,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        },
+        {
+          "id": 9383580,
+          "blend": 0,
+          "sourceDrawn": true,
+          "sourceProfileLoaded": true,
+          "wanted": false
+        }
+      ],
+      "peakJump": 0.19450000000001944,
+      "maxResident": 12,
+      "idleTransitionsComplete": true,
+      "stats": {
+        "drawn": 57094,
+        "loaded": 7412803,
+        "represented": 57094,
+        "pending": 0,
+        "failed": 0,
+        "mode": "adaptive",
+        "complete": true,
+        "fps": 55.15466286712348,
+        "p95": 16.80000000000291,
+        "calls": 17,
+        "managedMiB": 325.1234121322632,
+        "blocked": false,
+        "focusDistance": 0.106742868564,
+        "focusFromObserver": 0.785,
+        "budget": 589483,
+        "models": 6
+      },
+      "passed": true
+    },
+    "observerPass": {
+      "galaxy": "NGC 3982",
+      "samples": [
+        {
+          "radiusMultiple": 60,
+          "blend": 1,
+          "brightFraction": 0.005126953125,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 24,
+          "blend": 1,
+          "brightFraction": 0.03155517578125,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 12,
+          "blend": 0.7920833213002185,
+          "brightFraction": 0.11529541015625,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 6,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 2,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 0.25,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": 0,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        },
+        {
+          "radiusMultiple": -2,
+          "blend": 0,
+          "brightFraction": 0,
+          "bodyIntercepts": false
+        }
+      ],
+      "deliberate": true,
+      "pointsOnly": true,
+      "stablePointHorizon": true,
+      "focusedOnly": true,
+      "observerClearsFocus": true,
+      "overviewClearsFocus": true,
+      "passed": true
+    },
+    "ui": {
+      "focusReachable": true,
+      "closeReachableAfterScroll": true,
+      "retryReachable": true,
+      "cancelledVisitStable": true,
+      "searchReusable": true,
+      "reopenedVisitStable": true,
+      "speedEditable": true,
+      "automaticWithFreePointer": true,
+      "escapeKeepsSpeedMenu": true,
+      "passed": true
+    },
+    "searchAvailability": {
+      "recognized": {
+        "status": "1 name match · no visit location",
+        "visitOptions": 0,
+        "activeOption": null,
+        "explanation": "Location unavailable in this atlasSombrero GalaxyNGC 4594 · M 104We recognize these names, but this atlas has no verified 3D visit location for them yet. They cannot be visited in the current dataset."
+      },
+      "unavailableStable": true,
+      "browseWorks": true,
+      "mixedHasOnlyVisitsInList": true,
+      "noMatch": {
+        "status": "No name matches. Try an NGC, IC, UGC or Messier name.",
+        "visitOptions": 0,
+        "unavailableHidden": true,
+        "activeOption": null
+      },
+      "passed": true
+    },
+    "nearbySearch": {
+      "cases": [
+        {
+          "query": "Andromeda",
+          "available": true,
+          "closed": true,
+          "selectedId": -1,
+          "passed": true
+        },
+        {
+          "query": "M33",
+          "available": true,
+          "closed": true,
+          "selectedId": -2,
+          "passed": true
+        },
+        {
+          "query": "LMC",
+          "available": true,
+          "closed": true,
+          "selectedId": -3,
+          "passed": true
+        },
+        {
+          "query": "SMC",
+          "available": true,
+          "closed": true,
+          "selectedId": -4,
+          "passed": true
+        },
+        {
+          "query": "M32",
+          "available": true,
+          "closed": true,
+          "selectedId": -5,
+          "passed": true
+        },
+        {
+          "query": "M110",
+          "available": true,
+          "closed": true,
+          "selectedId": -6,
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "nearby": {
+      "cases": [
+        {
+          "name": "Andromeda",
+          "id": -1,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m31"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1194,
+              "axisRatio": 0.27029043889170745,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2536,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9649921745221014,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.27000000000000013,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Triangulum",
+          "id": -2,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.2412670766236366e-16,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m33"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2398,
+              "axisRatio": 0.5918368316078025,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 3276,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9530073950466386,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.591560637783862,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Large Magellanic Cloud",
+          "id": -3,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:lmc"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2724,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2724,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9986629549174523,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 1,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Small Magellanic Cloud",
+          "id": -4,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.5540063044689707e-17,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:smc"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1607,
+              "axisRatio": 0.5999423149983254,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2072,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9457124708708851,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.5997932782075219,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "M32",
+          "id": -5,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.1443916996305594e-16,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m32"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1338,
+              "axisRatio": 0.7502485958686004,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 1428,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9695579660206602,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.7500000000000001,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "M110",
+          "id": -6,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m110"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1141,
+              "axisRatio": 0.5686672543565017,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 1296,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9874377046669676,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.5699999999999998,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        }
+      ],
+      "measurement": {
+        "distanceMpc": 0.2064522546487897,
+        "expectedMpc": 0.2064522546487897,
+        "preserved": true,
+        "markersVisible": true,
+        "localCaption": true
+      },
+      "countUnchanged": true,
+      "modelCount": 6,
+      "geometryBytes": 4031488,
+      "passed": true
+    },
+    "nearbyContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "nearbyAfterRecovery": {
+      "cases": [
+        {
+          "name": "Andromeda",
+          "id": -1,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m31"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1194,
+              "axisRatio": 0.27029043889170745,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2536,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9649921745221014,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.27000000000000013,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Triangulum",
+          "id": -2,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.2412670766236366e-16,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m33"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2398,
+              "axisRatio": 0.5918368316078025,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 3276,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9530073950466386,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.591560637783862,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Large Magellanic Cloud",
+          "id": -3,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:lmc"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2724,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2724,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9986629549174523,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 1,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Small Magellanic Cloud",
+          "id": -4,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.5540063044689707e-17,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:smc"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1607,
+              "axisRatio": 0.5999423149983254,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2072,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9457124708708851,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.5997932782075219,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "M32",
+          "id": -5,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.1443916996305594e-16,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m32"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1338,
+              "axisRatio": 0.7502485958686004,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 1428,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9695579660206602,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.7500000000000001,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "M110",
+          "id": -6,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m110"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1141,
+              "axisRatio": 0.5686672543565017,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 1296,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9874377046669676,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.5699999999999998,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        }
+      ],
+      "measurement": {
+        "distanceMpc": 0.2064522546487897,
+        "expectedMpc": 0.2064522546487897,
+        "preserved": true,
+        "markersVisible": true,
+        "localCaption": true
+      },
+      "countUnchanged": true,
+      "modelCount": 6,
+      "geometryBytes": 4031488,
+      "passed": true
+    },
+    "localPositions": {
+      "candidateCount": 1107,
+      "exampleTargetId": "2305843034832594809",
+      "rotations": [
+        {
+          "angle": 0,
+          "hidden": {
+            "covered": 0,
+            "amber": 0
+          },
+          "raw": {
+            "covered": 10950,
+            "amber": 10950
+          },
+          "hiddenPick": {
+            "covered": 0,
+            "amber": 0
+          },
+          "rawPick": {
+            "covered": 11136,
+            "amber": 11020
+          },
+          "withoutFading": {
+            "covered": 0,
+            "amber": 0
+          }
+        },
+        {
+          "angle": 1.5707963267948966,
+          "hidden": {
+            "covered": 0,
+            "amber": 0
+          },
+          "raw": {
+            "covered": 10238,
+            "amber": 10238
+          },
+          "hiddenPick": {
+            "covered": 0,
+            "amber": 0
+          },
+          "rawPick": {
+            "covered": 10425,
+            "amber": 10355
+          },
+          "withoutFading": {
+            "covered": 0,
+            "amber": 0
+          }
+        },
+        {
+          "angle": 3.141592653589793,
+          "hidden": {
+            "covered": 0,
+            "amber": 0
+          },
+          "raw": {
+            "covered": 8729,
+            "amber": 8729
+          },
+          "hiddenPick": {
+            "covered": 0,
+            "amber": 0
+          },
+          "rawPick": {
+            "covered": 8872,
+            "amber": 8777
+          },
+          "withoutFading": {
+            "covered": 0,
+            "amber": 0
+          }
+        },
+        {
+          "angle": 4.71238898038469,
+          "hidden": {
+            "covered": 0,
+            "amber": 0
+          },
+          "raw": {
+            "covered": 9956,
+            "amber": 9956
+          },
+          "hiddenPick": {
+            "covered": 0,
+            "amber": 0
+          },
+          "rawPick": {
+            "covered": 10136,
+            "amber": 10061
+          },
+          "withoutFading": {
+            "covered": 0,
+            "amber": 0
+          }
+        }
+      ],
+      "outsideGuard": {
+        "covered": 16,
+        "amber": 0
+      },
+      "outsideGuardPick": {
+        "covered": 16,
+        "amber": 0
+      },
+      "passed": true
+    },
+    "localInteraction": {
+      "node": "701",
+      "nodeCenter": [
+        75.27442906067417,
+        -17.445578152133237,
+        -14.18009294267876
+      ],
+      "targetId": "39628351635193964",
+      "hidden": {
+        "covered": 0,
+        "amber": 0,
+        "code": 0
+      },
+      "hiddenPick": {
+        "covered": 0,
+        "amber": 0,
+        "code": 0
+      },
+      "raw": {
+        "covered": 4,
+        "amber": 4,
+        "code": 923607607
+      },
+      "rawPick": {
+        "covered": 32,
+        "amber": 0,
+        "code": 46006272
+      },
+      "expectedCode": 46006272,
+      "visitRejected": true,
+      "modelWithheld": true,
+      "rawVisitable": true,
+      "rawAnnotated": true,
+      "hiddenAnnotated": true,
+      "recordPreserved": true,
+      "warning": true,
+      "persistedOn": true,
+      "persistedOff": true,
+      "passed": true
+    },
+    "homeNavigation": {
+      "observer": [
+        {
+          "distanceMpc": 0.05999999999999996,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 4.933455200984228e-13
+        },
+        {
+          "distanceMpc": 0.0414725947916218,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 5.014429275138551e-14
+        },
+        {
+          "distanceMpc": 0.02866626864583432,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.2669558229421662e-13
+        },
+        {
+          "distanceMpc": 0.019814409062274354,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.5743194216804707e-13
+        }
+      ],
+      "galaxyView": [
+        {
+          "distanceMpc": 0.05999999999999996,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 4.933455200984228e-13
+        },
+        {
+          "distanceMpc": 0.0414725947916218,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 5.014429275138551e-14
+        },
+        {
+          "distanceMpc": 0.02866626864583432,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.2669558229421662e-13
+        },
+        {
+          "distanceMpc": 0.019814409062274354,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.5743194216804707e-13
+        }
+      ],
+      "search": [
+        {
+          "distanceMpc": 0.05999999999999996,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 4.933455200984228e-13
+        },
+        {
+          "distanceMpc": 0.0414725947916218,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 5.014429275138551e-14
+        },
+        {
+          "distanceMpc": 0.02866626864583432,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.2669558229421662e-13
+        },
+        {
+          "distanceMpc": 0.019814409062274354,
+          "targetErrorMpc": 5.421010862427522e-20,
+          "centerOffsetPx": 1.5743194216804707e-13
+        }
+      ],
+      "solarTargetErrorMpc": 0,
+      "sunOffsetPx": 5.651447846182933e-13,
+      "coreControlActive": true,
+      "solarControlActive": true,
+      "coreLabeled": true,
+      "sunLabeled": true,
+      "passed": true
+    },
+    "home": {
+      "arrival": {
+        "visible": true,
+        "blend": 1,
+        "focusAtSun": true,
+        "cameraDistance": 0.05999999999999996,
+        "centerNdc": [
+          0.15135869555311132,
+          -0.08983219660524,
+          0.0015892965182614644
+        ],
+        "sunNdc": [
+          -4.369669639567559e-16,
+          -8.88114735659583e-16,
+          0.0016666662325847592
+        ]
+      },
+      "bodyPicking": true,
+      "views": {
+        "outside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 9260
+        },
+        "nearSun": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 65536
+        },
+        "inside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 65536
+        },
+        "points": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "focused": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 65536
+        },
+        "noFocus": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "sunMarkerWithinClip": true
+      },
+      "catalogUnchanged": true,
+      "memoryBytes": 2446676,
+      "passed": true
+    },
+    "homeAppearance": {
+      "views": [
+        {
+          "name": "face",
+          "litPixels": 21034,
+          "clippedPixels": 0,
+          "peak": 217,
+          "mean": 14.291009048464966,
+          "drawCalls": 1
+        },
+        {
+          "name": "inclined",
+          "litPixels": 15221,
+          "clippedPixels": 0,
+          "peak": 236,
+          "mean": 12.188150164796005,
+          "drawCalls": 1
+        },
+        {
+          "name": "reverse",
+          "litPixels": 15221,
+          "clippedPixels": 0,
+          "peak": 236,
+          "mean": 12.188166525269613,
+          "drawCalls": 1
+        },
+        {
+          "name": "edge",
+          "litPixels": 3038,
+          "clippedPixels": 0,
+          "peak": 234,
+          "mean": 3.460129312133769,
+          "drawCalls": 1
+        }
+      ],
+      "inside": {
+        "litPixels": 65536,
+        "clippedPixels": 0,
+        "peak": 184,
+        "mean": 165.7226769349617,
+        "drawCalls": 1
+      },
+      "sun": {
+        "litPixels": 65536,
+        "clippedPixels": 0,
+        "peak": 215,
+        "mean": 104.67557301635287,
+        "drawCalls": 1
+      },
+      "dustDifference": 1.7548014322916667,
+      "repeatError": 0,
+      "smallOrbitDifference": 0.033564249674479164,
+      "memoryBytes": 2446676,
+      "passed": true
+    },
+    "homePerformance": {
+      "drawn": 57094,
+      "loaded": 7412803,
+      "represented": 57094,
+      "pending": 0,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": true,
+      "fps": 56.91924581999288,
+      "p95": 16.80000000000291,
+      "calls": 12,
+      "managedMiB": 326.50067043304443,
+      "blocked": false,
+      "focusDistance": 0.0599999999999927,
+      "focusFromObserver": 0,
+      "budget": 863061,
+      "models": 4
+    },
+    "homeContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "homeAfterRecovery": {
+      "arrival": {
+        "visible": true,
+        "blend": 1,
+        "focusAtSun": true,
+        "cameraDistance": 0.05999999999999996,
+        "centerNdc": [
+          0.15135869555311132,
+          -0.08983219660524,
+          0.0015892965182614644
+        ],
+        "sunNdc": [
+          -4.369669639567559e-16,
+          -8.88114735659583e-16,
+          0.0016666662325847592
+        ]
+      },
+      "bodyPicking": true,
+      "views": {
+        "outside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 9260
+        },
+        "nearSun": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 65536
+        },
+        "inside": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 65536
+        },
+        "points": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "focused": {
+          "visible": true,
+          "blend": 1,
+          "litPixels": 65536
+        },
+        "noFocus": {
+          "visible": false,
+          "blend": 0,
+          "litPixels": 0
+        },
+        "sunMarkerWithinClip": true
+      },
+      "catalogUnchanged": true,
+      "memoryBytes": 2446676,
+      "passed": true
+    },
+    "homeAppearanceAfterRecovery": {
+      "views": [
+        {
+          "name": "face",
+          "litPixels": 21034,
+          "clippedPixels": 0,
+          "peak": 217,
+          "mean": 14.291009048464966,
+          "drawCalls": 1
+        },
+        {
+          "name": "inclined",
+          "litPixels": 15221,
+          "clippedPixels": 0,
+          "peak": 236,
+          "mean": 12.188150164796005,
+          "drawCalls": 1
+        },
+        {
+          "name": "reverse",
+          "litPixels": 15221,
+          "clippedPixels": 0,
+          "peak": 236,
+          "mean": 12.188166525269613,
+          "drawCalls": 1
+        },
+        {
+          "name": "edge",
+          "litPixels": 3038,
+          "clippedPixels": 0,
+          "peak": 234,
+          "mean": 3.460129312133769,
+          "drawCalls": 1
+        }
+      ],
+      "inside": {
+        "litPixels": 65536,
+        "clippedPixels": 0,
+        "peak": 184,
+        "mean": 165.7226769349617,
+        "drawCalls": 1
+      },
+      "sun": {
+        "litPixels": 65536,
+        "clippedPixels": 0,
+        "peak": 215,
+        "mean": 104.67557301635287,
+        "drawCalls": 1
+      },
+      "dustDifference": 1.7548014322916667,
+      "repeatError": 0,
+      "smallOrbitDifference": 0.033564249674479164,
+      "memoryBytes": 2446676,
+      "passed": true
+    },
+    "pageErrors": [],
+    "sourceCommit": "2de64f1c5ca27b5fba81014aa8026eb304f4062f"
+  },
+  {
+    "runId": "roadtrip-models-subset",
+    "status": "complete",
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "webmcpAvailable": false,
+    "firstCoarseMs": 472.59999999403954,
+    "rendering": {
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "width": 1600,
+      "height": 1000
+    },
+    "initial": {
+      "drawn": 435305,
+      "loaded": 582952,
+      "represented": 1000000,
+      "pending": 3,
+      "failed": 0,
+      "mode": "adaptive",
+      "complete": false,
+      "fps": 39.99040230344717,
+      "p95": 33.31200000000001,
+      "calls": 38,
+      "managedMiB": 49.468204498291016,
+      "blocked": false,
+      "focusDistance": 16069.490014018393,
+      "focusFromObserver": 1150.0174863046352,
+      "budget": 1000000,
+      "models": 0
+    },
+    "tours": {
+      "speed": 10,
+      "stops": [
+        {
+          "title": "The Sun",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 0,
+          "distanceError": 1.4456028966473392e-16,
+          "shell": false,
+          "resident": 0,
+          "passed": true
+        },
+        {
+          "title": "The Milky Way",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 5.421010862427522e-20,
+          "distanceError": 5.782411586589358e-16,
+          "shell": false,
+          "resident": 0,
+          "passed": true
+        },
+        {
+          "title": "The Local Group",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 0,
+          "distanceError": 0,
+          "shell": false,
+          "resident": 0,
+          "passed": true
+        },
+        {
+          "title": "The DESI survey",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 0,
+          "distanceError": 1.1319521664713932e-16,
+          "shell": false,
+          "resident": 0,
+          "passed": true
+        },
+        {
+          "title": "The cosmic microwave background",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 0,
+          "distanceError": 5.828100875525421e-16,
+          "shell": true,
+          "resident": 0,
+          "passed": true
+        }
+      ],
+      "finished": {
+        "shell": true,
+        "checkbox": true,
+        "nextDisabled": true
+      },
+      "exitOff": {
+        "panelHidden": true,
+        "shell": false,
+        "checkbox": false,
+        "stored": "false",
+        "passed": true
+      },
+      "exitOn": {
+        "shellAtCmb": true,
+        "shellAfterPrev": true,
+        "shell": true,
+        "checkbox": true,
+        "stored": "true",
+        "passed": true
+      },
+      "wheel": {
+        "status": "Paused · drag or scroll moved the view",
+        "targetDriftMpc": 0,
+        "distanceDrift": 1.513902008000739e-16,
+        "playPressed": "false",
+        "passed": true
+      },
+      "escapeExits": true,
+      "roadTrip": {
+        "arrived": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          9,
+          10
+        ],
+        "skipped": [
+          "NGC 3982 is not available in this dataset; skipping.",
+          "NGC 4026 is not available in this dataset; skipping."
+        ],
+        "total": 10,
+        "passed": true
+      },
+      "pendingVisit": {
+        "skipped": true,
+        "passed": true
+      },
+      "maxResident": 0,
+      "removals": 0,
+      "visibleEvictions": [],
+      "passed": true
+    },
+    "tourContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "toursAfterRecovery": {
+      "speed": 10,
+      "stops": [
+        {
+          "title": "The Sun",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 0,
+          "distanceError": 1.4456028966473392e-16,
+          "shell": false,
+          "resident": 0,
+          "passed": true
+        },
+        {
+          "title": "The Milky Way",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 5.421010862427522e-20,
+          "distanceError": 3.469446951953614e-16,
+          "shell": false,
+          "resident": 0,
+          "passed": true
+        },
+        {
+          "title": "The Local Group",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 0,
+          "distanceError": 0,
+          "shell": false,
+          "resident": 0,
+          "passed": true
+        },
+        {
+          "title": "The DESI survey",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 0,
+          "distanceError": 1.1319521664713932e-16,
+          "shell": false,
+          "resident": 0,
+          "passed": true
+        },
+        {
+          "title": "The cosmic microwave background",
+          "status": "Arrived · continuing shortly",
+          "targetErrorMpc": 0,
+          "distanceError": 7.770801167367227e-16,
+          "shell": true,
+          "resident": 0,
+          "passed": true
+        }
+      ],
+      "finished": {
+        "shell": true,
+        "checkbox": true,
+        "nextDisabled": true
+      },
+      "exitOff": {
+        "panelHidden": true,
+        "shell": false,
+        "checkbox": false,
+        "stored": "false",
+        "passed": true
+      },
+      "exitOn": {
+        "shellAtCmb": true,
+        "shellAfterPrev": true,
+        "shell": true,
+        "checkbox": true,
+        "stored": "true",
+        "passed": true
+      },
+      "wheel": {
+        "status": "Paused · drag or scroll moved the view",
+        "targetDriftMpc": 0,
+        "distanceDrift": 1.513902008000739e-16,
+        "playPressed": "false",
+        "passed": true
+      },
+      "escapeExits": true,
+      "roadTrip": {
+        "arrived": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          9,
+          10
+        ],
+        "skipped": [
+          "NGC 3982 is not available in this dataset; skipping.",
+          "NGC 4026 is not available in this dataset; skipping."
+        ],
+        "total": 10,
+        "passed": true
+      },
+      "pendingVisit": {
+        "skipped": true,
+        "passed": true
+      },
+      "maxResident": 0,
+      "removals": 0,
+      "visibleEvictions": [],
+      "passed": true
+    },
+    "clouds": {
+      "cases": [
+        {
+          "name": "Large Magellanic Cloud",
+          "views": [
+            {
+              "name": "face",
+              "litPixels": 13921,
+              "clippedPixels": 0,
+              "peak": 130,
+              "mean": 5.647325583985037,
+              "checksum": 2501454587,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "inclined",
+              "litPixels": 8954,
+              "clippedPixels": 0,
+              "peak": 147,
+              "mean": 4.4969499960937025,
+              "checksum": 2380972923,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "reverse",
+              "litPixels": 9041,
+              "clippedPixels": 0,
+              "peak": 149,
+              "mean": 4.527445142577961,
+              "checksum": 4279800746,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "edge",
+              "litPixels": 5059,
+              "clippedPixels": 0,
+              "peak": 174,
+              "mean": 2.9442265253905493,
+              "checksum": 3792342404,
+              "calls": 2,
+              "pickable": true
+            }
+          ],
+          "inside": {
+            "litPixels": 102400,
+            "clippedPixels": 0,
+            "peak": 64,
+            "mean": 46.73210832812576,
+            "checksum": 2842575158,
+            "calls": 2,
+            "pickable": true
+          },
+          "behind": {
+            "litPixels": 0,
+            "clippedPixels": 0,
+            "peak": 0,
+            "mean": 0,
+            "checksum": 3053477317,
+            "calls": 0,
+            "pickable": false
+          },
+          "dustDifference": 0.6454329427083333,
+          "repeatError": 0,
+          "smallOrbitDifference": 0.013958333333333333,
+          "reconstructed": true,
+          "memoryBytes": 671744,
+          "passed": true
+        },
+        {
+          "name": "Small Magellanic Cloud",
+          "views": [
+            {
+              "name": "face",
+              "litPixels": 11072,
+              "clippedPixels": 0,
+              "peak": 109,
+              "mean": 4.96562196289038,
+              "checksum": 295907634,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "inclined",
+              "litPixels": 7878,
+              "clippedPixels": 0,
+              "peak": 128,
+              "mean": 4.180876138671764,
+              "checksum": 3477908995,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "reverse",
+              "litPixels": 8022,
+              "clippedPixels": 0,
+              "peak": 138,
+              "mean": 4.160127191406088,
+              "checksum": 3321794455,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "edge",
+              "litPixels": 5660,
+              "clippedPixels": 0,
+              "peak": 141,
+              "mean": 3.347205968749902,
+              "checksum": 4198134538,
+              "calls": 2,
+              "pickable": true
+            }
+          ],
+          "inside": {
+            "litPixels": 102400,
+            "clippedPixels": 0,
+            "peak": 65,
+            "mean": 47.92356299807365,
+            "checksum": 408730655,
+            "calls": 2,
+            "pickable": true
+          },
+          "behind": {
+            "litPixels": 0,
+            "clippedPixels": 0,
+            "peak": 0,
+            "mean": 0,
+            "checksum": 3053477317,
+            "calls": 0,
+            "pickable": false
+          },
+          "dustDifference": 0.594453125,
+          "repeatError": 0,
+          "smallOrbitDifference": 0.011142578125,
+          "reconstructed": true,
+          "memoryBytes": 671744,
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "cloudContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "cloudsAfterRecovery": {
+      "cases": [
+        {
+          "name": "Large Magellanic Cloud",
+          "views": [
+            {
+              "name": "face",
+              "litPixels": 13921,
+              "clippedPixels": 0,
+              "peak": 130,
+              "mean": 5.647325583985037,
+              "checksum": 2501454587,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "inclined",
+              "litPixels": 8954,
+              "clippedPixels": 0,
+              "peak": 147,
+              "mean": 4.4969499960937025,
+              "checksum": 2380972923,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "reverse",
+              "litPixels": 9041,
+              "clippedPixels": 0,
+              "peak": 149,
+              "mean": 4.527445142577961,
+              "checksum": 4279800746,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "edge",
+              "litPixels": 5059,
+              "clippedPixels": 0,
+              "peak": 174,
+              "mean": 2.9442265253905493,
+              "checksum": 3792342404,
+              "calls": 2,
+              "pickable": true
+            }
+          ],
+          "inside": {
+            "litPixels": 102400,
+            "clippedPixels": 0,
+            "peak": 64,
+            "mean": 46.73210832812576,
+            "checksum": 2842575158,
+            "calls": 2,
+            "pickable": true
+          },
+          "behind": {
+            "litPixels": 0,
+            "clippedPixels": 0,
+            "peak": 0,
+            "mean": 0,
+            "checksum": 3053477317,
+            "calls": 0,
+            "pickable": false
+          },
+          "dustDifference": 0.6454329427083333,
+          "repeatError": 0,
+          "smallOrbitDifference": 0.013958333333333333,
+          "reconstructed": true,
+          "memoryBytes": 671744,
+          "passed": true
+        },
+        {
+          "name": "Small Magellanic Cloud",
+          "views": [
+            {
+              "name": "face",
+              "litPixels": 11072,
+              "clippedPixels": 0,
+              "peak": 109,
+              "mean": 4.96562196289038,
+              "checksum": 295907634,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "inclined",
+              "litPixels": 7878,
+              "clippedPixels": 0,
+              "peak": 128,
+              "mean": 4.180876138671764,
+              "checksum": 3477908995,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "reverse",
+              "litPixels": 8022,
+              "clippedPixels": 0,
+              "peak": 138,
+              "mean": 4.160127191406088,
+              "checksum": 3321794455,
+              "calls": 2,
+              "pickable": true
+            },
+            {
+              "name": "edge",
+              "litPixels": 5660,
+              "clippedPixels": 0,
+              "peak": 141,
+              "mean": 3.347205968749902,
+              "checksum": 4198134538,
+              "calls": 2,
+              "pickable": true
+            }
+          ],
+          "inside": {
+            "litPixels": 102400,
+            "clippedPixels": 0,
+            "peak": 65,
+            "mean": 47.92356299807365,
+            "checksum": 408730655,
+            "calls": 2,
+            "pickable": true
+          },
+          "behind": {
+            "litPixels": 0,
+            "clippedPixels": 0,
+            "peak": 0,
+            "mean": 0,
+            "checksum": 3053477317,
+            "calls": 0,
+            "pickable": false
+          },
+          "dustDifference": 0.594453125,
+          "repeatError": 0,
+          "smallOrbitDifference": 0.011142578125,
+          "reconstructed": true,
+          "memoryBytes": 671744,
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "cloudRecovery": {
+      "passed": true
+    },
+    "cloudPerformance": {
+      "cases": [
+        {
+          "name": "Large Magellanic Cloud",
+          "frames": 236,
+          "meanMs": 16.66567796610169,
+          "fps": 60.003559533192664,
+          "p95Ms": 16.799999999995634,
+          "stats": {
+            "drawn": 53063,
+            "loaded": 1000000,
+            "represented": 53063,
+            "pending": 0,
+            "failed": 0,
+            "mode": "adaptive",
+            "complete": true,
+            "fps": 60.00300015000757,
+            "p95": 16.799999999995634,
+            "calls": 9,
+            "managedMiB": 58.7349853515625,
+            "blocked": false,
+            "focusDistance": 0.017999999999997286,
+            "focusFromObserver": 0.04959,
+            "budget": 2000000,
+            "models": 3
+          }
+        },
+        {
+          "name": "Small Magellanic Cloud",
+          "frames": 236,
+          "meanMs": 16.66567796610169,
+          "fps": 60.003559533192664,
+          "p95Ms": 16.700000000004366,
+          "stats": {
+            "drawn": 53063,
+            "loaded": 1000000,
+            "represented": 53063,
+            "pending": 0,
+            "failed": 0,
+            "mode": "adaptive",
+            "complete": true,
+            "fps": 60.00300015000745,
+            "p95": 16.700000000004366,
+            "calls": 8,
+            "managedMiB": 58.7349853515625,
+            "blocked": false,
+            "focusDistance": 0.00817119731991949,
+            "focusFromObserver": 0.06244000000000001,
+            "budget": 2000000,
+            "models": 2
+          }
+        }
+      ]
+    },
+    "nearbySearch": {
+      "cases": [
+        {
+          "query": "Andromeda",
+          "available": true,
+          "closed": true,
+          "selectedId": -1,
+          "passed": true
+        },
+        {
+          "query": "M33",
+          "available": true,
+          "closed": true,
+          "selectedId": -2,
+          "passed": true
+        },
+        {
+          "query": "LMC",
+          "available": true,
+          "closed": true,
+          "selectedId": -3,
+          "passed": true
+        },
+        {
+          "query": "SMC",
+          "available": true,
+          "closed": true,
+          "selectedId": -4,
+          "passed": true
+        },
+        {
+          "query": "M32",
+          "available": true,
+          "closed": true,
+          "selectedId": -5,
+          "passed": true
+        },
+        {
+          "query": "M110",
+          "available": true,
+          "closed": true,
+          "selectedId": -6,
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "nearby": {
+      "cases": [
+        {
+          "name": "Andromeda",
+          "id": -1,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m31"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1194,
+              "axisRatio": 0.27029043889170745,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2536,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9649921745221014,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.27000000000000013,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Triangulum",
+          "id": -2,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.2412670766236366e-16,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m33"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2398,
+              "axisRatio": 0.5918368316078025,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 3276,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9530073950466386,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.591560637783862,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Large Magellanic Cloud",
+          "id": -3,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:lmc"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2724,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2724,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9986629549174523,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 1,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Small Magellanic Cloud",
+          "id": -4,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.5540063044689707e-17,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:smc"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1607,
+              "axisRatio": 0.5999423149983254,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2072,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9457124708708851,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.5997932782075219,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "M32",
+          "id": -5,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.1443916996305594e-16,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m32"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1338,
+              "axisRatio": 0.7502485958686004,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 1428,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9695579660206602,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.7500000000000001,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "M110",
+          "id": -6,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m110"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1141,
+              "axisRatio": 0.5686672543565017,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 1296,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9874377046669676,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.5699999999999998,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        }
+      ],
+      "measurement": {
+        "distanceMpc": 0.2064522546487897,
+        "expectedMpc": 0.2064522546487897,
+        "preserved": true,
+        "markersVisible": true,
+        "localCaption": true
+      },
+      "countUnchanged": true,
+      "modelCount": 6,
+      "geometryBytes": 4031488,
+      "passed": true
+    },
+    "nearbyContext": {
+      "supported": true,
+      "recovered": true
+    },
+    "nearbyAfterRecovery": {
+      "cases": [
+        {
+          "name": "Andromeda",
+          "id": -1,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m31"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1194,
+              "axisRatio": 0.27029043889170745,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2536,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9649921745221014,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.27000000000000013,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Triangulum",
+          "id": -2,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.2412670766236366e-16,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m33"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2398,
+              "axisRatio": 0.5918368316078025,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 3276,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9530073950466386,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.591560637783862,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Large Magellanic Cloud",
+          "id": -3,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:lmc"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 2724,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2724,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9986629549174523,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 1,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "Small Magellanic Cloud",
+          "id": -4,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.5540063044689707e-17,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:smc"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1607,
+              "axisRatio": 0.5999423149983254,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 2072,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9457124708708851,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.5997932782075219,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "M32",
+          "id": -5,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 1.1443916996305594e-16,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m32"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1338,
+              "axisRatio": 0.7502485958686004,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 1428,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9695579660206602,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.7500000000000001,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        },
+        {
+          "name": "M110",
+          "id": -6,
+          "arrived": {
+            "visible": true,
+            "centerErrorMpc": 0,
+            "sourceShown": true,
+            "redshiftHidden": true
+          },
+          "body": {
+            "available": true,
+            "passed": true,
+            "targetId": "nearby:m110"
+          },
+          "profile": {
+            "available": true,
+            "observed": {
+              "litPixels": 1141,
+              "axisRatio": 0.5686672543565017,
+              "visible": true,
+              "blend": 1
+            },
+            "faceOn": {
+              "litPixels": 1296,
+              "axisRatio": 1,
+              "visible": true,
+              "blend": 1
+            },
+            "inside": {
+              "litPixels": 65536,
+              "axisRatio": 0.9874377046669676,
+              "visible": true,
+              "blend": 1
+            },
+            "far": {
+              "litPixels": 0,
+              "axisRatio": null,
+              "visible": false,
+              "blend": 0
+            },
+            "expectedAxisRatio": 0.5699999999999998,
+            "passed": true
+          },
+          "pointPicked": true,
+          "passed": true
+        }
+      ],
+      "measurement": {
+        "distanceMpc": 0.2064522546487897,
+        "expectedMpc": 0.2064522546487897,
+        "preserved": true,
+        "markersVisible": true,
+        "localCaption": true
+      },
+      "countUnchanged": true,
+      "modelCount": 6,
+      "geometryBytes": 4031488,
+      "passed": true
+    },
+    "pageErrors": [],
+    "sourceCommit": "2de64f1c5ca27b5fba81014aa8026eb304f4062f"
+  },
+  {
+    "runId": "roadtrip-models-production",
+    "sourceCommit": "2de64f1c5ca27b5fba81014aa8026eb304f4062f",
+    "checks": {
+      "defaultAppearanceValue": true,
+      "defaultAppearanceLabel": true,
+      "stop1Arrived": true,
+      "stop2Arrived": true,
+      "stop2CloudDisclosure": true,
+      "stop3Arrived": true,
+      "stop3CloudDisclosure": true,
+      "stop4Arrived": true,
+      "stop5Arrived": true,
+      "stop6Arrived": true,
+      "stop7Arrived": true,
+      "stop8Arrived": true,
+      "stop9Arrived": true,
+      "stop10Arrived": true,
+      "tourExit": true,
+      "Large Magellanic CloudRecipe": true,
+      "Large Magellanic CloudDisclosure": true,
+      "Large Magellanic CloudDistance": true,
+      "Large Magellanic CloudCatalogRecipe": true,
+      "Large Magellanic CloudPointsChoice": true,
+      "Small Magellanic CloudRecipe": true,
+      "Small Magellanic CloudDisclosure": true,
+      "Small Magellanic CloudDistance": true,
+      "Small Magellanic CloudCatalogRecipe": true,
+      "Small Magellanic CloudPointsChoice": true,
+      "AndromedaRecipe": true,
+      "TriangulumRecipe": true,
+      "NGC 3982Recipe": true,
+      "cloudShareIdentity": true,
+      "cloudShareRestore": true,
+      "savedCatalogChoice": true,
+      "catalogLenticularRetained": true,
+      "countPreserved": true,
+      "sourceUnchanged": true,
+      "noErrors": true
+    },
+    "stops": [
+      {
+        "title": "The Milky Way",
+        "status": "Paused",
+        "caption": "Our trip starts 60 kpc from the Galactic core, whose light reaches us after about 26,000 years; the Sun is about 8.1 kpc from it. The disk dimensions are adopted from the literature, and the arms, dust and colors are illustrative."
+      },
+      {
+        "title": "Large Magellanic Cloud",
+        "status": "Paused",
+        "caption": "The Large Magellanic Cloud is about 49.6 kpc away by eclipsing-binary measurement, so its light left about 160,000 years ago. Its round shape and 1.5 kpc size are assumed, its orientation is not measured, and the soft bar, stellar haze and dust are illustrative, not a measured gas map."
+      },
+      {
+        "title": "Small Magellanic Cloud",
+        "status": "Paused",
+        "caption": "The Small Magellanic Cloud is about 62.4 kpc away, also from eclipsing binaries, so its light left about 200,000 years ago. Its projected ellipse and angle are measured, but its half-light size is assumed from a catalog diameter and its fragmented stellar clouds, dust and depth are illustrative, not a measured gas map."
+      },
+      {
+        "title": "Andromeda",
+        "status": "Paused",
+        "caption": "Andromeda (M31) lies about 785 kpc away by the tip of the red giant branch, so we see it as it was about 2.6 million years ago. Its disk size, axis ratio and sky angle are measured; the single-disk model, spiral arms and colors are illustrative."
+      },
+      {
+        "title": "M32 and M110",
+        "status": "Paused",
+        "caption": "M32 (about 805 kpc, uncertain by roughly 80 kpc, from RR Lyrae stars) and M110 (about 824 kpc, tip of the red giant branch) have separately measured distances and are not forced onto Andromeda's distance shell. Their measured half-light ellipses are drawn with illustrative smooth light profiles; M110's light left about 2.7 million years ago."
+      },
+      {
+        "title": "Triangulum",
+        "status": "Paused",
+        "caption": "Triangulum (M33) is about 809 kpc away by the tip of the red giant branch; its light left about 2.6 million years ago. The disk scale, projected ellipse and angle are measured, while the single-disk model, arms and colors are illustrative."
+      },
+      {
+        "title": "NGC 3982",
+        "status": "Paused",
+        "caption": "NGC 3982 is a DESI DR1 galaxy whose position comes from its measured redshift: about 16.6 Mpc, so its light left about 54 million years ago. Its individually fitted shape is one of the two original close-up previews; the spiral detail and colors are illustrative."
+      },
+      {
+        "title": "NGC 4026",
+        "status": "Paused",
+        "caption": "NGC 4026 is the second original close-up preview, placed at about 14.6 Mpc from its measured redshift; the light left about 47 million years ago. Redshift distances carry peculiar-velocity and fitting error, so this position is inferred rather than directly measured."
+      },
+      {
+        "title": "Coma cluster",
+        "status": "Paused",
+        "caption": "The Coma cluster (Abell 1656) is centered here from its NED position and redshift z = 0.024, about 106 Mpc away, where light left about 340 million years ago. Because each galaxy's distance comes from its redshift, the cluster's internal motions stretch it along our line of sight; only DESI rows near this redshift and direction are counted, a sky-and-redshift window rather than true membership."
+      },
+      {
+        "title": "The DESI survey",
+        "status": "Paused",
+        "caption": "The road ends at the survey: 14,140,375 accepted DESI DR1 observations in this dataset, placed at comoving distances inferred from redshift, reaching about 4,831 Mpc where light left about 10 billion years ago. Coverage follows where DESI pointed, so dark regions were not surveyed here and are not confirmed empty."
+      }
+    ],
+    "errors": [],
+    "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "rendering": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+    "status": "complete"
   }
 ]
