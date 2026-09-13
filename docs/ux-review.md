@@ -207,6 +207,10 @@ State: verified. Fresh Settings opens at 0.5%; saved values, including 0%, remai
 
 ## Coma stop framing — 13 September 2026
 
-State: implementation checked on the development GPU; production phone/desktop review pending. The reported sparse stop was reproduced twice after all visible detail loaded. Its 9 Mpc Milky Way approach looked obliquely toward the observer through the cluster’s redshift-distance elongation. Full detail produced the same 537,633 submitted observations at that pose. An outward view from 15 Mpc in front of the unchanged NED center produces a recognizable central gathering. The caption now identifies the galaxy points and preserves the redshift/membership caveat.
+State: verified on the development GPU and the production package in desktop Chrome and phone-sized WebKit. The reported sparse stop was reproduced twice after all visible detail loaded. Its 9 Mpc Milky Way approach looked obliquely toward the observer through the cluster’s redshift-distance elongation. Full detail produced the same 537,633 submitted observations at that pose. An outward view from 15 Mpc in front of the unchanged NED center produces a recognizable central gathering. The caption now identifies the galaxy points and preserves the redshift/membership caveat.
 
 The existing runner regression failed with the old camera direction and passes with the fix. All 92 tests, strict TypeScript and the full-data package pass. Full-data UI/home/share/tour GPU checks pass, including outward Coma framing and context recovery. No catalog positions, rendering settings, model allocations or assets were changed.
+
+The production journey traverses all nine stops at normal travel speed using the real controls, then checks the Coma center/direction, the full catalog count, caption guidance and an unobstructed canvas at screen center. Chrome at 1600×1000 and WebKit at 402×874 pass without page errors. Both screenshots were inspected: the central gathering is clear and the compact phone tour panel leaves it visible. These are browser simulations, not physical-device measurements.
+
+The subset nearby/tour checks also pass, including context recovery and the expected two unavailable-stop notices.
