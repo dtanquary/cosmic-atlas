@@ -200,3 +200,7 @@ The previous 402×874 layout placed a 304×594 inspector over most of the map an
 State: verified in Chrome and WebKit through the production package.
 
 Share now distinguishes Copy view link from Copy cosmic road trip link, with stacked buttons on phones and the existing dialog on desktop. The invitation starts at the Milky Way and plays automatically; it carries no sender camera or selection. Fresh-page and already-open-tab invitations, natural advance to the LMC, input pause, exit/reload, an unknown route, denied clipboard and cancellation during a delayed name-index load pass. The existing view link still restores Andromeda. The final shared navigation/home/share/tour/nearby GPU run passes, and all 122 phone journeys pass again with the extra Share option. Production Share captures in both layouts and the opening stop were visually reviewed.
+
+## Default background opacity — 13 September 2026
+
+State: verified. Fresh Settings opens at 0.5%; saved values, including 0%, remain unchanged. Chrome and WebKit production checks verify both the displayed percentage and the renderer's uniform. The full-data self/UI/home GPU suites pass with the positive default and the existing local-position guard.
