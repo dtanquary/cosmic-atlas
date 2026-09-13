@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ChunkLoader } from './loader';
 import { chooseFrontier, coveredFrontier } from './spatial';
 import { decodeGalaxy, separation } from './format';
+import {galaxyPortrait} from './galaxy-portraits';
 import {ResolvedGalaxy,GalaxyVolume,spiralLight, detailBlend, type GalaxyDetailData, type ModelDisplay,type GalaxyAppearance} from './galaxy-detail';
 import {ModelCatalog,MODEL_LIMIT,decodeModel,measuredShape} from './model-catalog';
 import {MilkyWay} from './milky-way';
@@ -891,6 +892,10 @@ export class Explorer {
     const {probeGalaxyVariants}=await import('./variant-diagnostics');
     try{return probeGalaxyVariants(this.renderer,this.nearbyGalaxies[0].data,preview)}finally{this.invalidate()}
   }
+  async probeGalaxyPortraits(preview?:HTMLElement){
+    const {probeVolumes}=await import('./volume-diagnostics');
+    try{return probeVolumes(this.renderer,this.allModels.filter(m=>galaxyPortrait(m.data.galaxy.targetId)?.disk).map(m=>m.data),{calls:1,maxBytes:1.4*1048576},preview)}finally{this.invalidate()}
+  }
   async probeCloudModels(preview?:HTMLElement){
     const {probeCloudModels}=await import('./cloud-diagnostics');
     try{return probeCloudModels(this.renderer,preview)}finally{this.invalidate()}
@@ -939,12 +944,12 @@ export class Explorer {
     const source=JSON.stringify(this.nearbyGalaxies.map(model=>model.data)),center=this.resolvedFor(-1)!.center.clone();
     try{
       change('catalog');await frame();
-      const catalog=this.allModels.every(model=>model.appearance==='catalog'),catalogHidden=document.getElementById('profile-appearance')!.hidden;
+      const catalog=this.allModels.every(model=>model.appearance==='catalog'),catalogDisclosed=!document.getElementById('profile-appearance')!.hidden;
       change('spiral');await frame();
       const spiral=this.allModels.every(model=>model.appearance==='spiral'),disclosed=!document.getElementById('profile-appearance')!.hidden,savedSpiral=localStorage.getItem('atlas-galaxy-appearance')==='spiral';
       const body=await this.probeResolvedPicking(-1),nearbyBytes=this.nearbyGalaxies.reduce((bytes,m)=>bytes+m.memoryBytes,0);
       const unchanged=this.selected===selected&&this.manifest.count===count&&JSON.stringify(this.nearbyGalaxies.map(model=>model.data))===source&&this.resolvedFor(-1)!.center.equals(center);
-      return {catalog,catalogHidden,spiral,disclosed,savedSpiral,unchanged,body,nearbyBytes,passed:catalog&&catalogHidden&&spiral&&disclosed&&savedSpiral&&unchanged&&body.passed&&nearbyBytes<4*1048576};
+      return {catalog,catalogDisclosed,spiral,disclosed,savedSpiral,unchanged,body,nearbyBytes,passed:catalog&&catalogDisclosed&&spiral&&disclosed&&savedSpiral&&unchanged&&body.passed&&nearbyBytes<4*1048576};
     }finally{change(saved);if(stored===null)localStorage.removeItem('atlas-galaxy-appearance');else localStorage.setItem('atlas-galaxy-appearance',stored)}
   }
   /** Replay two Andromeda orbits through the real streaming/render path. */
@@ -1203,7 +1208,7 @@ export class Explorer {
   probeGalaxyProfile(id=this.resolved?.data.galaxy.id){
     const source=id===undefined?null:this.resolvedFor(id);if(!source)return {available:false};
     // Check the measured smooth component separately from illustrative arm light.
-    const model=new ResolvedGalaxy({...source.data,spiral:undefined,cloud:undefined,knotCount:0}),target=new THREE.WebGLRenderTarget(256,256);
+    const model=new ResolvedGalaxy({...source.data,spiral:undefined,cloud:undefined,sourceProfileOnly:true,knotCount:0}),target=new THREE.WebGLRenderTarget(256,256);
     const camera=new THREE.PerspectiveCamera(50,1,.000001,100000),pixels=new Uint8Array(256*256*4);
     camera.up.copy(model.frame.north);
     const sample=(direction:THREE.Vector3,distance:number,zoom=false)=>{

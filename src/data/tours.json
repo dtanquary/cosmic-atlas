@@ -73,7 +73,7 @@
         },
         {
           "title": "Large Magellanic Cloud",
-          "caption": "The Large Magellanic Cloud is about 49.6 kpc away by eclipsing-binary measurement, so its light left about 160,000 years ago. Its round shape and 1.5 kpc size are assumed, its orientation is not measured, and the soft bar, stellar haze and dust are illustrative, not a measured gas map.",
+          "caption": "The Large Magellanic Cloud is about 49.6 kpc away by eclipsing-binary measurement, so its light left about 160,000 years ago. Its round shape and 1.5 kpc size are assumed, its orientation is not measured, and the image-inspired stellar bar, pink emission patches and dust are illustrative, not a measured gas map.",
           "target": {
             "kind": "nearby",
             "key": "lmc"
@@ -82,7 +82,7 @@
         },
         {
           "title": "Small Magellanic Cloud",
-          "caption": "The Small Magellanic Cloud is about 62.4 kpc away, also from eclipsing binaries, so its light left about 200,000 years ago. Its projected ellipse and angle are measured, but its half-light size is assumed from a catalog diameter and its fragmented stellar clouds, dust and depth are illustrative, not a measured gas map.",
+          "caption": "The Small Magellanic Cloud is about 62.4 kpc away, also from eclipsing binaries, so its light left about 200,000 years ago. Its projected ellipse and angle are measured, but its half-light size is assumed from a catalog diameter and its image-inspired diffuse stellar body, wing, dust and depth are illustrative, not a measured gas map.",
           "target": {
             "kind": "nearby",
             "key": "smc"
@@ -91,7 +91,7 @@
         },
         {
           "title": "Andromeda",
-          "caption": "Andromeda (M31) lies about 785 kpc away by the tip of the red giant branch, so we see it as it was about 2.6 million years ago. Its disk size, axis ratio and sky angle are measured; the single-disk model, spiral arms and colors are illustrative.",
+          "caption": "Andromeda (M31) lies about 785 kpc away by the tip of the red giant branch, so we see it as it was about 2.6 million years ago. Its disk size, axis ratio and sky angle are measured; the single-disk light and dust arcs are guided by telescope images, with illustrative depth, feature placement and colors.",
           "target": {
             "kind": "nearby",
             "key": "m31"
@@ -111,7 +111,7 @@
         },
         {
           "title": "Triangulum",
-          "caption": "Triangulum (M33) is about 809 kpc away by the tip of the red giant branch; its light left about 2.6 million years ago. The disk scale, projected ellipse and angle are measured, while the single-disk model, arms and colors are illustrative.",
+          "caption": "Triangulum (M33) is about 809 kpc away by the tip of the red giant branch; its light left about 2.6 million years ago. The disk scale, projected ellipse and angle are measured, while its single-disk model, patchy arms and pink emission regions are guided by telescope images, with illustrative depth, feature placement and colors.",
           "target": {
             "kind": "nearby",
             "key": "m33"
@@ -120,7 +120,7 @@
         },
         {
           "title": "NGC 3982",
-          "caption": "NGC 3982 is a DESI DR1 galaxy whose position comes from its measured redshift: about 16.6 Mpc, so its light left about 54 million years ago. Its individually fitted shape is one of the two original close-up previews; the spiral detail and colors are illustrative.",
+          "caption": "NGC 3982 is a DESI DR1 galaxy whose position comes from its measured redshift: about 16.6 Mpc, so its light left about 54 million years ago. Its individually fitted shape is one of the two original close-up previews; its winding arms and dust follow telescope-image references, with illustrative feature placement, depth and colors.",
           "target": {
             "kind": "catalog",
             "name": "NGC 3982"
@@ -129,7 +129,7 @@
         },
         {
           "title": "NGC 4026",
-          "caption": "NGC 4026 is the second original close-up preview, placed at about 14.6 Mpc from its measured redshift; the light left about 47 million years ago. Redshift distances carry peculiar-velocity and fitting error, so this position is inferred rather than directly measured.",
+          "caption": "NGC 4026 is the second original close-up preview, placed at about 14.6 Mpc from its measured redshift; the light left about 47 million years ago. Its smooth lenticular light follows the fitted profile and telescope-image appearance; redshift distances carry peculiar-velocity and fitting error, so this position is inferred rather than directly measured.",
           "target": {
             "kind": "catalog",
             "name": "NGC 4026"

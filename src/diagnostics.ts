@@ -18,6 +18,13 @@ export async function runDiagnostics(atlas:Explorer,parent:HTMLElement){
   report.variants=await atlas.probeGalaxyVariants(preview);show();report.variantContext=await atlas.probeContextRecovery();report.variantsAfterRecovery=await atlas.probeGalaxyVariants();
   if(query.has('variantpreview'))parent.append(preview);show();
  }
+ if(query.has('portraittest')){
+  const preview=document.createElement('section');preview.id='portrait-preview';preview.style.cssText='display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;position:absolute;inset:90px 40px auto 190px;background:#081017;padding:20px;z-index:21;color:#c9d7dc;font:13px sans-serif;pointer-events:none';
+  report.portraits=await atlas.probeGalaxyPortraits(preview);show();report.portraitContext=await atlas.probeContextRecovery();report.portraitsAfterRecovery=await atlas.probeGalaxyPortraits();
+  const before=report.portraits as Awaited<ReturnType<Explorer['probeGalaxyPortraits']>>,after=report.portraitsAfterRecovery as typeof before;
+  report.portraitRecovery={passed:before.cases.every((c,i)=>c.views.every((v,j)=>v.checksum===after.cases[i].views[j].checksum))};
+  if(query.has('portraitpreview'))parent.append(preview);show();
+ }
  if(query.has('cloudtest')){
   const preview=document.createElement('section');preview.id='cloud-preview';preview.style.cssText='display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;position:absolute;inset:120px 40px auto 190px;background:#081017;padding:20px;z-index:21;color:#c9d7dc;font:13px sans-serif;pointer-events:none';
   report.clouds=await atlas.probeCloudModels(preview);show();report.cloudContext=await atlas.probeContextRecovery();report.cloudsAfterRecovery=await atlas.probeCloudModels();

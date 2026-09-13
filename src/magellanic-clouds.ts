@@ -28,22 +28,22 @@ export function cloudDensityField(kind:MagellanicCloudKind,size=CLOUD_FIELD_SIZE
   if(kind==='lmc'){
    // Broad old-star envelope, an offset soft bar and broken outer star-forming
    // patches. The bar angle/offset and all individual structures are assumed.
-   envelope=.12*gaussian(px,py,pz,1.35,1.25,.8)+.3*gaussian(px-.12,py+.23,pz,1.25,.36,.65);
-   knots=.34*gaussian(px-1.05,py-.65,pz-.15,.46,.62,.48)
-    +.22*gaussian(px+.95,py-.85,pz+.2,.57,.4,.6)
-    +.21*gaussian(px+.8,py+.9,pz,.68,.43,.48)
-    +.18*gaussian(px-1.35,py+.6,pz+.25,.45,.7,.55);
+   envelope=.13*gaussian(px,py,pz,1.35,1.2,.8)+.39*gaussian(px-.12,py+.23,pz,1.25,.3,.55);
+   knots=.19*gaussian(px-1.05,py-.65,pz-.15,.38,.5,.48)
+    +.11*gaussian(px+.95,py-.85,pz+.2,.57,.4,.6)
+    +.09*gaussian(px+.8,py+.9,pz,.68,.43,.48)
+    +.1*gaussian(px-1.35,py+.6,pz+.25,.45,.7,.55);
   }else{
    // A less ordered, broken elongated body; not a tidal simulation or a
    // reconstruction of the SMC's unresolved line-of-sight depth.
-   envelope=.1*gaussian(px,py,pz,1.35,.95,1.1)+.23*gaussian(px+.35,py+.12,pz,1,.48,.75);
-   knots=.35*gaussian(px+.9,py-.18-warp,pz+.24,.52,.43,.68)
-    +.32*gaussian(px-.35,py+.27-warp,pz-.18,.6,.48,.58)
-    +.22*gaussian(px-1.25,py-.7,pz+.2,.7,.42,.7)
-    +.18*gaussian(px+.3,py-1.1,pz-.5,.46,.57,.55);
+   envelope=.12*gaussian(px,py,pz,1.35,.95,1.1)+.29*gaussian(px+.35,py+.12,pz,1.05,.52,.75);
+   knots=.14*gaussian(px+.9,py-.18-warp,pz+.24,.52,.43,.68)
+    +.14*gaussian(px-.35,py+.27-warp,pz-.18,.6,.48,.58)
+    +.2*gaussian(px-1.25,py-.7,pz+.2,.7,.42,.7)
+    +.07*gaussian(px+.3,py-1.1,pz-.5,.46,.57,.55);
   }
   const billow=.12+5*Math.pow(.65*coarse+.35*fine,2.5);
-  const stellar=(envelope*(.25+1.4*coarse*coarse)+knots*billow)*edge;
+  const stellar=(envelope*(.75+.5*coarse)+knots*billow)*edge;
   const filaments=Math.pow(1-Math.abs(2*fine-1),5);
   const dust=stellar*(.2+2.8*filaments)*(.35+.8*grain);
   const index=((z*size+y)*size+x)*2;
@@ -73,7 +73,7 @@ in vec2 vNdc;
 uniform mat3 uToModel;
 uniform vec3 uOrigin,uForward,uRight,uUp,uDiskColor,uCoreColor,uEmissionColor;
 uniform vec2 uProjection;
-uniform float uMix,uThickness,uDustStrength;
+uniform float uMix,uThickness,uDustStrength,uCloudKind;
 uniform sampler3D uCloudDensity;
 out vec4 fragColor;
 void main(){
@@ -92,8 +92,16 @@ void main(){
   float density=field.r*field.r;
   float dust=field.g*uDustStrength;
   float optical=(density*.7+dust)*columnStep;
-  vec3 color=mix(uDiskColor*vec3(.76,.94,1.12),uCoreColor,.08);
-  color=mix(color,uEmissionColor,smoothstep(.25,.65,field.g)*.32);
+  // Qualitative SMASH image features; these coordinates are illustrative and
+  // never alter the sourced global ellipse. No foreground clusters are added.
+  float bar=exp(-.5*(pow((p.x-.12)/1.2,2.)+pow((p.y+.23)/.3,2.)));
+  float brightPatch=exp(-dot(p.xy-vec2(1.05,.65),p.xy-vec2(1.05,.65))/.075);
+  float smallPatches=exp(-dot(p.xy-vec2(-.9,.7),p.xy-vec2(-.9,.7))/.09)+.7*exp(-dot(p.xy-vec2(.2,-.85),p.xy-vec2(.2,-.85))/.08);
+  float wingPatches=exp(-dot(p.xy-vec2(1.1,.7),p.xy-vec2(1.1,.7))/.12)+.6*exp(-dot(p.xy-vec2(.5,.3),p.xy-vec2(.5,.3))/.06);
+  float nebula=mix(brightPatch+.25*smallPatches,.65*wingPatches+.3*smallPatches,uCloudKind);
+  vec3 color=mix(vec3(.57,.69,.84),uDiskColor,.16);
+  color=mix(color,vec3(.84,.79,.73),bar*(1.-uCloudKind)*.75);
+  color=mix(color,vec3(1.,.34,.49),clamp(nebula*(.65+field.g),0.,.85));
   float emitted=1.-exp(-density*.85*columnStep);
   light+=transmission*color*emitted;
   transmission*=exp(-optical);

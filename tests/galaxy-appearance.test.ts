@@ -3,7 +3,7 @@ import {ResolvedGalaxy, type GalaxyFamily} from '../src/galaxy-detail';
 import {nearbyDetails} from '../src/nearby-galaxies';
 
 it('uses bounded spiral geometry for every family without rewriting source identities or projected measurements',()=>{
- const source=nearbyDetails()[0];
+ const original=nearbyDetails()[0],source={...original,galaxy:{...original.galaxy,targetId:'unmatched:appearance-test'}};
  for(const family of ['spiral','barred','elliptical','lenticular','irregular'] as GalaxyFamily[]){
   const data={...source,spiral:undefined,model:{...source.model!,family}};
   const before=JSON.stringify(data),catalog=new ResolvedGalaxy(data,'catalog'),spiral=new ResolvedGalaxy(data,'spiral');

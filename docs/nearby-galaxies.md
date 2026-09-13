@@ -21,7 +21,7 @@ Positions use the existing equatorial Cartesian axes and Mpc units, with the obs
 
 ## What the models measure and assume
 
-The source-based shapes below describe Catalog types appearance. The default Spirals + Magellanic clouds mode renders M31, M33, M32 and M110 as spiral illustrations, explicitly overriding their light profile, morphology and assumed depth. LMC and SMC use dedicated stellar-cloud volumes in either appearance mode. Settings can restore Catalog types. Both appearances preserve the adopted global ellipse parameters; fine irregular structure is not an ellipse or photometric fit. It assumes an oblate depth and chooses one of the ambiguous near sides. Colors, exposure, spiral arms, clumps and internal light structure are illustrative. The models are not photometrically calibrated telescope reconstructions.
+The default Image-inspired targets + spirals mode and Catalog types both use image-guided continuous disks for M31/M33, dedicated stellar clouds for LMC/SMC, and the existing smooth elliptical profiles for M32/M110. The [road-trip image review](image-portraits.md) records the evidence and limitations. Both appearances preserve adopted global ellipse parameters; fine structure is not an ellipse or photometric fit. Depth, near side, colors, exposure and internal feature placement remain illustrative.
 
 | Galaxy | Size and projected shape |
 | --- | --- |

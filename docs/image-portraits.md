@@ -1,6 +1,6 @@
 # Cosmic road trip image review
 
-Requested by Dave on 2026-09-12: inspect images of every road-trip target, adapt the existing galaxy/cloud templates, preserve adopted size constraints, and retain the existing rendering when usable evidence is absent. The following is a visual-reference review, not a photometric fit or a recovered 3D structure. Implementation and GPU review are pending at this checkpoint.
+Requested by Dave on 2026-09-12: inspect images of every road-trip target, adapt the existing galaxy/cloud templates, preserve adopted size constraints, and retain the existing rendering when usable evidence is absent. The following is a visual-reference review, not a photometric fit or a recovered 3D structure. The named templates are implemented; full-tour, production and final GPU review are pending at the implementation checkpoint.
 
 | Stop | Images inspected and visual interpretation | Treatment |
 | --- | --- | --- |

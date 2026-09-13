@@ -30,7 +30,7 @@ describe('Independently measured nearby galaxies',()=>{
     const camera=new THREE.PerspectiveCamera(50,1,.000001,100);
     camera.position.copy(m.center).addScaledVector(m.frame.radial,-m.radius*12);camera.lookAt(m.center);camera.updateMatrixWorld();m.update(camera,900,1,true);expect(m.visible).toBe(true);
    }
-   expect(models.reduce((n,m)=>n+m.memoryBytes,0)).toBeLessThan(3*1048576);
+   expect(models.reduce((n,m)=>n+m.memoryBytes,0)).toBeLessThan(4*1048576);
    expect(models[2].data.galaxy.nearby?.orientationMeasured).toBe(false);
    expect(models[3].data.model?.shapeMeasured).toBe(false);
   }finally{models.forEach(m=>m.dispose())}
