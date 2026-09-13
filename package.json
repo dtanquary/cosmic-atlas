@@ -16,7 +16,7 @@
     "deploy:pages": "node scripts/deploy-pages.mjs",
     "release:audit": "node scripts/check-public-repo.mjs",
     "verify:pages": "node scripts/verify-pages.mjs",
-    "test": "vitest run",
+    "test": "vitest run --dir tests",
     "test:data": "uv run python scripts/test_data.py",
     "test:models": "uv run python scripts/test_model_catalog.py",
     "data:models": "uv run python scripts/prepare_model_catalog.py",

@@ -183,7 +183,7 @@ Flight speed ranges from 1 parsec/sec to 10,000 megaparsecs/sec. Start low for g
 
 ## Test and build
 
-The fast tests do not require the full FITS source:
+The fast tests do not require the full FITS source; `npm test` runs the tracked vitest suites under `tests/` only:
 
 ```sh
 npm test
