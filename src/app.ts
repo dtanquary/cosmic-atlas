@@ -166,6 +166,7 @@ function renderCosmicContext(){
 }
 /** The tour panel owns the right column while a tour runs; the inspectors and CMB card come back on exit. */
 function renderTour(state:TourState){
+ if(state.status==='travelling')element('toast').hidden=true;
  const active=state.status!=='idle'; // start() emits one idle state before travelling, so the runner is never dropped here
  element('tour-panel').hidden=!active;
  showSelection(atlas.selected);showHome();renderCosmicContext();

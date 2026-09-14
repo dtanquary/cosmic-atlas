@@ -26,6 +26,7 @@ try{
       await page.waitForFunction(id=>document.getElementById('tour-panel').dataset.stopId===id&&document.getElementById('tour-status').textContent.startsWith('Paused'),id,{timeout:30000});
       check(`${id}:reducedMotionArrival`,Date.now()-start<3500);
       await page.waitForTimeout(150);
+      if(['coma','survey','cmb'].includes(id))check(`${id}:previousToastCleared`,await page.locator('#toast').isHidden());
       check(`${id}:context`,(await page.locator('#place-context').textContent()).length>0);
       check(`${id}:mapCenter`,await page.evaluate(()=>document.elementFromPoint(innerWidth/2,innerHeight/2)?.tagName==='CANVAS'));
       const panel=await page.locator('#tour-panel').boundingBox();check(`${id}:bounded`,panel.y>=0&&panel.y+panel.height<=height&& (layout!=='portrait'||panel.height<=215));
