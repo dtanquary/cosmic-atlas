@@ -1,5 +1,5 @@
 /** Production checks for prepared arrivals and a real subset's partial Coma view. */
-import {mkdir,writeFile} from 'node:fs/promises';
+import {mkdir,writeFile,readFile} from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
 import {pathToFileURL} from 'node:url';
 import assert from 'node:assert/strict';
@@ -21,7 +21,10 @@ try{
    check('metadataRequestedBeforeNextStop',report.requests.some(r=>r.engine===engine&&r.chapter==='triangulum'&&r.path.includes('512.meta')));
    await page.click('#tour-play');const stop=await page.locator('#tour-panel').getAttribute('data-stop-id');await page.waitForTimeout(8500);check('pauseCancelsAdvance',await page.locator('#tour-panel').getAttribute('data-stop-id')===stop);
    chapter='ngc-3982';await page.click('#tour-next');await page.waitForFunction(()=>document.getElementById('tour-panel').dataset.stopId==='ngc-3982'&&document.getElementById('tour-status').textContent.startsWith('Paused'),null,{timeout:30000});check('preparedDestinationArrives',true);
-   await page.goto(new URL('?dataset=development',base).href);await page.waitForFunction(()=>!document.getElementById('visit-galaxy-button').hidden);
+   // The public package deliberately ignores dataset query flags. Serve the real, hash-validated development catalog as a network fixture.
+   await page.route('**/data/catalog.json',async route=>{const response=await route.fetch(),catalog=await response.json();catalog.manifest='/data/development/manifest.json';await route.fulfill({response,json:catalog})});
+   await page.route('**/data/development/*',async route=>{const file=new URL(route.request().url()).pathname.split('/').at(-1);if(!/^[a-zA-Z0-9.-]+$/.test(file))return route.abort();await route.fulfill({body:await readFile(new URL(`../public/data/development/${file}`,import.meta.url)),contentType:file.endsWith('.json')?'application/json':'application/octet-stream'})});
+   await page.goto(base);await page.waitForFunction(()=>!document.getElementById('visit-galaxy-button').hidden);
    await page.click('#tours-button');await page.click('[data-tour="road-trip"]');await page.click('#tour-progress');await page.selectOption('#tour-chapter','coma');
    await page.waitForFunction(()=>document.getElementById('tour-status').textContent.startsWith('Partial'),null,{timeout:15000});check('finitePartialState',await page.locator('#tour-retry').isVisible());
    check('partialMapUsable',await page.evaluate(()=>document.elementFromPoint(innerWidth/2,innerHeight/2)?.tagName==='CANVAS'));

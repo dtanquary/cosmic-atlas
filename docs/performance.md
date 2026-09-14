@@ -58,3 +58,18 @@ The sustained run has a 16.8 ms p95 but an 83.4 ms p99, so averages alone concea
 3. Profile the faint-background frontier and pixel cost independently before attempting adaptive resolution or culling changes. Keep the 0.5% default and complete Full detail coverage.
 
 **Harness correction:** the first sustained run retained render timestamps but mistakenly reset the interval accumulator on non-rendering animation callbacks used by browser polling. Its movement intervals were reconstructed from consecutive retained render timestamps within the same stop/activity; arrival screenshots occurred during dwell, outside those movement samples. The original report remains in the ignored evidence directory. The committed harness now ignores non-rendering callbacks and asserts nonempty movement/allocation evidence. The independent cold/warm/network/WebKit runs used the corrected harness. Raw frame samples, request records and arrival images remain in `.cache/performance/phase1-chrome/` and `.cache/performance/phase1-comparison/`.
+
+**Milestone 2 — measured transition work**
+
+A matching development Chrome CPU sample of Triangulum → NGC 3982 attributed 1,551 ms to repeated resident-model row searches before caching, versus 201 ms in the bounded lookup implementation afterward. Sample windows were 12.05 and 11.69 seconds. This supports eliminating repeated scans; sampled CPU attribution is not a frame-time speedup. Positive and absent rows are cached for only the current 12 DESI model identities, adding 96 bytes per loaded point chunk. Geometry, identity mapping and model capacity remain unchanged.
+
+An independent warm NGC 3982 orbit on the actual M3 Max GPU used eight seconds per condition, with default opacity restored for a final repeat:
+
+| Condition | Movement p95 / p99 | Callback CPU p95 | Submitted at end |
+| --- | --- | --- | --- |
+| 1600×1000, 0.5% floor | 16.8 / 16.8 ms | 7.3 ms | 1,459,749 |
+| 800×500, 0.5% floor | 16.8 / 16.8 ms | 7.8 ms | 1,986,232 |
+| 1600×1000, zero floor (experiment only) | 16.7 / 16.8 ms | 2.3 ms | 25,836 |
+| 1600×1000, 0.5% floor repeated | 16.8 / 16.8 ms | 7.5 ms | 1,993,810 |
+
+Adaptive streaming kept changing the workload, so this is an exploratory comparison rather than an isolated pixel-cost measurement. Lower resolution did not improve the measured frame distribution. Removing the faint background reduced work but also removed its visual coverage, with no material frame-time gain in this case. Neither an adaptive-resolution change nor a different background frontier is retained in this milestone; the 0.5% default, positive-floor picking and Full detail coverage remain intact. Physical-phone performance is still unverified. Raw CPU profiles and this experiment remain in the ignored `.cache/` directory. The complete cold/warm/network/WebKit and ten-minute comparison follows separately.
