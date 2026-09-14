@@ -624,7 +624,7 @@ export class Explorer {
   /** A bounded check of the destination representation, independent of unrelated pending requests. */
   tourDestinationReady(stop:TourStop){
     if(!this.ready||this.contextLost)return false;
-    const inView=(world:THREE.Vector3)=>{const p=world.clone().project(this.camera);return p.z>=-1&&p.z<=1&&Math.abs(p.x)<.8&&Math.abs(p.y)<.65};
+    const inView=(world:THREE.Vector3,marginX=.8,marginY=.65)=>{const p=world.clone().project(this.camera);return p.z>=-1&&p.z<=1&&Math.abs(p.x)<marginX&&Math.abs(p.y)<marginY};
     const kind=stop.target.kind;
     if(kind==='cmb')return this.cosmicHorizon.enabled;
     if(kind==='sun'||kind==='core')return this.modelDisplay==='points'||this.milkyWay.visible;
@@ -635,7 +635,7 @@ export class Explorer {
       if(selected.id<0)return this.nearbyPoints.visible;
       return this.drawn.some(id=>this.cache.get(id)!.ids.includes(selected.id));
     }
-    if(kind==='localgroup')return this.nearbyGalaxies.filter(model=>inView(model.center)).length>=3;
+    if(kind==='localgroup')return this.nearbyGalaxies.filter(model=>inView(model.center,.99,.99)).length>=3;
     // Sample no more than ~32k submitted points, stopping at useful coarse coverage. The Coma window is a view region, never membership.
     const total=this.drawn.reduce((n,id)=>n+this.cache.get(id)!.ids.length,0),stride=Math.max(1,Math.ceil(total/32768));
     const reach=this.camera.position.distanceTo(this.controls.target)*.6,world=new THREE.Vector3();let found=0;

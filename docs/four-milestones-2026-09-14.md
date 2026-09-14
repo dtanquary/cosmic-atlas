@@ -28,3 +28,5 @@ A Chrome CPU sample of the Triangulum → NGC 3982 transition (development sourc
 The loader now has independent speculative leases, required-work promotion, current-view queue priority and acknowledgement-safe cancellation. Six focused worker tests cover shared owners, explicit navigation joining, frontier release, late replies, reservations/queue cancellation and worker recovery; all 106 tests and strict TypeScript pass. This is a loading-lifecycle checkpoint; tour integration remains in progress.
 
 Tour integration checkpoint: bounded preparation and destination readiness are implemented with the original single timer. All 110 tests and strict TypeScript pass. Actual-GPU, production interaction and performance checks follow before release.
+
+GPU review found the Local Group readiness margin excluded the deliberately separated galaxies near the top and bottom of the frame. Its check now uses the full viewport, retaining the tighter central-region check for cluster/survey coverage. Recorded projected positions showed all six references inside the viewport. The initial run correctly exposed the overly strict criterion; rerun follows.
