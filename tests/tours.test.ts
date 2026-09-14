@@ -38,7 +38,11 @@ describe('tour routes',()=>{
     expect(tours.length).toBe(2);
     for(const tour of tours){
       expect(tour.title.length).toBeGreaterThan(0);expect(tour.summary.length).toBeGreaterThan(0);expect(tour.stops.length).toBeGreaterThan(1);
+      expect(new Set(tour.stops.map(stop=>stop.id)).size).toBe(tour.stops.length);
       for(const stop of tour.stops){
+        expect(stop.id).toMatch(/^[a-z][a-z0-9-]{0,31}$/);
+        expect(stop.cue.length).toBeGreaterThan(0);expect(stop.cue.length).toBeLessThanOrEqual(110);
+        expect(stop.cue).not.toMatch(/<|>|\{catalogCount\}|\b\d/); // numeric claims remain in the source-pinned explanation
         expect(kinds).toContain(stop.target.kind);
         expect(stop.title.length).toBeGreaterThan(0);
         expect(stop.travelSeconds).toBeGreaterThan(0);

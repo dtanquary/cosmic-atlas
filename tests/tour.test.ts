@@ -45,6 +45,31 @@ beforeEach(()=>vi.useFakeTimers());
 afterEach(()=>vi.useRealTimers());
 
 describe('Tour runner',()=>{
+  it('uses stable chapter ids and lands paused when jumping or returning after exploration',async()=>{
+    const {atlas,runner}=setup();runner.start();await atlas.settle(true);
+    runner.jump('andromeda');expect(runner.state).toMatchObject({index:3,status:'travelling',autoplay:false});
+    expect(atlas.last.method).toBe('visitNearby');await atlas.settle(true);
+    expect(runner.state.status).toBe('paused');expect(vi.getTimerCount()).toBe(0);
+    atlas.camera.position.x+=1;runner.returnToStop();expect(runner.state.index).toBe(3);await atlas.settle(true);
+    expect(runner.state.status).toBe('paused');
+    const calls=atlas.calls.length;runner.jump('unknown');expect(atlas.calls.length).toBe(calls);
+  });
+  it('relaxed pacing doubles dwell without changing travel time or adding timers',async()=>{
+    const {atlas,runner}=setup();runner.setPace('relaxed');runner.start();
+    expect(atlas.last.args).toEqual([4]);await atlas.settle(true);
+    await vi.advanceTimersByTimeAsync(DWELL_SECONDS*1000);expect(runner.state.index).toBe(0);expect(vi.getTimerCount()).toBe(1);
+    await vi.advanceTimersByTimeAsync(DWELL_SECONDS*1000);expect(runner.state.index).toBe(1);
+    await atlas.settle(true);runner.setPace('quick');expect(vi.getTimerCount()).toBe(1);
+    await dwell(runner);expect(runner.state.index).toBe(2);
+  });
+  it('manual pacing cancels pending travel and never advances automatically, including after Play',async()=>{
+    const {atlas,runner}=setup();runner.start();runner.setPace('manual');await flush();
+    expect(runner.state).toMatchObject({status:'paused',autoplay:false});expect(vi.getTimerCount()).toBe(0);
+    runner.start(3);await atlas.settle(true);runner.play();await vi.advanceTimersByTimeAsync(120000);
+    expect(runner.state).toMatchObject({index:3,status:'paused',autoplay:false});expect(vi.getTimerCount()).toBe(0);
+    runner.next();await atlas.settle(true);expect(runner.state.index).toBe(4);expect(vi.getTimerCount()).toBe(0);
+    runner.setPace('quick');expect(runner.state.status).toBe('paused');runner.play();expect(vi.getTimerCount()).toBe(1);
+  });
   it('plays the road trip choosing the visit per kind with each stop\'s travel seconds',async()=>{
     const {atlas,runner,shell}=setup();
     runner.start();

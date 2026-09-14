@@ -13,7 +13,9 @@
             "kind": "sun"
           },
           "distanceMpc": 0.003,
-          "travelSeconds": 4
+          "travelSeconds": 4,
+          "id": "sun",
+          "cue": "Find the Sun marker inside our illustrated home galaxy."
         },
         {
           "title": "The Milky Way",
@@ -22,7 +24,9 @@
             "kind": "core"
           },
           "distanceMpc": 0.06,
-          "travelSeconds": 5
+          "travelSeconds": 5,
+          "id": "milky-way",
+          "cue": "Trace the dark dust lanes around the bright Galactic core."
         },
         {
           "title": "The Local Group",
@@ -37,7 +41,9 @@
           },
           "distanceMpc": 1.2,
           "cites": "m31",
-          "travelSeconds": 6
+          "travelSeconds": 6,
+          "id": "local-group",
+          "cue": "Look for our nearby galaxy companions, each at its own measured distance."
         },
         {
           "title": "The DESI survey",
@@ -45,15 +51,19 @@
           "target": {
             "kind": "overview"
           },
-          "travelSeconds": 6
+          "travelSeconds": 6,
+          "id": "survey",
+          "cue": "Each point is a galaxy observation; the gaps also reflect where we have data."
         },
         {
           "title": "The cosmic microwave background",
-          "caption": "The faint shell marks the approximate last-scattering surface at z ≈ 1090: about 13,884 Mpc away in today's comoving distance (45.3 billion ly), though its light travelled for 13.8 billion years. It is an inferred, illustrative shell, not a physical edge of the universe, and no measured temperature map is shown.",
+          "caption": "The faint shell marks the approximate last-scattering surface at z \u2248 1090: about 13,884 Mpc away in today's comoving distance (45.3 billion ly), though its light travelled for 13.8 billion years. It is an inferred, illustrative shell, not a physical edge of the universe, and no measured temperature map is shown.",
           "target": {
             "kind": "cmb"
           },
-          "travelSeconds": 6
+          "travelSeconds": 6,
+          "id": "cmb",
+          "cue": "Find the tiny galaxy survey inside this enormous shell of early light."
         }
       ]
     },
@@ -69,7 +79,9 @@
             "kind": "core"
           },
           "distanceMpc": 0.06,
-          "travelSeconds": 4
+          "travelSeconds": 4,
+          "id": "milky-way",
+          "cue": "Trace the dark dust lanes around the bright Galactic core."
         },
         {
           "title": "Large Magellanic Cloud",
@@ -78,7 +90,9 @@
             "kind": "nearby",
             "key": "lmc"
           },
-          "travelSeconds": 5
+          "travelSeconds": 5,
+          "id": "lmc",
+          "cue": "Look for the broad stellar bar and pink patches in this cloud illustration."
         },
         {
           "title": "Small Magellanic Cloud",
@@ -87,7 +101,9 @@
             "kind": "nearby",
             "key": "smc"
           },
-          "travelSeconds": 5
+          "travelSeconds": 5,
+          "id": "smc",
+          "cue": "Notice the softer, uneven glow of this smaller cloud illustration."
         },
         {
           "title": "Andromeda",
@@ -96,7 +112,9 @@
             "kind": "nearby",
             "key": "m31"
           },
-          "travelSeconds": 5
+          "travelSeconds": 5,
+          "id": "andromeda",
+          "cue": "Follow the dark dust arcs around the bright center of this illustrated disk."
         },
         {
           "title": "M32 and M110",
@@ -107,7 +125,9 @@
           },
           "distanceMpc": 0.16,
           "cites": "m110",
-          "travelSeconds": 4
+          "travelSeconds": 4,
+          "id": "andromeda-companions",
+          "cue": "Look beside Andromeda for its small, smooth companions."
         },
         {
           "title": "Triangulum",
@@ -116,7 +136,9 @@
             "kind": "nearby",
             "key": "m33"
           },
-          "travelSeconds": 5
+          "travelSeconds": 5,
+          "id": "triangulum",
+          "cue": "Look for loose, patchy arms and pink accents in this illustrated disk."
         },
         {
           "title": "NGC 3982",
@@ -125,7 +147,9 @@
             "kind": "catalog",
             "name": "NGC 3982"
           },
-          "travelSeconds": 6
+          "travelSeconds": 6,
+          "id": "ngc-3982",
+          "cue": "Follow the closely winding arms in this image-inspired galaxy model."
         },
         {
           "title": "NGC 4026",
@@ -134,7 +158,9 @@
             "kind": "catalog",
             "name": "NGC 4026"
           },
-          "travelSeconds": 5
+          "travelSeconds": 5,
+          "id": "ngc-4026",
+          "cue": "Notice the narrow, smooth spindle and its brighter center."
         },
         {
           "title": "Coma cluster",
@@ -149,7 +175,9 @@
             ]
           },
           "distanceMpc": 15,
-          "travelSeconds": 6
+          "travelSeconds": 6,
+          "id": "coma",
+          "cue": "Look for the central gathering of points; each is a galaxy observation."
         },
         {
           "title": "The DESI survey",
@@ -157,7 +185,9 @@
           "target": {
             "kind": "overview"
           },
-          "travelSeconds": 6
+          "travelSeconds": 6,
+          "id": "survey",
+          "cue": "Zoom out to the whole survey and trace its branching pattern of galaxy points."
         }
       ]
     }

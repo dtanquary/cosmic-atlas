@@ -7,12 +7,14 @@ import data from './data/tours.json';
 export type StopKind='sun'|'core'|'localgroup'|'overview'|'cmb'|'nearby'|'catalog'|'cluster';
 /** `cites` names the nearby galaxy whose distance the caption quotes when it is not the target; `{catalogCount}` in a caption is filled from the active manifest. */
 export interface TourStop{
-  title:string;caption:string;target:{kind:StopKind;key?:string;name?:string;positionMpc?:number[]};
+  /** Stable within a route; titles and array ordering are presentation choices. */
+  id:string;cue:string;title:string;caption:string;target:{kind:StopKind;key?:string;name?:string;positionMpc?:number[]};
   distanceMpc?:number;cites?:string;dwellSeconds?:number;travelSeconds:number;
 }
 export interface TourData{key:string;title:string;summary:string;stops:TourStop[]}
 export const tours=data.tours as unknown as TourData[];
 export const DWELL_SECONDS=8;
+export type TourPace='quick'|'relaxed'|'manual';
 // ponytail: one shared multiplier for the development probes; production leaves it at 1 and no UI exposes it
 export const tourClock={speed:1};
 export interface CatalogEntry{id:number;node:string;row:number;targetId:string}
@@ -48,14 +50,25 @@ const add=(a:Vec3,b:Vec3,k:number):Vec3=>[a[0]+b[0]*k,a[1]+b[1]*k,a[2]+b[2]*k];
  */
 export class Tour{
   state:TourState={index:-1,status:'idle',stop:null,autoplay:false};
+  pace:TourPace='quick';
   private timer:ReturnType<typeof setTimeout>|null=null;
   private serial=0;
   private arrival:{target:Vec3;camera:Vec3}|null=null;
   constructor(private atlas:TourAtlas,readonly tour:TourData,private hooks:TourHooks){}
-  start(index=0){if(!this.tour.stops[index])return;this.set({autoplay:true});void this.goTo(index)}
+  start(index=0){if(!this.tour.stops[index])return;this.set({autoplay:this.pace!=='manual'});void this.goTo(index)}
+  setPace(pace:TourPace){
+    if(!['quick','relaxed','manual'].includes(pace))return;
+    this.pace=pace;
+    if(pace==='manual')this.pause();
+    else if(this.state.status==='dwelling')this.schedule();
+  }
+  /** Chapter navigation and return both land paused, ready for exploration. */
+  jump(id:string){const index=this.tour.stops.findIndex(stop=>stop.id===id);if(index<0)return;this.pause();void this.goTo(index)}
+  returnToStop(){if(this.state.stop)this.jump(this.state.stop.id)}
   next(){if(this.state.index+1<this.tour.stops.length)void this.goTo(this.state.index+1);else this.finish()}
   previous(){void this.goTo(this.state.index-1,-1)}
   play(){
+    if(this.pace==='manual')return;
     if(this.state.status==='idle'||this.state.status==='finished')return this.start(0);
     this.set({autoplay:true});
     if(this.state.status!=='paused')return; // travelling or dwelling: arrival (or the running timer) continues
@@ -86,7 +99,7 @@ export class Tour{
     const now=this.pose(),then=this.arrival!,scale=1e-6*Math.hypot(...add(now.camera,now.target,-1));
     return Math.hypot(...add(now.camera,then.camera,-1))>scale||Math.hypot(...add(now.target,then.target,-1))>scale;
   }
-  private schedule(){this.clearTimer();this.timer=setTimeout(()=>{this.timer=null;if(this.moved())this.set({status:'paused',autoplay:false});else this.next()},(this.state.stop!.dwellSeconds??DWELL_SECONDS)*1000/tourClock.speed)}
+  private schedule(){this.clearTimer();if(this.pace==='manual')return;this.timer=setTimeout(()=>{this.timer=null;if(this.moved())this.set({status:'paused',autoplay:false});else this.next()},(this.state.stop!.dwellSeconds??DWELL_SECONDS)*(this.pace==='relaxed'?2:1)*1000/tourClock.speed)}
   /** The stop as the panel should show it: the caption's `{catalogCount}` is the active dataset's accepted count. */
   private present(stop:TourStop):TourStop{return {...stop,caption:stop.caption.replaceAll('{catalogCount}',this.atlas.manifest.count.toLocaleString('en-US'))}}
   /** `step` is the direction an unavailable stop is skipped in: forward for start/next/play, backward for previous. */
