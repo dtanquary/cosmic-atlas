@@ -53,18 +53,20 @@ export class ModelCatalog {
     return new ModelCatalog(manifest,new URL('.',url).href,onChange);
   }
   get(id:string){const chunk=this.chunks.get(id);if(chunk)chunk.used=performance.now();return chunk}
-  get pendingCount(){return this.pending.size}
+  get pendingCount(){return this.loader.pending}
   get memoryBytes(){return [...this.chunks.values()].reduce((sum,c)=>sum+c.buffer.byteLength,0)+this.loader.reservedBytes}
-  async read(node:SpatialNode):Promise<ProfileChunk>{
+  async read(node:SpatialNode,signal?:AbortSignal):Promise<ProfileChunk>{
+    if(signal?.aborted)throw new DOMException('Cancelled','AbortError');
     const cached=this.get(node.id);if(cached)return cached;
-    const pending=this.pending.get(node.id);if(pending)return pending;
+    const pending=this.pending.get(node.id);if(pending&&!signal)return pending;
     const asset=this.manifest.nodes[node.id];if(!asset)throw new Error('No profile chunk for this node');
-    const promise=this.loader.load(`s:${node.id}`,new URL(asset.url,this.base).href,asset,'profiles',node.storedCount,true).then(buffer=>{
-      if(this.disposed)throw new DOMException('Disposed','AbortError');
+    const promise=this.loader.load(`s:${node.id}`,new URL(asset.url,this.base).href,asset,'profiles',node.storedCount,!signal,signal).then(buffer=>{
+      if(this.disposed||signal?.aborted)throw new DOMException('Cancelled','AbortError');
+      const existing=this.get(node.id);if(existing)return existing;
       const chunk={buffer,values:new Float32Array(buffer,16),flags:new Uint32Array(buffer,16),used:performance.now()};
       this.chunks.set(node.id,chunk);this.trim();return chunk;
-    }).catch(error=>{if(error.name!=='AbortError')this.failed.add(node.id);throw error}).finally(()=>{this.pending.delete(node.id);this.onChange()});
-    this.pending.set(node.id,promise);return promise;
+    }).catch(error=>{if(!signal&&error.name!=='AbortError')this.failed.add(node.id);throw error}).finally(()=>{if(this.pending.get(node.id)===promise)this.pending.delete(node.id);this.onChange()});
+    if(!signal)this.pending.set(node.id,promise);return promise;
   }
   private trim(){
     for(const [id] of [...this.chunks].sort((a,b)=>a[1].used-b[1].used)){

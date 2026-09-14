@@ -29,8 +29,10 @@ export interface TourAtlas{
   visitCatalog(entry:CatalogEntry,canNavigate:()=>boolean,seconds:number):Promise<boolean|undefined>;
   applyView(state:ViewState,seconds:number):Promise<boolean>;
   stopTravel():void;
+  prepareCatalog?(entry:CatalogEntry,signal:AbortSignal):Promise<void>;
+  tourDestinationReady?(stop:TourStop):boolean;
 }
-export type TourStatus='idle'|'travelling'|'dwelling'|'paused'|'finished';
+export type TourStatus='idle'|'travelling'|'preparing'|'partial'|'dwelling'|'paused'|'finished';
 export interface TourState{index:number;status:TourStatus;stop:TourStop|null;autoplay:boolean}
 export interface TourHooks{
   /** `true` shows the CMB shell for the stop without saving the setting; `false` RESTORES the user's saved choice and never force-hides. */
@@ -53,6 +55,7 @@ export class Tour{
   pace:TourPace='quick';
   private timer:ReturnType<typeof setTimeout>|null=null;
   private serial=0;
+  private preparation:AbortController|null=null;
   private arrival:{target:Vec3;camera:Vec3}|null=null;
   constructor(private atlas:TourAtlas,readonly tour:TourData,private hooks:TourHooks){}
   start(index=0){if(!this.tour.stops[index])return;this.set({autoplay:this.pace!=='manual'});void this.goTo(index)}
@@ -71,26 +74,26 @@ export class Tour{
     if(this.pace==='manual')return;
     if(this.state.status==='idle'||this.state.status==='finished')return this.start(0);
     this.set({autoplay:true});
-    if(this.state.status!=='paused')return; // travelling or dwelling: arrival (or the running timer) continues
-    if(this.arrival&&!this.moved()){this.set({status:'dwelling'});this.schedule()}
+    if(this.state.status!=='paused'&&this.state.status!=='partial')return; // travelling or dwelling: arrival (or the running timer) continues
+    if(this.arrival&&!this.moved()){if(this.state.status==='partial')this.dwell();else this.awaitReady(this.serial)}
     else void this.goTo(this.state.index); // taken over mid-travel or moved since: travel back to the stop
   }
   pause(){
-    this.clearTimer();
+    this.clearTimer();this.cancelPreparation();
     const travelling=this.state.status==='travelling';
     if(travelling){
       // A catalog stop may still be awaiting data, with no animation for stopTravel() to cancel.
       this.serial++;this.arrival=null;this.atlas.stopTravel();
     }
-    this.set({autoplay:false,status:travelling||this.state.status==='dwelling'?'paused':this.state.status});
+    this.set({autoplay:false,status:travelling||this.state.status==='dwelling'||this.state.status==='preparing'?'paused':this.state.status});
   }
   exit(){
-    this.clearTimer();this.serial++;
+    this.clearTimer();this.cancelPreparation();this.serial++;
     if(this.state.status==='travelling')this.atlas.stopTravel();
     if(this.state.stop?.target.kind==='cmb')this.hooks.showCosmicHorizon(false);
     this.arrival=null;this.set({index:-1,status:'idle',stop:null,autoplay:false});
   }
-  private finish(){this.clearTimer();this.serial++;this.set({status:'finished',autoplay:false})}
+  private finish(){this.clearTimer();this.cancelPreparation();this.serial++;this.set({status:'finished',autoplay:false})}
   private set(patch:Partial<TourState>){this.state={...this.state,...patch};this.hooks.onChange(this.state)}
   private clearTimer(){if(this.timer!==null)clearTimeout(this.timer);this.timer=null}
   private pose(){return {target:vec(this.atlas.controls.target),camera:vec(this.atlas.camera.position)}}
@@ -99,7 +102,7 @@ export class Tour{
     const now=this.pose(),then=this.arrival!,scale=1e-6*Math.hypot(...add(now.camera,now.target,-1));
     return Math.hypot(...add(now.camera,then.camera,-1))>scale||Math.hypot(...add(now.target,then.target,-1))>scale;
   }
-  private schedule(){this.clearTimer();if(this.pace==='manual')return;this.timer=setTimeout(()=>{this.timer=null;if(this.moved())this.set({status:'paused',autoplay:false});else this.next()},(this.state.stop!.dwellSeconds??DWELL_SECONDS)*(this.pace==='relaxed'?2:1)*1000/tourClock.speed)}
+  private schedule(){this.clearTimer();if(this.pace==='manual')return;this.prepareNext();this.timer=setTimeout(()=>{this.timer=null;if(this.moved())this.pause();else this.next()},(this.state.stop!.dwellSeconds??DWELL_SECONDS)*(this.pace==='relaxed'?2:1)*1000/tourClock.speed)}
   /** The stop as the panel should show it: the caption's `{catalogCount}` is the active dataset's accepted count. */
   private present(stop:TourStop):TourStop{return {...stop,caption:stop.caption.replaceAll('{catalogCount}',this.atlas.manifest.count.toLocaleString('en-US'))}}
   /** `step` is the direction an unavailable stop is skipped in: forward for start/next/play, backward for previous. */
@@ -109,13 +112,29 @@ export class Tour{
     if(this.state.stop?.target.kind==='cmb'&&stop.target.kind!=='cmb')this.hooks.showCosmicHorizon(false);
     this.set({index,stop:this.present(stop),status:'travelling'});
     let arrived:boolean|undefined|'skipped';
-    try{arrived=await this.visit(stop,serial)}
-    catch(error){arrived='skipped';if(serial===this.serial)this.hooks.notify(`${stop.title}: ${error instanceof Error?error.message:'unavailable'} Skipping.`)}
+    try{const visit=this.visit(stop,serial);this.cancelPreparation();arrived=await visit}
+    catch(error){this.cancelPreparation();arrived='skipped';if(serial===this.serial)this.hooks.notify(`${stop.title}: ${error instanceof Error?error.message:'unavailable'} Skipping.`)}
     if(serial!==this.serial)return; // superseded by a newer stop, exit or finish
     if(arrived==='skipped'){const following=index+step;if(this.tour.stops[following])return this.goTo(following,step);this.set({status:step>0?'finished':'paused',autoplay:false});return}
     if(arrived!==true){this.set({status:'paused',autoplay:false});return} // input, flight or another focus took over, or the visit could not start
-    this.arrival=this.pose();this.set({status:this.state.autoplay?'dwelling':'paused'});
-    if(this.state.autoplay)this.schedule();
+    this.arrival=this.pose();this.awaitReady(serial);
+  }
+  private cancelPreparation(){this.preparation?.abort();this.preparation=null}
+  private prepareNext(){
+    this.cancelPreparation();const next=this.tour.stops[this.state.index+1];
+    if(next?.target.kind!=='catalog'||!this.atlas.prepareCatalog)return;
+    const entry=this.hooks.resolveCatalog(next.target.name!);if(!entry)return;
+    const controller=this.preparation=new AbortController();
+    void this.atlas.prepareCatalog(entry,controller.signal).catch(()=>{/* Speculation never changes the current stop or reports a visit failure. */});
+  }
+  private dwell(){this.set({status:this.state.autoplay?'dwelling':'paused'});if(this.state.autoplay)this.schedule()}
+  private awaitReady(serial:number,attempt=0){
+    this.clearTimer();if(serial!==this.serial)return;
+    if(this.moved()){this.pause();return}
+    if(!this.atlas.tourDestinationReady||this.atlas.tourDestinationReady(this.state.stop!)){this.dwell();return}
+    if(attempt>=40){this.set({status:'partial',autoplay:false});return}
+    if(this.state.status!=='preparing')this.set({status:'preparing'});
+    this.timer=setTimeout(()=>{this.timer=null;this.awaitReady(serial,attempt+1)},200);
   }
   private visit(stop:TourStop,serial:number){
     const {target,distanceMpc}=stop,s=stop.travelSeconds/tourClock.speed,approach=vec(this.atlas.milkyWay.approachDirection);

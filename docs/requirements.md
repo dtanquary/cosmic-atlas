@@ -129,3 +129,9 @@ Share also offers **Copy cosmic road trip link**. Its `#tour=road-trip` invitati
 ### Tour orientation refinement
 
 Use the existing header subtitle for curated tour context or verified selection/focus-distance context. Identify the small Andromeda companions with at most two noninteractive screen labels anchored to their existing measured positions, never enlarged models. Labels must remain bounded, clear on exit and stay outside picking. Paused playback is labeled Continue; hiding the tab pauses and returning does not automatically resume. All stops must remain usable on desktop and phone portrait/landscape, including reduced-motion visits.
+
+### Tour arrival preparation (milestone 2 checkpoint)
+
+Automatic pacing prepares only the next catalog destination, using cancellable shared metadata/profile leases. The allowance is two assets, at most 4 MiB compressed / 24 MiB managed reservation, skipped above 80% of the current memory budget. Current-view queued work wins; no speculative point frontier or extra model is created. Existing metadata/profile caches remain bounded. Pause, chapter changes, Exit and hidden tabs release obsolete owners without cancelling required shared loads.
+
+After camera arrival, the single tour timer checks usable destination representation every 200 ms, for at most eight seconds. Nearby/catalog stops check a visible model or submitted point; cluster/overview checks bounded samples of submitted positions in the arrival region. Coma coverage is not membership. Partial data pauses with Retry, Continue and Next; Continue explicitly accepts the partial view. Normal dwell begins only after readiness. Tests cover readiness, timeout, stale checks and preparation cancellation; production/GPU verification remains pending.

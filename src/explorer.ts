@@ -1,3 +1,4 @@
+import type {TourStop,CatalogEntry} from './tour';
 import {ModelRows} from './model-rows';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -610,6 +611,44 @@ export class Explorer {
     if(this.resolvedFor(galaxy.id))return this.visitGalaxy(galaxy.id,seconds);
     this.selectGalaxy(galaxy,{node:node.id,row:entry.row});return this.focusSelected(seconds);
   }
+  /** One speculative destination, metadata and profile only. No focus, selection, point frontier or model allocation. */
+  async prepareCatalog(entry:CatalogEntry,signal:AbortSignal){
+    const node=this.nodes.get(entry.node),models=this.modelCatalog,profile=models?.manifest.nodes[entry.node];
+    if(!node||!models||!profile||signal.aborted)return;
+    const assets=[node.metadata,profile],bytes=assets.reduce((sum,a)=>sum+a.bytes,0),reservation=assets.reduce((sum,a)=>sum+a.bytes*2+a.decodedBytes*3,0);
+    if(bytes>4*1048576||reservation>24*1048576||this.memoryBytes+reservation>this.memoryLimit*.8)return;
+    const [metadata]=await Promise.all([this.metadataFor(node,signal),models.read(node,signal)]);
+    if(signal.aborted)return;
+    if(decodeGalaxy(metadata,entry.row,entry.id).targetId!==entry.targetId)throw new Error('Prepared identity does not match the catalog');
+  }
+  /** A bounded check of the destination representation, independent of unrelated pending requests. */
+  tourDestinationReady(stop:TourStop){
+    if(!this.ready||this.contextLost)return false;
+    const inView=(world:THREE.Vector3)=>{const p=world.clone().project(this.camera);return p.z>=-1&&p.z<=1&&Math.abs(p.x)<.8&&Math.abs(p.y)<.65};
+    const kind=stop.target.kind;
+    if(kind==='cmb')return this.cosmicHorizon.enabled;
+    if(kind==='sun'||kind==='core')return this.modelDisplay==='points'||this.milkyWay.visible;
+    if(kind==='nearby'||kind==='catalog'){
+      const selected=this.selected;if(!selected||!inView(new THREE.Vector3().fromArray(selected.position)))return false;
+      const model=this.resolvedFor(selected.id);
+      if(this.modelDisplay!=='points'&&model?.visible&&model.blend.value>.1)return true;
+      if(selected.id<0)return this.nearbyPoints.visible;
+      return this.drawn.some(id=>this.cache.get(id)!.ids.includes(selected.id));
+    }
+    if(kind==='localgroup')return this.nearbyGalaxies.filter(model=>inView(model.center)).length>=3;
+    // Sample no more than ~32k submitted points, stopping at useful coarse coverage. The Coma window is a view region, never membership.
+    const total=this.drawn.reduce((n,id)=>n+this.cache.get(id)!.ids.length,0),stride=Math.max(1,Math.ceil(total/32768));
+    const reach=this.camera.position.distanceTo(this.controls.target)*.6,world=new THREE.Vector3();let found=0;
+    for(const id of this.drawn){const item=this.cache.get(id)!,positions=item.points.geometry.getAttribute('position');
+      for(let row=0;row<positions.count;row+=stride){
+        world.set(positions.getX(row)+item.node.center[0],positions.getY(row)+item.node.center[1],positions.getZ(row)+item.node.center[2]);
+        if(!this.showUncertainLocal&&world.length()<LOCAL_REDSHIFT_GUARD_MPC)continue;
+        if(kind==='cluster'&&world.distanceTo(this.controls.target)>reach)continue;
+        if(inView(world)&&++found>=(kind==='cluster'?6:32))return true;
+      }
+    }
+    return false;
+  }
   focusObserver(seconds=0){
     if(!this.ready)return;
     const arrival=this.focusAt(new THREE.Vector3(0,0,0),.06,this.milkyWay.approachDirection,null,true,seconds);
@@ -665,9 +704,10 @@ export class Explorer {
     return {target:this.resolvedFor(galaxy.id)?.center??new THREE.Vector3().fromArray(galaxy.position),galaxyId:galaxy.id,home:false};
   }
   /** Metadata chunk for a node, cached for the current inspection (evict keeps at most four). */
-  private async metadataFor(node:SpatialNode){
+  private async metadataFor(node:SpatialNode,signal?:AbortSignal){
+    if(signal?.aborted)throw new DOMException('Cancelled','AbortError');
     let metadata=this.metadata.get(node.id);
-    if(!metadata){metadata=await this.loader.load(`m:${node.id}`,new URL(node.metadata.url,this.base).href,node.metadata,'metadata',node.storedCount,true);this.metadata.set(node.id,metadata)}
+    if(!metadata){metadata=await this.loader.load(`m:${node.id}`,new URL(node.metadata.url,this.base).href,node.metadata,'metadata',node.storedCount,!signal,signal);if(this.disposed||signal?.aborted)throw new DOMException('Cancelled','AbortError');this.metadata.set(node.id,metadata);while(this.metadata.size>4)this.metadata.delete(this.metadata.keys().next().value!)}
     return metadata;
   }
   /** The dense id comes from the node's points chunk (resident or loaded once), never from a link. */

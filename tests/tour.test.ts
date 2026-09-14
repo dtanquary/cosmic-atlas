@@ -45,6 +45,35 @@ beforeEach(()=>vi.useFakeTimers());
 afterEach(()=>vi.useRealTimers());
 
 describe('Tour runner',()=>{
+  it('starts dwell only after destination readiness, with one cancellable timer',async()=>{
+    const {atlas,runner}=setup();let ready=false;Object.assign(atlas,{tourDestinationReady:()=>ready});
+    runner.start();await atlas.settle(true);expect(runner.state.status).toBe('preparing');expect(vi.getTimerCount()).toBe(1);
+    await vi.advanceTimersByTimeAsync(1000);expect(runner.state.index).toBe(0);
+    ready=true;await vi.advanceTimersByTimeAsync(200);expect(runner.state.status).toBe('dwelling');expect(vi.getTimerCount()).toBe(1);
+    await vi.advanceTimersByTimeAsync(DWELL_SECONDS*1000-1);expect(runner.state.index).toBe(0);
+    runner.pause();expect(vi.getTimerCount()).toBe(0);
+  });
+  it('times out partial data and permits explicit continuation or another stop',async()=>{
+    const {atlas,runner}=setup();Object.assign(atlas,{tourDestinationReady:()=>false});
+    runner.start();await atlas.settle(true);await vi.advanceTimersByTimeAsync(8000);
+    expect(runner.state).toMatchObject({status:'partial',autoplay:false});expect(vi.getTimerCount()).toBe(0);
+    runner.play();expect(runner.state.status).toBe('dwelling');await dwell(runner);expect(runner.state.index).toBe(1);
+    await atlas.settle(true);runner.next();expect(runner.state.index).toBe(2);expect(vi.getTimerCount()).toBe(0);
+    await vi.advanceTimersByTimeAsync(20000);expect(runner.state.status).toBe('travelling');
+  });
+  it('prepares only the next catalog stop during automatic dwell and releases it on pause, jump and exit',async()=>{
+    const {atlas,runner}=setup();const signals:AbortSignal[]=[];Object.assign(atlas,{prepareCatalog:async(_entry:CatalogEntry,signal:AbortSignal)=>{signals.push(signal)}});
+    runner.jump('triangulum');await atlas.settle(true);expect(signals).toHaveLength(0);
+    runner.play();expect(signals).toHaveLength(1);expect(signals[0].aborted).toBe(false);runner.pause();expect(signals[0].aborted).toBe(true);
+    runner.play();runner.jump('andromeda');expect(signals[1].aborted).toBe(true);await atlas.settle(true);
+    runner.start(5);await atlas.settle(true);runner.exit();expect(signals[2].aborted).toBe(true);expect(vi.getTimerCount()).toBe(0);
+  });
+  it('cannot resume a stale readiness check after input or exit',async()=>{
+    const {atlas,runner}=setup();let ready=false;Object.assign(atlas,{tourDestinationReady:()=>ready});
+    runner.start();await atlas.settle(true);runner.pause();ready=true;await vi.advanceTimersByTimeAsync(20000);
+    expect(runner.state.status).toBe('paused');expect(runner.state.index).toBe(0);runner.play();expect(runner.state.status).toBe('dwelling');
+    runner.exit();await vi.advanceTimersByTimeAsync(20000);expect(runner.state.status).toBe('idle');expect(vi.getTimerCount()).toBe(0);
+  });
   it('uses stable chapter ids and lands paused when jumping or returning after exploration',async()=>{
     const {atlas,runner}=setup();runner.start();await atlas.settle(true);
     runner.jump('andromeda');expect(runner.state).toMatchObject({index:3,status:'travelling',autoplay:false});
