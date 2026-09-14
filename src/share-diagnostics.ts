@@ -53,6 +53,17 @@ export async function probeShareViews(atlas:Explorer){
     }
     {const {position,...identity}=resident;cases.residentRecord=await apply(identity,new THREE.Vector3(...position))}
     {const {position,wasResident,...identity}=remote;const result=await apply(identity,new THREE.Vector3(...position));cases.nonResidentLeaf={...result,loadedIdFromChunk:!wasResident,allLeavesResident,passed:result.passed&&(!wasResident||allLeavesResident)}}
+    // Hold a real metadata lookup at its asynchronous boundary, then withdraw the caller's navigation lease.
+    atlas.reset();atlas.clearSelection();await frame();
+    const beforeGuard=encodeView(atlas.viewState()),readMetadata=atlas['metadataFor'];let release!:()=>void,allowed=true;
+    const held=new Promise<void>(resolve=>{release=resolve});
+    atlas['metadataFor']=async(...args)=>{const bytes=await readMetadata.apply(atlas,args);await held;return bytes};
+    try{
+      const {position,...identity}=resident;
+      const pending=atlas.applyView({target:position,camera:[position[0]+.02,position[1],position[2]],identity},0,{canNavigate:()=>allowed});
+      await sleep(100);allowed=false;release();const arrived=await pending;await frame();
+      cases.withdrawnNavigation={arrived,unchanged:encodeView(atlas.viewState())===beforeGuard,passed:arrived===false&&encodeView(atlas.viewState())===beforeGuard};
+    }finally{release();atlas['metadataFor']=readMetadata}
     cases.andromeda=await apply('nearby:m31',atlas.resolvedFor(-1)!.center);
     {const result=await apply('core',atlas.milkyWay.center);cases.core={...result,homeSelected:atlas.homeSelected,homeView:atlas.homeView,passed:result.passed&&atlas.homeSelected&&atlas.homeView==='galaxy'}}
     // Trust boundary: a wrong target ID and an out-of-range row fall back to the camera alone with the toast; a six-digit row never decodes.

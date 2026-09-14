@@ -1,5 +1,5 @@
 .photo-trigger{font-size:11px;padding:4px 7px;white-space:nowrap}
-.photo-panel{position:absolute;z-index:6;left:200px;top:110px;width:min(420px,30vw);max-height:calc(100dvh - 160px);overflow:auto;overscroll-behavior:contain;padding:16px;border:1px solid var(--line);border-radius:12px;background:#091119f5;color:var(--text);box-shadow:0 8px 40px #0004;scrollbar-width:thin}
+.photo-panel{position:absolute;z-index:6;left:200px;top:110px;width:min(420px,calc(50vw - 220px));max-height:calc(100dvh - 160px);overflow:auto;overscroll-behavior:contain;padding:16px;border:1px solid var(--line);border-radius:12px;background:#091119f5;color:var(--text);box-shadow:0 8px 40px #0004;scrollbar-width:thin}
 .photo-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.photo-heading h2{font-size:17px;line-height:1.35;margin:8px 0 12px}.photo-heading .icon-button{font-size:26px;flex:none}
 .photo-switch{display:none}.photo-panel select{width:100%;margin:4px 0 8px;font:inherit;font-size:12px}.photo-panel label{font-size:11px}
 .photo-panel figure{margin:0}.photo-panel img{display:block;width:100%;max-height:42dvh;object-fit:contain;background:#05090d}.photo-panel figcaption{font-size:11px;line-height:1.45;margin:8px 0 12px;overflow-wrap:anywhere}
