@@ -1,6 +1,6 @@
 # Build sequence
 
-For the next round of tour refinements, performance work and exploration features, see the [phased improvement plan of 14 September 2026](roadmap-2026-09-14.md). Its phases are planned, not yet implemented. The original build sequence below is retained for project history.
+For the next round of tour refinements, performance work and exploration features, see the [phased improvement plan of 14 September 2026](roadmap-2026-09-14.md) and [implementation record](implementation-2026-09-14.md). The original build sequence below is retained for project history.
 
 1. Scaffold Vite/TypeScript, document requirements and contracts, lock dependencies, start the resumable official catalog download.
 2. Build the importer, source accounting, cosmology validation, compressed point/metadata chunks, and deterministic octree samples. A clearly identified real-data bootstrap subset may support the first preview while the full source downloads.

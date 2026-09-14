@@ -1,6 +1,6 @@
 # Cosmic Atlas requirements
 
-Build a minimal desktop-browser explorer that makes the quantity, arrangement, and distances of measured galaxies understandable. The audience is a curious non-specialist. Scientific honesty, simple controls, a clean dark science-fiction aesthetic, and smooth navigation take priority.
+Build a minimal browser explorer that makes the quantity, arrangement, and distances of measured galaxies understandable, with desktop and phone controls. The audience is a curious non-specialist. Scientific honesty, simple controls, a clean dark science-fiction aesthetic, and smooth navigation take priority.
 
 ## Agreed behavior
 
@@ -18,7 +18,7 @@ Build a minimal desktop-browser explorer that makes the quantity, arrangement, a
 - Distant objects stay as points; a fixed pool of at most 12 resident DESI close-up models protects navigation performance; six fixed nearby models use the same visibility policies. Candidate searches operate on nearby resident chunks, not on the entire catalog each frame. Model bodies and point markers keep the same exact catalog identities.
 - Visit opens a local name search with autocomplete, keyboard selection, and popular/nearby suggestions. Resolve names to verified DESI observations or independently sourced nearby entries and explicitly explain unmatched names. The Milky Way suggestion focuses the Galactic core. Resolved bodies support inspection and measurement under their existing identities; observer-facing view restores orientation from our direction. Flight controls include galaxy-scale speeds.
 - Camera-distance display cues: distant points fade smoothly; nearby points have opaque centers. A separate, saved Enlarge nearby points toggle is off by default and optionally restores modest marker growth. It works independently of distance fading and never resizes galaxy models. Settings can disable fading or set a saved minimum distant opacity from 0–100%, in 0.5% steps, defaulting to 0.5%. Existing saved choices, including 0%, take precedence. Positive floors retain faint background points and their pick hits; 0% allows disappearance. Selection rings and measurements remain readable.
-- Desktop Chrome is the primary performance browser. Desktop Safari and Firefox are compatibility targets; mobile controls are deferred.
+- Desktop Chrome is the primary performance browser. Desktop Safari and Firefox are compatibility targets. Phone controls are implemented as described below; simulated Chrome/WebKit journeys are verified separately from physical-device performance.
 
 ## Data and scientific meaning
 
@@ -38,7 +38,7 @@ The development subset is explicitly labeled. A full-detail development subset r
 
 ## Deferred
 
-Measured arm/dust/star structure, planets, inferred populations, cosmological/time simulations, merged position catalogs, accounts and mobile-first navigation. Public web hosting and a public GitHub source repository are the agreed delivery goal. The full catalog can use the same Cloudflare Pages deployment while it fits the documented asset limits; never reduce coverage to fit. Original code is MIT licensed; data and third-party attribution retain their separate terms. Personal deployment details stay in ignored local configuration.
+Measured arm/dust/star structure, planets, inferred populations, cosmological/time simulations, merged position catalogs and accounts remain deferred. The [improvement plan](roadmap-2026-09-14.md) sequences further tour, mobile-performance and exploration work; its [implementation record](implementation-2026-09-14.md) distinguishes planned work from verified behavior. Public web hosting and a public GitHub source repository are the agreed delivery goal. The full catalog can use the same Cloudflare Pages deployment while it fits the documented asset limits; never reduce coverage to fit. Original code is MIT licensed; data and third-party attribution retain their separate terms. Personal deployment details stay in ignored local configuration.
 
 Sources: https://data.desi.lbl.gov/doc/releases/dr1/ ; https://data.desi.lbl.gov/doc/organization/ ; https://docs.astropy.org/en/stable/api/astropy.cosmology.realizations.Planck18.html ; https://data.desi.lbl.gov/doc/acknowledgments/
 

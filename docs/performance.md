@@ -1,0 +1,38 @@
+# Journey performance measurements
+
+Phase 1 of the [improvement plan](roadmap-2026-09-14.md) establishes a repeatable production baseline. Measurements and tuning decisions belong here; performance targets remain in [requirements](requirements.md). A browser with phone dimensions is not a physical-phone benchmark.
+
+Run a stable full-data production preview before measuring. Keep the production package fixed for the entire run and run only one GPU benchmark at a time. Source documentation can change while the fixed package is measured; the report records both the starting checkout commit and the actual served entry-bundle checksum.
+
+```sh
+npm run build:pages
+npm run preview:pages -- --port 4180 --strictPort
+```
+
+In another terminal, using an independently installed Playwright as in the mobile validation instructions:
+
+```sh
+PLAYWRIGHT_MODULE="$PWD/.cache/capture-tools/node_modules/playwright/index.mjs" \
+  node scripts/benchmark-journey.mjs
+```
+
+`ATLAS_TEST_URL` selects a preview or deployed build, `ATLAS_TEST_OUTPUT` selects the ignored results directory, and `ATLAS_BENCH_CASES` selects comma-separated `chrome-cold,chrome-warm,chrome-slow,webkit-phone`. Warm runs require cold in the same invocation and reuse its browser context/cache in a new page. `ATLAS_SOAK_SECONDS` defaults to 600, applies to Chrome cold, and can be 0 for a short trial. Do not describe a zero-duration trial as sustained performance.
+
+The cases use installed Chrome at 1600×1000 CSS pixels and WebKit at 402×874 with device scale factor 3. The app's existing drawing-resolution cap remains active and the report records actual drawing dimensions. Chrome slow uses network emulation of 5 Mbps down, 1 Mbps up and 80 ms latency. An unthrottled local preview isolates much of the rendering cost but is not a CDN or mobile-network measurement; preview caching headers may differ from the deployed package. Treat response bytes and cache behavior in that context.
+
+The route follows all ten road-trip stops at ordinary production travel/dwell speed. It records an arrival screenshot at each stop. The sustained Chrome portion repeats the route for at least ten minutes, adding public mouse orbit gestures at Andromeda and Coma; it introduces no private camera moves or accelerated tour clock. WebKit measures the tour and phone layout; physical touch correctness is independently exercised by `check-mobile-ui.mjs`.
+
+**What the report measures**
+
+- First coarse view: the first 250 ms sample with submitted observations and the loading overlay hidden. This has up to one polling interval of uncertainty and is a navigable-view proxy, not a paint-timing assertion.
+- Camera arrival: the public tour status changes to Arrived. Queue-settled delay is the first subsequent sample with no reported outstanding chunks before the stop changes. This is a global loading proxy, not proof that a particular feature was visible. Arrival screenshots provide separate visual evidence; phase 3 will add a destination-specific readiness contract.
+- Movement frame intervals: timestamps of app animation callbacks that issue actual WebGL draw calls during tour travel or a scripted gesture. The harness wraps the existing callback/draw entry points; it adds no animation loop, pixel readback or synchronous GPU wait. Intervals are grouped by object and activity so idle time and navigation boundaries are not mistaken for movement stutters. Screenshot capture and the following 250 ms are excluded.
+- Callback CPU duration: elapsed CPU time around the existing animation callback, including draw submission. This is not GPU execution time. The small instrumentation overhead and visible F8 HUD are present in every measured case.
+- Resources: sampled managed-allocation/model/pending values from the existing F8 HUD, submitted/loaded counts, completed response-body sizes and request timings, and supported browser long-task entries. Managed memory excludes browser/driver allocations. Response sizes are not a measurement of cellular billing, and cache-served responses can still report body sizes.
+- Sustained behavior: early and late movement distributions accompany the full distribution. Different tour stops have different workloads; inspect the per-stop raw data before attributing a difference to device warming. No temperature, battery-power or physical iPhone result is inferred from these measurements.
+
+Full frame samples, response paths and screenshots stay in ignored `.cache/performance/`; source-controlled evidence contains the concise summary and methodology. The harness fails on missing stops, browser exceptions, wrong accepted count, a changed opacity default, or a changed production entry bundle. A good frame-rate result never excuses changed geometry, dropped catalog coverage or failed picking.
+
+**Initial run — 14 September 2026**
+
+In progress. Production source behavior is the verified Coma-framing release; the checkout also contains documentation-only commits through `0d224d9`. No rendering optimization has been applied. Physical iPhone testing is pending device access. Results will be recorded after the browser runs finish and the captures are inspected.
