@@ -1,3 +1,4 @@
+import {ModelRows} from './model-rows';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ChunkLoader } from './loader';
@@ -95,7 +96,7 @@ const lineFragment=`precision highp float;out vec4 fragColor;void main(){fragCol
 
 interface Resident {
   node: SpatialNode; buffer: ArrayBuffer; ids: Uint32Array; points: THREE.Points<THREE.BufferGeometry,THREE.RawShaderMaterial>;
-  bytes: number; used: number; modelRows:number[];
+  bytes: number; used: number; modelRows:number[];modelLookup:ModelRows;
 }
 export interface AtlasStats {
   drawn:number; loaded:number; represented:number; pending:number; failed:number; mode:'adaptive'|'full'; complete:boolean;
@@ -469,12 +470,13 @@ export class Explorer {
   private bindModels(only?:Resident){
     this.detailBlendUniform.value.fill(0);
     this.resolvedGalaxies.forEach((model,i)=>this.detailBlendUniform.value[i]=model.blend.value);
+    const identities=this.resolvedGalaxies.map(model=>model.data.galaxy.id);
     for(const item of only?[only]:this.cache.values()){
       const slots=item.points.geometry.getAttribute('detailSlot') as THREE.BufferAttribute;
       const previous=item.modelRows;item.modelRows=[];slots.clearUpdateRanges();
       for(const row of previous){slots.setX(row,0);slots.addUpdateRange(row,1)}
-      this.resolvedGalaxies.forEach((model,i)=>{
-        const row=item.ids.indexOf(model.data.galaxy.id);if(row<0)return;
+      item.modelLookup.resolve(item.ids,identities).forEach((row,i)=>{
+        if(row<0)return;
         slots.setX(row,i+1);slots.addUpdateRange(row,1);item.modelRows.push(row);
       });
       if(previous.length||item.modelRows.length)slots.needsUpdate=true;
@@ -700,7 +702,7 @@ export class Explorer {
   stopTravel(){const travel=this.travel;if(!travel)return;this.travel=null;travel.resolve(false)}
   private get memoryBytes(){
     let bytes=this.references.byteLength+this.pickTarget.width*this.pickTarget.height*8+this.milkyWay.memoryBytes+this.cosmicHorizon.memoryBytes+this.lookbackRings.memoryBytes+this.surveyFootprint.memoryBytes+this.allModels.reduce((sum,model)=>sum+model.memoryBytes,0)+(this.modelCatalog?.memoryBytes??0);
-    for(const item of this.cache.values())bytes+=item.bytes;
+    for(const item of this.cache.values())bytes+=item.bytes+item.modelLookup.memoryBytes;
     for(const buffer of this.metadata.values())bytes+=buffer.byteLength;
     return bytes+this.loader.reservedBytes;
   }
@@ -738,7 +740,7 @@ export class Explorer {
         m.uniforms.uLocalChunk.value=localChunk;m.uniforms.uWorldOrigin.value.fromArray(node.center);
         this.resolvedGalaxies.forEach((model,i)=>m.uniforms.uDetailOrigins.value[i].copy(model.center).sub(camera.position));
       };
-      const resident={node,buffer,ids,points,bytes:buffer.byteLength+positions.byteLength+node.storedCount*8,used:performance.now(),modelRows:[]};
+      const resident={node,buffer,ids,points,bytes:buffer.byteLength+positions.byteLength+node.storedCount*8,used:performance.now(),modelRows:[],modelLookup:new ModelRows(MODEL_LIMIT)};
       this.cache.set(node.id,resident);this.bindModels(resident);this.modelScanNeeded=true;
       for(const id of ids)if(this.references[id]++===0)this.loadedUnique++;
       this.scene.add(points);
