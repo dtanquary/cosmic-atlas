@@ -223,12 +223,13 @@ describe('Tour runner',()=>{
     expect(notices).toEqual(['NGC 3982 is not available in this dataset; skipping.','NGC 4026 is not available in this dataset; skipping.']);
     expect(runner.state).toMatchObject({index:8,status:'travelling'});expect(atlas.calls.map(c=>c.method)).toEqual(['applyView']);
     await atlas.settle(true);
+    expect(notices.at(-1)).toBe('Skipped unavailable stops: NGC 3982, NGC 4026.');
     runner.start(6);await flush(); // a start from a later index still skips forward, not back toward it
-    expect(runner.state).toMatchObject({index:8,status:'travelling'});expect(atlas.calls.map(c=>c.method)).toEqual(['applyView','applyView']);expect(notices.length).toBe(4);
+    expect(runner.state).toMatchObject({index:8,status:'travelling'});expect(atlas.calls.map(c=>c.method)).toEqual(['applyView','applyView']);expect(notices.length).toBe(5);
     await atlas.settle(true);
     runner.previous();await flush();
     expect(runner.state).toMatchObject({index:5,status:'travelling'});expect(atlas.last).toEqual({method:'visitNearby',args:[nearbyId('m33'),5]});
-    expect(notices.length).toBe(6);
+    expect(notices.filter(message=>message.includes('not available in this dataset')).length).toBe(6);
   });
   it('treats a rejected visit like an unavailable stop and passes a live navigation guard to visitCatalog',async()=>{
     const {atlas,runner,notices}=setup();

@@ -30,3 +30,5 @@ No new animation loop, point frontier, per-record data work, geometry or model a
 ## Validation checkpoint
 
 Ten additional unit tests cover strict round trips, Unicode limits, malformed links/files, missing identities, bounded/blocked persistence, source-caption separation, custom companion/photo lookup and saved-view cancellation ownership. Production editor, recipient, subset, GPU and phone journeys follow before release. Operational deployment receipts remain ignored.
+
+Browser QA found two inherited arrival issues: camera-only views retained a previous selection, and a skipped-stop notice was immediately replaced by the next destination. Camera-only arrivals now clear the old selection; a bounded summary of skipped destinations is shown again after the next successful arrival. Exact source notices remain in the navigation lifecycle. Both behaviors have focused regressions and production reproduction evidence.

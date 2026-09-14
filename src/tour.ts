@@ -106,7 +106,7 @@ export class Tour{
   /** The stop as the panel should show it: the caption's `{catalogCount}` is the active dataset's accepted count. */
   private present(stop:TourStop):TourStop{return {...stop,caption:stop.caption.replaceAll('{catalogCount}',this.atlas.manifest.count.toLocaleString('en-US'))}}
   /** `step` is the direction an unavailable stop is skipped in: forward for start/next/play, backward for previous. */
-  private async goTo(index:number,step=1):Promise<void>{
+  private async goTo(index:number,step=1,skipped:string[]=[]):Promise<void>{
     const stop=this.tour.stops[index];if(!stop)return;
     this.clearTimer();const serial=++this.serial;
     if(this.state.stop?.target.kind==='cmb'&&stop.target.kind!=='cmb')this.hooks.showCosmicHorizon(false);
@@ -115,9 +115,10 @@ export class Tour{
     try{const visit=this.visit(stop,serial);this.cancelPreparation();arrived=await visit}
     catch(error){this.cancelPreparation();arrived='skipped';if(serial===this.serial)this.hooks.notify(`${stop.title}: ${error instanceof Error?error.message:'unavailable'} Skipping.`)}
     if(serial!==this.serial)return; // superseded by a newer stop, exit or finish
-    if(arrived==='skipped'){const following=index+step;if(this.tour.stops[following])return this.goTo(following,step);this.set({status:step>0?'finished':'paused',autoplay:false});return}
+    if(arrived==='skipped'){const following=index+step;if(this.tour.stops[following])return this.goTo(following,step,[...skipped,stop.title]);this.set({status:step>0?'finished':'paused',autoplay:false});return}
     if(arrived!==true){this.set({status:'paused',autoplay:false});return} // input, flight or another focus took over, or the visit could not start
     this.arrival=this.pose();this.awaitReady(serial);
+    if(skipped.length)this.hooks.notify(`Skipped unavailable stops: ${skipped.join(', ')}.`);
   }
   private cancelPreparation(){this.preparation?.abort();this.preparation=null}
   private prepareNext(){
