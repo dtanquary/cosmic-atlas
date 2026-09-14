@@ -672,21 +672,23 @@ export class Explorer {
     return {target:[t.x,t.y,t.z],camera:[c.x,c.y,c.z],identity};
   }
   /** Focus a decoded link. The identity is re-verified against the catalog and the link's camera offset is applied from the exact position; an unverifiable identity falls back to the camera alone. */
-  async applyView(state:ViewState,seconds=0,{preserveTarget=false}:{preserveTarget?:boolean}={}):Promise<boolean>{
+  async applyView(state:ViewState,seconds=0,{preserveTarget=false,canNavigate=()=>true}:{preserveTarget?:boolean;canNavigate?:()=>boolean}={}):Promise<boolean>{
+    if(!canNavigate())return false;
     const serial=++this.selectionSerial;
     const target=new THREE.Vector3().fromArray(state.target),offset=new THREE.Vector3().fromArray(state.camera).sub(target);
     const distance=THREE.MathUtils.clamp(offset.length(),this.controls.minDistance,this.controls.maxDistance);
     const direction=offset.lengthSq()?offset.normalize():this.camera.getWorldDirection(new THREE.Vector3()).negate();
     let exact:{target:THREE.Vector3;galaxyId:number|null;home:boolean}|null=null;
-    try{exact=await this.locate(state.identity,serial)}
-    catch(error){if(serial!==this.selectionSerial||(error as Error).name==='AbortError')return false;this.onMessage(error instanceof DOMException?`This link's galaxy could not load: ${error.message}`:'This link points to a galaxy this catalog does not contain.')}
+    try{exact=await this.locate(state.identity,serial,canNavigate)}
+    catch(error){if(!canNavigate()||serial!==this.selectionSerial||(error as Error).name==='AbortError')return false;this.onMessage(error instanceof DOMException?`This link's galaxy could not load: ${error.message}`:'This link points to a galaxy this catalog does not contain.')}
+    if(!canNavigate()||serial!==this.selectionSerial)return false;
     // Session history restores a possibly panned pose while still validating its
     // selection. Public links retain their established exact-object anchoring.
     const arrival=exact?this.focusAt(preserveTarget?target:exact.target,distance,direction,exact.galaxyId,exact.home,seconds):this.focusAt(target,distance,direction,null,false,seconds);
     if(exact?.home)this.inspectHome();
     return arrival;
   }
-  private async locate(identity:ViewIdentity,serial:number):Promise<{target:THREE.Vector3;galaxyId:number|null;home:boolean}|null>{
+  private async locate(identity:ViewIdentity,serial:number,canNavigate:()=>boolean):Promise<{target:THREE.Vector3;galaxyId:number|null;home:boolean}|null>{
     if(identity===null)return null;
     if(identity==='core'||identity==='sun')return {target:identity==='core'?this.milkyWay.center:new THREE.Vector3(),galaxyId:null,home:true};
     if(typeof identity==='string'){
@@ -695,13 +697,13 @@ export class Explorer {
     }
     const node=this.nodes.get(identity.node);if(!node||identity.row>=node.storedCount)throw new Error('Unknown catalog address');
     const [id,metadata]=await Promise.all([this.denseId(node,identity.row),this.metadataFor(node)]);
-    if(serial!==this.selectionSerial)throw new DOMException('Superseded','AbortError');
+    if(!canNavigate()||serial!==this.selectionSerial)throw new DOMException('Superseded','AbortError');
     const galaxy=decodeGalaxy(metadata,identity.row,id);
     if(galaxy.targetId!==identity.targetId)throw new Error('Target ID mismatch');
     // Like visitCatalog and pick, a hidden uncertain-local record is never selected through a link.
     if(!this.catalogPositionVisible(galaxy)){this.onMessage('This uncertain local position is hidden. Show uncertain local positions in Settings to inspect it.');return null}
     if(this.modelCatalog&&!uncertainLocalPosition(galaxy))try{await this.ensureModel(galaxy,node,identity.row,true)}catch{/* Point position still applies. */}
-    if(serial!==this.selectionSerial)throw new DOMException('Superseded','AbortError');
+    if(!canNavigate()||serial!==this.selectionSerial)throw new DOMException('Superseded','AbortError');
     this.selectGalaxy(galaxy,{node:node.id,row:identity.row});
     return {target:this.resolvedFor(galaxy.id)?.center??new THREE.Vector3().fromArray(galaxy.position),galaxyId:galaxy.id,home:false};
   }

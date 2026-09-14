@@ -31,6 +31,10 @@ await writeFile(path.join(output, '_headers'), `/*
   Content-Type: application/octet-stream
 /data/releases/:release/models/*.bin
   Content-Type: application/octet-stream
+/photos/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+/photos/manifest.json
+  Cache-Control: no-cache
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 `);

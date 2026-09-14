@@ -135,3 +135,7 @@ The [stop-by-stop image review](image-portraits.md) records primary images and f
 No telescope pixels are bundled, no brightnesses are calibrated, and feature angles/depth remain assumed. Original profile data remains accessible to measurement diagnostics. Unknown identities, unmatched Coma central galaxies, the full survey and the sourced Milky Way keep their prior rendering. Common generic spiral variants retain their existing profile, samples, colors and light budget; these named continuous portraits are separate, explicitly image-inspired interpretations.
 
 On phone/touch layouts, the inspector starts as a compact name, distance and action sheet. Details expands the same source provenance, shape, lookback and illustration disclosures into an independently scrolling body; newly selected objects start at its top. This changes the controls only: model geometry, selection, scientific values and renderer budgets are shared with desktop.
+
+## Telescope photograph comparison
+
+An optional, credited photograph panel is available for supported tour destinations and verified selections. It pauses the tour and loads one bounded image only on demand. Phone panels preserve access to the map; close and Model return without resuming. The ten source images, separate rights, exact identity mapping, crop/orientation disclosures and sole calibrated NGC 4026 match are documented in [photographs](photographs.md). Match is reversible; stale camera lookups cannot navigate after closing or input takeover. Existing model geometry and catalog data are unchanged.

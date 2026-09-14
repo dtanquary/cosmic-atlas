@@ -53,6 +53,13 @@ export async function planRelease(publicRoot) {
     const detail = JSON.parse(await add(`data/${name}`));
     if (detail.catalogSourceSha256 !== manifest.source.sha256 || ('count' in detail && detail.count !== manifest.count)) throw new Error(`Mismatched ${name}`);
   }
+  const photos=JSON.parse(await add('photos/manifest.json'));
+  if(photos.version!==1||!Array.isArray(photos.photos)||photos.photos.length>32)throw new Error('Invalid photograph manifest');
+  for(const photo of photos.photos){
+    if(!/^\/photos\/[a-z0-9]+\.[0-9a-f]{12}\.jpg$/.test(photo.asset)||photo.bytes>1048576||photo.width*photo.height*4>8*1048576||photo.license!=='https://creativecommons.org/licenses/by/4.0/')throw new Error('Photograph exceeds its release boundary');
+    await add(photo.asset.slice(1),photo);
+  }
+  await add('photos/credits.txt');
   // An explicit allowlist prevents unrelated public files from being published.
   for (const name of ['favicon.svg', 'acknowledgments.txt', 'third-party-notices.txt', 'licenses/CC-BY-SA-4.0.txt']) await add(name);
   const assets = [...files.values()].sort((a, b) => a.path.localeCompare(b.path));

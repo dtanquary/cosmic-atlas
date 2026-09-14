@@ -215,3 +215,6 @@ INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
 DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
 OTHER DEALINGS IN THE FONT SOFTWARE.
+
+Telescope and sky photographs
+The images in /photos/ are separately licensed CC BY 4.0. Full credits, publisher usage terms and exact asset identities are in /photos/credits.txt and /photos/manifest.json. These image providers do not endorse Cosmic Atlas.
