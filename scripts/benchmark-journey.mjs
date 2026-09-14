@@ -24,8 +24,8 @@ async function bundle(){
  return {path,sha256:digest(Buffer.from(await (await fetch(new URL(path,base))).arrayBuffer()))};
 }
 const report={version:1,sourceCommit:head(),startedAt:new Date().toISOString(),bundle:await bundle(),status:'running',cases:[],physicalDevice:false};
-let current='initializing';
-const progress=setInterval(()=>console.log(JSON.stringify({case:current,completed:report.cases.length})),30000);
+let current='initializing',activePage=null;
+const progress=setInterval(async()=>{let view;try{view=await activePage?.evaluate(()=>({title:document.getElementById('tour-stop-title')?.textContent,status:document.getElementById('tour-status')?.textContent}))}catch{}console.log(JSON.stringify({case:current,completed:report.cases.length,view}))},30000);
 
 /** Count actual GL draws inside app animation callbacks. Never add an animation
  * loop, force a redraw, read pixels, or synchronously wait for the GPU. */
@@ -77,7 +77,7 @@ function summarize(raw){
  return {firstCoarseMs:raw.firstCoarseMs,movementFrames:distribution(movement.map(f=>f.interval)),renderCallbackCpu:distribution(movement.map(f=>f.cpuMs)),earlyMovement:distribution(movement.filter(f=>f.time<120000).map(f=>f.interval)),lateMovement:distribution(movement.filter(f=>f.time>lastTime-120000).map(f=>f.interval)),peakManagedMiB:Math.max(0,...raw.samples.map(s=>s.managedMiB??0)),peakModels:Math.max(0,...raw.samples.map(s=>s.models??0)),peakPending:Math.max(0,...raw.samples.map(s=>s.pending)),longTasks:raw.longTasks.length,blockedSamples:raw.samples.filter(s=>s.detail.includes('memory limit')).length};
 }
 async function runCase(browser,context,name,{mobile=false,slow=false,soak=0}={}){
- current=name;const page=await context.newPage(),errors=[],requests=[];let cdp;
+ current=name;const page=activePage=await context.newPage(),errors=[],requests=[];let cdp;
  const finished=new Set();
  page.on('pageerror',e=>errors.push(e.message));
  page.on('requestfinished',request=>{
@@ -139,8 +139,8 @@ async function runCase(browser,context,name,{mobile=false,slow=false,soak=0}={})
   result.responses={count:requests.length,bodyBytes:requests.reduce((n,r)=>n+r.bodyBytes,0),pointResponses:requests.filter(r=>/\.points\.bin$/.test(r.path)).length};
   assert.deepEqual(errors,[]);result.status='complete';
   await writeFile(`${output}/${name}-raw.json`,JSON.stringify({instrumentation:raw,requests},null,2)+'\n');
- }catch(error){result.status='failed';result.failure=error.stack;throw error}
- finally{report.cases.push(result);await writeFile(`${output}/report.json`,JSON.stringify(report,null,2)+'\n');await cdp?.detach();await page.close()}
+ }catch(error){result.status='failed';result.failure=error.stack;try{result.failureState=await page.evaluate(()=>({title:document.getElementById('tour-stop-title')?.textContent,status:document.getElementById('tour-status')?.textContent,view:window.__atlasTools.read_atlas_view({})}));await page.screenshot({path:`${output}/${name}-failure.png`});await writeFile(`${output}/${name}-failure-raw.json`,JSON.stringify(await page.evaluate(()=>window.__journey)))}catch{}throw error}
+ finally{report.cases.push(result);await writeFile(`${output}/report.json`,JSON.stringify(report,null,2)+'\n');await cdp?.detach();await page.close();activePage=null}
  return result;
 }
 try{

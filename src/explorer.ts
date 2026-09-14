@@ -636,10 +636,12 @@ export class Explorer {
       return this.drawn.some(id=>this.cache.get(id)!.ids.includes(selected.id));
     }
     if(kind==='localgroup')return this.nearbyGalaxies.filter(model=>inView(model.center,.99,.99)).length>=3;
-    // Sample no more than ~32k submitted points, stopping at useful coarse coverage. The Coma window is a view region, never membership.
-    const total=this.drawn.reduce((n,id)=>n+this.cache.get(id)!.ids.length,0),stride=Math.max(1,Math.ceil(total/32768));
+    // Spend the bounded sample on the destination region, not unrelated faint-background chunks.
+    // A global stride can miss a real cluster in a narrow phone view. This is coverage, never membership.
     const reach=this.camera.position.distanceTo(this.controls.target)*.6,world=new THREE.Vector3();let found=0;
-    for(const id of this.drawn){const item=this.cache.get(id)!,positions=item.points.geometry.getAttribute('position');
+    const candidates=kind==='cluster'?this.drawn.filter(id=>{const node=this.cache.get(id)!.node;return Math.hypot(...node.min.map((min,i)=>Math.max(min-this.controls.target.getComponent(i),0,this.controls.target.getComponent(i)-node.max[i])))<=reach}):this.drawn;
+    const total=candidates.reduce((n,id)=>n+this.cache.get(id)!.ids.length,0),stride=Math.max(1,Math.ceil(total/32768));
+    for(const id of candidates){const item=this.cache.get(id)!,positions=item.points.geometry.getAttribute('position');
       for(let row=0;row<positions.count;row+=stride){
         world.set(positions.getX(row)+item.node.center[0],positions.getY(row)+item.node.center[1],positions.getZ(row)+item.node.center[2]);
         if(!this.showUncertainLocal&&world.length()<LOCAL_REDSHIFT_GUARD_MPC)continue;
