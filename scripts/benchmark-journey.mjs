@@ -40,7 +40,8 @@ function instrument(){
  const raf=window.requestAnimationFrame.bind(window);
  window.requestAnimationFrame=callback=>raf(time=>{
   const before=state.draws,start=performance.now();callback(time);
-  const calls=state.draws-before;if(!calls||state.excluded){state.last=null;return}
+  const calls=state.draws-before;if(!calls)return; // automation polls also use rAF; they are not atlas frames
+  if(state.excluded){state.last=null;return}
   const status=document.getElementById('tour-status')?.textContent??'';
   const title=document.getElementById('tour-stop-title')?.textContent??'overview';
   const kind=state.gesture?'gesture':status.startsWith('Travelling')?'travel':'settling-or-idle';
@@ -127,13 +128,15 @@ async function runCase(browser,context,name,{mobile=false,slow=false,soak=0}={})
    await act('#tour-play');result.soakActualSeconds=(await page.evaluate(()=>performance.now())-result.soakStartedMs)/1000;
   }
   const raw=await page.evaluate(()=>window.__journey);result.summary=summarize(raw);
+  assert.ok(result.summary.movementFrames.samples>100,'Missing measured movement frames');
+  assert.ok(result.summary.peakManagedMiB>0,'F8 managed-allocation samples missing');
   for(const stop of result.stops){
    const next=raw.transitions.find(t=>t.time>stop.time&&t.title!==stop.title);
    const settled=raw.samples.find(s=>s.time>=stop.time&&s.time<(next?.time??Infinity)&&s.pending===0);
    stop.globalQueueSettledAfterMs=settled?settled.time-stop.time:null;
   }
   await Promise.allSettled([...finished]);
-  result.responses={count:requests.length,bodyBytes:requests.reduce((n,r)=>n+r.bodyBytes,0),workerPointResponses:requests.filter(r=>/points-.*\.bin|\/points\//.test(r.path)).length};
+  result.responses={count:requests.length,bodyBytes:requests.reduce((n,r)=>n+r.bodyBytes,0),pointResponses:requests.filter(r=>/\.points\.bin$/.test(r.path)).length};
   assert.deepEqual(errors,[]);result.status='complete';
   await writeFile(`${output}/${name}-raw.json`,JSON.stringify({instrumentation:raw,requests},null,2)+'\n');
  }catch(error){result.status='failed';result.failure=error.stack;throw error}

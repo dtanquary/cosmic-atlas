@@ -35,4 +35,26 @@ Full frame samples, response paths and screenshots stay in ignored `.cache/perfo
 
 **Initial run — 14 September 2026**
 
-In progress. Production source behavior is the verified Coma-framing release; the checkout also contains documentation-only commits through `0d224d9`. No rendering optimization has been applied. Physical iPhone testing is pending device access. Results will be recorded after the browser runs finish and the captures are inspected.
+Browser baseline complete. All five cases used the verified Coma-framing production code at `43b9f5d`; starting checkout commits and the unchanged served-bundle checksum are in [the compact results](performance-results.json). No rendering optimization has been applied. Physical iPhone testing remains pending device access.
+
+| Case | First coarse view | Movement p95 / p99 | Peak managed memory | Movement intervals over 50 ms |
+| --- | ---: | ---: | ---: | ---: |
+| Chrome cold, complete tour | 755 ms | 33.4 / 83.4 ms | 336.3 MiB | 99 / 2,598 |
+| Chrome warm, complete tour | 758 ms | 33.4 / 83.4 ms | 341.0 MiB | 92 / 2,619 |
+| Chrome, emulated 5 Mbps | 3,846 ms | 16.8 / 16.8 ms | 187.8 MiB | 0 / 3,054 |
+| WebKit phone layout | 716 ms | 19 / 47 ms | 325.1 MiB | 21 / 2,971 |
+| Chrome, tour plus 600-second exploration | 756 ms | 16.8 / 83.4 ms | 373.7 MiB | 484 / 18,728 |
+
+Chrome used ANGLE Metal on Apple M3 Max with a 1600×1000 drawing buffer. WebKit reported Apple GPU and a 603×1311 drawing buffer at 402×874 CSS pixels. Every case completed all ten stops with 14,140,375 catalog observations, the default 0.5% opacity floor, no page errors and no reported memory-limit blocking. The peak 14 visible models includes the separate nearby/home references; it is not a count of the capped DESI pool.
+
+The slower-network case loaded fewer resources during the route (65.7 MB of completed response bodies versus 190.5 MB in the ordinary cold case). Its smoother movement therefore does not demonstrate an optimization: the loading and rendering workloads differ. The global queue did not settle before departure at six slow-network stops, although the Coma arrival capture already clearly showed its subject. Use destination-specific visual readiness, not global queue zero, to decide when future tour dwell should begin.
+
+The sustained run has a 16.8 ms p95 but an 83.4 ms p99, so averages alone conceal intermittent hitches. NGC 3982 and NGC 4026 movement had p95 values around 67 ms; nearby cloud/companion routes were generally smoother. Early and late samples have different scene workloads, preventing a thermal or power conclusion. Managed memory stayed below 374 MiB in this run; this is not a general device-memory guarantee.
+
+**Ranked investigation for phase 3**
+
+1. Instrument the intermittent work around distant named-galaxy transitions, separating decoding, uploads, model preparation and rendering. The stop correlation is measured; a particular cause is not yet established.
+2. Define useful destination readiness and bounded next-stop preparation. The network case demonstrates why ordinary arrival and completion of every background request are inadequate substitutes.
+3. Profile the faint-background frontier and pixel cost independently before attempting adaptive resolution or culling changes. Keep the 0.5% default and complete Full detail coverage.
+
+**Harness correction:** the first sustained run retained render timestamps but mistakenly reset the interval accumulator on non-rendering animation callbacks used by browser polling. Its movement intervals were reconstructed from consecutive retained render timestamps within the same stop/activity; arrival screenshots occurred during dwell, outside those movement samples. The original report remains in the ignored evidence directory. The committed harness now ignores non-rendering callbacks and asserts nonempty movement/allocation evidence. The independent cold/warm/network/WebKit runs used the corrected harness. Raw frame samples, request records and arrival images remain in `.cache/performance/phase1-chrome/` and `.cache/performance/phase1-comparison/`.
