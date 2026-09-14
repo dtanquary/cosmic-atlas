@@ -7,13 +7,13 @@ Dave authorized all four on 14 September 2026, without intermediate permission s
 | 1. Tour clarity | Released | Curated companion labels, place context, Continue, hidden-tab/reduced-motion behavior, all-stop phone review |
 | 2. Smoother arrivals | Released | Bounded cancellable next-stop preparation, useful destination readiness, measured transition investigation |
 | 3. Telescope photographs | Released | Source/rights manifest, lazy bounded comparison for supported targets, unsupported-image fallback |
-| 4. Sharing and custom trips | Verified; releasing | Versioned paused stop links, local itinerary editor, validated bounded sharing and recipient preview |
+| 4. Sharing and custom trips | Released | Versioned paused stop links, local itinerary editor, validated bounded sharing and recipient preview |
 
 ## Milestone 1 decisions
 
 Two screen labels identify M32/M110 at their existing independently measured positions during the companions stop. They use the existing frame loop, have no geometry or picking presence, and disappear offscreen/behind the camera or on tour exit. No model is enlarged. Place context reuses the existing brand subtitle so it does not increase phone panel height; it describes curated tour context or the verified selection rather than inferring group membership from proximity. Continue explicitly resumes after exploration; backgrounding pauses without automatically resuming on return.
 
-Validation and deployment results will be appended at each milestone. Source captions, data identities, counts, modeled dimensions and the 0.5% background floor stay intact.
+Validation and deployment results are recorded below for all four milestones. Source captions, data identities, counts, modeled dimensions and the 0.5% background floor stay intact.
 
 Milestone 1 validation checkpoint (`58a1d42`): 98 tracked tests and full-data package passed. All-stop composition checks passed 469 assertions on Chrome 153 and WebKit 26.6 at 402×874, 874×402 and 1600×1000, covering both routes. All 90 captures were reviewed. The initial label threshold hid the small M32 reference and was lowered without changing its model. Full/subset tour/UI/home/share/nearby GPU suites and context recovery passed; existing phone controls passed 126 assertions and tour/history controls passed 50. Final review adds clearing of stale prior-stop toasts during rapid reduced-motion jumps; final production rerun pending. Visibility events are simulated; reduced-motion media preference and camera behavior run in the actual browser engines.
 
@@ -52,3 +52,5 @@ Final source `18256b1` passes 124 tests and the strict full-data package; full m
 Full/subset actual-GPU navigation, UI, home, share, nearby and continuity checks pass. The final production regressions pass 50 tour/history, 126 mobile, 30 legacy invitation, 221 photograph, 493 all-stop and 17 arrival assertions: **1,020 browser assertions** including the custom journey. Model source geometry, counts, saved display settings, the 12-model pool and 0.5% floor are preserved. The full package is 3,070 files / 1,081.9 MiB, largest 3.24 MiB. Physical iPhone and messaging-service transfer remain unmeasured.
 
 The final JSON decoder accepts valid field ordering/whitespace while retaining strict schema, UTF-8 and base64url validation. The 83-check trip journey reruns on `18256b1`; unchanged navigation/rendering GPU suites and other browser journeys remain attributed to `5b27527`. Six editor captures and twelve fresh editor/invitation captures were reviewed in Chrome/WebKit across desktop, portrait and landscape.
+
+All four ordered milestones are committed, pushed to GitHub and deployed. Final hosted verification matches all app/photo/license assets, catalog sidecars and nine sampled point/metadata/model chunks. A fresh live phone-layout browser verified a paused Andromeda stop link, its credited photograph, the custom itinerary preview and custom playback, with the full accepted count and no page errors. Deployment URLs, exact receipts and live captures remain in ignored `.deploy/`. No required work remains for these four milestones.

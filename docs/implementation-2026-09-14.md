@@ -8,7 +8,7 @@ Dave authorized implementation of the [eight-phase plan](roadmap-2026-09-14.md) 
 | 2 — Tour experience | Released | Ordered milestone 1 completes companion labels, place context, Continue and all-stop responsive/interruption review |
 | 3 — Loading and rendering | Released | Ordered milestone 2 adds bounded row lookup/preparation, useful arrivals and measured performance comparisons |
 | 4 — Photographs | Released | Ordered milestone 3 ships ten attributed on-demand photographs and calibrated NGC 4026 framing |
-| 5 — Custom trips | Verified; releasing | Ordered milestone 4 implements paused stop links, local authoring, recipient previews and bounded file/link sharing |
+| 5 — Custom trips | Released | Ordered milestone 4 implements paused stop links, local authoring, recipient previews and bounded file/link sharing |
 | 6 — Cosmic-web slicing | Planned | Coherent visual/picking filter and bounded streaming |
 | 7 — Size comparison | Planned | Audit size conventions before diagram layout |
 | 8 — Narration | Planned | Source-checked scripts, deliberate audio start, combined validation |
@@ -50,3 +50,7 @@ Committed and pushed the first milestone to GitHub, then deployed the verified f
 **Four ordered milestones**
 
 Dave's subsequent instruction to work through all four milestones is tracked in [the ordered record](four-milestones-2026-09-14.md). It covers phases 2–5 above. Tour clarity, measured arrival preparation and photograph comparisons are committed, pushed and deployed with exact-byte hosted verification. The final custom-trip milestone passes 124 unit tests and 83 production Chrome/WebKit checks; its final shared GPU/mobile suite passes. All 1,020 production browser assertions and the full model/source gates pass. Scientific coordinates, radii, source classifications, catalog coverage and background opacity remain unchanged. The detailed records distinguish browser evidence from unperformed physical-device or messaging-app tests.
+
+**Final delivery of the four ordered milestones**
+
+All four are committed, pushed and deployed. Final app source is `18256b1`; `068fc88` records the combined validation. Hosted exact-byte verification and a fresh live phone-layout check of stop links, photographs, recipient previews and custom playback pass with 14,140,375 accepted observations and no page errors. The complete evidence remains in the ordered record and milestone results; private operational receipts remain ignored. Phases 6–8 are future work beyond this four-milestone execution.
