@@ -8,7 +8,7 @@ export type StopKind='sun'|'core'|'localgroup'|'overview'|'cmb'|'nearby'|'catalo
 /** `cites` names the nearby galaxy whose distance the caption quotes when it is not the target; `{catalogCount}` in a caption is filled from the active manifest. */
 export interface TourStop{
   /** Stable within a route; titles and array ordering are presentation choices. */
-  id:string;cue:string;title:string;caption:string;target:{kind:StopKind;key?:string;name?:string;positionMpc?:number[]};
+  id:string;cue:string;context?:string;title:string;caption:string;target:{kind:StopKind;key?:string;name?:string;positionMpc?:number[]};
   distanceMpc?:number;cites?:string;dwellSeconds?:number;travelSeconds:number;
 }
 export interface TourData{key:string;title:string;summary:string;stops:TourStop[]}

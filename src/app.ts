@@ -37,7 +37,7 @@ const icons={
 };
 document.querySelector('#app')!.innerHTML=`
 <div id="viewport" aria-label="Three-dimensional galaxy map"></div>
-<header class="topbar"><div class="brand"><div class="brand-mark">${icons.orbit}</div><div><div class="brand-name">Cosmic Atlas</div><div class="brand-sub">THE MEASURED UNIVERSE</div></div></div><div class="top-actions"><button class="button quiet" id="back-view-button" aria-label="Back to previous view" title="Back to previous view" hidden>${icons.reset}<span>Back</span></button><button class="button quiet" id="visit-galaxy-button" aria-label="Visit a galaxy" hidden title="Search galaxies">${icons.focus}<span>Visit</span></button><button class="button quiet" id="share-button" aria-label="Share this view" title="Copy a link or save this view">${icons.copy}<span>Share</span></button><button class="button quiet" id="data-button" aria-label="About the data">${icons.info}<span>About the data</span></button><button class="button icon-button quiet" id="help-button" aria-label="Settings and navigation" title="Settings">${icons.settings}</button></div></header>
+<header class="topbar"><div class="brand"><div class="brand-mark">${icons.orbit}</div><div><div class="brand-name">Cosmic Atlas</div><div class="brand-sub" id="place-context">THE MEASURED UNIVERSE</div></div></div><div class="top-actions"><button class="button quiet" id="back-view-button" aria-label="Back to previous view" title="Back to previous view" hidden>${icons.reset}<span>Back</span></button><button class="button quiet" id="visit-galaxy-button" aria-label="Visit a galaxy" hidden title="Search galaxies">${icons.focus}<span>Visit</span></button><button class="button quiet" id="share-button" aria-label="Share this view" title="Copy a link or save this view">${icons.copy}<span>Share</span></button><button class="button quiet" id="data-button" aria-label="About the data">${icons.info}<span>About the data</span></button><button class="button icon-button quiet" id="help-button" aria-label="Settings and navigation" title="Settings">${icons.settings}</button></div></header>
 <nav class="rail" aria-label="Map tools"><button id="orbit-button" aria-label="Orbit" class="button active" aria-pressed="true" title="Orbit the map">${icons.orbit}<span>Orbit</span></button><button id="fly-button" aria-label="Flight controls" class="button" aria-pressed="false" aria-controls="flight-controls" aria-expanded="false" title="Open flight controls">${icons.fly}<span>Fly</span></button><div class="rail-rule"></div><button id="measure-button" aria-label="Measure between galaxies" class="button" aria-pressed="false" title="Measure between two galaxies">${icons.measure}<span>Measure</span></button><button id="observer-button" class="button" aria-label="Visit the Milky Way" title="Milky Way — focus on the Galactic core">${icons.observer}<span>Milky Way</span></button><button id="cosmic-horizon-button" aria-label="Show CMB shell" class="button" aria-pressed="false" aria-controls="cosmic-context" title="Toggle the cosmic microwave background shell">${icons.horizon}<span>CMB shell</span></button><button id="reset-button" aria-label="Return to overview" class="button" title="Return to overview (R)">${icons.reset}<span>Overview</span></button><button id="tours-button" class="button" aria-label="Guided tours" aria-haspopup="dialog" title="Guided tours">${icons.tour}<span>Tours</span></button></nav>
 <aside id="cosmic-context" class="cosmic-context" aria-label="Cosmic scale reference" hidden><div class="eyebrow">Cosmic microwave background</div><div class="cosmic-radius" id="cosmic-radius"></div><div class="fineprint">Last-scattering surface · radius today</div><div class="cosmic-comparison"><div class="cosmic-reach-label"><span>This catalog's reach</span><strong id="cosmic-reach"></strong></div><div class="cosmic-reach-track" aria-hidden="true"><span id="cosmic-reach-bar"></span></div><p class="fineprint" id="cosmic-catalog-distance"></p></div><p class="fineprint">Early light, not a physical edge. Planck18 distance; shell and grid are illustrative.</p><button class="button" id="cosmic-scale-button">${icons.focus}View cosmic scale</button><a class="profile-source" href="${cosmicHorizonReference.sources.explanation}" target="_blank" rel="noopener">About this early light ↗</a></aside>
 <div class="flight-controls" id="flight-controls" hidden><label for="speed">Travel speed</label><input id="speed" type="range" min="-6" max="4" step=".1" value="3"/><div class="flight-speed" id="flight-speed"></div><button class="button" id="start-flight-button">Start flying</button><button class="button" id="auto-flight-button" aria-pressed="false">Auto fly</button><p class="fineprint" id="flight-hint">Set your speed, then start flying.<br>Choose Orbit to close.</p></div>
@@ -169,19 +169,25 @@ function renderTour(state:TourState){
  const active=state.status!=='idle'; // start() emits one idle state before travelling, so the runner is never dropped here
  element('tour-panel').hidden=!active;
  showSelection(atlas.selected);showHome();renderCosmicContext();
+ atlas.setTourLabels(active&&state.stop?.id==='andromeda-companions'?['m32','m110']:[]);renderPlace();
  if(!active||!tour)return;
  const playing=state.autoplay&&state.status!=='finished';
  text('tour-progress',`Guided tour · ${state.index+1} / ${tour.tour.stops.length}`);text('tour-title',tour.tour.title);
  text('tour-stop-title',state.stop?.title??'');text('tour-cue',state.stop?.cue??'');text('tour-caption',state.stop?.caption??'');
  element('tour-panel').dataset.stopId=state.stop?.id??'';
- pressed('tour-play',playing);text('tour-play',playing?'Pause':'Play');element('tour-play').setAttribute('aria-label',playing?'Pause the tour':'Play the tour');
+ pressed('tour-play',playing);const action=playing?'Pause':state.status==='finished'?'Restart':'Continue';text('tour-play',action);element('tour-play').setAttribute('aria-label',`${action} the tour`);
  element<HTMLButtonElement>('tour-play').disabled=tour.pace==='manual';
  if(tour.pace==='manual'){text('tour-play','Manual');element('tour-play').setAttribute('aria-label','Manual pace: choose Previous or Next stop')}
  element<HTMLButtonElement>('tour-previous').disabled=state.index<=0;element<HTMLButtonElement>('tour-next').disabled=state.status==='finished';
  text('tour-status',state.status==='travelling'?'Travelling…':state.status==='dwelling'?'Arrived · continuing shortly':state.status==='finished'?'Finished · Exit returns to the map':pausedByInput?'Paused · drag or scroll moved the view':'Paused');
 }
 function enableTours(){if(atlasReady&&galaxySearch)document.querySelectorAll<HTMLButtonElement>('[data-tour]').forEach(button=>button.disabled=false)}
+function renderPlace(){
+ const context=tourActive()&&!pausedByInput?tour?.state.stop?.context:atlas.homeSelected?'Milky Way · reference model':atlas.selected?element('object-name').textContent:null;
+ text('place-context',context||`${formatDistance(atlas.stats.focusFromObserver,units,2)} from observer`);
+}
 function renderStats(stats:AtlasStats){
+ renderPlace();
  element('back-view-button').hidden=!viewHistory.available(atlas.viewState());
  renderCosmicContext();
  if(atlas.homeSelected)showHomeFocus();
@@ -215,6 +221,8 @@ async function initialize(){
   atlas.onError=message=>{element('loading').hidden=false;text('loading-text',message)};
   atlas.onOrigin=(x,y,visible)=>{const label=element('origin-label');label.hidden=!visible;label.textContent=atlas.milkyWay.blend.value>.1?'SUN · OBSERVER':'OBSERVER';label.style.left=`${x+4}px`;label.style.top=`${y+8}px`};
   atlas.onHomeCenter=(x,y,visible)=>{const label=element('home-center-label');label.hidden=!visible;label.style.left=`${x+4}px`;label.style.top=`${y-22}px`};
+  const tourLabels=Array.from({length:2},(_,i)=>{const label=document.createElement('div');label.id=`tour-label-${i}`;label.className='tour-object-label';label.hidden=true;label.setAttribute('aria-hidden','true');document.getElementById('app')!.append(label);return label});
+  atlas.onTourLabels=labels=>tourLabels.forEach((element,i)=>{const label=labels[i];element.hidden=!label?.visible;if(label){element.textContent=label.name;element.style.left=`${label.x}px`;element.style.top=`${label.y}px`;element.dataset.side=i?'right':'left'}});
   atlas.onRings=labels=>{for(let i=0;i<8;i++){const label=element(`ring-label-${i}`),ring=labels[i];label.hidden=!ring?.visible;if(ring){label.children[0].textContent=`${formatLookback(ring.lookbackGyr)} ago`;label.children[1].textContent=` · ${formatDistance(ring.comovingMpc,units)} away now`;label.style.left=`${ring.x}px`;label.style.top=`${ring.y-5}px`}}};
   atlas.onFlight=active=>{if(active)flightControlsOpen=true;renderFlightControls()};
   atlas.onAutoFly=active=>{if(active)flightControlsOpen=true;renderFlightControls()};
@@ -280,6 +288,7 @@ async function initialize(){
   element('back-view-button').onclick=()=>{pauseTour();const previous=viewHistory.back(atlas.viewState());if(previous)void atlas.applyView(previous,1.5,{preserveTarget:true});renderStats(atlas.stats)};
   // Orbit input pauses a dwell at once (the runner's pose check at hop time is the backstop); other navigation controls pause before they move the camera.
   // ponytail: explicit id list; a future navigation button must be added here or the hop-time pose check is the only pause
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelPendingTour();if(tourActive()){pausedByInput=false;tour!.pause();notify('Tour paused while the tab was hidden. Choose Continue when ready.')}}},{signal:uiLifecycle.signal});
   atlas.controls.addEventListener('start',pauseTour);
   for(const id of ['orbit-button','fly-button','start-flight-button','auto-flight-button','visit-galaxy-button','observer-button','home-galaxy-view','home-solar-view','observed-view-button','focus-button','reset-button','share-button','cosmic-scale-button','settings-cosmic-scale'])element(id).addEventListener('click',pauseTour,{capture:true,signal:uiLifecycle.signal});
   // Capture phase so the explorer's own Escape (auto fly) is judged on the state before it runs; open dialogs and flight keep Escape for themselves.

@@ -15,7 +15,8 @@
           "distanceMpc": 0.003,
           "travelSeconds": 4,
           "id": "sun",
-          "cue": "Find the Sun marker inside our illustrated home galaxy."
+          "cue": "Find the Sun marker inside our illustrated home galaxy.",
+          "context": "Milky Way \u00b7 Sun / Observer"
         },
         {
           "title": "The Milky Way",
@@ -26,7 +27,8 @@
           "distanceMpc": 0.06,
           "travelSeconds": 5,
           "id": "milky-way",
-          "cue": "Trace the dark dust lanes around the bright Galactic core."
+          "cue": "Trace the dark dust lanes around the bright Galactic core.",
+          "context": "Milky Way \u00b7 Galactic core"
         },
         {
           "title": "The Local Group",
@@ -43,7 +45,8 @@
           "cites": "m31",
           "travelSeconds": 6,
           "id": "local-group",
-          "cue": "Look for our nearby galaxy companions, each at its own measured distance."
+          "cue": "Look for our nearby galaxy companions, each at its own measured distance.",
+          "context": "Local Group \u00b7 nearby galaxies"
         },
         {
           "title": "The DESI survey",
@@ -53,7 +56,8 @@
           },
           "travelSeconds": 6,
           "id": "survey",
-          "cue": "Each point is a galaxy observation; the gaps also reflect where we have data."
+          "cue": "Each point is a galaxy observation; the gaps also reflect where we have data.",
+          "context": "DESI DR1 \u00b7 survey map"
         },
         {
           "title": "The cosmic microwave background",
@@ -63,7 +67,8 @@
           },
           "travelSeconds": 6,
           "id": "cmb",
-          "cue": "Find the tiny galaxy survey inside this enormous shell of early light."
+          "cue": "Find the tiny galaxy survey inside this enormous shell of early light.",
+          "context": "Observer-centered early-light reference"
         }
       ]
     },
@@ -81,7 +86,8 @@
           "distanceMpc": 0.06,
           "travelSeconds": 4,
           "id": "milky-way",
-          "cue": "Trace the dark dust lanes around the bright Galactic core."
+          "cue": "Trace the dark dust lanes around the bright Galactic core.",
+          "context": "Milky Way \u00b7 Galactic core"
         },
         {
           "title": "Large Magellanic Cloud",
@@ -92,7 +98,8 @@
           },
           "travelSeconds": 5,
           "id": "lmc",
-          "cue": "Look for the broad stellar bar and pink patches in this cloud illustration."
+          "cue": "Look for the broad stellar bar and pink patches in this cloud illustration.",
+          "context": "Local Group \u00b7 nearby galaxies"
         },
         {
           "title": "Small Magellanic Cloud",
@@ -103,7 +110,8 @@
           },
           "travelSeconds": 5,
           "id": "smc",
-          "cue": "Notice the softer, uneven glow of this smaller cloud illustration."
+          "cue": "Notice the softer, uneven glow of this smaller cloud illustration.",
+          "context": "Local Group \u00b7 nearby galaxies"
         },
         {
           "title": "Andromeda",
@@ -114,7 +122,8 @@
           },
           "travelSeconds": 5,
           "id": "andromeda",
-          "cue": "Follow the dark dust arcs around the bright center of this illustrated disk."
+          "cue": "Follow the dark dust arcs around the bright center of this illustrated disk.",
+          "context": "Local Group \u00b7 nearby galaxies"
         },
         {
           "title": "M32 and M110",
@@ -127,7 +136,8 @@
           "cites": "m110",
           "travelSeconds": 4,
           "id": "andromeda-companions",
-          "cue": "Look beside Andromeda for its small, smooth companions."
+          "cue": "Look beside Andromeda for its small, smooth companions.",
+          "context": "Local Group \u00b7 nearby galaxies"
         },
         {
           "title": "Triangulum",
@@ -138,7 +148,8 @@
           },
           "travelSeconds": 5,
           "id": "triangulum",
-          "cue": "Look for loose, patchy arms and pink accents in this illustrated disk."
+          "cue": "Look for loose, patchy arms and pink accents in this illustrated disk.",
+          "context": "Local Group \u00b7 nearby galaxies"
         },
         {
           "title": "NGC 3982",
@@ -149,7 +160,8 @@
           },
           "travelSeconds": 6,
           "id": "ngc-3982",
-          "cue": "Follow the closely winding arms in this image-inspired galaxy model."
+          "cue": "Follow the closely winding arms in this image-inspired galaxy model.",
+          "context": "DESI \u00b7 galaxy observation"
         },
         {
           "title": "NGC 4026",
@@ -160,7 +172,8 @@
           },
           "travelSeconds": 5,
           "id": "ngc-4026",
-          "cue": "Notice the narrow, smooth spindle and its brighter center."
+          "cue": "Notice the narrow, smooth spindle and its brighter center.",
+          "context": "DESI \u00b7 galaxy observation"
         },
         {
           "title": "Coma cluster",
@@ -177,7 +190,8 @@
           "distanceMpc": 15,
           "travelSeconds": 6,
           "id": "coma",
-          "cue": "Look for the central gathering of points; each is a galaxy observation."
+          "cue": "Look for the central gathering of points; each is a galaxy observation.",
+          "context": "Coma \u00b7 redshift-distance view"
         },
         {
           "title": "The DESI survey",
@@ -187,7 +201,8 @@
           },
           "travelSeconds": 6,
           "id": "survey",
-          "cue": "Zoom out to the whole survey and trace its branching pattern of galaxy points."
+          "cue": "Zoom out to the whole survey and trace its branching pattern of galaxy points.",
+          "context": "DESI DR1 \u00b7 survey map"
         }
       ]
     }

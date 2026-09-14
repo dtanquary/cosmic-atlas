@@ -61,3 +61,9 @@ This research has made use of the NASA/IPAC Extragalactic Database (NED), which 
 ## Coma framing
 
 The camera looks outward along the observer-to-Coma direction from 15 Mpc in front of the cited center. This makes the central gathering easier to identify than the previous 9 Mpc Milky Way approach angle, which looked obliquely back toward the observer through the redshift-distance elongation. The framing is illustrative; it neither compresses distances nor asserts membership. Individual observations retain their points and existing automatic models.
+
+## Tour orientation and interruptions
+
+The existing brand subtitle now shows curated route context, the verified selected object's name, or focus distance from the observer. It does not infer group membership from arbitrary camera positions. M32/M110 receive two small, noninteractive labels at their sourced centers during the companions chapter; label leaders and dots are annotations, not galaxy sizes. They follow the existing render loop, disappear behind/offscreen and clear on exit. No scene objects, catalog rows, picking targets or model allocations are added.
+
+Paused tours explicitly offer Continue (Manual keeps Prev/Next). Continuing after exploration returns to the stop's framing first. Hiding the page pauses travel, lookup or dwell and cancels pending starts; showing it again never resumes without an action. Reduced-motion preference retains instant camera visits. See the ordered milestone record in `four-milestones-2026-09-14.md`.

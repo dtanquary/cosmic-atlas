@@ -150,6 +150,14 @@ export class Explorer {
   onError=(message:string)=>{};
   onOrigin=(x:number,y:number,visible:boolean)=>{};
   onHomeCenter=(x:number,y:number,visible:boolean)=>{};
+  onTourLabels=(labels:{name:string;x:number;y:number;visible:boolean}[])=>{};
+  private tourLabels:ResolvedGalaxy[]=[];
+  /** Two curated nearby references, never catalog-wide labels or pick targets. */
+  setTourLabels(keys:string[]){
+    const labels=keys.slice(0,2).flatMap(key=>this.nearbyGalaxies.filter(model=>model.data.galaxy.targetId===`nearby:${key}`));
+    if(labels.length===this.tourLabels.length&&labels.every((model,i)=>model===this.tourLabels[i]))return;
+    this.tourLabels=labels;if(!labels.length)this.onTourLabels([]);this.invalidate();
+  }
   onRings=(labels:{x:number;y:number;lookbackGyr:number;comovingMpc:number;visible:boolean}[])=>{};
   private scene=new THREE.Scene();
   private annotations=new THREE.Scene();
@@ -778,6 +786,11 @@ export class Explorer {
     const separated=Math.hypot((center.x-origin.x)*this.canvas.clientWidth/2,(center.y-origin.y)*this.canvas.clientHeight/2)>90;
     this.onHomeCenter((center.x*.5+.5)*this.canvas.clientWidth,(.5-center.y*.5)*this.canvas.clientHeight,this.homeCenterMarker.visible&&centerInFront&&center.z>-1&&center.z<1&&Math.abs(center.x)<.95&&Math.abs(center.y)<.9&&separated);
     this.onRings(this.ringLabels());
+    this.onTourLabels(this.tourLabels.map(model=>{
+      const projected=model.center.clone().project(this.camera),offset=model.center.clone().sub(this.camera.position);
+      const visible=this.camera.getWorldDirection(this.scratch).dot(offset)>0&&projected.z>-1&&projected.z<1&&Math.abs(projected.x)<.82&&Math.abs(projected.y)<.65&&model.radius/offset.length()*this.canvas.clientHeight>.05;
+      return {name:model.data.name,x:(projected.x*.5+.5)*this.canvas.clientWidth,y:(.5-projected.y*.5)*this.canvas.clientHeight,visible};
+    }));
   }
   /** Label anchors at the screen-top point of each ring's silhouette circle; float64 on the CPU. */
   private ringLabels(){
