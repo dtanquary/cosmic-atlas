@@ -30,3 +30,5 @@ The loader now has independent speculative leases, required-work promotion, curr
 Tour integration checkpoint: bounded preparation and destination readiness are implemented with the original single timer. All 110 tests and strict TypeScript pass. Actual-GPU, production interaction and performance checks follow before release.
 
 GPU review found the Local Group readiness margin excluded the deliberately separated galaxies near the top and bottom of the frame. Its check now uses the full viewport, retaining the tighter central-region check for cluster/survey coverage. Recorded projected positions showed all six references inside the viewport. The initial run correctly exposed the overly strict criterion; rerun follows.
+
+Full-data tour/UI/home/share/nearby/continuity/self-test GPU checks pass on `6ee64eb`, including context recovery and no shader/page errors. The subset probe now explicitly chooses Continue on its expected partial Coma view; choosing Next would correctly leave subsequent stops paused, so the prior automated wait for Finished was invalid.
