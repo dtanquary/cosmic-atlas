@@ -5,7 +5,7 @@ Dave authorized implementation of the [eight-phase plan](roadmap-2026-09-14.md) 
 | Phase | Status | Evidence / next milestone |
 | --- | --- | --- |
 | 1 — Baseline | Browser baseline verified | Cold/warm/throttled Chrome, WebKit phone layout and 600-second exploration complete; physical iPhone follow-up pending |
-| 2 — Tour experience | In progress | Stable IDs, cues, pacing, chapters, Return to stop and bounded view history implemented locally; validation pending; further context/framing review remains |
+| 2 — Tour experience | First milestone verified | Stable IDs, cues, pacing, chapters, Return to stop and bounded view history pass production/GPU checks; further context/framing review remains |
 | 3 — Loading and rendering | Planned | Use phase 1 evidence to choose bounded optimizations |
 | 4 — Photographs | Planned | Source/rights manifest and first disk/cloud comparison |
 | 5 — Custom trips | Planned | Built-in stop links before the custom editor |
@@ -34,11 +34,11 @@ See [method, results and ranked investigations](performance.md) and [compact evi
 **Validation checkpoints**
 
 - `8670fdf`: stable stop IDs and pacing logic passed 95 tracked tests and strict TypeScript.
-- `fd94282`: first UI/history milestone passed 98 tracked tests, strict TypeScript and the full-data production package. The initial production acceptance passed 44 Chrome/WebKit assertions. The existing mobile and invitation journeys passed 126 and 30 assertions respectively. Shared GPU navigation/recovery and additional history checks are in progress; this checkpoint is not yet a released build.
-- Follow-up QA reproduced Back re-centering a panned Andromeda view. Added an explicit history-only target-preservation option to the existing identity-verified restore path, retaining public-link anchoring. The regression now checks pan plus selection and Back after a shared view; final validation pending.
+- `fd94282`: first UI/history milestone passed 98 tracked tests, strict TypeScript and the full-data production package. The initial production acceptance passed 44 Chrome/WebKit assertions. The existing mobile and invitation journeys passed 126 and 30 assertions respectively; full/subset GPU checks passed.
+- `6a6ebe1`: follow-up QA fixed Back re-centering a panned Andromeda view. An explicit history-only target-preservation option retains identity verification and public-link anchoring. The rebuilt production journey passes 50 assertions, including pan plus selection and Back after a shared view. All 98 tracked tests, strict build, full/subset GPU navigation and graphics recovery pass on this final implementation. See [validation details](validation.md) and [reports](validation-results.json).
 
 **Remaining phase 2 work**
 
 - Curated place context and a bounded label/highlight treatment for subtle subjects, especially M32/M110.
 - All-stop landscape composition review and the final hidden-tab/reduced-motion acceptance matrix. Existing Play already returns to the stop after exploration; review whether its paused label should explicitly say Continue.
-- Complete the browser/GPU release gates below before publishing the first milestone. Phases 3–8 remain planned, and physical-phone performance remains a separate pending check.
+- Phases 3–8 remain planned, and physical-phone performance remains a separate pending check. The first milestone's browser/GPU release gates are complete; publication is the next delivery action.
