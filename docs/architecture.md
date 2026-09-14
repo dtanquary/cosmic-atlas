@@ -4,6 +4,12 @@
 
 Vite + strict TypeScript + Three.js WebGL2. A small semantic HTML/CSS HUD owns controls; the renderer owns camera, batched point geometries, selection, and measurements. Galaxy records never become individual scene objects or DOM elements. Python/NumPy/Astropy prepare immutable static datasets; the browser never downloads FITS or computes cosmological integrals.
 
+The production journey benchmark (`scripts/benchmark-journey.mjs`) injects its instrumentation from Playwright, leaving application bundles unchanged. It samples public controls/diagnostics and observes actual draw-bearing animation callbacks without adding a rendering loop. See [measurement definitions and limitations](performance.md).
+
+Tour chapters use stable IDs scoped to the route, independent of titles and ordering. The existing `Tour` owns pacing and cancellation: Quick uses the original dwell, Relaxed doubles it, and Manual creates no dwell timer. Options pause before editing; chapter jumps and return run through the same visit method and finish paused. Session pacing lives in the app, while a built-in invitation explicitly starts with Quick to retain its existing autoplay contract. Cues are bounded strings in the route data, rendered with text content; they introduce no geometry or per-galaxy work. See [tour behavior](tours.md).
+
+`ViewHistory` keeps at most 32 serialized view states in memory using the existing validated link grammar. The app records the view before deliberate focus/overview/search/saved-view navigation or starting a tour; orbit frames, individual tour hops and options do not create entries. Back skips identical views, pauses the tour and uses `applyView` to reverify any selection identity. It restores camera/target/identity only and writes no saved preferences. The one Back button moves into the phone Explore menu with the other original nodes.
+
 ## Coordinate conventions
 
 Mpc internally. Observer at zero. Equatorial coordinates: x = D cos(dec) cos(ra), y = D cos(dec) sin(ra), z = D sin(dec). North celestial pole is +z; the camera uses +z as its up vector. DESI distances use Astropy's Planck18 (including its radiation/neutrino parameters). A validated high-resolution lookup interpolates comoving distances for bulk conversion. Inspection and measurement retain float64 Cartesian values reconstructed from original RA/Dec and the stored derived distance. Render chunks use float32 positions relative to a float64 node center. The vertex shader subtracts camera position from node origin on the CPU before projection.

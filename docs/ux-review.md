@@ -1,5 +1,7 @@
 # Navigation and UI review — 2026-09-11
 
+**Tour controls — 14 September 2026, validation pending.** Added short visual cues and a progress control that opens Stops & pace. Chapters and Return to stop land paused; Manual cannot autoplay, and Relaxed extends only dwell. Back restores a verified previous view from bounded session history. The new phone options control retains a 44 px touch target, with a compact portrait panel target of at most 215 px; short landscape hides the cue until details expand. Existing source captions, camera destinations and rendering are unchanged. `scripts/check-tour-controls.mjs` exercises the new public-control lifecycle; shared GPU and phone regression results will be recorded before release. Further phase 2 refinements remain pending in the implementation record.
+
 Status: verified.
 
 ## Foreground model obstruction

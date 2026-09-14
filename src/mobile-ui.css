@@ -36,6 +36,9 @@
 [data-mobile] .tour-panel .panel-top{display:contents}[data-mobile] .tour-panel #tour-progress{display:block;grid-row:1;grid-column:1;font-size:9px;letter-spacing:1px}
 [data-mobile] .tour-panel #tour-exit{grid-column:2;grid-row:1/3}[data-mobile] .tour-panel #tour-title{display:none}
 [data-mobile] .tour-panel #tour-stop-title{grid-column:1;grid-row:2;font-size:16px;margin:4px 0 3px}
+[data-mobile] .tour-panel #tour-cue{grid-column:1/-1;grid-row:3;margin:3px 0 2px;font-size:11px;line-height:15px}
+[data-mobile] .tour-panel #tour-progress{min-height:44px;padding:4px 0}
+@media(max-height:500px){[data-mobile] .tour-panel:not([data-expanded=true]) #tour-cue{display:none}}
 [data-mobile] .tour-caption{font-size:12px;line-height:1.6;margin:12px 0}
 [data-mobile] .tour-footer{padding:6px 12px 10px;border-top:0}[data-mobile] .tour-controls{gap:6px}[data-mobile] .tour-controls .button{font-size:12px;padding:9px 5px}
 [data-mobile] .tour-status{font-size:10px;line-height:14px;min-height:14px;margin:5px 2px 0}

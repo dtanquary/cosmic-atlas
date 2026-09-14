@@ -99,3 +99,10 @@
 @media(max-width:600px){.tour-list li{flex-direction:column;align-items:stretch}}
 
 .share-actions{flex-wrap:wrap}.share-actions .button{min-width:170px}.share-tour-hint{margin:-10px 0 24px}
+.tour-options-button{border:0;background:transparent;color:var(--accent);padding:6px 0;text-align:left;text-decoration:underline;text-underline-offset:4px}
+.tour-options-button::after{content:'⌄';display:inline-block;margin-left:7px;text-decoration:none}
+.tour-cue{font-size:13px;line-height:1.5;color:var(--accent);margin:8px 0 16px}
+.tour-options-dialog{width:min(450px,calc(100vw - 32px))}
+.tour-options-dialog label{display:block;font-size:13px;margin:18px 0 6px;color:var(--muted)}
+.tour-options-dialog select{width:100%;min-height:44px;font-size:16px;padding:10px 12px}
+.tour-options-dialog .panel-actions{margin-top:22px}

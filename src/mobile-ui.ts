@@ -78,13 +78,14 @@ export function setupMobileUI(signal:AbortSignal){
   mobile=media.matches;root.toggleAttribute('data-mobile',mobile);nav.hidden=!mobile;
   if(mobile){
    for(const id of ['visit-galaxy-button','observer-button','tours-button'])move(element(id),nav);nav.append(menuButton);
-   for(const id of ['reset-button','orbit-button','measure-button','cosmic-horizon-button','fly-button','share-button','help-button','data-button'])move(element(id),menu.querySelector('.mobile-menu-grid')!);
+   for(const id of ['back-view-button','reset-button','orbit-button','measure-button','cosmic-horizon-button','fly-button','share-button','help-button','data-button'])move(element(id),menu.querySelector('.mobile-menu-grid')!);
    const display=menu.querySelector('.mobile-menu-display')!;
    move(document.querySelector('.mode-switch')!,display);
    display.append(unitsLabel);move(element('units'),display);
    move(document.querySelector('.footer>div')!,menu.querySelector('.mobile-menu-catalog')!);move(element('detail-status'),menu.querySelector('.mobile-menu-catalog')!);move(element('lookback-note'),menu.querySelector('.mobile-menu-catalog')!);
    for(const [id,summary] of summaries)element(id).querySelector('.inspector-header')!.append(summary);
    move(element('tour-stop-title'),element('tour-panel').querySelector('.inspector-header')!);
+   move(element('tour-cue'),element('tour-panel').querySelector('.inspector-header')!);
    for(const panel of sheets){
     if(panel.id==='cosmic-context'){for(const child of cosmicChildren)move(child,cosmicBody);panel.append(cosmicHeader,cosmicBody);cosmicHeader.append(toggles.get(panel)!)}
     else panel.querySelector(panel.id==='tour-panel'?'.tour-controls':'.panel-actions')!.append(toggles.get(panel)!);
