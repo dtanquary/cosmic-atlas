@@ -5,7 +5,7 @@ Dave authorized implementation of the [eight-phase plan](roadmap-2026-09-14.md) 
 | Phase | Status | Evidence / next milestone |
 | --- | --- | --- |
 | 1 — Baseline | Browser baseline verified | Cold/warm/throttled Chrome, WebKit phone layout and 600-second exploration complete; physical iPhone follow-up pending |
-| 2 — Tour experience | First milestone verified | Stable IDs, cues, pacing, chapters, Return to stop and bounded view history pass production/GPU checks; further context/framing review remains |
+| 2 — Tour experience | First milestone released | Stable IDs, cues, pacing, chapters, Return to stop and bounded view history pass production/GPU checks; further context/framing review remains |
 | 3 — Loading and rendering | Planned | Use phase 1 evidence to choose bounded optimizations |
 | 4 — Photographs | Planned | Source/rights manifest and first disk/cloud comparison |
 | 5 — Custom trips | Planned | Built-in stop links before the custom editor |
@@ -41,4 +41,8 @@ See [method, results and ranked investigations](performance.md) and [compact evi
 
 - Curated place context and a bounded label/highlight treatment for subtle subjects, especially M32/M110.
 - All-stop landscape composition review and the final hidden-tab/reduced-motion acceptance matrix. Existing Play already returns to the stop after exploration; review whether its paused label should explicitly say Continue.
-- Phases 3–8 remain planned, and physical-phone performance remains a separate pending check. The first milestone's browser/GPU release gates are complete; publication is the next delivery action.
+- Phases 3–8 remain planned, and physical-phone performance remains a separate pending check.
+
+**Delivery — 14 September 2026**
+
+Committed and pushed the first milestone to GitHub, then deployed the verified full-data package to Cloudflare. Hosted verification matched all app/license assets and the catalog/search sidecars, checked nine point/metadata/model chunks, and confirmed the expected missing/private-path responses. A live browser opened the road-trip invitation, switched to Manual, jumped to Coma, and verified its cue, full count and available phone map area without page errors. App implementation is `6a6ebe1`; the release documentation checkpoint is `fc817c4`. Deployment destinations, receipts and screenshots remain in ignored `.deploy/`.
