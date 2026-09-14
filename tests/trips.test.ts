@@ -4,6 +4,10 @@ import {tours} from '../src/tour';
 const trip:Trip={version:1,title:'A sky full of ✨',stops:[{id:'first',kind:'place',route:'road-trip',stop:'andromeda',note:'Look at the dust.'},{id:'second',kind:'view',name:'Our perspective 🌌',hash:'#t=0,0,0&c=0,0,1&g=sun'}]};
 describe('shared itineraries',()=>{
  it('round trips exact Unicode through file and URL codecs',()=>{expect(decodeTripLink(encodeTripLink(trip)!)).toEqual(trip);expect(parseTripFile(serializeTrip(trip)!)).toEqual(trip)});
+ it('accepts valid JSON field order and whitespace while keeping base64url canonical',()=>{
+  const hash='#trip=1.'+Buffer.from(JSON.stringify(trip,null,2)).toString('base64url');expect(decodeTripLink(hash)).toEqual(trip);
+  expect(decodeTripLink(hash+'=')).toBeNull();
+ });
  it('accepts only known versioned paused stop links',()=>{for(const t of tours)for(const s of t.stops)expect(decodeStopLink(encodeStopLink(t.key,s.id)!)).toEqual({route:t.key,stop:s.id});for(const hash of ['#stop=2:road-trip:andromeda','#stop=1:road-trip:nope','#stop=1:road-trip:andromeda&x=1','#stop=1:ROAD-TRIP:andromeda'])expect(decodeStopLink(hash)).toBeNull()});
  it('rejects malformed versions, unknown fields, duplicates and untrusted view grammar',()=>{
   for(const value of [{...trip,version:2},{...trip,extra:'x'},{...trip,stops:[]},{...trip,stops:[trip.stops[0],trip.stops[0]]},{...trip,title:'\ud800'},{...trip,title:'bad\u0000'},{...trip,stops:[{...trip.stops[0],stop:'made-up'}]},{...trip,stops:[{...trip.stops[1],hash:'javascript:alert(1)'}]},{...trip,stops:[{...trip.stops[1],hash:'#t=0,0,0&c=0,0,1&x=1'}]},{...trip,stops:[{...trip.stops[1],hash:'#t=0,0,0&c=0,0,1&c=0,0,2'}]}])expect(validateTrip(value)).toBeNull();

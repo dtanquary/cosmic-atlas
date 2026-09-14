@@ -41,7 +41,7 @@ export function encodeTripLink(trip:Trip):string|null{
 }
 export function decodeTripLink(hash:string):Trip|null{
  if(hash.length>8000||!/^#trip=1\.[A-Za-z0-9_-]+$/.test(hash))return null;
- try{const data=atob(hash.slice(8).replaceAll('-','+').replaceAll('_','/')),json=new TextDecoder('utf-8',{fatal:true}).decode(Uint8Array.from(data,c=>c.charCodeAt(0))),trip=parseTripFile(json);return trip&&encodeTripLink(trip)===hash?trip:null}catch{return null}
+ try{const data=atob(hash.slice(8).replaceAll('-','+').replaceAll('_','/'));if(btoa(data).replaceAll('+','-').replaceAll('/','_').replace(/=+$/,'')!==hash.slice(8))return null;const json=new TextDecoder('utf-8',{fatal:true}).decode(Uint8Array.from(data,c=>c.charCodeAt(0)));return parseTripFile(json)}catch{return null}
 }
 export function tripHref(trip:Trip,base:string){const hash=encodeTripLink(trip);if(!hash)return null;const url=new URL(base);url.search='';url.hash=hash;return bytes(url.href)<=MAX_TRIP_URL_BYTES?url.href:null}
 export function tripStopTitle(stop:TripStop){return stop.kind==='place'?builtinStop(stop.route,stop.stop)!.title:stop.name}
