@@ -12,8 +12,9 @@ export const PHOTO_MAX_BYTES=data.maxEncodedBytes,PHOTO_MAX_DECODED=data.maxDeco
 const named:Record<string,string>={'NGC 3982':'39633325333155389','NGC 4026':'39633263488141603'};
 export function photosForStop(stop:TourStop|null):Photograph[]{
  if(!stop)return [];
- if(stop.id==='andromeda-companions')return photographs.filter(p=>['nearby:m32','nearby:m110'].includes(p.identity));
- const target=stop.target,key=target.kind==='sun'||target.kind==='core'?'core':target.kind==='nearby'?`nearby:${target.key}`:target.kind==='catalog'?named[target.name!]:target.kind==='cluster'?`cluster:${target.key}`:null;
+ if((stop.sourceStop?.id??stop.id)==='andromeda-companions')return photographs.filter(p=>['nearby:m32','nearby:m110'].includes(p.identity));
+ const target=stop.target;if(target.kind==='view'){const identity=target.view?.identity;return photosForIdentity(typeof identity==='object'?identity?.targetId??null:identity??null)}
+ const key=target.kind==='sun'||target.kind==='core'?'core':target.kind==='nearby'?`nearby:${target.key}`:target.kind==='catalog'?named[target.name!]:target.kind==='cluster'?`cluster:${target.key}`:null;
  return photographs.filter(p=>p.identity===key);
 }
 export function photosForIdentity(identity:string|null){return photographs.filter(p=>p.identity===(identity==='sun'?'core':identity))}

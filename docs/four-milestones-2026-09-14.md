@@ -6,8 +6,8 @@ Dave authorized all four on 14 September 2026, without intermediate permission s
 | --- | --- | --- |
 | 1. Tour clarity | Released | Curated companion labels, place context, Continue, hidden-tab/reduced-motion behavior, all-stop phone review |
 | 2. Smoother arrivals | Released | Bounded cancellable next-stop preparation, useful destination readiness, measured transition investigation |
-| 3. Telescope photographs | Verified; releasing | Source/rights manifest, lazy bounded comparison for supported targets, unsupported-image fallback |
-| 4. Sharing and custom trips | Planned | Versioned paused stop links, local itinerary editor, validated bounded sharing and recipient preview |
+| 3. Telescope photographs | Released | Source/rights manifest, lazy bounded comparison for supported targets, unsupported-image fallback |
+| 4. Sharing and custom trips | Implementing | Versioned paused stop links, local itinerary editor, validated bounded sharing and recipient preview |
 
 ## Milestone 1 decisions
 
@@ -42,3 +42,5 @@ Final source `c2d3f2a` passes full/subset GPU suites and graphics recovery; prod
 Milestone 2 is pushed and deployed. Initial alias propagation returned old/missing assets; the final exact-byte hosted verification passes for app/license assets and sampled full-catalog chunks. Milestone 3 now has ten verified source images and a lazy bounded comparison panel; production/GPU checks follow.
 
 Milestone 3 source `240bd55` passes 113 tests, 221 photograph checks, 126 mobile checks, 50 tour/history checks and 493 all-stop assertions. Full/subset actual-GPU checks and context recovery pass. The calibrated field and exact Undo were checked in both engines; 28 captures were reviewed. The full package contains 3,070 files / 1,081.9 MiB, largest 3.24 MiB. Separate photograph rights, limits and reproduction steps are in `photographs.md`.
+
+Milestone 3 is pushed and deployed; hosted exact-byte verification passes, including every photo and credit asset. Milestone 4 implements versioned stop/trip codecs, local authoring and recipient preview. Nine new unit tests cover Unicode, strict schema/identity grammar, bounded persistence, link/file size limits, source caption separation and cancelled custom-view lookup ownership. Production checks follow.

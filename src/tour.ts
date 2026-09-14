@@ -4,11 +4,11 @@ import {cartesian} from './format';
 import {nearbyReference} from './nearby-galaxies';
 import data from './data/tours.json';
 
-export type StopKind='sun'|'core'|'localgroup'|'overview'|'cmb'|'nearby'|'catalog'|'cluster';
+export type StopKind='sun'|'core'|'localgroup'|'overview'|'cmb'|'nearby'|'catalog'|'cluster'|'view';
 /** `cites` names the nearby galaxy whose distance the caption quotes when it is not the target; `{catalogCount}` in a caption is filled from the active manifest. */
 export interface TourStop{
   /** Stable within a route; titles and array ordering are presentation choices. */
-  id:string;cue:string;context?:string;title:string;caption:string;target:{kind:StopKind;key?:string;name?:string;positionMpc?:number[]};
+  id:string;cue:string;context?:string;note?:string;sourceStop?:{route:string;id:string};title:string;caption:string;target:{kind:StopKind;key?:string;name?:string;positionMpc?:number[];view?:ViewState};
   distanceMpc?:number;cites?:string;dwellSeconds?:number;travelSeconds:number;
 }
 export interface TourData{key:string;title:string;summary:string;stops:TourStop[]}
@@ -27,7 +27,7 @@ export interface TourAtlas{
   visitMilkyWay(seconds:number):Promise<boolean>|undefined;
   visitNearby(id:number,seconds:number):Promise<boolean>|undefined;
   visitCatalog(entry:CatalogEntry,canNavigate:()=>boolean,seconds:number):Promise<boolean|undefined>;
-  applyView(state:ViewState,seconds:number):Promise<boolean>;
+  applyView(state:ViewState,seconds:number,options?:{preserveTarget?:boolean;canNavigate?:()=>boolean}):Promise<boolean>;
   stopTravel():void;
   prepareCatalog?(entry:CatalogEntry,signal:AbortSignal):Promise<void>;
   tourDestinationReady?(stop:TourStop):boolean;
@@ -138,20 +138,22 @@ export class Tour{
   }
   private visit(stop:TourStop,serial:number){
     const {target,distanceMpc}=stop,s=stop.travelSeconds/tourClock.speed,approach=vec(this.atlas.milkyWay.approachDirection);
+    const apply=(view:ViewState)=>this.atlas.applyView(view,s,{preserveTarget:target.kind==='view',canNavigate:()=>serial===this.serial});
     switch(target.kind){
-      case 'sun':return this.atlas.applyView({target:[0,0,0],camera:add([0,0,0],approach,distanceMpc??.06),identity:'sun'},s);
+      case 'view':return apply(target.view!);
+      case 'sun':return apply({target:[0,0,0],camera:add([0,0,0],approach,distanceMpc??.06),identity:'sun'});
       case 'core':return this.atlas.visitMilkyWay(s);
       case 'overview':return this.atlas.reset(s);
       case 'cmb':this.hooks.showCosmicHorizon(true);return this.atlas.viewCosmicHorizon(s);
-      case 'localgroup':{const at=target.positionMpc as Vec3;return this.atlas.applyView({target:at,camera:add(at,approach,distanceMpc!),identity:null},s)}
+      case 'localgroup':{const at=target.positionMpc as Vec3;return apply({target:at,camera:add(at,approach,distanceMpc!),identity:null})}
       // Look outward along the observed sky direction: a Milky Way angle looks across the cluster's redshift elongation.
-      case 'cluster':{const at=target.positionMpc as Vec3;return this.atlas.applyView({target:at,camera:add(at,at,-distanceMpc!/Math.hypot(...at)),identity:null},s)}
+      case 'cluster':{const at=target.positionMpc as Vec3;return apply({target:at,camera:add(at,at,-distanceMpc!/Math.hypot(...at)),identity:null})}
       case 'nearby':{
         const entry=nearbyReference.entries.find(entry=>entry.key===target.key);if(!entry)throw new Error('Unknown nearby galaxy.');
         if(distanceMpc===undefined)return this.atlas.visitNearby(entry.id,s);
         // Observer-facing like visitGalaxy, pulled back to the stop's own distance so the satellites stay in frame.
         const at=cartesian(entry.raDeg,entry.decDeg,entry.distanceMpc);
-        return this.atlas.applyView({target:at,camera:add(at,at,-distanceMpc/entry.distanceMpc),identity:`nearby:${entry.key}`},s);
+        return apply({target:at,camera:add(at,at,-distanceMpc/entry.distanceMpc),identity:`nearby:${entry.key}`});
       }
       case 'catalog':{
         const entry=this.hooks.resolveCatalog(target.name!);

@@ -22,7 +22,7 @@ const halfFov=25*Math.PI/180,frame=(radius:number)=>radius/Math.sin(halfFov)*1.1
 /** The distance each caption is about, taken from the data it must agree with; the Sun cites none. */
 function citedDistance(stop:TourStop):number|null{
   switch(stop.target.kind){
-    case 'sun':return null;
+    case 'sun':case 'view':return null;
     case 'core':return milkyWay.observerDistanceMpc;
     case 'localgroup':case 'nearby':return nearby.get(stop.cites??stop.target.key!)!.distanceMpc;
     case 'overview':return manifest.maxDistanceMpc;
@@ -133,6 +133,7 @@ describe('tour routes',()=>{
   });
   it('discloses what is illustrative, assumed or only inferred at every stop',()=>{
     const required:Record<StopKind,RegExp[]>={
+      view:[/saved camera view/,/checked against this catalog/],
       sun:[/illustrative/,/not to scale/,/origin/],
       core:[/illustrative/,/adopted/],
       localgroup:[/independently measured/,/hidden by default/,/not as corrected/],

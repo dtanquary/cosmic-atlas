@@ -3,6 +3,7 @@ import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {photographs,photosForStop,photosForIdentity,matchedPhotoView,PHOTO_MAX_BYTES,PHOTO_MAX_DECODED} from '../src/photos';
 import {tours} from '../src/tour';
+import {tripRoute} from '../src/trips';
 import {nearbyReference} from '../src/nearby-galaxies';
 const names=JSON.parse(readFileSync(new URL('../public/data/galaxy-search.json',import.meta.url),'utf8')).entries as {name:string;targetId:string}[];
 describe('photograph provenance and budgets',()=>{
@@ -24,6 +25,10 @@ describe('photograph provenance and budgets',()=>{
   }
   expect(photosForIdentity('unverified-name')).toEqual([]);expect(photosForIdentity('core')[0].note).toContain('inside the Milky Way');
   expect(photosForStop(tours[1].stops.find(s=>s.id==='andromeda-companions')!).map(p=>p.identity)).toEqual(['nearby:m32','nearby:m110']);
+ });
+ it('keeps companion and exact-view photographs when custom chapters have their own IDs',()=>{
+  const route=tripRoute({version:1,title:'Custom photos',stops:[{id:'new-id',kind:'place',route:'road-trip',stop:'andromeda-companions'},{id:'saved',kind:'view',name:'M31',hash:'#t=0,0,0&c=0,0,1&g=nearby:m31'}]});
+  expect(photosForStop(route.stops[0]).map(p=>p.key)).toEqual(['m32','m110']);expect(photosForStop(route.stops[1]).map(p=>p.key)).toEqual(['m31']);
  });
  it('offers framing only for the checked north-up TAN cutout and preserves the exact identity',()=>{
   const photo=photographs.find(p=>p.key==='ngc4026')!;expect(photographs.filter(p=>p.match)).toHaveLength(1);

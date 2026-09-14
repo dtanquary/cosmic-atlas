@@ -626,6 +626,8 @@ export class Explorer {
     if(!this.ready||this.contextLost)return false;
     const inView=(world:THREE.Vector3,marginX=.8,marginY=.65)=>{const p=world.clone().project(this.camera);return p.z>=-1&&p.z<=1&&Math.abs(p.x)<marginX&&Math.abs(p.y)<marginY};
     const kind=stop.target.kind;
+    // A creator's saved camera can deliberately frame empty sky or a panned-away selection.
+    if(kind==='view')return true;
     if(kind==='cmb')return this.cosmicHorizon.enabled;
     if(kind==='sun'||kind==='core')return this.modelDisplay==='points'||this.milkyWay.visible;
     if(kind==='nearby'||kind==='catalog'){
