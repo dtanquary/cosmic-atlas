@@ -185,52 +185,52 @@
           "stops": [
             {
               "title": "The Milky Way",
-              "detailAtArrival": "Adaptive detail · all detail in view",
+              "detailAtArrival": "Adaptive detail \u00b7 all detail in view",
               "queueSettledAfterMs": 19.2
             },
             {
               "title": "Large Magellanic Cloud",
-              "detailAtArrival": "Adaptive detail · all detail in view",
+              "detailAtArrival": "Adaptive detail \u00b7 all detail in view",
               "queueSettledAfterMs": 239.9
             },
             {
               "title": "Small Magellanic Cloud",
-              "detailAtArrival": "Adaptive detail · all detail in view",
+              "detailAtArrival": "Adaptive detail \u00b7 all detail in view",
               "queueSettledAfterMs": 205.5
             },
             {
               "title": "Andromeda",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 103.4
             },
             {
               "title": "M32 and M110",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 138.1
             },
             {
               "title": "Triangulum",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 105.6
             },
             {
               "title": "NGC 3982",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 57.7
             },
             {
               "title": "NGC 4026",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 7.6
             },
             {
               "title": "Coma cluster",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 225.4
             },
             {
               "title": "The DESI survey",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 192.1
             }
           ],
@@ -323,52 +323,52 @@
           "stops": [
             {
               "title": "The Milky Way",
-              "detailAtArrival": "Adaptive detail · all detail in view",
+              "detailAtArrival": "Adaptive detail \u00b7 all detail in view",
               "queueSettledAfterMs": 38.7
             },
             {
               "title": "Large Magellanic Cloud",
-              "detailAtArrival": "Adaptive detail · all detail in view",
+              "detailAtArrival": "Adaptive detail \u00b7 all detail in view",
               "queueSettledAfterMs": 3.9
             },
             {
               "title": "Small Magellanic Cloud",
-              "detailAtArrival": "Adaptive detail · all detail in view",
+              "detailAtArrival": "Adaptive detail \u00b7 all detail in view",
               "queueSettledAfterMs": 223
             },
             {
               "title": "Andromeda",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 181.9
             },
             {
               "title": "M32 and M110",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 156.9
             },
             {
               "title": "Triangulum",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 125.1
             },
             {
               "title": "NGC 3982",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 26.7
             },
             {
               "title": "NGC 4026",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 241.8
             },
             {
               "title": "Coma cluster",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 277.6
             },
             {
               "title": "The DESI survey",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 174.9
             }
           ],
@@ -447,52 +447,52 @@
           "stops": [
             {
               "title": "The Milky Way",
-              "detailAtArrival": "Adaptive detail · all detail in view",
+              "detailAtArrival": "Adaptive detail \u00b7 all detail in view",
               "queueSettledAfterMs": 326
             },
             {
               "title": "Large Magellanic Cloud",
-              "detailAtArrival": "Adaptive detail · all detail in view",
+              "detailAtArrival": "Adaptive detail \u00b7 all detail in view",
               "queueSettledAfterMs": 39.8
             },
             {
               "title": "Small Magellanic Cloud",
-              "detailAtArrival": "Adaptive detail · all detail in view",
+              "detailAtArrival": "Adaptive detail \u00b7 all detail in view",
               "queueSettledAfterMs": 0.1
             },
             {
               "title": "Andromeda",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 158.2
             },
             {
               "title": "M32 and M110",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 193.4
             },
             {
               "title": "Triangulum",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 158.9
             },
             {
               "title": "NGC 3982",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 96.8
             },
             {
               "title": "NGC 4026",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 64.5
             },
             {
               "title": "Coma cluster",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 32.8
             },
             {
               "title": "The DESI survey",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 245.6
             }
           ],
@@ -571,52 +571,52 @@
           "stops": [
             {
               "title": "The Milky Way",
-              "detailAtArrival": "Adaptive detail · loading 15 chunks",
+              "detailAtArrival": "Adaptive detail \u00b7 loading 15 chunks",
               "queueSettledAfterMs": null
             },
             {
               "title": "Large Magellanic Cloud",
-              "detailAtArrival": "Adaptive detail · loading 9 chunks",
+              "detailAtArrival": "Adaptive detail \u00b7 loading 9 chunks",
               "queueSettledAfterMs": null
             },
             {
               "title": "Small Magellanic Cloud",
-              "detailAtArrival": "Adaptive detail · all detail in view",
+              "detailAtArrival": "Adaptive detail \u00b7 all detail in view",
               "queueSettledAfterMs": 212.9
             },
             {
               "title": "Andromeda",
-              "detailAtArrival": "Adaptive detail · loading 12 chunks",
+              "detailAtArrival": "Adaptive detail \u00b7 loading 12 chunks",
               "queueSettledAfterMs": null
             },
             {
               "title": "M32 and M110",
-              "detailAtArrival": "Adaptive detail · loading 12 chunks",
+              "detailAtArrival": "Adaptive detail \u00b7 loading 12 chunks",
               "queueSettledAfterMs": 7899.5
             },
             {
               "title": "Triangulum",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 117.8
             },
             {
               "title": "NGC 3982",
-              "detailAtArrival": "Adaptive detail · loading 12 chunks",
+              "detailAtArrival": "Adaptive detail \u00b7 loading 12 chunks",
               "queueSettledAfterMs": null
             },
             {
               "title": "NGC 4026",
-              "detailAtArrival": "Adaptive detail · loading 12 chunks",
+              "detailAtArrival": "Adaptive detail \u00b7 loading 12 chunks",
               "queueSettledAfterMs": null
             },
             {
               "title": "Coma cluster",
-              "detailAtArrival": "Adaptive detail · loading 15 chunks",
+              "detailAtArrival": "Adaptive detail \u00b7 loading 15 chunks",
               "queueSettledAfterMs": 6767
             },
             {
               "title": "The DESI survey",
-              "detailAtArrival": "Adaptive detail · loading 13 chunks",
+              "detailAtArrival": "Adaptive detail \u00b7 loading 13 chunks",
               "queueSettledAfterMs": null
             }
           ],
@@ -695,52 +695,52 @@
           "stops": [
             {
               "title": "The Milky Way",
-              "detailAtArrival": "Adaptive detail · loading 2 chunks",
+              "detailAtArrival": "Adaptive detail \u00b7 loading 2 chunks",
               "queueSettledAfterMs": 213
             },
             {
               "title": "Large Magellanic Cloud",
-              "detailAtArrival": "Adaptive detail · all detail in view",
+              "detailAtArrival": "Adaptive detail \u00b7 all detail in view",
               "queueSettledAfterMs": 64
             },
             {
               "title": "Small Magellanic Cloud",
-              "detailAtArrival": "Adaptive detail · all detail in view",
+              "detailAtArrival": "Adaptive detail \u00b7 all detail in view",
               "queueSettledAfterMs": 244
             },
             {
               "title": "Andromeda",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 237
             },
             {
               "title": "M32 and M110",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 86
             },
             {
               "title": "Triangulum",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 172
             },
             {
               "title": "NGC 3982",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 1
             },
             {
               "title": "NGC 4026",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 144
             },
             {
               "title": "Coma cluster",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 3
             },
             {
               "title": "The DESI survey",
-              "detailAtArrival": "Adaptive detail · sampled positions",
+              "detailAtArrival": "Adaptive detail \u00b7 sampled positions",
               "queueSettledAfterMs": 211
             }
           ],
@@ -753,6 +753,588 @@
           "pageErrors": []
         }
       ]
+    },
+    {
+      "run": "milestone-2-desktop",
+      "servedCodeCommit": "ee7ee581e8fdae2c2d54e8159e88b65c195b0b30",
+      "bundle": {
+        "path": "/assets/index-D0GEVF3D.js",
+        "sha256": "ee8475494f3e66b97d70570c5f28fdaadfdce32bf049b6eadcd776833ee3d5a6"
+      },
+      "startedAt": "2026-09-14T19:15:56.192Z",
+      "finishedAt": "2026-09-14T19:36:24.133Z",
+      "status": "complete",
+      "cases": [
+        {
+          "name": "chrome-cold",
+          "network": "local production preview, unthrottled",
+          "viewport": {
+            "width": 1600,
+            "height": 1000
+          },
+          "soakSeconds": 600,
+          "stops": [
+            {
+              "time": 4759.699999999255,
+              "title": "The Milky Way",
+              "detail": "Adaptive detail \u00b7 all detail in view",
+              "globalQueueSettledAfterMs": 246.80000000074506
+            },
+            {
+              "time": 17798.599999999627,
+              "title": "Large Magellanic Cloud",
+              "detail": "Adaptive detail \u00b7 all detail in view",
+              "globalQueueSettledAfterMs": 208.19999999925494
+            },
+            {
+              "time": 30828,
+              "title": "Small Magellanic Cloud",
+              "detail": "Adaptive detail \u00b7 all detail in view",
+              "globalQueueSettledAfterMs": 178.2999999988824
+            },
+            {
+              "time": 43858.699999999255,
+              "title": "Andromeda",
+              "detail": "Adaptive detail \u00b7 all detail in view",
+              "globalQueueSettledAfterMs": 149.40000000037253
+            },
+            {
+              "time": 55891.09999999963,
+              "title": "M32 and M110",
+              "detail": "Adaptive detail \u00b7 all detail in view",
+              "globalQueueSettledAfterMs": 115.69999999925494
+            },
+            {
+              "time": 68932.90000000037,
+              "title": "Triangulum",
+              "detail": "Adaptive detail \u00b7 all detail in view",
+              "globalQueueSettledAfterMs": 72.29999999888241
+            },
+            {
+              "time": 82993.19999999925,
+              "title": "NGC 3982",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 13
+            },
+            {
+              "time": 95990.59999999963,
+              "title": "NGC 4026",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 16.09999999962747
+            },
+            {
+              "time": 110022.29999999888,
+              "title": "Coma cluster",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 233.10000000149012
+            },
+            {
+              "time": 124056.09999999963,
+              "title": "The DESI survey",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 201
+            }
+          ],
+          "errors": [],
+          "environment": {
+            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+            "drawingSize": [
+              1600,
+              1000
+            ],
+            "devicePixelRatio": 1,
+            "galaxies": "14,140,375",
+            "minimumOpacity": "0.5"
+          },
+          "tourDurationMs": 131475.8999999985,
+          "soakStartedMs": 132060.90000000037,
+          "soakActualSeconds": 600.174,
+          "summary": {
+            "firstCoarseMs": 755.1999999992549,
+            "movementFrames": {
+              "samples": 20361,
+              "meanMs": 17.013001326065687,
+              "p50Ms": 16.699999999953434,
+              "p95Ms": 16.79999999998836,
+              "p99Ms": 33.300000000046566,
+              "maxMs": 50.10000000000582,
+              "over50Ms": 4,
+              "over100Ms": 0
+            },
+            "renderCallbackCpu": {
+              "samples": 20423,
+              "meanMs": 2.5635166234265974,
+              "p50Ms": 2,
+              "p95Ms": 7.199999999254942,
+              "p99Ms": 11.300000000745058,
+              "maxMs": 17.5,
+              "over50Ms": 0,
+              "over100Ms": 0
+            },
+            "earlyMovement": {
+              "samples": 2759,
+              "meanMs": 17.07676694454478,
+              "p50Ms": 16.69999999999709,
+              "p95Ms": 16.80000000000109,
+              "p99Ms": 33.30000000000291,
+              "maxMs": 50.10000000000582,
+              "over50Ms": 3,
+              "over100Ms": 0
+            },
+            "lateMovement": {
+              "samples": 3133,
+              "meanMs": 16.963836578359384,
+              "p50Ms": 16.699999999953434,
+              "p95Ms": 16.79999999993015,
+              "p99Ms": 33.300000000046566,
+              "maxMs": 50,
+              "over50Ms": 0,
+              "over100Ms": 0
+            },
+            "peakManagedMiB": 486,
+            "peakModels": 14,
+            "peakPending": 12,
+            "longTasks": 11,
+            "blockedSamples": 0
+          },
+          "responses": {
+            "count": 1581,
+            "bodyBytes": 451553435,
+            "pointResponses": 884
+          },
+          "status": "complete"
+        },
+        {
+          "name": "chrome-warm",
+          "network": "local production preview, unthrottled",
+          "viewport": {
+            "width": 1600,
+            "height": 1000
+          },
+          "soakSeconds": 0,
+          "stops": [
+            {
+              "time": 4733.199999999255,
+              "title": "The Milky Way",
+              "detail": "Adaptive detail \u00b7 all detail in view",
+              "globalQueueSettledAfterMs": 25.300000000745058
+            },
+            {
+              "time": 17773.699999999255,
+              "title": "Large Magellanic Cloud",
+              "detail": "Adaptive detail \u00b7 all detail in view",
+              "globalQueueSettledAfterMs": 234.90000000037253
+            },
+            {
+              "time": 30799,
+              "title": "Small Magellanic Cloud",
+              "detail": "Adaptive detail \u00b7 all detail in view",
+              "globalQueueSettledAfterMs": 208.59999999962747
+            },
+            {
+              "time": 43831.09999999963,
+              "title": "Andromeda",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 177
+            },
+            {
+              "time": 55863.90000000037,
+              "title": "M32 and M110",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 143.69999999925494
+            },
+            {
+              "time": 68897.40000000037,
+              "title": "Triangulum",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 111.39999999850988
+            },
+            {
+              "time": 82931,
+              "title": "NGC 3982",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 77.69999999925494
+            },
+            {
+              "time": 95962.79999999888,
+              "title": "NGC 4026",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 45.90000000037253
+            },
+            {
+              "time": 109996,
+              "title": "Coma cluster",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 13
+            },
+            {
+              "time": 124029.19999999925,
+              "title": "The DESI survey",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 227.90000000037253
+            }
+          ],
+          "errors": [],
+          "environment": {
+            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+            "drawingSize": [
+              1600,
+              1000
+            ],
+            "devicePixelRatio": 1,
+            "galaxies": "14,140,375",
+            "minimumOpacity": "0.5"
+          },
+          "tourDurationMs": 131456.79999999888,
+          "summary": {
+            "firstCoarseMs": 757.5999999996275,
+            "movementFrames": {
+              "samples": 2994,
+              "meanMs": 17.08911155644582,
+              "p50Ms": 16.69999999999709,
+              "p95Ms": 16.80000000000291,
+              "p99Ms": 33.39999999999418,
+              "maxMs": 50,
+              "over50Ms": 0,
+              "over100Ms": 0
+            },
+            "renderCallbackCpu": {
+              "samples": 3004,
+              "meanMs": 2.3544607190347056,
+              "p50Ms": 1.699999999254942,
+              "p95Ms": 7.199999999254942,
+              "p99Ms": 11.300000000745058,
+              "maxMs": 20.200000001117587,
+              "over50Ms": 0,
+              "over100Ms": 0
+            },
+            "earlyMovement": {
+              "samples": 2764,
+              "meanMs": 17.057959479015558,
+              "p50Ms": 16.69999999999709,
+              "p95Ms": 16.80000000000291,
+              "p99Ms": 33.39999999999418,
+              "maxMs": 50,
+              "over50Ms": 0,
+              "over100Ms": 0
+            },
+            "lateMovement": {
+              "samples": 2763,
+              "meanMs": 17.06416938110715,
+              "p50Ms": 16.69999999999709,
+              "p95Ms": 16.80000000000291,
+              "p99Ms": 33.30000000000291,
+              "maxMs": 50,
+              "over50Ms": 0,
+              "over100Ms": 0
+            },
+            "peakManagedMiB": 383.1,
+            "peakModels": 14,
+            "peakPending": 13,
+            "longTasks": 2,
+            "blockedSamples": 0
+          },
+          "responses": {
+            "count": 871,
+            "bodyBytes": 210999551,
+            "pointResponses": 684
+          },
+          "status": "complete"
+        },
+        {
+          "name": "chrome-slow",
+          "network": "Chromium emulation: 5 Mbps down, 1 Mbps up, 80 ms latency",
+          "viewport": {
+            "width": 1600,
+            "height": 1000
+          },
+          "soakSeconds": 0,
+          "stops": [
+            {
+              "time": 11824.900000000373,
+              "title": "The Milky Way",
+              "detail": "Adaptive detail \u00b7 loading 15 chunks",
+              "globalQueueSettledAfterMs": null
+            },
+            {
+              "time": 24857.699999999255,
+              "title": "Large Magellanic Cloud",
+              "detail": "Adaptive detail \u00b7 loading 9 chunks",
+              "globalQueueSettledAfterMs": null
+            },
+            {
+              "time": 37890.199999999255,
+              "title": "Small Magellanic Cloud",
+              "detail": "Adaptive detail \u00b7 all detail in view",
+              "globalQueueSettledAfterMs": 206.40000000037253
+            },
+            {
+              "time": 50922.199999999255,
+              "title": "Andromeda",
+              "detail": "Adaptive detail \u00b7 loading 12 chunks",
+              "globalQueueSettledAfterMs": null
+            },
+            {
+              "time": 62955.699999999255,
+              "title": "M32 and M110",
+              "detail": "Adaptive detail \u00b7 loading 12 chunks",
+              "globalQueueSettledAfterMs": 7891.200000001118
+            },
+            {
+              "time": 75988.19999999925,
+              "title": "Triangulum",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 109.5
+            },
+            {
+              "time": 90022.40000000037,
+              "title": "NGC 3982",
+              "detail": "Adaptive detail \u00b7 loading 12 chunks",
+              "globalQueueSettledAfterMs": null
+            },
+            {
+              "time": 103053.09999999963,
+              "title": "NGC 4026",
+              "detail": "Adaptive detail \u00b7 loading 12 chunks",
+              "globalQueueSettledAfterMs": null
+            },
+            {
+              "time": 120970.19999999925,
+              "title": "Coma cluster",
+              "detail": "Adaptive detail \u00b7 loading 7 chunks",
+              "globalQueueSettledAfterMs": 2877.7000000011176
+            },
+            {
+              "time": 135003.19999999925,
+              "title": "The DESI survey",
+              "detail": "Adaptive detail \u00b7 loading 13 chunks",
+              "globalQueueSettledAfterMs": null
+            }
+          ],
+          "errors": [],
+          "environment": {
+            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+            "drawingSize": [
+              1600,
+              1000
+            ],
+            "devicePixelRatio": 1,
+            "galaxies": "14,140,375",
+            "minimumOpacity": "0.5"
+          },
+          "tourDurationMs": 138930.5,
+          "summary": {
+            "firstCoarseMs": 3845.699999999255,
+            "movementFrames": {
+              "samples": 3070,
+              "meanMs": 16.666058631921544,
+              "p50Ms": 16.69999999999709,
+              "p95Ms": 16.79999999998836,
+              "p99Ms": 16.80000000000291,
+              "maxMs": 16.800000000017462,
+              "over50Ms": 0,
+              "over100Ms": 0
+            },
+            "renderCallbackCpu": {
+              "samples": 3080,
+              "meanMs": 1.477759740270021,
+              "p50Ms": 1.099999999627471,
+              "p95Ms": 3.599999999627471,
+              "p99Ms": 8.5,
+              "maxMs": 15.299999998882413,
+              "over50Ms": 0,
+              "over100Ms": 0
+            },
+            "earlyMovement": {
+              "samples": 2709,
+              "meanMs": 16.666076042819917,
+              "p50Ms": 16.69999999999709,
+              "p95Ms": 16.79999999998836,
+              "p99Ms": 16.80000000000291,
+              "maxMs": 16.80000000000291,
+              "over50Ms": 0,
+              "over100Ms": 0
+            },
+            "lateMovement": {
+              "samples": 2648,
+              "meanMs": 16.66608761329298,
+              "p50Ms": 16.69999999999709,
+              "p95Ms": 16.79999999998836,
+              "p99Ms": 16.80000000000291,
+              "maxMs": 16.800000000017462,
+              "over50Ms": 0,
+              "over100Ms": 0
+            },
+            "peakManagedMiB": 187.8,
+            "peakModels": 14,
+            "peakPending": 16,
+            "longTasks": 2,
+            "blockedSamples": 0
+          },
+          "responses": {
+            "count": 370,
+            "bodyBytes": 65709789,
+            "pointResponses": 271
+          },
+          "status": "complete"
+        }
+      ],
+      "analysisNote": "Only completed cases retained. Earlier WebKit attempt reached false partial at Coma; regional readiness correction passed separately. Adaptive workloads differ; this is not an isolated renderer comparison."
+    },
+    {
+      "run": "milestone-2-phone",
+      "servedCodeCommit": "c2d3f2a6927fb97ee4db9e1a75ad10894419fa27",
+      "bundle": {
+        "path": "/assets/index-CdJ0pJU4.js",
+        "sha256": "5748dcc75e6106a4e8b76d123a9cad71c320c2533082eb030b7c7e7a75c8c524"
+      },
+      "startedAt": "2026-09-14T19:51:43.808Z",
+      "finishedAt": "2026-09-14T19:53:56.774Z",
+      "status": "complete",
+      "cases": [
+        {
+          "name": "webkit-phone",
+          "network": "local production preview, unthrottled",
+          "viewport": {
+            "width": 402,
+            "height": 874
+          },
+          "soakSeconds": 0,
+          "stops": [
+            {
+              "time": 4892,
+              "title": "The Milky Way",
+              "detail": "Adaptive detail \u00b7 all detail in view",
+              "globalQueueSettledAfterMs": 199
+            },
+            {
+              "time": 17930,
+              "title": "Large Magellanic Cloud",
+              "detail": "Adaptive detail \u00b7 all detail in view",
+              "globalQueueSettledAfterMs": 95
+            },
+            {
+              "time": 30941,
+              "title": "Small Magellanic Cloud",
+              "detail": "Adaptive detail \u00b7 all detail in view",
+              "globalQueueSettledAfterMs": 217
+            },
+            {
+              "time": 43954,
+              "title": "Andromeda",
+              "detail": "Adaptive detail \u00b7 all detail in view",
+              "globalQueueSettledAfterMs": 108
+            },
+            {
+              "time": 55982,
+              "title": "M32 and M110",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 219
+            },
+            {
+              "time": 69014,
+              "title": "Triangulum",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 101
+            },
+            {
+              "time": 83032,
+              "title": "NGC 3982",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 21
+            },
+            {
+              "time": 96065,
+              "title": "NGC 4026",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 230
+            },
+            {
+              "time": 110082,
+              "title": "Coma cluster",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 147
+            },
+            {
+              "time": 124100,
+              "title": "The DESI survey",
+              "detail": "Adaptive detail \u00b7 sampled positions",
+              "globalQueueSettledAfterMs": 13
+            }
+          ],
+          "errors": [],
+          "environment": {
+            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.6 Safari/605.1.15",
+            "renderer": "Apple GPU",
+            "drawingSize": [
+              603,
+              1311
+            ],
+            "devicePixelRatio": 3,
+            "galaxies": "14,140,375",
+            "minimumOpacity": "0.5"
+          },
+          "tourDurationMs": 131408,
+          "summary": {
+            "firstCoarseMs": 769,
+            "movementFrames": {
+              "samples": 3003,
+              "meanMs": 17.005994005994005,
+              "p50Ms": 17,
+              "p95Ms": 20,
+              "p99Ms": 37,
+              "maxMs": 59,
+              "over50Ms": 4,
+              "over100Ms": 0
+            },
+            "renderCallbackCpu": {
+              "samples": 3013,
+              "meanMs": 3.1072021241287753,
+              "p50Ms": 2,
+              "p95Ms": 10,
+              "p99Ms": 26,
+              "maxMs": 39,
+              "over50Ms": 0,
+              "over100Ms": 0
+            },
+            "earlyMovement": {
+              "samples": 2763,
+              "meanMs": 17.00506695620702,
+              "p50Ms": 17,
+              "p95Ms": 20,
+              "p99Ms": 38,
+              "maxMs": 59,
+              "over50Ms": 4,
+              "over100Ms": 0
+            },
+            "lateMovement": {
+              "samples": 2762,
+              "meanMs": 17.04018826937002,
+              "p50Ms": 17,
+              "p95Ms": 20,
+              "p99Ms": 38,
+              "maxMs": 59,
+              "over50Ms": 4,
+              "over100Ms": 0
+            },
+            "peakManagedMiB": 334.6,
+            "peakModels": 13,
+            "peakPending": 12,
+            "longTasks": 0,
+            "blockedSamples": 0
+          },
+          "responses": {
+            "count": 1370,
+            "bodyBytes": 352118639,
+            "pointResponses": 560
+          },
+          "status": "complete"
+        }
+      ],
+      "analysisNote": "Only completed cases retained. Earlier WebKit attempt reached false partial at Coma; regional readiness correction passed separately. Adaptive workloads differ; this is not an isolated renderer comparison."
     }
   ]
 }

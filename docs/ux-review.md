@@ -222,3 +222,7 @@ The subset nearby/tour checks also pass, including context recovery and the expe
 ## Ordered milestone 1 — verified tour clarity
 
 M32/M110 now have two small, noninteractive labels at their measured centers. Their leaders/dots are annotations rather than size indicators. The first visibility threshold hid M32; the actual-browser regression caught it and the threshold was lowered while keeping the galaxy unchanged. Reusing the brand subtitle provides context without increasing phone panel height. Continue and hidden-tab pausing use the existing Tour. All 15 stops were reviewed across Chrome/WebKit portrait, landscape and desktop; final production checks pass 493 assertions. A stale prior-stop toast found during reduced-motion jumps is now cleared when the next stop starts. See the four-milestone record and validation evidence.
+
+## Ordered milestone 2 — verified
+
+Single-timer destination readiness, bounded preparation and partial-data recovery pass production Chrome/WebKit and actual-GPU checks. The phone Coma false partial was traced to global stride sampling and corrected by spending the bounded sample in intersecting spatial chunks. The withheld-detail network fixture passes Retry, Continue and Next; no geometry or rendering budget changed. Existing mobile/navigation/all-stop controls pass. Performance and allocation changes are documented separately in `performance.md`; physical-device follow-up remains pending.
