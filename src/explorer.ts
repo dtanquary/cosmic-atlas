@@ -621,7 +621,7 @@ export class Explorer {
     return {target:[t.x,t.y,t.z],camera:[c.x,c.y,c.z],identity};
   }
   /** Focus a decoded link. The identity is re-verified against the catalog and the link's camera offset is applied from the exact position; an unverifiable identity falls back to the camera alone. */
-  async applyView(state:ViewState,seconds=0):Promise<boolean>{
+  async applyView(state:ViewState,seconds=0,{preserveTarget=false}:{preserveTarget?:boolean}={}):Promise<boolean>{
     const serial=++this.selectionSerial;
     const target=new THREE.Vector3().fromArray(state.target),offset=new THREE.Vector3().fromArray(state.camera).sub(target);
     const distance=THREE.MathUtils.clamp(offset.length(),this.controls.minDistance,this.controls.maxDistance);
@@ -629,7 +629,9 @@ export class Explorer {
     let exact:{target:THREE.Vector3;galaxyId:number|null;home:boolean}|null=null;
     try{exact=await this.locate(state.identity,serial)}
     catch(error){if(serial!==this.selectionSerial||(error as Error).name==='AbortError')return false;this.onMessage(error instanceof DOMException?`This link's galaxy could not load: ${error.message}`:'This link points to a galaxy this catalog does not contain.')}
-    const arrival=exact?this.focusAt(exact.target,distance,direction,exact.galaxyId,exact.home,seconds):this.focusAt(target,distance,direction,null,false,seconds);
+    // Session history restores a possibly panned pose while still validating its
+    // selection. Public links retain their established exact-object anchoring.
+    const arrival=exact?this.focusAt(preserveTarget?target:exact.target,distance,direction,exact.galaxyId,exact.home,seconds):this.focusAt(target,distance,direction,null,false,seconds);
     if(exact?.home)this.inspectHome();
     return arrival;
   }

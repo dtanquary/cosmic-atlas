@@ -277,7 +277,7 @@ async function initialize(){
    const navigation=['KeyR','KeyF'].includes(event.code)&&!document.querySelector('dialog[open]')&&!(event.target instanceof Element&&event.target.matches('input,select,textarea'));
    if(visit||navigation)viewHistory.remember(atlas.viewState());
   },{capture:true,signal:uiLifecycle.signal});
-  element('back-view-button').onclick=()=>{pauseTour();const previous=viewHistory.back(atlas.viewState());if(previous)void atlas.applyView(previous,1.5);renderStats(atlas.stats)};
+  element('back-view-button').onclick=()=>{pauseTour();const previous=viewHistory.back(atlas.viewState());if(previous)void atlas.applyView(previous,1.5,{preserveTarget:true});renderStats(atlas.stats)};
   // Orbit input pauses a dwell at once (the runner's pose check at hop time is the backstop); other navigation controls pause before they move the camera.
   // ponytail: explicit id list; a future navigation button must be added here or the hop-time pose check is the only pause
   atlas.controls.addEventListener('start',pauseTour);

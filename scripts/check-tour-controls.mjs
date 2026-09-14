@@ -69,6 +69,17 @@ try{
    await visit('Triangulum');check('historyAvailable',await page.locator('#back-view-button').evaluate(el=>!el.hidden)&&await page.locator('#back-view-button').count()===1);
    if(mobile)await act('#mobile-menu-button');await act('#back-view-button');await page.waitForTimeout(1800);
    check('backRestoresNamedView',(await state()).link===beforeHistory);
+   await page.goto(new URL(beforeHistory,base).href);
+   await page.waitForFunction(()=>document.getElementById('object-name').textContent==='Andromeda');
+   await visit('Triangulum');
+   if(mobile)await act('#mobile-menu-button');await act('#back-view-button');await page.waitForTimeout(1800);
+   check('backAfterSharedView',(await state()).link===beforeHistory);
+   await page.mouse.move(mobile?100:600,300);await page.mouse.down({button:'right'});
+   await page.mouse.move(mobile?230:850,300,{steps:12});await page.mouse.up({button:'right'});await page.waitForTimeout(1200);
+   const panned=(await state()).link;check('historyPanChangesTarget',new URLSearchParams(panned.slice(1)).get('t')!==new URLSearchParams(beforeHistory.slice(1)).get('t'));
+   await visit('Triangulum');
+   if(mobile)await act('#mobile-menu-button');await act('#back-view-button');await page.waitForTimeout(1800);
+   check('backPreservesPanAndSelection',(await state()).link===panned);
    await page.close();
   }finally{await browser.close()}
  }
