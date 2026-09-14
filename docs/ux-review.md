@@ -218,3 +218,7 @@ The existing runner regression failed with the old camera direction and passes w
 The production journey traverses all nine stops at normal travel speed using the real controls, then checks the Coma center/direction, the full catalog count, caption guidance and an unobstructed canvas at screen center. Chrome at 1600×1000 and WebKit at 402×874 pass without page errors. Both screenshots were inspected: the central gathering is clear and the compact phone tour panel leaves it visible. These are browser simulations, not physical-device measurements.
 
 The subset nearby/tour checks also pass, including context recovery and the expected two unavailable-stop notices.
+
+## Ordered milestone 1 — verified tour clarity
+
+M32/M110 now have two small, noninteractive labels at their measured centers. Their leaders/dots are annotations rather than size indicators. The first visibility threshold hid M32; the actual-browser regression caught it and the threshold was lowered while keeping the galaxy unchanged. Reusing the brand subtitle provides context without increasing phone panel height. Continue and hidden-tab pausing use the existing Tour. All 15 stops were reviewed across Chrome/WebKit portrait, landscape and desktop; final production checks pass 493 assertions. A stale prior-stop toast found during reduced-motion jumps is now cleared when the next stop starts. See the four-milestone record and validation evidence.

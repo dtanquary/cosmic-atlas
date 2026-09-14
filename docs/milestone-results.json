@@ -1,0 +1,3556 @@
+[
+  {
+    "milestone": 1,
+    "source": "9990629",
+    "unitTests": 98,
+    "physicalDevice": false,
+    "reports": [
+      {
+        "runId": "tour-polish",
+        "sourceCommit": "9990629c1764fedfd1a58a2f449ce94db21249ea",
+        "checks": {
+          "chrome:portrait:road-trip:milky-way:reducedMotionArrival": true,
+          "chrome:portrait:road-trip:milky-way:context": true,
+          "chrome:portrait:road-trip:milky-way:mapCenter": true,
+          "chrome:portrait:road-trip:milky-way:bounded": true,
+          "chrome:portrait:road-trip:milky-way:labels": true,
+          "chrome:portrait:road-trip:lmc:reducedMotionArrival": true,
+          "chrome:portrait:road-trip:lmc:context": true,
+          "chrome:portrait:road-trip:lmc:mapCenter": true,
+          "chrome:portrait:road-trip:lmc:bounded": true,
+          "chrome:portrait:road-trip:lmc:labels": true,
+          "chrome:portrait:road-trip:smc:reducedMotionArrival": true,
+          "chrome:portrait:road-trip:smc:context": true,
+          "chrome:portrait:road-trip:smc:mapCenter": true,
+          "chrome:portrait:road-trip:smc:bounded": true,
+          "chrome:portrait:road-trip:smc:labels": true,
+          "chrome:portrait:road-trip:andromeda:reducedMotionArrival": true,
+          "chrome:portrait:road-trip:andromeda:context": true,
+          "chrome:portrait:road-trip:andromeda:mapCenter": true,
+          "chrome:portrait:road-trip:andromeda:bounded": true,
+          "chrome:portrait:road-trip:andromeda:labels": true,
+          "chrome:portrait:road-trip:andromeda-companions:reducedMotionArrival": true,
+          "chrome:portrait:road-trip:andromeda-companions:context": true,
+          "chrome:portrait:road-trip:andromeda-companions:mapCenter": true,
+          "chrome:portrait:road-trip:andromeda-companions:bounded": true,
+          "chrome:portrait:road-trip:andromeda-companions:labels": true,
+          "chrome:portrait:road-trip:triangulum:reducedMotionArrival": true,
+          "chrome:portrait:road-trip:triangulum:context": true,
+          "chrome:portrait:road-trip:triangulum:mapCenter": true,
+          "chrome:portrait:road-trip:triangulum:bounded": true,
+          "chrome:portrait:road-trip:triangulum:labels": true,
+          "chrome:portrait:road-trip:ngc-3982:reducedMotionArrival": true,
+          "chrome:portrait:road-trip:ngc-3982:context": true,
+          "chrome:portrait:road-trip:ngc-3982:mapCenter": true,
+          "chrome:portrait:road-trip:ngc-3982:bounded": true,
+          "chrome:portrait:road-trip:ngc-3982:labels": true,
+          "chrome:portrait:road-trip:ngc-4026:reducedMotionArrival": true,
+          "chrome:portrait:road-trip:ngc-4026:context": true,
+          "chrome:portrait:road-trip:ngc-4026:mapCenter": true,
+          "chrome:portrait:road-trip:ngc-4026:bounded": true,
+          "chrome:portrait:road-trip:ngc-4026:labels": true,
+          "chrome:portrait:road-trip:coma:reducedMotionArrival": true,
+          "chrome:portrait:road-trip:coma:previousToastCleared": true,
+          "chrome:portrait:road-trip:coma:context": true,
+          "chrome:portrait:road-trip:coma:mapCenter": true,
+          "chrome:portrait:road-trip:coma:bounded": true,
+          "chrome:portrait:road-trip:coma:labels": true,
+          "chrome:portrait:road-trip:survey:reducedMotionArrival": true,
+          "chrome:portrait:road-trip:survey:previousToastCleared": true,
+          "chrome:portrait:road-trip:survey:context": true,
+          "chrome:portrait:road-trip:survey:mapCenter": true,
+          "chrome:portrait:road-trip:survey:bounded": true,
+          "chrome:portrait:road-trip:survey:labels": true,
+          "chrome:portrait:road-trip:exitClearsLabels": true,
+          "chrome:portrait:zoom-out:sun:reducedMotionArrival": true,
+          "chrome:portrait:zoom-out:sun:context": true,
+          "chrome:portrait:zoom-out:sun:mapCenter": true,
+          "chrome:portrait:zoom-out:sun:bounded": true,
+          "chrome:portrait:zoom-out:sun:labels": true,
+          "chrome:portrait:zoom-out:milky-way:reducedMotionArrival": true,
+          "chrome:portrait:zoom-out:milky-way:context": true,
+          "chrome:portrait:zoom-out:milky-way:mapCenter": true,
+          "chrome:portrait:zoom-out:milky-way:bounded": true,
+          "chrome:portrait:zoom-out:milky-way:labels": true,
+          "chrome:portrait:zoom-out:local-group:reducedMotionArrival": true,
+          "chrome:portrait:zoom-out:local-group:context": true,
+          "chrome:portrait:zoom-out:local-group:mapCenter": true,
+          "chrome:portrait:zoom-out:local-group:bounded": true,
+          "chrome:portrait:zoom-out:local-group:labels": true,
+          "chrome:portrait:zoom-out:survey:reducedMotionArrival": true,
+          "chrome:portrait:zoom-out:survey:previousToastCleared": true,
+          "chrome:portrait:zoom-out:survey:context": true,
+          "chrome:portrait:zoom-out:survey:mapCenter": true,
+          "chrome:portrait:zoom-out:survey:bounded": true,
+          "chrome:portrait:zoom-out:survey:labels": true,
+          "chrome:portrait:zoom-out:cmb:reducedMotionArrival": true,
+          "chrome:portrait:zoom-out:cmb:previousToastCleared": true,
+          "chrome:portrait:zoom-out:cmb:context": true,
+          "chrome:portrait:zoom-out:cmb:mapCenter": true,
+          "chrome:portrait:zoom-out:cmb:bounded": true,
+          "chrome:portrait:zoom-out:cmb:labels": true,
+          "chrome:portrait:zoom-out:exitClearsLabels": true,
+          "chrome:landscape:road-trip:milky-way:reducedMotionArrival": true,
+          "chrome:landscape:road-trip:milky-way:context": true,
+          "chrome:landscape:road-trip:milky-way:mapCenter": true,
+          "chrome:landscape:road-trip:milky-way:bounded": true,
+          "chrome:landscape:road-trip:milky-way:labels": true,
+          "chrome:landscape:road-trip:lmc:reducedMotionArrival": true,
+          "chrome:landscape:road-trip:lmc:context": true,
+          "chrome:landscape:road-trip:lmc:mapCenter": true,
+          "chrome:landscape:road-trip:lmc:bounded": true,
+          "chrome:landscape:road-trip:lmc:labels": true,
+          "chrome:landscape:road-trip:smc:reducedMotionArrival": true,
+          "chrome:landscape:road-trip:smc:context": true,
+          "chrome:landscape:road-trip:smc:mapCenter": true,
+          "chrome:landscape:road-trip:smc:bounded": true,
+          "chrome:landscape:road-trip:smc:labels": true,
+          "chrome:landscape:road-trip:andromeda:reducedMotionArrival": true,
+          "chrome:landscape:road-trip:andromeda:context": true,
+          "chrome:landscape:road-trip:andromeda:mapCenter": true,
+          "chrome:landscape:road-trip:andromeda:bounded": true,
+          "chrome:landscape:road-trip:andromeda:labels": true,
+          "chrome:landscape:road-trip:andromeda-companions:reducedMotionArrival": true,
+          "chrome:landscape:road-trip:andromeda-companions:context": true,
+          "chrome:landscape:road-trip:andromeda-companions:mapCenter": true,
+          "chrome:landscape:road-trip:andromeda-companions:bounded": true,
+          "chrome:landscape:road-trip:andromeda-companions:labels": true,
+          "chrome:landscape:road-trip:triangulum:reducedMotionArrival": true,
+          "chrome:landscape:road-trip:triangulum:context": true,
+          "chrome:landscape:road-trip:triangulum:mapCenter": true,
+          "chrome:landscape:road-trip:triangulum:bounded": true,
+          "chrome:landscape:road-trip:triangulum:labels": true,
+          "chrome:landscape:road-trip:ngc-3982:reducedMotionArrival": true,
+          "chrome:landscape:road-trip:ngc-3982:context": true,
+          "chrome:landscape:road-trip:ngc-3982:mapCenter": true,
+          "chrome:landscape:road-trip:ngc-3982:bounded": true,
+          "chrome:landscape:road-trip:ngc-3982:labels": true,
+          "chrome:landscape:road-trip:ngc-4026:reducedMotionArrival": true,
+          "chrome:landscape:road-trip:ngc-4026:context": true,
+          "chrome:landscape:road-trip:ngc-4026:mapCenter": true,
+          "chrome:landscape:road-trip:ngc-4026:bounded": true,
+          "chrome:landscape:road-trip:ngc-4026:labels": true,
+          "chrome:landscape:road-trip:coma:reducedMotionArrival": true,
+          "chrome:landscape:road-trip:coma:previousToastCleared": true,
+          "chrome:landscape:road-trip:coma:context": true,
+          "chrome:landscape:road-trip:coma:mapCenter": true,
+          "chrome:landscape:road-trip:coma:bounded": true,
+          "chrome:landscape:road-trip:coma:labels": true,
+          "chrome:landscape:road-trip:survey:reducedMotionArrival": true,
+          "chrome:landscape:road-trip:survey:previousToastCleared": true,
+          "chrome:landscape:road-trip:survey:context": true,
+          "chrome:landscape:road-trip:survey:mapCenter": true,
+          "chrome:landscape:road-trip:survey:bounded": true,
+          "chrome:landscape:road-trip:survey:labels": true,
+          "chrome:landscape:road-trip:exitClearsLabels": true,
+          "chrome:landscape:zoom-out:sun:reducedMotionArrival": true,
+          "chrome:landscape:zoom-out:sun:context": true,
+          "chrome:landscape:zoom-out:sun:mapCenter": true,
+          "chrome:landscape:zoom-out:sun:bounded": true,
+          "chrome:landscape:zoom-out:sun:labels": true,
+          "chrome:landscape:zoom-out:milky-way:reducedMotionArrival": true,
+          "chrome:landscape:zoom-out:milky-way:context": true,
+          "chrome:landscape:zoom-out:milky-way:mapCenter": true,
+          "chrome:landscape:zoom-out:milky-way:bounded": true,
+          "chrome:landscape:zoom-out:milky-way:labels": true,
+          "chrome:landscape:zoom-out:local-group:reducedMotionArrival": true,
+          "chrome:landscape:zoom-out:local-group:context": true,
+          "chrome:landscape:zoom-out:local-group:mapCenter": true,
+          "chrome:landscape:zoom-out:local-group:bounded": true,
+          "chrome:landscape:zoom-out:local-group:labels": true,
+          "chrome:landscape:zoom-out:survey:reducedMotionArrival": true,
+          "chrome:landscape:zoom-out:survey:previousToastCleared": true,
+          "chrome:landscape:zoom-out:survey:context": true,
+          "chrome:landscape:zoom-out:survey:mapCenter": true,
+          "chrome:landscape:zoom-out:survey:bounded": true,
+          "chrome:landscape:zoom-out:survey:labels": true,
+          "chrome:landscape:zoom-out:cmb:reducedMotionArrival": true,
+          "chrome:landscape:zoom-out:cmb:previousToastCleared": true,
+          "chrome:landscape:zoom-out:cmb:context": true,
+          "chrome:landscape:zoom-out:cmb:mapCenter": true,
+          "chrome:landscape:zoom-out:cmb:bounded": true,
+          "chrome:landscape:zoom-out:cmb:labels": true,
+          "chrome:landscape:zoom-out:exitClearsLabels": true,
+          "chrome:desktop:road-trip:milky-way:reducedMotionArrival": true,
+          "chrome:desktop:road-trip:milky-way:context": true,
+          "chrome:desktop:road-trip:milky-way:mapCenter": true,
+          "chrome:desktop:road-trip:milky-way:bounded": true,
+          "chrome:desktop:road-trip:milky-way:labels": true,
+          "chrome:desktop:road-trip:lmc:reducedMotionArrival": true,
+          "chrome:desktop:road-trip:lmc:context": true,
+          "chrome:desktop:road-trip:lmc:mapCenter": true,
+          "chrome:desktop:road-trip:lmc:bounded": true,
+          "chrome:desktop:road-trip:lmc:labels": true,
+          "chrome:desktop:road-trip:smc:reducedMotionArrival": true,
+          "chrome:desktop:road-trip:smc:context": true,
+          "chrome:desktop:road-trip:smc:mapCenter": true,
+          "chrome:desktop:road-trip:smc:bounded": true,
+          "chrome:desktop:road-trip:smc:labels": true,
+          "chrome:desktop:road-trip:andromeda:reducedMotionArrival": true,
+          "chrome:desktop:road-trip:andromeda:context": true,
+          "chrome:desktop:road-trip:andromeda:mapCenter": true,
+          "chrome:desktop:road-trip:andromeda:bounded": true,
+          "chrome:desktop:road-trip:andromeda:labels": true,
+          "chrome:desktop:road-trip:andromeda-companions:reducedMotionArrival": true,
+          "chrome:desktop:road-trip:andromeda-companions:context": true,
+          "chrome:desktop:road-trip:andromeda-companions:mapCenter": true,
+          "chrome:desktop:road-trip:andromeda-companions:bounded": true,
+          "chrome:desktop:road-trip:andromeda-companions:labels": true,
+          "chrome:desktop:road-trip:triangulum:reducedMotionArrival": true,
+          "chrome:desktop:road-trip:triangulum:context": true,
+          "chrome:desktop:road-trip:triangulum:mapCenter": true,
+          "chrome:desktop:road-trip:triangulum:bounded": true,
+          "chrome:desktop:road-trip:triangulum:labels": true,
+          "chrome:desktop:road-trip:ngc-3982:reducedMotionArrival": true,
+          "chrome:desktop:road-trip:ngc-3982:context": true,
+          "chrome:desktop:road-trip:ngc-3982:mapCenter": true,
+          "chrome:desktop:road-trip:ngc-3982:bounded": true,
+          "chrome:desktop:road-trip:ngc-3982:labels": true,
+          "chrome:desktop:road-trip:ngc-4026:reducedMotionArrival": true,
+          "chrome:desktop:road-trip:ngc-4026:context": true,
+          "chrome:desktop:road-trip:ngc-4026:mapCenter": true,
+          "chrome:desktop:road-trip:ngc-4026:bounded": true,
+          "chrome:desktop:road-trip:ngc-4026:labels": true,
+          "chrome:desktop:road-trip:coma:reducedMotionArrival": true,
+          "chrome:desktop:road-trip:coma:previousToastCleared": true,
+          "chrome:desktop:road-trip:coma:context": true,
+          "chrome:desktop:road-trip:coma:mapCenter": true,
+          "chrome:desktop:road-trip:coma:bounded": true,
+          "chrome:desktop:road-trip:coma:labels": true,
+          "chrome:desktop:road-trip:survey:reducedMotionArrival": true,
+          "chrome:desktop:road-trip:survey:previousToastCleared": true,
+          "chrome:desktop:road-trip:survey:context": true,
+          "chrome:desktop:road-trip:survey:mapCenter": true,
+          "chrome:desktop:road-trip:survey:bounded": true,
+          "chrome:desktop:road-trip:survey:labels": true,
+          "chrome:desktop:road-trip:exitClearsLabels": true,
+          "chrome:desktop:zoom-out:sun:reducedMotionArrival": true,
+          "chrome:desktop:zoom-out:sun:context": true,
+          "chrome:desktop:zoom-out:sun:mapCenter": true,
+          "chrome:desktop:zoom-out:sun:bounded": true,
+          "chrome:desktop:zoom-out:sun:labels": true,
+          "chrome:desktop:zoom-out:milky-way:reducedMotionArrival": true,
+          "chrome:desktop:zoom-out:milky-way:context": true,
+          "chrome:desktop:zoom-out:milky-way:mapCenter": true,
+          "chrome:desktop:zoom-out:milky-way:bounded": true,
+          "chrome:desktop:zoom-out:milky-way:labels": true,
+          "chrome:desktop:zoom-out:local-group:reducedMotionArrival": true,
+          "chrome:desktop:zoom-out:local-group:context": true,
+          "chrome:desktop:zoom-out:local-group:mapCenter": true,
+          "chrome:desktop:zoom-out:local-group:bounded": true,
+          "chrome:desktop:zoom-out:local-group:labels": true,
+          "chrome:desktop:zoom-out:survey:reducedMotionArrival": true,
+          "chrome:desktop:zoom-out:survey:previousToastCleared": true,
+          "chrome:desktop:zoom-out:survey:context": true,
+          "chrome:desktop:zoom-out:survey:mapCenter": true,
+          "chrome:desktop:zoom-out:survey:bounded": true,
+          "chrome:desktop:zoom-out:survey:labels": true,
+          "chrome:desktop:zoom-out:cmb:reducedMotionArrival": true,
+          "chrome:desktop:zoom-out:cmb:previousToastCleared": true,
+          "chrome:desktop:zoom-out:cmb:context": true,
+          "chrome:desktop:zoom-out:cmb:mapCenter": true,
+          "chrome:desktop:zoom-out:cmb:bounded": true,
+          "chrome:desktop:zoom-out:cmb:labels": true,
+          "chrome:desktop:zoom-out:exitClearsLabels": true,
+          "chrome:visibility:continueLabel": true,
+          "chrome:visibility:hidePauses": true,
+          "chrome:visibility:returnDoesNotResume": true,
+          "webkit:portrait:road-trip:milky-way:reducedMotionArrival": true,
+          "webkit:portrait:road-trip:milky-way:context": true,
+          "webkit:portrait:road-trip:milky-way:mapCenter": true,
+          "webkit:portrait:road-trip:milky-way:bounded": true,
+          "webkit:portrait:road-trip:milky-way:labels": true,
+          "webkit:portrait:road-trip:lmc:reducedMotionArrival": true,
+          "webkit:portrait:road-trip:lmc:context": true,
+          "webkit:portrait:road-trip:lmc:mapCenter": true,
+          "webkit:portrait:road-trip:lmc:bounded": true,
+          "webkit:portrait:road-trip:lmc:labels": true,
+          "webkit:portrait:road-trip:smc:reducedMotionArrival": true,
+          "webkit:portrait:road-trip:smc:context": true,
+          "webkit:portrait:road-trip:smc:mapCenter": true,
+          "webkit:portrait:road-trip:smc:bounded": true,
+          "webkit:portrait:road-trip:smc:labels": true,
+          "webkit:portrait:road-trip:andromeda:reducedMotionArrival": true,
+          "webkit:portrait:road-trip:andromeda:context": true,
+          "webkit:portrait:road-trip:andromeda:mapCenter": true,
+          "webkit:portrait:road-trip:andromeda:bounded": true,
+          "webkit:portrait:road-trip:andromeda:labels": true,
+          "webkit:portrait:road-trip:andromeda-companions:reducedMotionArrival": true,
+          "webkit:portrait:road-trip:andromeda-companions:context": true,
+          "webkit:portrait:road-trip:andromeda-companions:mapCenter": true,
+          "webkit:portrait:road-trip:andromeda-companions:bounded": true,
+          "webkit:portrait:road-trip:andromeda-companions:labels": true,
+          "webkit:portrait:road-trip:triangulum:reducedMotionArrival": true,
+          "webkit:portrait:road-trip:triangulum:context": true,
+          "webkit:portrait:road-trip:triangulum:mapCenter": true,
+          "webkit:portrait:road-trip:triangulum:bounded": true,
+          "webkit:portrait:road-trip:triangulum:labels": true,
+          "webkit:portrait:road-trip:ngc-3982:reducedMotionArrival": true,
+          "webkit:portrait:road-trip:ngc-3982:context": true,
+          "webkit:portrait:road-trip:ngc-3982:mapCenter": true,
+          "webkit:portrait:road-trip:ngc-3982:bounded": true,
+          "webkit:portrait:road-trip:ngc-3982:labels": true,
+          "webkit:portrait:road-trip:ngc-4026:reducedMotionArrival": true,
+          "webkit:portrait:road-trip:ngc-4026:context": true,
+          "webkit:portrait:road-trip:ngc-4026:mapCenter": true,
+          "webkit:portrait:road-trip:ngc-4026:bounded": true,
+          "webkit:portrait:road-trip:ngc-4026:labels": true,
+          "webkit:portrait:road-trip:coma:reducedMotionArrival": true,
+          "webkit:portrait:road-trip:coma:previousToastCleared": true,
+          "webkit:portrait:road-trip:coma:context": true,
+          "webkit:portrait:road-trip:coma:mapCenter": true,
+          "webkit:portrait:road-trip:coma:bounded": true,
+          "webkit:portrait:road-trip:coma:labels": true,
+          "webkit:portrait:road-trip:survey:reducedMotionArrival": true,
+          "webkit:portrait:road-trip:survey:previousToastCleared": true,
+          "webkit:portrait:road-trip:survey:context": true,
+          "webkit:portrait:road-trip:survey:mapCenter": true,
+          "webkit:portrait:road-trip:survey:bounded": true,
+          "webkit:portrait:road-trip:survey:labels": true,
+          "webkit:portrait:road-trip:exitClearsLabels": true,
+          "webkit:portrait:zoom-out:sun:reducedMotionArrival": true,
+          "webkit:portrait:zoom-out:sun:context": true,
+          "webkit:portrait:zoom-out:sun:mapCenter": true,
+          "webkit:portrait:zoom-out:sun:bounded": true,
+          "webkit:portrait:zoom-out:sun:labels": true,
+          "webkit:portrait:zoom-out:milky-way:reducedMotionArrival": true,
+          "webkit:portrait:zoom-out:milky-way:context": true,
+          "webkit:portrait:zoom-out:milky-way:mapCenter": true,
+          "webkit:portrait:zoom-out:milky-way:bounded": true,
+          "webkit:portrait:zoom-out:milky-way:labels": true,
+          "webkit:portrait:zoom-out:local-group:reducedMotionArrival": true,
+          "webkit:portrait:zoom-out:local-group:context": true,
+          "webkit:portrait:zoom-out:local-group:mapCenter": true,
+          "webkit:portrait:zoom-out:local-group:bounded": true,
+          "webkit:portrait:zoom-out:local-group:labels": true,
+          "webkit:portrait:zoom-out:survey:reducedMotionArrival": true,
+          "webkit:portrait:zoom-out:survey:previousToastCleared": true,
+          "webkit:portrait:zoom-out:survey:context": true,
+          "webkit:portrait:zoom-out:survey:mapCenter": true,
+          "webkit:portrait:zoom-out:survey:bounded": true,
+          "webkit:portrait:zoom-out:survey:labels": true,
+          "webkit:portrait:zoom-out:cmb:reducedMotionArrival": true,
+          "webkit:portrait:zoom-out:cmb:previousToastCleared": true,
+          "webkit:portrait:zoom-out:cmb:context": true,
+          "webkit:portrait:zoom-out:cmb:mapCenter": true,
+          "webkit:portrait:zoom-out:cmb:bounded": true,
+          "webkit:portrait:zoom-out:cmb:labels": true,
+          "webkit:portrait:zoom-out:exitClearsLabels": true,
+          "webkit:landscape:road-trip:milky-way:reducedMotionArrival": true,
+          "webkit:landscape:road-trip:milky-way:context": true,
+          "webkit:landscape:road-trip:milky-way:mapCenter": true,
+          "webkit:landscape:road-trip:milky-way:bounded": true,
+          "webkit:landscape:road-trip:milky-way:labels": true,
+          "webkit:landscape:road-trip:lmc:reducedMotionArrival": true,
+          "webkit:landscape:road-trip:lmc:context": true,
+          "webkit:landscape:road-trip:lmc:mapCenter": true,
+          "webkit:landscape:road-trip:lmc:bounded": true,
+          "webkit:landscape:road-trip:lmc:labels": true,
+          "webkit:landscape:road-trip:smc:reducedMotionArrival": true,
+          "webkit:landscape:road-trip:smc:context": true,
+          "webkit:landscape:road-trip:smc:mapCenter": true,
+          "webkit:landscape:road-trip:smc:bounded": true,
+          "webkit:landscape:road-trip:smc:labels": true,
+          "webkit:landscape:road-trip:andromeda:reducedMotionArrival": true,
+          "webkit:landscape:road-trip:andromeda:context": true,
+          "webkit:landscape:road-trip:andromeda:mapCenter": true,
+          "webkit:landscape:road-trip:andromeda:bounded": true,
+          "webkit:landscape:road-trip:andromeda:labels": true,
+          "webkit:landscape:road-trip:andromeda-companions:reducedMotionArrival": true,
+          "webkit:landscape:road-trip:andromeda-companions:context": true,
+          "webkit:landscape:road-trip:andromeda-companions:mapCenter": true,
+          "webkit:landscape:road-trip:andromeda-companions:bounded": true,
+          "webkit:landscape:road-trip:andromeda-companions:labels": true,
+          "webkit:landscape:road-trip:triangulum:reducedMotionArrival": true,
+          "webkit:landscape:road-trip:triangulum:context": true,
+          "webkit:landscape:road-trip:triangulum:mapCenter": true,
+          "webkit:landscape:road-trip:triangulum:bounded": true,
+          "webkit:landscape:road-trip:triangulum:labels": true,
+          "webkit:landscape:road-trip:ngc-3982:reducedMotionArrival": true,
+          "webkit:landscape:road-trip:ngc-3982:context": true,
+          "webkit:landscape:road-trip:ngc-3982:mapCenter": true,
+          "webkit:landscape:road-trip:ngc-3982:bounded": true,
+          "webkit:landscape:road-trip:ngc-3982:labels": true,
+          "webkit:landscape:road-trip:ngc-4026:reducedMotionArrival": true,
+          "webkit:landscape:road-trip:ngc-4026:context": true,
+          "webkit:landscape:road-trip:ngc-4026:mapCenter": true,
+          "webkit:landscape:road-trip:ngc-4026:bounded": true,
+          "webkit:landscape:road-trip:ngc-4026:labels": true,
+          "webkit:landscape:road-trip:coma:reducedMotionArrival": true,
+          "webkit:landscape:road-trip:coma:previousToastCleared": true,
+          "webkit:landscape:road-trip:coma:context": true,
+          "webkit:landscape:road-trip:coma:mapCenter": true,
+          "webkit:landscape:road-trip:coma:bounded": true,
+          "webkit:landscape:road-trip:coma:labels": true,
+          "webkit:landscape:road-trip:survey:reducedMotionArrival": true,
+          "webkit:landscape:road-trip:survey:previousToastCleared": true,
+          "webkit:landscape:road-trip:survey:context": true,
+          "webkit:landscape:road-trip:survey:mapCenter": true,
+          "webkit:landscape:road-trip:survey:bounded": true,
+          "webkit:landscape:road-trip:survey:labels": true,
+          "webkit:landscape:road-trip:exitClearsLabels": true,
+          "webkit:landscape:zoom-out:sun:reducedMotionArrival": true,
+          "webkit:landscape:zoom-out:sun:context": true,
+          "webkit:landscape:zoom-out:sun:mapCenter": true,
+          "webkit:landscape:zoom-out:sun:bounded": true,
+          "webkit:landscape:zoom-out:sun:labels": true,
+          "webkit:landscape:zoom-out:milky-way:reducedMotionArrival": true,
+          "webkit:landscape:zoom-out:milky-way:context": true,
+          "webkit:landscape:zoom-out:milky-way:mapCenter": true,
+          "webkit:landscape:zoom-out:milky-way:bounded": true,
+          "webkit:landscape:zoom-out:milky-way:labels": true,
+          "webkit:landscape:zoom-out:local-group:reducedMotionArrival": true,
+          "webkit:landscape:zoom-out:local-group:context": true,
+          "webkit:landscape:zoom-out:local-group:mapCenter": true,
+          "webkit:landscape:zoom-out:local-group:bounded": true,
+          "webkit:landscape:zoom-out:local-group:labels": true,
+          "webkit:landscape:zoom-out:survey:reducedMotionArrival": true,
+          "webkit:landscape:zoom-out:survey:previousToastCleared": true,
+          "webkit:landscape:zoom-out:survey:context": true,
+          "webkit:landscape:zoom-out:survey:mapCenter": true,
+          "webkit:landscape:zoom-out:survey:bounded": true,
+          "webkit:landscape:zoom-out:survey:labels": true,
+          "webkit:landscape:zoom-out:cmb:reducedMotionArrival": true,
+          "webkit:landscape:zoom-out:cmb:previousToastCleared": true,
+          "webkit:landscape:zoom-out:cmb:context": true,
+          "webkit:landscape:zoom-out:cmb:mapCenter": true,
+          "webkit:landscape:zoom-out:cmb:bounded": true,
+          "webkit:landscape:zoom-out:cmb:labels": true,
+          "webkit:landscape:zoom-out:exitClearsLabels": true,
+          "webkit:desktop:road-trip:milky-way:reducedMotionArrival": true,
+          "webkit:desktop:road-trip:milky-way:context": true,
+          "webkit:desktop:road-trip:milky-way:mapCenter": true,
+          "webkit:desktop:road-trip:milky-way:bounded": true,
+          "webkit:desktop:road-trip:milky-way:labels": true,
+          "webkit:desktop:road-trip:lmc:reducedMotionArrival": true,
+          "webkit:desktop:road-trip:lmc:context": true,
+          "webkit:desktop:road-trip:lmc:mapCenter": true,
+          "webkit:desktop:road-trip:lmc:bounded": true,
+          "webkit:desktop:road-trip:lmc:labels": true,
+          "webkit:desktop:road-trip:smc:reducedMotionArrival": true,
+          "webkit:desktop:road-trip:smc:context": true,
+          "webkit:desktop:road-trip:smc:mapCenter": true,
+          "webkit:desktop:road-trip:smc:bounded": true,
+          "webkit:desktop:road-trip:smc:labels": true,
+          "webkit:desktop:road-trip:andromeda:reducedMotionArrival": true,
+          "webkit:desktop:road-trip:andromeda:context": true,
+          "webkit:desktop:road-trip:andromeda:mapCenter": true,
+          "webkit:desktop:road-trip:andromeda:bounded": true,
+          "webkit:desktop:road-trip:andromeda:labels": true,
+          "webkit:desktop:road-trip:andromeda-companions:reducedMotionArrival": true,
+          "webkit:desktop:road-trip:andromeda-companions:context": true,
+          "webkit:desktop:road-trip:andromeda-companions:mapCenter": true,
+          "webkit:desktop:road-trip:andromeda-companions:bounded": true,
+          "webkit:desktop:road-trip:andromeda-companions:labels": true,
+          "webkit:desktop:road-trip:triangulum:reducedMotionArrival": true,
+          "webkit:desktop:road-trip:triangulum:context": true,
+          "webkit:desktop:road-trip:triangulum:mapCenter": true,
+          "webkit:desktop:road-trip:triangulum:bounded": true,
+          "webkit:desktop:road-trip:triangulum:labels": true,
+          "webkit:desktop:road-trip:ngc-3982:reducedMotionArrival": true,
+          "webkit:desktop:road-trip:ngc-3982:context": true,
+          "webkit:desktop:road-trip:ngc-3982:mapCenter": true,
+          "webkit:desktop:road-trip:ngc-3982:bounded": true,
+          "webkit:desktop:road-trip:ngc-3982:labels": true,
+          "webkit:desktop:road-trip:ngc-4026:reducedMotionArrival": true,
+          "webkit:desktop:road-trip:ngc-4026:context": true,
+          "webkit:desktop:road-trip:ngc-4026:mapCenter": true,
+          "webkit:desktop:road-trip:ngc-4026:bounded": true,
+          "webkit:desktop:road-trip:ngc-4026:labels": true,
+          "webkit:desktop:road-trip:coma:reducedMotionArrival": true,
+          "webkit:desktop:road-trip:coma:previousToastCleared": true,
+          "webkit:desktop:road-trip:coma:context": true,
+          "webkit:desktop:road-trip:coma:mapCenter": true,
+          "webkit:desktop:road-trip:coma:bounded": true,
+          "webkit:desktop:road-trip:coma:labels": true,
+          "webkit:desktop:road-trip:survey:reducedMotionArrival": true,
+          "webkit:desktop:road-trip:survey:previousToastCleared": true,
+          "webkit:desktop:road-trip:survey:context": true,
+          "webkit:desktop:road-trip:survey:mapCenter": true,
+          "webkit:desktop:road-trip:survey:bounded": true,
+          "webkit:desktop:road-trip:survey:labels": true,
+          "webkit:desktop:road-trip:exitClearsLabels": true,
+          "webkit:desktop:zoom-out:sun:reducedMotionArrival": true,
+          "webkit:desktop:zoom-out:sun:context": true,
+          "webkit:desktop:zoom-out:sun:mapCenter": true,
+          "webkit:desktop:zoom-out:sun:bounded": true,
+          "webkit:desktop:zoom-out:sun:labels": true,
+          "webkit:desktop:zoom-out:milky-way:reducedMotionArrival": true,
+          "webkit:desktop:zoom-out:milky-way:context": true,
+          "webkit:desktop:zoom-out:milky-way:mapCenter": true,
+          "webkit:desktop:zoom-out:milky-way:bounded": true,
+          "webkit:desktop:zoom-out:milky-way:labels": true,
+          "webkit:desktop:zoom-out:local-group:reducedMotionArrival": true,
+          "webkit:desktop:zoom-out:local-group:context": true,
+          "webkit:desktop:zoom-out:local-group:mapCenter": true,
+          "webkit:desktop:zoom-out:local-group:bounded": true,
+          "webkit:desktop:zoom-out:local-group:labels": true,
+          "webkit:desktop:zoom-out:survey:reducedMotionArrival": true,
+          "webkit:desktop:zoom-out:survey:previousToastCleared": true,
+          "webkit:desktop:zoom-out:survey:context": true,
+          "webkit:desktop:zoom-out:survey:mapCenter": true,
+          "webkit:desktop:zoom-out:survey:bounded": true,
+          "webkit:desktop:zoom-out:survey:labels": true,
+          "webkit:desktop:zoom-out:cmb:reducedMotionArrival": true,
+          "webkit:desktop:zoom-out:cmb:previousToastCleared": true,
+          "webkit:desktop:zoom-out:cmb:context": true,
+          "webkit:desktop:zoom-out:cmb:mapCenter": true,
+          "webkit:desktop:zoom-out:cmb:bounded": true,
+          "webkit:desktop:zoom-out:cmb:labels": true,
+          "webkit:desktop:zoom-out:exitClearsLabels": true,
+          "webkit:visibility:continueLabel": true,
+          "webkit:visibility:hidePauses": true,
+          "webkit:visibility:returnDoesNotResume": true,
+          "webkit:visibility:noPageErrors": true
+        },
+        "errors": [],
+        "status": "complete"
+      },
+      {
+        "runId": "mobile-ui",
+        "sourceCommit": "58a1d429e6cc313ae3e4ab657268e9234df25591",
+        "checks": {
+          "chrome:responsiveLayout": true,
+          "chrome:visit-galaxy-buttonTouchTarget": true,
+          "chrome:observer-buttonTouchTarget": true,
+          "chrome:tours-buttonTouchTarget": true,
+          "chrome:mobile-menu-buttonTouchTarget": true,
+          "chrome:compactSelection": true,
+          "chrome:distanceKept": true,
+          "chrome:boundedDetails": true,
+          "chrome:detailsVisible": true,
+          "chrome:nearbyIdentityAvailable": true,
+          "chrome:detailsScrollable": true,
+          "chrome:focusStaysReachable": true,
+          "chrome:closeStaysReachable": true,
+          "chrome:mapDragFoldsDetails": true,
+          "chrome:oneFingerOrbits": true,
+          "chrome:pinchZoomsCloser": true,
+          "chrome:twoFingersPan": true,
+          "chrome:touchKeepsSelection": true,
+          "chrome:oneModalAtATime": true,
+          "chrome:settingsRetained": true,
+          "chrome:measureCanStart": true,
+          "chrome:measureCanEnd": true,
+          "chrome:compactHome": true,
+          "chrome:sunActionReachable": true,
+          "chrome:compactCosmic": true,
+          "chrome:cosmicFrameReachable": true,
+          "chrome:touchFlightAvailable": true,
+          "chrome:autoFlyStarts": true,
+          "chrome:flightCanEnd": true,
+          "chrome:compactTour": true,
+          "chrome:tourCueVisible": true,
+          "chrome:tourOptionsTouchTarget": true,
+          "chrome:nextStopCollapsesDescription": true,
+          "chrome:touchPausesTour": true,
+          "chrome:tourExitReachable": true,
+          "chrome:exactDesiIdentityAvailable": true,
+          "chrome:newDetailsStartAtTop": true,
+          "chrome-375x812:noHorizontalOverflow": true,
+          "chrome-375x812:toolbarAccessible": true,
+          "chrome-375x812:selectionActionsReachable": true,
+          "chrome-375x812:expandedCloseReachable": true,
+          "chrome-430x932:noHorizontalOverflow": true,
+          "chrome-430x932:toolbarAccessible": true,
+          "chrome-430x932:selectionActionsReachable": true,
+          "chrome-430x932:expandedCloseReachable": true,
+          "chrome-874x402:noHorizontalOverflow": true,
+          "chrome-874x402:toolbarAccessible": true,
+          "chrome-874x402:selectionActionsReachable": true,
+          "chrome-874x402:expandedCloseReachable": true,
+          "chrome-402x874:noHorizontalOverflow": true,
+          "chrome-402x874:toolbarAccessible": true,
+          "chrome-402x874:selectionActionsReachable": true,
+          "chrome-402x874:expandedCloseReachable": true,
+          "chrome:searchReopensWithoutStaleVisit": true,
+          "chrome:searchKeyboardCloseReachable": true,
+          "chrome:searchInputAtLeast16px": true,
+          "chrome:clipboardFallbackAvailable": true,
+          "chrome:fallbackLinkAtLeast16px": true,
+          "chrome:preferencePersists": true,
+          "chrome-desktop:desktopHasOriginalLayout": true,
+          "chrome-desktop:originalControlsRestored": true,
+          "chrome-desktop:noDuplicateIds": true,
+          "chrome-desktop:desktopMenuHidden": true,
+          "chrome-desktop:desktopDetailsExpanded": true,
+          "webkit:responsiveLayout": true,
+          "webkit:visit-galaxy-buttonTouchTarget": true,
+          "webkit:observer-buttonTouchTarget": true,
+          "webkit:tours-buttonTouchTarget": true,
+          "webkit:mobile-menu-buttonTouchTarget": true,
+          "webkit:compactSelection": true,
+          "webkit:distanceKept": true,
+          "webkit:boundedDetails": true,
+          "webkit:detailsVisible": true,
+          "webkit:nearbyIdentityAvailable": true,
+          "webkit:detailsScrollable": true,
+          "webkit:focusStaysReachable": true,
+          "webkit:closeStaysReachable": true,
+          "webkit:mapDragFoldsDetails": true,
+          "webkit:oneModalAtATime": true,
+          "webkit:settingsRetained": true,
+          "webkit:measureCanStart": true,
+          "webkit:measureCanEnd": true,
+          "webkit:compactHome": true,
+          "webkit:sunActionReachable": true,
+          "webkit:compactCosmic": true,
+          "webkit:cosmicFrameReachable": true,
+          "webkit:touchFlightAvailable": true,
+          "webkit:autoFlyStarts": true,
+          "webkit:flightCanEnd": true,
+          "webkit:compactTour": true,
+          "webkit:tourCueVisible": true,
+          "webkit:tourOptionsTouchTarget": true,
+          "webkit:nextStopCollapsesDescription": true,
+          "webkit:touchPausesTour": true,
+          "webkit:tourExitReachable": true,
+          "webkit:exactDesiIdentityAvailable": true,
+          "webkit:newDetailsStartAtTop": true,
+          "webkit-375x812:noHorizontalOverflow": true,
+          "webkit-375x812:toolbarAccessible": true,
+          "webkit-375x812:selectionActionsReachable": true,
+          "webkit-375x812:expandedCloseReachable": true,
+          "webkit-430x932:noHorizontalOverflow": true,
+          "webkit-430x932:toolbarAccessible": true,
+          "webkit-430x932:selectionActionsReachable": true,
+          "webkit-430x932:expandedCloseReachable": true,
+          "webkit-874x402:noHorizontalOverflow": true,
+          "webkit-874x402:toolbarAccessible": true,
+          "webkit-874x402:selectionActionsReachable": true,
+          "webkit-874x402:expandedCloseReachable": true,
+          "webkit-402x874:noHorizontalOverflow": true,
+          "webkit-402x874:toolbarAccessible": true,
+          "webkit-402x874:selectionActionsReachable": true,
+          "webkit-402x874:expandedCloseReachable": true,
+          "webkit:searchReopensWithoutStaleVisit": true,
+          "webkit:searchKeyboardCloseReachable": true,
+          "webkit:searchInputAtLeast16px": true,
+          "webkit:clipboardFallbackAvailable": true,
+          "webkit:fallbackLinkAtLeast16px": true,
+          "webkit:preferencePersists": true,
+          "webkit-desktop:desktopHasOriginalLayout": true,
+          "webkit-desktop:originalControlsRestored": true,
+          "webkit-desktop:noDuplicateIds": true,
+          "webkit-desktop:desktopMenuHidden": true,
+          "webkit-desktop:desktopDetailsExpanded": true,
+          "all:sourceUnchanged": true,
+          "all:noBrowserErrors": true
+        },
+        "browsers": [
+          {
+            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+            "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+            "count": "14,140,375"
+          },
+          {
+            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.6 Safari/605.1.15",
+            "renderer": "Apple GPU",
+            "count": "14,140,375"
+          }
+        ],
+        "errors": [],
+        "chromeDesktopGeometry": {
+          ".topbar": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 100
+          },
+          ".rail": {
+            "x": 36,
+            "y": 318.5,
+            "width": 138,
+            "height": 363
+          },
+          ".footer": {
+            "x": 36,
+            "y": 802.71875,
+            "width": 1528,
+            "height": 170.28125
+          },
+          "#inspector": {
+            "x": 1264,
+            "y": 116,
+            "width": 300,
+            "height": 720
+          },
+          "#focus-button": {
+            "x": 1285,
+            "y": 241,
+            "width": 125,
+            "height": 42
+          },
+          "#close-inspector": {
+            "x": 1509,
+            "y": 131,
+            "width": 40,
+            "height": 40
+          },
+          "#galaxy-count": {
+            "x": 36,
+            "y": 822.71875,
+            "width": 255.625,
+            "height": 47.5
+          },
+          "#scale-label": {
+            "x": 1463.1875,
+            "y": 893.5,
+            "width": 100.8125,
+            "height": 15
+          },
+          "#status": {
+            "x": 696.859375,
+            "y": 930.21875,
+            "width": 206.28125,
+            "height": 40.78125
+          }
+        },
+        "webkitDesktopGeometry": {
+          ".topbar": {
+            "x": 0,
+            "y": 0,
+            "width": 1600,
+            "height": 100
+          },
+          ".rail": {
+            "x": 36,
+            "y": 318.5,
+            "width": 138,
+            "height": 363
+          },
+          ".footer": {
+            "x": 36,
+            "y": 802.71875,
+            "width": 1528,
+            "height": 170.28125
+          },
+          "#inspector": {
+            "x": 1264,
+            "y": 116,
+            "width": 300,
+            "height": 720
+          },
+          "#focus-button": {
+            "x": 1285,
+            "y": 241,
+            "width": 125,
+            "height": 42
+          },
+          "#close-inspector": {
+            "x": 1509,
+            "y": 131,
+            "width": 40,
+            "height": 40
+          },
+          "#galaxy-count": {
+            "x": 36,
+            "y": 822.71875,
+            "width": 255.609375,
+            "height": 47.5
+          },
+          "#scale-label": {
+            "x": 1463.1875,
+            "y": 893.5,
+            "width": 100.8125,
+            "height": 15
+          },
+          "#status": {
+            "x": 697,
+            "y": 930.21875,
+            "width": 206.28125,
+            "height": 40.78125
+          }
+        },
+        "status": "complete"
+      },
+      {
+        "sourceCommit": "58a1d429e6cc313ae3e4ab657268e9234df25591",
+        "status": "complete",
+        "checks": {
+          "chrome:visualCue": true,
+          "chrome:optionsPause": true,
+          "chrome:tenChapters": true,
+          "chrome:manualDisablesAutoplay": true,
+          "chrome:manualHoldsStop": true,
+          "chrome:chapterIdentity": true,
+          "chrome:chapterLandsPaused": true,
+          "chrome:explorationMovesCamera": true,
+          "chrome:returnRestoresFraming": true,
+          "chrome:returnKeepsManual": true,
+          "chrome:escapeClosesOnlyOptions": true,
+          "chrome:paceChangeDoesNotResume": true,
+          "chrome:relaxedHoldsLonger": true,
+          "chrome:quickAdvances": true,
+          "chrome:comaChapter": true,
+          "chrome:invitationKeepsAutoplay": true,
+          "chrome:fullCatalog": true,
+          "chrome:historyAvailable": true,
+          "chrome:backRestoresNamedView": true,
+          "chrome:backAfterSharedView": true,
+          "chrome:historyPanChangesTarget": true,
+          "chrome:backPreservesPanAndSelection": true,
+          "webkit:visualCue": true,
+          "webkit:optionsPause": true,
+          "webkit:tenChapters": true,
+          "webkit:manualDisablesAutoplay": true,
+          "webkit:manualHoldsStop": true,
+          "webkit:chapterIdentity": true,
+          "webkit:chapterLandsPaused": true,
+          "webkit:explorationMovesCamera": true,
+          "webkit:returnRestoresFraming": true,
+          "webkit:returnKeepsManual": true,
+          "webkit:escapeClosesOnlyOptions": true,
+          "webkit:paceChangeDoesNotResume": true,
+          "webkit:relaxedHoldsLonger": true,
+          "webkit:quickAdvances": true,
+          "webkit:comaChapter": true,
+          "webkit:compactPanel": true,
+          "webkit:mapCenterAvailable": true,
+          "webkit:landscapeCueDefersToDetails": true,
+          "webkit:landscapeDetailsRestoreCue": true,
+          "webkit:desktopCueRestored": true,
+          "webkit:invitationKeepsAutoplay": true,
+          "webkit:fullCatalog": true,
+          "webkit:historyAvailable": true,
+          "webkit:backRestoresNamedView": true,
+          "webkit:backAfterSharedView": true,
+          "webkit:historyPanChangesTarget": true,
+          "webkit:backPreservesPanAndSelection": true,
+          "webkit:noPageErrors": true
+        },
+        "errors": []
+      },
+      {
+        "runId": "m1-orientation-full",
+        "status": "complete",
+        "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+        "webmcpAvailable": false,
+        "firstCoarseMs": 570.9000000003725,
+        "rendering": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+          "width": 1600,
+          "height": 1000
+        },
+        "initial": {
+          "drawn": 65536,
+          "loaded": 134092,
+          "represented": 14140375,
+          "pending": 8,
+          "failed": 0,
+          "mode": "adaptive",
+          "complete": false,
+          "fps": 30.754090294009085,
+          "p95": 32.51600000000002,
+          "calls": 10,
+          "managedMiB": 44.45186901092529,
+          "blocked": false,
+          "focusDistance": 16099.112169655038,
+          "focusFromObserver": 1164.5694850205355,
+          "budget": 1000000,
+          "models": 0
+        },
+        "tours": {
+          "speed": 10,
+          "stops": [
+            {
+              "title": "The Sun",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 0,
+              "distanceError": 1.4456028966473392e-16,
+              "shell": false,
+              "resident": 2,
+              "passed": true
+            },
+            {
+              "title": "The Milky Way",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 5.421010862427522e-20,
+              "distanceError": 5.782411586589358e-16,
+              "shell": false,
+              "resident": 12,
+              "passed": true
+            },
+            {
+              "title": "The Local Group",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 0,
+              "distanceError": 0,
+              "shell": false,
+              "resident": 10,
+              "passed": true
+            },
+            {
+              "title": "The DESI survey",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 0,
+              "distanceError": 9.038955114428922e-16,
+              "shell": false,
+              "resident": 2,
+              "passed": true
+            },
+            {
+              "title": "The cosmic microwave background",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 0,
+              "distanceError": 5.828100875525421e-16,
+              "shell": true,
+              "resident": 2,
+              "passed": true
+            }
+          ],
+          "finished": {
+            "shell": true,
+            "checkbox": true,
+            "nextDisabled": true
+          },
+          "exitOff": {
+            "panelHidden": true,
+            "shell": false,
+            "checkbox": false,
+            "stored": "false",
+            "passed": true
+          },
+          "exitOn": {
+            "shellAtCmb": true,
+            "shellAfterPrev": true,
+            "shell": true,
+            "checkbox": true,
+            "stored": "true",
+            "passed": true
+          },
+          "wheel": {
+            "status": "Paused · drag or scroll moved the view",
+            "targetDriftMpc": 0,
+            "distanceDrift": 4.693096224802333e-15,
+            "playPressed": "false",
+            "passed": true
+          },
+          "escapeExits": true,
+          "roadTrip": {
+            "clusterFraming": {
+              "targetErrorMpc": 0,
+              "distanceError": 4.736951571734001e-16,
+              "outwardAlignment": 1.0000000000000002,
+              "observerBehind": true,
+              "passed": true
+            },
+            "arrived": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10
+            ],
+            "skipped": [],
+            "total": 10,
+            "passed": true
+          },
+          "pendingVisit": {
+            "skipped": false,
+            "status": "Paused",
+            "targetDriftMpc": 0,
+            "cameraDriftMpc": 0,
+            "passed": true,
+            "resumed": true
+          },
+          "maxResident": 12,
+          "removals": 279,
+          "visibleEvictions": [],
+          "passed": true
+        },
+        "tourContext": {
+          "supported": true,
+          "recovered": true
+        },
+        "toursAfterRecovery": {
+          "speed": 10,
+          "stops": [
+            {
+              "title": "The Sun",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 0,
+              "distanceError": 0,
+              "shell": false,
+              "resident": 6,
+              "passed": true
+            },
+            {
+              "title": "The Milky Way",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 5.421010862427522e-20,
+              "distanceError": 5.782411586589358e-16,
+              "shell": false,
+              "resident": 12,
+              "passed": true
+            },
+            {
+              "title": "The Local Group",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 0,
+              "distanceError": 1.8503717077085943e-16,
+              "shell": false,
+              "resident": 10,
+              "passed": true
+            },
+            {
+              "title": "The DESI survey",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 0,
+              "distanceError": 9.038955114428922e-16,
+              "shell": false,
+              "resident": 2,
+              "passed": true
+            },
+            {
+              "title": "The cosmic microwave background",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 0,
+              "distanceError": 5.828100875525421e-16,
+              "shell": true,
+              "resident": 2,
+              "passed": true
+            }
+          ],
+          "finished": {
+            "shell": true,
+            "checkbox": true,
+            "nextDisabled": true
+          },
+          "exitOff": {
+            "panelHidden": true,
+            "shell": false,
+            "checkbox": false,
+            "stored": "false",
+            "passed": true
+          },
+          "exitOn": {
+            "shellAtCmb": true,
+            "shellAfterPrev": true,
+            "shell": true,
+            "checkbox": true,
+            "stored": "true",
+            "passed": true
+          },
+          "wheel": {
+            "status": "Paused · drag or scroll moved the view",
+            "targetDriftMpc": 0,
+            "distanceDrift": 4.693096224802328e-15,
+            "playPressed": "false",
+            "passed": true
+          },
+          "escapeExits": true,
+          "roadTrip": {
+            "clusterFraming": {
+              "targetErrorMpc": 0,
+              "distanceError": 4.736951571734001e-16,
+              "outwardAlignment": 1.0000000000000002,
+              "observerBehind": true,
+              "passed": true
+            },
+            "arrived": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10
+            ],
+            "skipped": [],
+            "total": 10,
+            "passed": true
+          },
+          "pendingVisit": {
+            "skipped": false,
+            "status": "Paused",
+            "targetDriftMpc": 0,
+            "cameraDriftMpc": 0,
+            "passed": true,
+            "resumed": true
+          },
+          "maxResident": 12,
+          "removals": 256,
+          "visibleEvictions": [],
+          "passed": true
+        },
+        "share": {
+          "roundTrip": {
+            "hash": "#t=-0.165598269995,-91.0411029378,1161.00541583&c=9536.81208321,-11219.7789214,6507.47177443",
+            "targetError": 2.7719610927455667e-12,
+            "cameraError": 1.5548985341449727e-12,
+            "passed": true
+          },
+          "cases": {
+            "ngc3982": {
+              "hash": "#t=-9.47398874207,0.145953447399,13.5949675084&c=0.02,-0.01,0.015&g=desi:512:20296:39633325333155389",
+              "arrived": true,
+              "targetError": 2.9630819070991576e-16,
+              "cameraError": 2.9629378893927326e-16,
+              "identity": "{\"node\":\"512\",\"row\":20296,\"targetId\":\"39633325333155389\"}",
+              "messages": [],
+              "passed": true,
+              "modelResident": true,
+              "modelCentered": true
+            },
+            "residentRecord": {
+              "hash": "#t=-99.3362895187,-428.793107745,642.334007667&c=0.02,-0.00999999999999,0.015&g=desi:0:0:39633329527457229",
+              "arrived": true,
+              "targetError": 7.300081986856879e-17,
+              "cameraError": 7.299938275912623e-17,
+              "identity": "{\"node\":\"0\",\"row\":0,\"targetId\":\"39633329527457229\"}",
+              "messages": [],
+              "passed": true
+            },
+            "nonResidentLeaf": {
+              "hash": "#t=-3383.70811676,-3313.82184086,-508.048211429&c=0.02,-0.0100000000002,0.015&g=desi:6:0:39627643703793420",
+              "arrived": true,
+              "targetError": 1.1933626165918107e-17,
+              "cameraError": 1.1933648338723728e-17,
+              "identity": "{\"node\":\"6\",\"row\":0,\"targetId\":\"39627643703793420\"}",
+              "messages": [],
+              "passed": true,
+              "loadedIdFromChunk": true,
+              "allLeavesResident": false
+            },
+            "andromeda": {
+              "hash": "#t=0.579792710714,0.109391213942,0.51778386852&c=0.02,-0.01,0.015&g=nearby:m31",
+              "arrived": true,
+              "targetError": 0,
+              "cameraError": 0,
+              "identity": "\"nearby:m31\"",
+              "messages": [],
+              "passed": true
+            },
+            "core": {
+              "hash": "#t=-0.000444686272058,-0.00709405679403,-0.00392970812529&c=0.02,-0.01,0.015&g=core",
+              "arrived": true,
+              "targetError": 6.674477791710812e-18,
+              "cameraError": 7.165315482633028e-16,
+              "identity": "\"core\"",
+              "messages": [],
+              "passed": true,
+              "homeSelected": true,
+              "homeView": "galaxy"
+            },
+            "wrongTargetId": {
+              "hash": "#t=-99.3362895187,-428.793107745,642.334007667&c=0.02,-0.00999999999999,0.015&g=desi:0:0:1",
+              "arrived": true,
+              "targetError": 1.2841845213518678e-9,
+              "cameraError": 1.2841592406261862e-9,
+              "identity": "null",
+              "messages": [
+                "This link points to a galaxy this catalog does not contain."
+              ],
+              "passed": true,
+              "selectionEmpty": true
+            },
+            "rowBeyondChunk": {
+              "hash": "#t=-99.3362895187,-428.793107745,642.334007667&c=0.02,-0.00999999999999,0.015&g=desi:0:99999:39633329527457229",
+              "arrived": true,
+              "targetError": 1.2841845213518678e-9,
+              "cameraError": 1.2841592406261862e-9,
+              "identity": "null",
+              "messages": [
+                "This link points to a galaxy this catalog does not contain."
+              ],
+              "passed": true
+            },
+            "sixDigitRow": {
+              "decoded": null,
+              "passed": true
+            },
+            "hiddenLocalRecord": {
+              "hash": "#t=-0.088607762288,-0.0242409593399,0.0406698664464&c=0.02,-0.01,0.015&g=desi:701:0:39628351635193964",
+              "arrived": true,
+              "targetError": 0.000009953735155647954,
+              "cameraError": 0.000010553397408239,
+              "identity": "null",
+              "messages": [
+                "This uncertain local position is hidden. Show uncertain local positions in Settings to inspect it."
+              ],
+              "passed": true,
+              "targetId": "39628351635193964",
+              "distanceMpc": 0.10046479433456396,
+              "cameraOnlyMpc": 9.999999552728908e-7,
+              "selectionEmpty": true
+            }
+          },
+          "savedViews": {
+            "placeholder": "Andromeda · 1:38 PM",
+            "stored": {
+              "version": 1,
+              "views": [
+                {
+                  "name": "Probe view",
+                  "hash": "#t=0.579791710714,0.109391213942,0.51778386852&c=0.02,-0.01,0.015&g=nearby:m31",
+                  "savedAt": "2026-09-14T18:38:33.108Z"
+                }
+              ]
+            },
+            "listed": [
+              "Probe view"
+            ],
+            "closedOnOpen": true,
+            "opened": true,
+            "afterDelete": {
+              "rows": 0,
+              "emptyShown": true,
+              "stored": {
+                "version": 1,
+                "views": []
+              }
+            },
+            "passed": true
+          },
+          "travel": {
+            "cancel": {
+              "resolved": false,
+              "midwayCoreMpc": 925.1066110556559,
+              "driftMpc": 0,
+              "passed": true
+            },
+            "complete": {
+              "arrived": true,
+              "cameraError": 6.261816442434061e-16,
+              "targetError": 0,
+              "passed": true
+            },
+            "visitCatalog": {
+              "arrived": true,
+              "targetError": 7.300081986856879e-17,
+              "selected": "39633329527457229",
+              "passed": true
+            },
+            "stop": {
+              "resolved": false,
+              "cameraDriftMpc": 8.198074455012805e-13,
+              "targetDriftMpc": 0,
+              "travelCleared": true,
+              "passed": true
+            },
+            "hop": {
+              "removed": [
+                {
+                  "id": 1782408,
+                  "blend": 0
+                },
+                {
+                  "id": 2660565,
+                  "blend": 0
+                },
+                {
+                  "id": 2662069,
+                  "blend": 0
+                },
+                {
+                  "id": 2282202,
+                  "blend": 0
+                },
+                {
+                  "id": 2660100,
+                  "blend": 0
+                },
+                {
+                  "id": 13936295,
+                  "blend": 0
+                },
+                {
+                  "id": 13931838,
+                  "blend": 0
+                }
+              ],
+              "visibleEvictions": 0,
+              "peakResident": 6,
+              "passed": true
+            }
+          },
+          "passed": true
+        },
+        "shareContext": {
+          "supported": true,
+          "recovered": true
+        },
+        "shareAfterRecovery": {
+          "roundTrip": {
+            "hash": "#t=-0.165598269995,-91.0411029378,1161.00541583&c=9536.81208321,-11219.7789214,6507.47177443",
+            "targetError": 2.7719610927455667e-12,
+            "cameraError": 1.5548995380037285e-12,
+            "passed": true
+          },
+          "cases": {
+            "ngc3982": {
+              "hash": "#t=-9.47398874207,0.145953447399,13.5949675084&c=0.02,-0.01,0.015&g=desi:512:20296:39633325333155389",
+              "arrived": true,
+              "targetError": 2.9630819070991576e-16,
+              "cameraError": 2.9629378893927326e-16,
+              "identity": "{\"node\":\"512\",\"row\":20296,\"targetId\":\"39633325333155389\"}",
+              "messages": [],
+              "passed": true,
+              "modelResident": true,
+              "modelCentered": true
+            },
+            "residentRecord": {
+              "hash": "#t=-99.3362895187,-428.793107745,642.334007667&c=0.02,-0.00999999999999,0.015&g=desi:0:0:39633329527457229",
+              "arrived": true,
+              "targetError": 7.300081986856879e-17,
+              "cameraError": 7.299938275912623e-17,
+              "identity": "{\"node\":\"0\",\"row\":0,\"targetId\":\"39633329527457229\"}",
+              "messages": [],
+              "passed": true
+            },
+            "nonResidentLeaf": {
+              "hash": "#t=-2529.30424306,-3326.2956254,212.41407975&c=0.02,-0.0100000000002,0.015&g=desi:7:0:39627861111341096",
+              "arrived": true,
+              "targetError": 0,
+              "cameraError": 0,
+              "identity": "{\"node\":\"7\",\"row\":0,\"targetId\":\"39627861111341096\"}",
+              "messages": [],
+              "passed": true,
+              "loadedIdFromChunk": true,
+              "allLeavesResident": false
+            },
+            "andromeda": {
+              "hash": "#t=0.579792710714,0.109391213942,0.51778386852&c=0.02,-0.01,0.015&g=nearby:m31",
+              "arrived": true,
+              "targetError": 0,
+              "cameraError": 0,
+              "identity": "\"nearby:m31\"",
+              "messages": [],
+              "passed": true
+            },
+            "core": {
+              "hash": "#t=-0.000444686272058,-0.00709405679403,-0.00392970812529&c=0.02,-0.01,0.015&g=core",
+              "arrived": true,
+              "targetError": 6.674477791710812e-18,
+              "cameraError": 7.165315482633028e-16,
+              "identity": "\"core\"",
+              "messages": [],
+              "passed": true,
+              "homeSelected": true,
+              "homeView": "galaxy"
+            },
+            "wrongTargetId": {
+              "hash": "#t=-99.3362895187,-428.793107745,642.334007667&c=0.02,-0.00999999999999,0.015&g=desi:0:0:1",
+              "arrived": true,
+              "targetError": 1.2841845213518678e-9,
+              "cameraError": 1.2841592406261862e-9,
+              "identity": "null",
+              "messages": [
+                "This link points to a galaxy this catalog does not contain."
+              ],
+              "passed": true,
+              "selectionEmpty": true
+            },
+            "rowBeyondChunk": {
+              "hash": "#t=-99.3362895187,-428.793107745,642.334007667&c=0.02,-0.00999999999999,0.015&g=desi:0:99999:39633329527457229",
+              "arrived": true,
+              "targetError": 1.2841845213518678e-9,
+              "cameraError": 1.2841592406261862e-9,
+              "identity": "null",
+              "messages": [
+                "This link points to a galaxy this catalog does not contain."
+              ],
+              "passed": true
+            },
+            "sixDigitRow": {
+              "decoded": null,
+              "passed": true
+            },
+            "hiddenLocalRecord": {
+              "hash": "#t=-0.088607762288,-0.0242409593399,0.0406698664464&c=0.02,-0.01,0.015&g=desi:701:0:39628351635193964",
+              "arrived": true,
+              "targetError": 0.000009953735155647954,
+              "cameraError": 0.000010553397408239,
+              "identity": "null",
+              "messages": [
+                "This uncertain local position is hidden. Show uncertain local positions in Settings to inspect it."
+              ],
+              "passed": true,
+              "targetId": "39628351635193964",
+              "distanceMpc": 0.10046479433456396,
+              "cameraOnlyMpc": 9.999999552728908e-7,
+              "selectionEmpty": true
+            }
+          },
+          "savedViews": {
+            "placeholder": "Andromeda · 1:38 PM",
+            "stored": {
+              "version": 1,
+              "views": [
+                {
+                  "name": "Probe view",
+                  "hash": "#t=0.579791710714,0.109391213942,0.51778386852&c=0.02,-0.01,0.015&g=nearby:m31",
+                  "savedAt": "2026-09-14T18:38:43.679Z"
+                }
+              ]
+            },
+            "listed": [
+              "Probe view"
+            ],
+            "closedOnOpen": true,
+            "opened": true,
+            "afterDelete": {
+              "rows": 0,
+              "emptyShown": true,
+              "stored": {
+                "version": 1,
+                "views": []
+              }
+            },
+            "passed": true
+          },
+          "travel": {
+            "cancel": {
+              "resolved": false,
+              "midwayCoreMpc": 925.2509647117889,
+              "driftMpc": 0,
+              "passed": true
+            },
+            "complete": {
+              "arrived": true,
+              "cameraError": 0,
+              "targetError": 0,
+              "passed": true
+            },
+            "visitCatalog": {
+              "arrived": true,
+              "targetError": 7.300081986856879e-17,
+              "selected": "39633329527457229",
+              "passed": true
+            },
+            "stop": {
+              "resolved": false,
+              "cameraDriftMpc": 0,
+              "targetDriftMpc": 0,
+              "travelCleared": true,
+              "passed": true
+            },
+            "hop": {
+              "removed": [
+                {
+                  "id": 1782408,
+                  "blend": 0
+                },
+                {
+                  "id": 2642551,
+                  "blend": 0
+                },
+                {
+                  "id": 2662239,
+                  "blend": 0
+                },
+                {
+                  "id": 2660310,
+                  "blend": 0
+                },
+                {
+                  "id": 2660565,
+                  "blend": 0
+                },
+                {
+                  "id": 2662069,
+                  "blend": 0
+                }
+              ],
+              "visibleEvictions": 0,
+              "peakResident": 5,
+              "passed": true
+            }
+          },
+          "passed": true
+        },
+        "observerPass": {
+          "galaxy": "NGC 3982",
+          "samples": [
+            {
+              "radiusMultiple": 60,
+              "blend": 1,
+              "brightFraction": 0.002838134765625,
+              "bodyIntercepts": false
+            },
+            {
+              "radiusMultiple": 24,
+              "blend": 1,
+              "brightFraction": 0.017791748046875,
+              "bodyIntercepts": false
+            },
+            {
+              "radiusMultiple": 12,
+              "blend": 0.7920833213002185,
+              "brightFraction": 0.0594329833984375,
+              "bodyIntercepts": false
+            },
+            {
+              "radiusMultiple": 6,
+              "blend": 0,
+              "brightFraction": 0,
+              "bodyIntercepts": false
+            },
+            {
+              "radiusMultiple": 2,
+              "blend": 0,
+              "brightFraction": 0,
+              "bodyIntercepts": false
+            },
+            {
+              "radiusMultiple": 0.25,
+              "blend": 0,
+              "brightFraction": 0,
+              "bodyIntercepts": false
+            },
+            {
+              "radiusMultiple": 0,
+              "blend": 0,
+              "brightFraction": 0,
+              "bodyIntercepts": false
+            },
+            {
+              "radiusMultiple": -2,
+              "blend": 0,
+              "brightFraction": 0,
+              "bodyIntercepts": false
+            }
+          ],
+          "deliberate": true,
+          "pointsOnly": true,
+          "stablePointHorizon": true,
+          "focusedOnly": true,
+          "observerClearsFocus": true,
+          "overviewClearsFocus": true,
+          "passed": true
+        },
+        "ui": {
+          "focusReachable": true,
+          "closeReachableAfterScroll": true,
+          "retryReachable": true,
+          "cancelledVisitStable": true,
+          "searchReusable": true,
+          "reopenedVisitStable": true,
+          "speedEditable": true,
+          "automaticWithFreePointer": true,
+          "escapeKeepsSpeedMenu": true,
+          "passed": true
+        },
+        "searchAvailability": {
+          "recognized": {
+            "status": "1 name match · no visit location",
+            "visitOptions": 0,
+            "activeOption": null,
+            "explanation": "Location unavailable in this atlasSombrero GalaxyNGC 4594 · M 104We recognize these names, but this atlas has no verified 3D visit location for them yet. They cannot be visited in the current dataset."
+          },
+          "unavailableStable": true,
+          "browseWorks": true,
+          "mixedHasOnlyVisitsInList": true,
+          "noMatch": {
+            "status": "No name matches. Try an NGC, IC, UGC or Messier name.",
+            "visitOptions": 0,
+            "unavailableHidden": true,
+            "activeOption": null
+          },
+          "passed": true
+        },
+        "nearbySearch": {
+          "cases": [
+            {
+              "query": "Andromeda",
+              "available": true,
+              "closed": true,
+              "selectedId": -1,
+              "passed": true
+            },
+            {
+              "query": "M33",
+              "available": true,
+              "closed": true,
+              "selectedId": -2,
+              "passed": true
+            },
+            {
+              "query": "LMC",
+              "available": true,
+              "closed": true,
+              "selectedId": -3,
+              "passed": true
+            },
+            {
+              "query": "SMC",
+              "available": true,
+              "closed": true,
+              "selectedId": -4,
+              "passed": true
+            },
+            {
+              "query": "M32",
+              "available": true,
+              "closed": true,
+              "selectedId": -5,
+              "passed": true
+            },
+            {
+              "query": "M110",
+              "available": true,
+              "closed": true,
+              "selectedId": -6,
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        "nearby": {
+          "cases": [
+            {
+              "name": "Andromeda",
+              "id": -1,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 0,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:m31"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 1194,
+                  "axisRatio": 0.27029043889170745,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 2536,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9649921745221014,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.27000000000000013,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "Triangulum",
+              "id": -2,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 1.2412670766236366e-16,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:m33"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 2398,
+                  "axisRatio": 0.5918368316078025,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 3276,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9530073950466386,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.591560637783862,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "Large Magellanic Cloud",
+              "id": -3,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 0,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:lmc"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 2724,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 2724,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9986629549174523,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 1,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "Small Magellanic Cloud",
+              "id": -4,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 1.5540063044689707e-17,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:smc"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 1607,
+                  "axisRatio": 0.5999423149983254,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 2072,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9457124708708851,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.5997932782075219,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "M32",
+              "id": -5,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 1.1443916996305594e-16,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:m32"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 1338,
+                  "axisRatio": 0.7502485958686004,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 1428,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9695579660206602,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.7500000000000001,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "M110",
+              "id": -6,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 0,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:m110"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 1141,
+                  "axisRatio": 0.5686672543565017,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 1296,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9874377046669676,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.5699999999999998,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            }
+          ],
+          "measurement": {
+            "distanceMpc": 0.2064522546487897,
+            "expectedMpc": 0.2064522546487897,
+            "preserved": true,
+            "markersVisible": true,
+            "localCaption": true
+          },
+          "countUnchanged": true,
+          "modelCount": 6,
+          "geometryBytes": 4095984,
+          "passed": true
+        },
+        "nearbyContext": {
+          "supported": true,
+          "recovered": true
+        },
+        "nearbyAfterRecovery": {
+          "cases": [
+            {
+              "name": "Andromeda",
+              "id": -1,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 0,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:m31"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 1194,
+                  "axisRatio": 0.27029043889170745,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 2536,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9649921745221014,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.27000000000000013,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "Triangulum",
+              "id": -2,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 1.2412670766236366e-16,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:m33"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 2398,
+                  "axisRatio": 0.5918368316078025,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 3276,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9530073950466386,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.591560637783862,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "Large Magellanic Cloud",
+              "id": -3,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 0,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:lmc"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 2724,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 2724,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9986629549174523,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 1,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "Small Magellanic Cloud",
+              "id": -4,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 1.5540063044689707e-17,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:smc"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 1607,
+                  "axisRatio": 0.5999423149983254,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 2072,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9457124708708851,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.5997932782075219,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "M32",
+              "id": -5,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 1.1443916996305594e-16,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:m32"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 1338,
+                  "axisRatio": 0.7502485958686004,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 1428,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9695579660206602,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.7500000000000001,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "M110",
+              "id": -6,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 0,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:m110"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 1141,
+                  "axisRatio": 0.5686672543565017,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 1296,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9874377046669676,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.5699999999999998,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            }
+          ],
+          "measurement": {
+            "distanceMpc": 0.2064522546487897,
+            "expectedMpc": 0.2064522546487897,
+            "preserved": true,
+            "markersVisible": true,
+            "localCaption": true
+          },
+          "countUnchanged": true,
+          "modelCount": 6,
+          "geometryBytes": 4095984,
+          "passed": true
+        },
+        "localPositions": {
+          "candidateCount": 1107,
+          "exampleTargetId": "2305843034832594809",
+          "rotations": [
+            {
+              "angle": 0,
+              "hidden": {
+                "covered": 0,
+                "amber": 0
+              },
+              "raw": {
+                "covered": 10950,
+                "amber": 10950
+              },
+              "hiddenPick": {
+                "covered": 0,
+                "amber": 0
+              },
+              "rawPick": {
+                "covered": 11136,
+                "amber": 11020
+              },
+              "withoutFading": {
+                "covered": 0,
+                "amber": 0
+              }
+            },
+            {
+              "angle": 1.5707963267948966,
+              "hidden": {
+                "covered": 0,
+                "amber": 0
+              },
+              "raw": {
+                "covered": 10238,
+                "amber": 10238
+              },
+              "hiddenPick": {
+                "covered": 0,
+                "amber": 0
+              },
+              "rawPick": {
+                "covered": 10425,
+                "amber": 10355
+              },
+              "withoutFading": {
+                "covered": 0,
+                "amber": 0
+              }
+            },
+            {
+              "angle": 3.141592653589793,
+              "hidden": {
+                "covered": 0,
+                "amber": 0
+              },
+              "raw": {
+                "covered": 8729,
+                "amber": 8729
+              },
+              "hiddenPick": {
+                "covered": 0,
+                "amber": 0
+              },
+              "rawPick": {
+                "covered": 8872,
+                "amber": 8777
+              },
+              "withoutFading": {
+                "covered": 0,
+                "amber": 0
+              }
+            },
+            {
+              "angle": 4.71238898038469,
+              "hidden": {
+                "covered": 0,
+                "amber": 0
+              },
+              "raw": {
+                "covered": 9956,
+                "amber": 9956
+              },
+              "hiddenPick": {
+                "covered": 0,
+                "amber": 0
+              },
+              "rawPick": {
+                "covered": 10136,
+                "amber": 10061
+              },
+              "withoutFading": {
+                "covered": 0,
+                "amber": 0
+              }
+            }
+          ],
+          "outsideGuard": {
+            "covered": 16,
+            "amber": 0
+          },
+          "outsideGuardPick": {
+            "covered": 16,
+            "amber": 0
+          },
+          "passed": true
+        },
+        "localInteraction": {
+          "node": "701",
+          "nodeCenter": [
+            75.27442906067417,
+            -17.445578152133237,
+            -14.18009294267876
+          ],
+          "targetId": "39628351635193964",
+          "hidden": {
+            "covered": 0,
+            "amber": 0,
+            "code": 0
+          },
+          "hiddenPick": {
+            "covered": 0,
+            "amber": 0,
+            "code": 0
+          },
+          "raw": {
+            "covered": 4,
+            "amber": 4,
+            "code": 923607607
+          },
+          "rawPick": {
+            "covered": 32,
+            "amber": 0,
+            "code": 46006272
+          },
+          "expectedCode": 46006272,
+          "visitRejected": true,
+          "modelWithheld": true,
+          "rawVisitable": true,
+          "rawAnnotated": true,
+          "hiddenAnnotated": true,
+          "recordPreserved": true,
+          "warning": true,
+          "persistedOn": true,
+          "persistedOff": true,
+          "passed": true
+        },
+        "homeNavigation": {
+          "observer": [
+            {
+              "distanceMpc": 0.05999999999999996,
+              "targetErrorMpc": 5.421010862427522e-20,
+              "centerOffsetPx": 4.933455200984228e-13
+            },
+            {
+              "distanceMpc": 0.0414725947916218,
+              "targetErrorMpc": 5.421010862427522e-20,
+              "centerOffsetPx": 5.014429275138551e-14
+            },
+            {
+              "distanceMpc": 0.02866626864583432,
+              "targetErrorMpc": 5.421010862427522e-20,
+              "centerOffsetPx": 1.2669558229421662e-13
+            },
+            {
+              "distanceMpc": 0.019814409062274354,
+              "targetErrorMpc": 5.421010862427522e-20,
+              "centerOffsetPx": 1.5743194216804707e-13
+            }
+          ],
+          "galaxyView": [
+            {
+              "distanceMpc": 0.05999999999999996,
+              "targetErrorMpc": 5.421010862427522e-20,
+              "centerOffsetPx": 4.933455200984228e-13
+            },
+            {
+              "distanceMpc": 0.0414725947916218,
+              "targetErrorMpc": 5.421010862427522e-20,
+              "centerOffsetPx": 5.014429275138551e-14
+            },
+            {
+              "distanceMpc": 0.02866626864583432,
+              "targetErrorMpc": 5.421010862427522e-20,
+              "centerOffsetPx": 1.2669558229421662e-13
+            },
+            {
+              "distanceMpc": 0.019814409062274354,
+              "targetErrorMpc": 5.421010862427522e-20,
+              "centerOffsetPx": 1.5743194216804707e-13
+            }
+          ],
+          "search": [
+            {
+              "distanceMpc": 0.05999999999999996,
+              "targetErrorMpc": 5.421010862427522e-20,
+              "centerOffsetPx": 4.933455200984228e-13
+            },
+            {
+              "distanceMpc": 0.0414725947916218,
+              "targetErrorMpc": 5.421010862427522e-20,
+              "centerOffsetPx": 5.014429275138551e-14
+            },
+            {
+              "distanceMpc": 0.02866626864583432,
+              "targetErrorMpc": 5.421010862427522e-20,
+              "centerOffsetPx": 1.2669558229421662e-13
+            },
+            {
+              "distanceMpc": 0.019814409062274354,
+              "targetErrorMpc": 5.421010862427522e-20,
+              "centerOffsetPx": 1.5743194216804707e-13
+            }
+          ],
+          "solarTargetErrorMpc": 0,
+          "sunOffsetPx": 5.651447846182933e-13,
+          "coreControlActive": true,
+          "solarControlActive": true,
+          "coreLabeled": true,
+          "sunLabeled": true,
+          "passed": true
+        },
+        "home": {
+          "arrival": {
+            "visible": true,
+            "blend": 1,
+            "focusAtSun": true,
+            "cameraDistance": 0.05999999999999996,
+            "centerNdc": [
+              0.15135869555311132,
+              -0.08983219660524,
+              0.0015892965182614644
+            ],
+            "sunNdc": [
+              -4.369669639567559e-16,
+              -8.88114735659583e-16,
+              0.0016666662325847592
+            ]
+          },
+          "bodyPicking": true,
+          "views": {
+            "outside": {
+              "visible": true,
+              "blend": 1,
+              "litPixels": 9260
+            },
+            "nearSun": {
+              "visible": true,
+              "blend": 1,
+              "litPixels": 65536
+            },
+            "inside": {
+              "visible": true,
+              "blend": 1,
+              "litPixels": 65536
+            },
+            "points": {
+              "visible": false,
+              "blend": 0,
+              "litPixels": 0
+            },
+            "focused": {
+              "visible": true,
+              "blend": 1,
+              "litPixels": 65536
+            },
+            "noFocus": {
+              "visible": false,
+              "blend": 0,
+              "litPixels": 0
+            },
+            "sunMarkerWithinClip": true
+          },
+          "catalogUnchanged": true,
+          "memoryBytes": 2446676,
+          "passed": true
+        },
+        "homeAppearance": {
+          "views": [
+            {
+              "name": "face",
+              "litPixels": 21034,
+              "clippedPixels": 0,
+              "peak": 217,
+              "mean": 14.291009048464966,
+              "drawCalls": 1
+            },
+            {
+              "name": "inclined",
+              "litPixels": 15221,
+              "clippedPixels": 0,
+              "peak": 236,
+              "mean": 12.188150164796005,
+              "drawCalls": 1
+            },
+            {
+              "name": "reverse",
+              "litPixels": 15221,
+              "clippedPixels": 0,
+              "peak": 236,
+              "mean": 12.188166525269613,
+              "drawCalls": 1
+            },
+            {
+              "name": "edge",
+              "litPixels": 3038,
+              "clippedPixels": 0,
+              "peak": 234,
+              "mean": 3.460129312133769,
+              "drawCalls": 1
+            }
+          ],
+          "inside": {
+            "litPixels": 65536,
+            "clippedPixels": 0,
+            "peak": 184,
+            "mean": 165.7226769349617,
+            "drawCalls": 1
+          },
+          "sun": {
+            "litPixels": 65536,
+            "clippedPixels": 0,
+            "peak": 215,
+            "mean": 104.67557301635287,
+            "drawCalls": 1
+          },
+          "dustDifference": 1.7548014322916667,
+          "repeatError": 0,
+          "smallOrbitDifference": 0.033564249674479164,
+          "memoryBytes": 2446676,
+          "passed": true
+        },
+        "homePerformance": {
+          "drawn": 184181,
+          "loaded": 8700250,
+          "represented": 184181,
+          "pending": 0,
+          "failed": 0,
+          "mode": "adaptive",
+          "complete": true,
+          "fps": 54.75451724767279,
+          "p95": 16.80000000000291,
+          "calls": 18,
+          "managedMiB": 375.9660596847534,
+          "blocked": false,
+          "focusDistance": 0.059999999999992816,
+          "focusFromObserver": 0,
+          "budget": 723987,
+          "models": 4
+        },
+        "homeContext": {
+          "supported": true,
+          "recovered": true
+        },
+        "homeAfterRecovery": {
+          "arrival": {
+            "visible": true,
+            "blend": 1,
+            "focusAtSun": true,
+            "cameraDistance": 0.05999999999999996,
+            "centerNdc": [
+              0.15135869555311132,
+              -0.08983219660524,
+              0.0015892965182614644
+            ],
+            "sunNdc": [
+              -4.369669639567559e-16,
+              -8.88114735659583e-16,
+              0.0016666662325847592
+            ]
+          },
+          "bodyPicking": true,
+          "views": {
+            "outside": {
+              "visible": true,
+              "blend": 1,
+              "litPixels": 9260
+            },
+            "nearSun": {
+              "visible": true,
+              "blend": 1,
+              "litPixels": 65536
+            },
+            "inside": {
+              "visible": true,
+              "blend": 1,
+              "litPixels": 65536
+            },
+            "points": {
+              "visible": false,
+              "blend": 0,
+              "litPixels": 0
+            },
+            "focused": {
+              "visible": true,
+              "blend": 1,
+              "litPixels": 65536
+            },
+            "noFocus": {
+              "visible": false,
+              "blend": 0,
+              "litPixels": 0
+            },
+            "sunMarkerWithinClip": true
+          },
+          "catalogUnchanged": true,
+          "memoryBytes": 2446676,
+          "passed": true
+        },
+        "homeAppearanceAfterRecovery": {
+          "views": [
+            {
+              "name": "face",
+              "litPixels": 21034,
+              "clippedPixels": 0,
+              "peak": 217,
+              "mean": 14.291009048464966,
+              "drawCalls": 1
+            },
+            {
+              "name": "inclined",
+              "litPixels": 15221,
+              "clippedPixels": 0,
+              "peak": 236,
+              "mean": 12.188150164796005,
+              "drawCalls": 1
+            },
+            {
+              "name": "reverse",
+              "litPixels": 15221,
+              "clippedPixels": 0,
+              "peak": 236,
+              "mean": 12.188166525269613,
+              "drawCalls": 1
+            },
+            {
+              "name": "edge",
+              "litPixels": 3038,
+              "clippedPixels": 0,
+              "peak": 234,
+              "mean": 3.460129312133769,
+              "drawCalls": 1
+            }
+          ],
+          "inside": {
+            "litPixels": 65536,
+            "clippedPixels": 0,
+            "peak": 184,
+            "mean": 165.7226769349617,
+            "drawCalls": 1
+          },
+          "sun": {
+            "litPixels": 65536,
+            "clippedPixels": 0,
+            "peak": 215,
+            "mean": 104.67557301635287,
+            "drawCalls": 1
+          },
+          "dustDifference": 1.7548014322916667,
+          "repeatError": 0,
+          "smallOrbitDifference": 0.033564249674479164,
+          "memoryBytes": 2446676,
+          "passed": true
+        },
+        "sourceCommit": "58a1d429e6cc313ae3e4ab657268e9234df25591",
+        "pageErrors": []
+      },
+      {
+        "runId": "m1-orientation-subset",
+        "status": "complete",
+        "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+        "webmcpAvailable": false,
+        "firstCoarseMs": 552.6999999992549,
+        "rendering": {
+          "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M3 Max, Unspecified Version)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+          "width": 1600,
+          "height": 1000
+        },
+        "initial": {
+          "drawn": 516638,
+          "loaded": 582952,
+          "represented": 1000000,
+          "pending": 9,
+          "failed": 0,
+          "mode": "adaptive",
+          "complete": false,
+          "fps": 40.01440518586689,
+          "p95": 33.182000000000016,
+          "calls": 45,
+          "managedMiB": 55.831045150756836,
+          "blocked": false,
+          "focusDistance": 16069.490014018393,
+          "focusFromObserver": 1150.0174863046352,
+          "budget": 1000000,
+          "models": 0
+        },
+        "tours": {
+          "speed": 10,
+          "stops": [
+            {
+              "title": "The Sun",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 0,
+              "distanceError": 1.4456028966473392e-16,
+              "shell": false,
+              "resident": 0,
+              "passed": true
+            },
+            {
+              "title": "The Milky Way",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 5.421010862427522e-20,
+              "distanceError": 3.469446951953614e-16,
+              "shell": false,
+              "resident": 0,
+              "passed": true
+            },
+            {
+              "title": "The Local Group",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 0,
+              "distanceError": 0,
+              "shell": false,
+              "resident": 0,
+              "passed": true
+            },
+            {
+              "title": "The DESI survey",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 0,
+              "distanceError": 1.1319521664713932e-16,
+              "shell": false,
+              "resident": 0,
+              "passed": true
+            },
+            {
+              "title": "The cosmic microwave background",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 0,
+              "distanceError": 5.828100875525421e-16,
+              "shell": true,
+              "resident": 0,
+              "passed": true
+            }
+          ],
+          "finished": {
+            "shell": true,
+            "checkbox": true,
+            "nextDisabled": true
+          },
+          "exitOff": {
+            "panelHidden": true,
+            "shell": false,
+            "checkbox": false,
+            "stored": "false",
+            "passed": true
+          },
+          "exitOn": {
+            "shellAtCmb": true,
+            "shellAfterPrev": true,
+            "shell": true,
+            "checkbox": true,
+            "stored": "true",
+            "passed": true
+          },
+          "wheel": {
+            "status": "Paused · drag or scroll moved the view",
+            "targetDriftMpc": 0,
+            "distanceDrift": 3.0278040160014773e-16,
+            "playPressed": "false",
+            "passed": true
+          },
+          "escapeExits": true,
+          "roadTrip": {
+            "clusterFraming": {
+              "targetErrorMpc": 0,
+              "distanceError": 4.736951571734001e-16,
+              "outwardAlignment": 1.0000000000000002,
+              "observerBehind": true,
+              "passed": true
+            },
+            "arrived": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              9,
+              10
+            ],
+            "skipped": [
+              "NGC 3982 is not available in this dataset; skipping.",
+              "NGC 4026 is not available in this dataset; skipping."
+            ],
+            "total": 10,
+            "passed": true
+          },
+          "pendingVisit": {
+            "skipped": true,
+            "passed": true
+          },
+          "maxResident": 0,
+          "removals": 0,
+          "visibleEvictions": [],
+          "passed": true
+        },
+        "tourContext": {
+          "supported": true,
+          "recovered": true
+        },
+        "toursAfterRecovery": {
+          "speed": 10,
+          "stops": [
+            {
+              "title": "The Sun",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 0,
+              "distanceError": 0,
+              "shell": false,
+              "resident": 0,
+              "passed": true
+            },
+            {
+              "title": "The Milky Way",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 5.421010862427522e-20,
+              "distanceError": 5.782411586589358e-16,
+              "shell": false,
+              "resident": 0,
+              "passed": true
+            },
+            {
+              "title": "The Local Group",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 0,
+              "distanceError": 0,
+              "shell": false,
+              "resident": 0,
+              "passed": true
+            },
+            {
+              "title": "The DESI survey",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 0,
+              "distanceError": 1.1319521664713932e-16,
+              "shell": false,
+              "resident": 0,
+              "passed": true
+            },
+            {
+              "title": "The cosmic microwave background",
+              "status": "Arrived · continuing shortly",
+              "targetErrorMpc": 0,
+              "distanceError": 7.770801167367227e-16,
+              "shell": true,
+              "resident": 0,
+              "passed": true
+            }
+          ],
+          "finished": {
+            "shell": true,
+            "checkbox": true,
+            "nextDisabled": true
+          },
+          "exitOff": {
+            "panelHidden": true,
+            "shell": false,
+            "checkbox": false,
+            "stored": "false",
+            "passed": true
+          },
+          "exitOn": {
+            "shellAtCmb": true,
+            "shellAfterPrev": true,
+            "shell": true,
+            "checkbox": true,
+            "stored": "true",
+            "passed": true
+          },
+          "wheel": {
+            "status": "Paused · drag or scroll moved the view",
+            "targetDriftMpc": 0,
+            "distanceDrift": 3.0278040160014773e-16,
+            "playPressed": "false",
+            "passed": true
+          },
+          "escapeExits": true,
+          "roadTrip": {
+            "clusterFraming": {
+              "targetErrorMpc": 0,
+              "distanceError": 4.736951571734001e-16,
+              "outwardAlignment": 1.0000000000000002,
+              "observerBehind": true,
+              "passed": true
+            },
+            "arrived": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              9,
+              10
+            ],
+            "skipped": [
+              "NGC 3982 is not available in this dataset; skipping.",
+              "NGC 4026 is not available in this dataset; skipping."
+            ],
+            "total": 10,
+            "passed": true
+          },
+          "pendingVisit": {
+            "skipped": true,
+            "passed": true
+          },
+          "maxResident": 0,
+          "removals": 0,
+          "visibleEvictions": [],
+          "passed": true
+        },
+        "nearbySearch": {
+          "cases": [
+            {
+              "query": "Andromeda",
+              "available": true,
+              "closed": true,
+              "selectedId": -1,
+              "passed": true
+            },
+            {
+              "query": "M33",
+              "available": true,
+              "closed": true,
+              "selectedId": -2,
+              "passed": true
+            },
+            {
+              "query": "LMC",
+              "available": true,
+              "closed": true,
+              "selectedId": -3,
+              "passed": true
+            },
+            {
+              "query": "SMC",
+              "available": true,
+              "closed": true,
+              "selectedId": -4,
+              "passed": true
+            },
+            {
+              "query": "M32",
+              "available": true,
+              "closed": true,
+              "selectedId": -5,
+              "passed": true
+            },
+            {
+              "query": "M110",
+              "available": true,
+              "closed": true,
+              "selectedId": -6,
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        "nearby": {
+          "cases": [
+            {
+              "name": "Andromeda",
+              "id": -1,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 0,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:m31"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 1194,
+                  "axisRatio": 0.27029043889170745,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 2536,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9649921745221014,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.27000000000000013,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "Triangulum",
+              "id": -2,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 1.2412670766236366e-16,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:m33"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 2398,
+                  "axisRatio": 0.5918368316078025,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 3276,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9530073950466386,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.591560637783862,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "Large Magellanic Cloud",
+              "id": -3,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 0,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:lmc"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 2724,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 2724,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9986629549174523,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 1,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "Small Magellanic Cloud",
+              "id": -4,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 1.5540063044689707e-17,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:smc"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 1607,
+                  "axisRatio": 0.5999423149983254,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 2072,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9457124708708851,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.5997932782075219,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "M32",
+              "id": -5,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 1.1443916996305594e-16,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:m32"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 1338,
+                  "axisRatio": 0.7502485958686004,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 1428,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9695579660206602,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.7500000000000001,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "M110",
+              "id": -6,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 0,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:m110"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 1141,
+                  "axisRatio": 0.5686672543565017,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 1296,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9874377046669676,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.5699999999999998,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            }
+          ],
+          "measurement": {
+            "distanceMpc": 0.2064522546487897,
+            "expectedMpc": 0.2064522546487897,
+            "preserved": true,
+            "markersVisible": true,
+            "localCaption": true
+          },
+          "countUnchanged": true,
+          "modelCount": 6,
+          "geometryBytes": 4095984,
+          "passed": true
+        },
+        "nearbyContext": {
+          "supported": true,
+          "recovered": true
+        },
+        "nearbyAfterRecovery": {
+          "cases": [
+            {
+              "name": "Andromeda",
+              "id": -1,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 0,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:m31"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 1194,
+                  "axisRatio": 0.27029043889170745,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 2536,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9649921745221014,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.27000000000000013,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "Triangulum",
+              "id": -2,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 1.2412670766236366e-16,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:m33"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 2398,
+                  "axisRatio": 0.5918368316078025,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 3276,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9530073950466386,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.591560637783862,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "Large Magellanic Cloud",
+              "id": -3,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 0,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:lmc"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 2724,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 2724,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9986629549174523,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 1,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "Small Magellanic Cloud",
+              "id": -4,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 1.5540063044689707e-17,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:smc"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 1607,
+                  "axisRatio": 0.5999423149983254,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 2072,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9457124708708851,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.5997932782075219,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "M32",
+              "id": -5,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 1.1443916996305594e-16,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:m32"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 1338,
+                  "axisRatio": 0.7502485958686004,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 1428,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9695579660206602,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.7500000000000001,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            },
+            {
+              "name": "M110",
+              "id": -6,
+              "arrived": {
+                "visible": true,
+                "centerErrorMpc": 0,
+                "sourceShown": true,
+                "redshiftHidden": true
+              },
+              "body": {
+                "available": true,
+                "passed": true,
+                "targetId": "nearby:m110"
+              },
+              "profile": {
+                "available": true,
+                "observed": {
+                  "litPixels": 1141,
+                  "axisRatio": 0.5686672543565017,
+                  "visible": true,
+                  "blend": 1
+                },
+                "faceOn": {
+                  "litPixels": 1296,
+                  "axisRatio": 1,
+                  "visible": true,
+                  "blend": 1
+                },
+                "inside": {
+                  "litPixels": 65536,
+                  "axisRatio": 0.9874377046669676,
+                  "visible": true,
+                  "blend": 1
+                },
+                "far": {
+                  "litPixels": 0,
+                  "axisRatio": null,
+                  "visible": false,
+                  "blend": 0
+                },
+                "expectedAxisRatio": 0.5699999999999998,
+                "passed": true
+              },
+              "pointPicked": true,
+              "passed": true
+            }
+          ],
+          "measurement": {
+            "distanceMpc": 0.2064522546487897,
+            "expectedMpc": 0.2064522546487897,
+            "preserved": true,
+            "markersVisible": true,
+            "localCaption": true
+          },
+          "countUnchanged": true,
+          "modelCount": 6,
+          "geometryBytes": 4095984,
+          "passed": true
+        },
+        "sourceCommit": "58a1d429e6cc313ae3e4ab657268e9234df25591",
+        "pageErrors": []
+      }
+    ]
+  }
+]
