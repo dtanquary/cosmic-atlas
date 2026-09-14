@@ -7,7 +7,7 @@ Dave authorized all four on 14 September 2026, without intermediate permission s
 | 1. Tour clarity | Released | Curated companion labels, place context, Continue, hidden-tab/reduced-motion behavior, all-stop phone review |
 | 2. Smoother arrivals | Released | Bounded cancellable next-stop preparation, useful destination readiness, measured transition investigation |
 | 3. Telescope photographs | Released | Source/rights manifest, lazy bounded comparison for supported targets, unsupported-image fallback |
-| 4. Sharing and custom trips | Implementing | Versioned paused stop links, local itinerary editor, validated bounded sharing and recipient preview |
+| 4. Sharing and custom trips | Verified; releasing | Versioned paused stop links, local itinerary editor, validated bounded sharing and recipient preview |
 
 ## Milestone 1 decisions
 
@@ -44,3 +44,11 @@ Milestone 2 is pushed and deployed. Initial alias propagation returned old/missi
 Milestone 3 source `240bd55` passes 113 tests, 221 photograph checks, 126 mobile checks, 50 tour/history checks and 493 all-stop assertions. Full/subset actual-GPU checks and context recovery pass. The calibrated field and exact Undo were checked in both engines; 28 captures were reviewed. The full package contains 3,070 files / 1,081.9 MiB, largest 3.24 MiB. Separate photograph rights, limits and reproduction steps are in `photographs.md`.
 
 Milestone 3 is pushed and deployed; hosted exact-byte verification passes, including every photo and credit asset. Milestone 4 implements versioned stop/trip codecs, local authoring and recipient preview. Nine new unit tests cover Unicode, strict schema/identity grammar, bounded persistence, link/file size limits, source caption separation and cancelled custom-view lookup ownership. Production checks follow.
+
+## Milestone 4 verification
+
+Final source `18256b1` passes 124 tests and the strict full-data package; full model validation covers all 14,140,375 records. The custom-trip production journey passes 83 Chrome/WebKit assertions: authoring/reordering, saved views, local persistence, Unicode/plain-text notes, fresh recipient previews, paused stop links, files and length fallback, blocked storage/clipboard, missing identities, subset skips, deferred lookup cancellation and graphics recovery. Camera-only arrivals now clear a previous selection; skipped-stop notices are repeated after the next successful arrival.
+
+Full/subset actual-GPU navigation, UI, home, share, nearby and continuity checks pass. The final production regressions pass 50 tour/history, 126 mobile, 30 legacy invitation, 221 photograph, 493 all-stop and 17 arrival assertions: **1,020 browser assertions** including the custom journey. Model source geometry, counts, saved display settings, the 12-model pool and 0.5% floor are preserved. The full package is 3,070 files / 1,081.9 MiB, largest 3.24 MiB. Physical iPhone and messaging-service transfer remain unmeasured.
+
+The final JSON decoder accepts valid field ordering/whitespace while retaining strict schema, UTF-8 and base64url validation. The 83-check trip journey reruns on `18256b1`; unchanged navigation/rendering GPU suites and other browser journeys remain attributed to `5b27527`. Six editor captures and twelve fresh editor/invitation captures were reviewed in Chrome/WebKit across desktop, portrait and landscape.

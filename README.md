@@ -4,7 +4,7 @@ A minimal 3D explorer of **14,140,375 accepted DESI DR1 galaxy observations**, p
 
 **[Open Cosmic Atlas](https://cosmic-atlas-754.pages.dev/) · [Start the Cosmic Road Trip](https://cosmic-atlas-754.pages.dev/#tour=road-trip)**
 
-Explore in your browser on desktop or phone—no installation needed. The road trip starts automatically; drag or zoom to pause and look around.
+Explore in your browser on desktop or phone—no installation needed. The road trip starts automatically; drag or zoom to pause and look around. Use Photo at supported stops to compare the illustration with credited observations. Tours → Create a trip lets you build and share your own itinerary; recipients preview it before starting.
 
 The Milky Way is a separate reference model around the Solar System. Its continuous stellar disk, soft barred center and fine dust lanes take visual cues from [Hubble images of Andromeda](https://esahubble.org/images/heic2501a/), while preserving the Milky Way’s adopted geometry. The texture, arm paths and lighting are illustrative. **Milky Way** takes you to a view centered on the Galactic core, so the galaxy stays centered as you zoom. **Sun / Observer** switches the focus to our location inside the disk.
 

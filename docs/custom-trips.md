@@ -27,8 +27,12 @@ The caller's generation lease guards pending metadata selection and camera movem
 
 No new animation loop, point frontier, per-record data work, geometry or model allocations are added. The full catalog, adopted dimensions, separate nearby references, 12-model DESI pool and 0.5% background floor remain unchanged.
 
-## Validation checkpoint
+## Validation
 
-Ten additional unit tests cover strict round trips, Unicode limits, malformed links/files, missing identities, bounded/blocked persistence, source-caption separation, custom companion/photo lookup and saved-view cancellation ownership. Production editor, recipient, subset, GPU and phone journeys follow before release. Operational deployment receipts remain ignored.
+Eleven additional unit tests cover strict round trips, Unicode limits, malformed links/files, missing identities, bounded/blocked persistence, source-caption separation, custom companion/photo lookup and saved-view cancellation ownership. Final source `18256b1` passes 124 total unit tests, strict build and full model validation. The custom production journey passes 83 assertions across Chrome 153 and WebKit 26.6, including editor persistence, fresh recipients, clipboard/file fallbacks, actual subset omissions, missing identity fallback, input cancellation while metadata/name lookup is held, consumed-link reloads and graphics recovery. Navigation/rendering source `5b27527` passes the full-data tour/UI/home/share/nearby/continuity suite and subset tour/share/nearby suite; all 937 existing phone/tour/photo/arrival assertions pass. The sole later runtime change accepts equivalent JSON member order/whitespace, with the complete custom-trip journey rerun. Operational deployment receipts remain ignored.
 
 Browser QA found two inherited arrival issues: camera-only views retained a previous selection, and a skipped-stop notice was immediately replaced by the next destination. Camera-only arrivals now clear the old selection; a bounded summary of skipped destinations is shown again after the next successful arrival. Exact source notices remain in the navigation lifecycle. Both behaviors have focused regressions and production reproduction evidence.
+
+The URL limit is tested through fresh Chrome/WebKit contexts and existing-tab navigation. No SMS, email, social-app truncation or physical-phone transfer guarantee is inferred from those browser round trips. File sharing remains the explicit fallback for longer trips.
+
+Preview review also exercises externally assembled JSON links: object-member order and insignificant whitespace do not change validity. The decoder verifies the base64url bytes independently, then validates and normalizes the JSON schema. The application continues to generate compact canonical links.
