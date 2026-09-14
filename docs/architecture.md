@@ -183,3 +183,7 @@ After camera arrival, the single tour timer checks usable destination representa
 ## Telescope photograph comparison
 
 An optional, credited photograph panel is available for supported tour destinations and verified selections. It pauses the tour and loads one bounded image only on demand. Phone panels preserve access to the map; close and Model return without resuming. The ten source images, separate rights, exact identity mapping, crop/orientation disclosures and sole calibrated NGC 4026 match are documented in [photographs](photographs.md). Match is reversible; stale camera lookups cannot navigate after closing or input takeover. Existing model geometry and catalog data are unchanged.
+
+## Custom trips and paused destination links
+
+Share can copy a versioned paused link to the current built-in stop. Tours → Create a trip and Share → My trips offer up to ten sourced destinations or saved camera views, reordering and short separate creator notes. Trips save locally and share through bounded validated links or JSON files; recipients see a preview and explicitly start. Existing road-trip autoplay links retain their behavior. Identity checks, cancellation, source-caption separation, limits and storage/file fallbacks are specified in [custom trips](custom-trips.md). Initial links are consumed once; camera-only or unavailable-identity views never invent catalog records.

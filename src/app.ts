@@ -178,7 +178,7 @@ function renderCosmicContext(){
 function renderTour(state:TourState){
  if(state.status==='travelling'||state.status==='idle')photoPanel?.close(false);
  element<HTMLButtonElement>('tour-photo').disabled=state.status==='travelling'||state.status==='preparing';
- text('tour-photo',photosForStop(state.stop).length?'Photo':'About view');
+ const hasPhoto=photosForStop(state.stop).length>0;text('tour-photo',hasPhoto?'Photo':'About');element('tour-photo').setAttribute('aria-label',hasPhoto?'See a photograph of this stop':'About this view');
  if(state.status==='travelling')element('toast').hidden=true;
  const active=state.status!=='idle'; // start() emits one idle state before travelling, so the runner is never dropped here
  element('tour-panel').hidden=!active;

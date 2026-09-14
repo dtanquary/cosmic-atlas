@@ -65,6 +65,11 @@ export async function probeShareViews(atlas:Explorer){
       cases.withdrawnNavigation={arrived,unchanged:encodeView(atlas.viewState())===beforeGuard,passed:arrived===false&&encodeView(atlas.viewState())===beforeGuard};
     }finally{release();atlas['metadataFor']=readMetadata}
     cases.andromeda=await apply('nearby:m31',atlas.resolvedFor(-1)!.center);
+    {const cameraOnly={target:[1,2,3] as Vec3,camera:[2,3,4] as Vec3,identity:null};
+      const arrived=await atlas.applyView(cameraOnly);await frame();
+      cases.cameraOnlyClearsSelection={arrived,identity:atlas.viewState().identity,passed:arrived&&atlas.selected===null&&encodeView(atlas.viewState())===encodeView(cameraOnly)};
+    }
+
     {const result=await apply('core',atlas.milkyWay.center);cases.core={...result,homeSelected:atlas.homeSelected,homeView:atlas.homeView,passed:result.passed&&atlas.homeSelected&&atlas.homeView==='galaxy'}}
     // Trust boundary: a wrong target ID and an out-of-range row fall back to the camera alone with the toast; a six-digit row never decodes.
     atlas.clearSelection();atlas.clearHomeSelection();

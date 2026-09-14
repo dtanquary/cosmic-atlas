@@ -684,6 +684,8 @@ export class Explorer {
     try{exact=await this.locate(state.identity,serial,canNavigate)}
     catch(error){if(!canNavigate()||serial!==this.selectionSerial||(error as Error).name==='AbortError')return false;this.onMessage(error instanceof DOMException?`This link's galaxy could not load: ${error.message}`:'This link points to a galaxy this catalog does not contain.')}
     if(!canNavigate()||serial!==this.selectionSerial)return false;
+    // A camera-only or unavailable identity must not retain the previous destination selection.
+    if(!exact)this.clearSelection();
     // Session history restores a possibly panned pose while still validating its
     // selection. Public links retain their established exact-object anchoring.
     const arrival=exact?this.focusAt(preserveTarget?target:exact.target,distance,direction,exact.galaxyId,exact.home,seconds):this.focusAt(target,distance,direction,null,false,seconds);
