@@ -226,3 +226,9 @@ M32/M110 now have two small, noninteractive labels at their measured centers. Th
 ## Ordered milestone 2 — verified
 
 Single-timer destination readiness, bounded preparation and partial-data recovery pass production Chrome/WebKit and actual-GPU checks. The phone Coma false partial was traced to global stride sampling and corrected by spending the bounded sample in intersecting spatial chunks. The withheld-detail network fixture passes Retry, Continue and Next; no geometry or rendering budget changed. Existing mobile/navigation/all-stop controls pass. Performance and allocation changes are documented separately in `performance.md`; physical-device follow-up remains pending.
+
+## Ordered milestone 3 — verified photograph comparisons
+
+Source `240bd55` passes 113 tests and strict TypeScript. The production photograph journey passes 221 Chrome/WebKit assertions; all 28 captures were reviewed. It covers every image/credit, no eager downloads, a single retained image, source links, phone Model return, map access, repeated responsive restoration, exact NGC 4026 vertical field/Undo, corrupt-byte retry and late response cancellation. A narrow desktop panel initially covered the map center at 874 px; its width now respects half the viewport.
+
+Full/subset tour/UI/home/share/nearby GPU checks and context recovery pass, including revoking a real metadata lookup's navigation lease before it selects or moves. Existing mobile, tour/history and all-stop journeys pass 126, 50 and 493 assertions. The isolated package is 3,070 files / 1,081.9 MiB, largest 3.24 MiB, with all catalog hashes preserved and ten photo hashes checked. Release audit passes. Evidence is in `milestone-results.json`; physical iPhone testing remains pending.
