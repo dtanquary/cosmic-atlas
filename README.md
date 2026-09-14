@@ -2,6 +2,10 @@
 
 A minimal 3D explorer of **14,140,375 accepted DESI DR1 galaxy observations**, plus six nearby galaxies with independently measured distances, built with TypeScript, Three.js and Vite. Browse the cosmic web, inspect catalog measurements, compare distances, fly through space, and approach galaxies to reveal procedural 3D models.
 
+**[Open Cosmic Atlas](https://cosmic-atlas-754.pages.dev/) · [Start the Cosmic Road Trip](https://cosmic-atlas-754.pages.dev/#tour=road-trip)**
+
+Explore in your browser on desktop or phone—no installation needed. The road trip starts automatically; drag or zoom to pause and look around.
+
 The Milky Way is a separate reference model around the Solar System. Its continuous stellar disk, soft barred center and fine dust lanes take visual cues from [Hubble images of Andromeda](https://esahubble.org/images/heic2501a/), while preserving the Milky Way’s adopted geometry. The texture, arm paths and lighting are illustrative. **Milky Way** takes you to a view centered on the Galactic core, so the galaxy stays centered as you zoom. **Sun / Observer** switches the focus to our location inside the disk.
 
 The project is being built collaboratively by Dave, **ChatGPT Astra** (through Codex) and **Claude Fable** (through Claude Code). Dave supplies the product direction, visual references and hands-on feedback; Astra and Fable implement and test the application, data tools and documentation, working from the shared instructions in [`AGENTS.md`](AGENTS.md).
