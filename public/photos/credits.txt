@@ -1,0 +1,74 @@
+Photographs in Cosmic Atlas
+
+Original code is MIT licensed; these photographs are separately licensed CC BY 4.0.
+Publisher-provided screen JPEGs are distributed unchanged. No organization endorses this app.
+
+Andromeda · Hubble mosaic
+NASA, ESA, B. Williams (University of Washington)
+Source: https://esahubble.org/images/heic2501a/
+License: https://creativecommons.org/licenses/by/4.0/
+Usage terms: https://esahubble.org/copyright/
+Asset: /photos/m31.8b501c90c67f.jpg
+
+Large Magellanic Cloud · VISTA
+ESO/VMC Survey
+Source: https://www.eso.org/public/images/eso1914a/
+License: https://creativecommons.org/licenses/by/4.0/
+Usage terms: https://www.eso.org/public/outreach/copyright/
+Asset: /photos/lmc.c26c476daad6.jpg
+
+Small Magellanic Cloud · VISTA
+ESO/VISTA VMC
+Source: https://www.eso.org/public/images/eso1714a/
+License: https://creativecommons.org/licenses/by/4.0/
+Usage terms: https://www.eso.org/public/outreach/copyright/
+Asset: /photos/smc.f5a5bcfd666a.jpg
+
+Triangulum · VST
+ESO
+Source: https://www.eso.org/public/images/eso1424a/
+License: https://creativecommons.org/licenses/by/4.0/
+Usage terms: https://www.eso.org/public/outreach/copyright/
+Asset: /photos/m33.ef20d3d1e617.jpg
+
+M32 · central core
+Tod R. Lauer/NASA/ESA
+Source: https://esahubble.org/images/opo9209a/
+License: https://creativecommons.org/licenses/by/4.0/
+Usage terms: https://esahubble.org/copyright/
+Asset: /photos/m32.f650d28f17fa.jpg
+
+M110 · central Hubble field
+ESA/Hubble & NASA, L.Ferrarese et al.
+Source: https://esahubble.org/images/potw1937a/
+License: https://creativecommons.org/licenses/by/4.0/
+Usage terms: https://esahubble.org/copyright/
+Asset: /photos/m110.066784d2f77a.jpg
+
+NGC 3982 · Hubble
+NASA, ESA, and the Hubble Heritage Team (STScI/AURA)
+Source: https://esahubble.org/images/opo1036a/
+License: https://creativecommons.org/licenses/by/4.0/
+Usage terms: https://esahubble.org/copyright/
+Asset: /photos/ngc3982.f4d9a89eae75.jpg
+
+Coma cluster · sky field
+NASA, ESA, and the Digitized Sky Survey 2. Acknowledgment: Davide De Martin (ESA/Hubble)
+Source: https://esahubble.org/images/heic0813e/
+License: https://creativecommons.org/licenses/by/4.0/
+Usage terms: https://esahubble.org/copyright/
+Asset: /photos/coma.f5e3bde1c9b9.jpg
+
+NGC 4026 · Legacy Surveys DR9
+Legacy Surveys / D. Lang (Perimeter Institute)
+Source: https://www.legacysurvey.org/viewer?ra=179.8544868&dec=50.9616574&layer=ls-dr9&zoom=14
+License: https://creativecommons.org/licenses/by/4.0/
+Usage terms: https://www.legacysurvey.org/acknowledgment/
+Asset: /photos/ngc4026.b1a2aa8e429e.jpg
+
+Milky Way · panorama from inside
+ESO/S. Brunier
+Source: https://www.eso.org/public/images/eso0932a/
+License: https://creativecommons.org/licenses/by/4.0/
+Usage terms: https://www.eso.org/public/outreach/copyright/
+Asset: /photos/milkyway.9055c7a80103.jpg

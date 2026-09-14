@@ -1,0 +1,192 @@
+{
+  "version": 1,
+  "verified": "2026-09-14",
+  "photos": [
+    {
+      "key": "m31",
+      "identity": "nearby:m31",
+      "title": "Andromeda · Hubble mosaic",
+      "source": "https://esahubble.org/images/heic2501a/",
+      "download": "https://cdn.esahubble.org/archives/images/screen/heic2501a.jpg",
+      "credit": "NASA, ESA, B. Williams (University of Washington)",
+      "fovArcmin": [
+        140.6,
+        32.88
+      ],
+      "northClockwiseDeg": 125,
+      "note": "Optical mosaic; jagged boundaries are the observation footprint. M32 is also in the field.",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "https://esahubble.org/copyright/",
+      "sourceSha256": "8b501c90c67f2441208cb56e65f341aaf1655b693d5b658e6cf682dcf5ee8135"
+    },
+    {
+      "key": "lmc",
+      "identity": "nearby:lmc",
+      "title": "Large Magellanic Cloud · VISTA",
+      "source": "https://www.eso.org/public/images/eso1914a/",
+      "download": "https://cdn.eso.org/images/screen/eso1914a.jpg",
+      "credit": "ESO/VMC Survey",
+      "fovArcmin": [
+        461.9,
+        515.88
+      ],
+      "northClockwiseDeg": 2.4,
+      "note": "Near-infrared Y/J/Ks composite, revealing stars through dust. Colors differ from visible light.",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "https://www.eso.org/public/outreach/copyright/",
+      "sourceSha256": "c26c476daad651ff342856aad837b5408caec62a46f1637381089ff15a0465ab"
+    },
+    {
+      "key": "smc",
+      "identity": "nearby:smc",
+      "title": "Small Magellanic Cloud · VISTA",
+      "source": "https://www.eso.org/public/images/eso1714a/",
+      "download": "https://cdn.eso.org/images/screen/eso1714a.jpg",
+      "credit": "ESO/VISTA VMC",
+      "fovArcmin": [
+        354.37,
+        313.48
+      ],
+      "northClockwiseDeg": -1.2,
+      "note": "Near-infrared Y/J/Ks composite. The bright round object at right is foreground globular cluster 47 Tucanae, not the Cloud.",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "https://www.eso.org/public/outreach/copyright/",
+      "sourceSha256": "f5a5bcfd666ae94249d144bdb94973866c8d56d4372a54f62843b6dd67c7d2bc"
+    },
+    {
+      "key": "m33",
+      "identity": "nearby:m33",
+      "title": "Triangulum · VST",
+      "source": "https://www.eso.org/public/images/eso1424a/",
+      "download": "https://cdn.eso.org/images/screen/eso1424a.jpg",
+      "credit": "ESO",
+      "fovArcmin": [
+        68.01,
+        57.04
+      ],
+      "northClockwiseDeg": -90,
+      "note": "Optical g/r/H-alpha composite; red highlights trace glowing hydrogen regions.",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "https://www.eso.org/public/outreach/copyright/",
+      "sourceSha256": "ef20d3d1e617751b44254c00e5b04ab17ac7704e5e8b17971d5b53d91be03c53"
+    },
+    {
+      "key": "m32",
+      "identity": "nearby:m32",
+      "title": "M32 · central core",
+      "source": "https://esahubble.org/images/opo9209a/",
+      "download": "https://cdn.esahubble.org/archives/images/screen/opo9209a.jpg",
+      "credit": "Tod R. Lauer/NASA/ESA",
+      "fovArcmin": [
+        0.38,
+        0.3
+      ],
+      "northClockwiseDeg": -76.8,
+      "note": "A single green-light optical band displayed in false color. This tiny central-core field does not show the whole galaxy; the atlas does not resolve its nuclear structure.",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "https://esahubble.org/copyright/",
+      "sourceSha256": "f650d28f17fac7ba38080a36178fe175d55cfe56110f9e40e85d9ed79474b9fd"
+    },
+    {
+      "key": "m110",
+      "identity": "nearby:m110",
+      "title": "M110 · central Hubble field",
+      "source": "https://esahubble.org/images/potw1937a/",
+      "download": "https://cdn.esahubble.org/archives/images/screen/potw1937a.jpg",
+      "credit": "ESA/Hubble & NASA, L.Ferrarese et al.",
+      "fovArcmin": [
+        2.36,
+        1.77
+      ],
+      "northClockwiseDeg": -41.4,
+      "note": "A central V/I-band field, not the whole galaxy. Individual stars and dust structures exceed the atlas model's detail.",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "https://esahubble.org/copyright/",
+      "sourceSha256": "066784d2f77a56a076e43f23cf323251bac3576deca19fac32e47dfeb0472048"
+    },
+    {
+      "key": "ngc3982",
+      "identity": "39633325333155389",
+      "title": "NGC 3982 · Hubble",
+      "source": "https://esahubble.org/images/opo1036a/",
+      "download": "https://cdn.esahubble.org/archives/images/screen/opo1036a.jpg",
+      "credit": "NASA, ESA, and the Hubble Heritage Team (STScI/AURA)",
+      "fovArcmin": [
+        1.68,
+        1.71
+      ],
+      "northClockwiseDeg": -79.2,
+      "note": "A composite including optical, near-infrared and hydrogen emission. Its colors and brightness are not calibrated to the atlas illustration.",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "https://esahubble.org/copyright/",
+      "sourceSha256": "f4d9a89eae758ca3ff1a9a2c2c7c6ddcf77d204314c9740b743c83715a641429"
+    },
+    {
+      "key": "coma",
+      "identity": "cluster:coma",
+      "title": "Coma cluster · sky field",
+      "source": "https://esahubble.org/images/heic0813e/",
+      "download": "https://cdn.esahubble.org/archives/images/screen/heic0813e.jpg",
+      "credit": "NASA, ESA, and the Digitized Sky Survey 2. Acknowledgment: Davide De Martin (ESA/Hubble)",
+      "fovArcmin": [
+        163.72,
+        172.63
+      ],
+      "northClockwiseDeg": -0.3,
+      "note": "DSS2 sky field. Foreground stars and background galaxies appear together; objects are not individually matched to DESI observations.",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "https://esahubble.org/copyright/",
+      "sourceSha256": "f5e3bde1c9b9736a33ed9d6286a341a27ceaabd9c6356ddf09cbc3e42d30182c"
+    },
+    {
+      "key": "ngc4026",
+      "identity": "39633263488141603",
+      "title": "NGC 4026 · Legacy Surveys DR9",
+      "source": "https://www.legacysurvey.org/viewer?ra=179.8544868&dec=50.9616574&layer=ls-dr9&zoom=14",
+      "download": "https://www.legacysurvey.org/viewer/jpeg-cutout?ra=179.8544868&dec=50.9616574&layer=ls-dr9&pixscale=0.625&size=768",
+      "credit": "Legacy Surveys / D. Lang (Perimeter Institute)",
+      "fovArcmin": [
+        8,
+        8
+      ],
+      "northClockwiseDeg": 0,
+      "note": "An optical g/r/z sky composite. Foreground stars and other galaxies share this field; the atlas models only its verified target.",
+      "match": {
+        "raDeg": 179.8544868,
+        "decDeg": 50.9616574,
+        "fits": "https://www.legacysurvey.org/viewer/fits-cutout?ra=179.8544868&dec=50.9616574&layer=ls-dr9&pixscale=0.625&size=768",
+        "projection": [
+          "RA---TAN",
+          "DEC--TAN"
+        ],
+        "cdDegPerPixel": [
+          -0.000173611111111111,
+          0,
+          0,
+          0.000173611111111111
+        ],
+        "referencePixel": [
+          384.5,
+          384.5
+        ]
+      },
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "https://www.legacysurvey.org/acknowledgment/",
+      "sourceSha256": "b1a2aa8e429e9f13b251d7fe8807b431814038b015a981e360753f1188df0e7b"
+    },
+    {
+      "key": "milkyway",
+      "identity": "core",
+      "title": "Milky Way · panorama from inside",
+      "source": "https://www.eso.org/public/images/eso0932a/",
+      "download": "https://cdn.eso.org/images/screen/eso0932a.jpg",
+      "credit": "ESO/S. Brunier",
+      "fovArcmin": null,
+      "northClockwiseDeg": null,
+      "note": "An all-sky photographic panorama taken from Earth, inside the Milky Way. No external photograph of our whole galaxy exists; this is not the atlas model viewed from outside.",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "https://www.eso.org/public/outreach/copyright/",
+      "sourceSha256": "9055c7a801035211706565d838a6fa52ac9e670168b788e0008bd947e55e5c0e"
+    }
+  ]
+}
