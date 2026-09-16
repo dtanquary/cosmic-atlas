@@ -17,6 +17,7 @@ public struct JSRandom {
 
 public struct GalaxySamples: Sendable, Equatable {
   public var positions: [Float], colors: [Float], sizes: [Float]
+  public init(positions: [Float], colors: [Float], sizes: [Float]) { self.positions = positions; self.colors = colors; self.sizes = sizes }
 }
 
 public struct RGB: Sendable, Equatable { public var r: Double, g: Double, b: Double
@@ -197,6 +198,9 @@ public let cloudLabels: [MagellanicCloudKind: String] = [.lmc: "Barred stellar c
 public struct GalaxyLight: Sendable, Equatable {
   public var family: GalaxyFamily, gaussians: [Gaussian], spiral: GalaxyDetailData.Spiral?, cloud: MagellanicCloudKind?, portrait: DiskPortrait?
   public var seed: UInt32, knotCount: Int?, exposure: Double?, colors: GalaxyColors?
+  public init(family: GalaxyFamily, gaussians: [Gaussian], spiral: GalaxyDetailData.Spiral?, cloud: MagellanicCloudKind?, portrait: DiskPortrait?, seed: UInt32, knotCount: Int?, exposure: Double?, colors: GalaxyColors?) {
+    self.family = family; self.gaussians = gaussians; self.spiral = spiral; self.cloud = cloud; self.portrait = portrait; self.seed = seed; self.knotCount = knotCount; self.exposure = exposure; self.colors = colors
+  }
 }
 
 /// One shared exposure/profile/point budget for every illustrative disk variant.

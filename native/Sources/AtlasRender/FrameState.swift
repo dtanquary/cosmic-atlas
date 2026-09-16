@@ -67,6 +67,8 @@ public struct FrameState {
   public var camera: Camera
   public var overlays = OverlayState()
   public var chunks: [ChunkDraw] = []
+  /// Visible galaxy models in draw order (DESI pool, nearby layer, Milky Way last).
+  public var models: [GalaxyModel] = []
   public var markers: [MarkerDraw] = []
   public var line: LineDraw? = nil
   public init(uniforms: AtlasFrameUniforms, camera: Camera) { self.uniforms = uniforms; self.camera = camera }

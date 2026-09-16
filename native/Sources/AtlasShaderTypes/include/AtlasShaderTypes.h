@@ -38,4 +38,39 @@ typedef struct {
   unsigned int ringCount;
 } AtlasOverlayUniforms;
 
+/// One galaxy volume (analytic Gaussian mixture, disk template or Magellanic cloud): a screen-space quad clipped to
+/// `bounds`, rays reconstructed from the camera basis and deprojected by `toModel`.
+typedef struct {
+  vector_float4 bounds;         // NDC rect the quad covers
+  matrix_float3x3 toModel;      // rows: major, minor, normal/thickness
+  vector_float3 origin;         // camera position in model space (units of R_e)
+  vector_float3 forward;
+  vector_float3 right;
+  vector_float3 up;
+  vector_float3 diskColor;
+  vector_float3 coreColor;
+  vector_float3 emissionColor;
+  vector_float2 projection;     // tan(fov/2) * (aspect, 1)
+  vector_float2 barDirection;
+  vector_float2 gaussians[20];  // (sigma in R_e, peak)
+  vector_float4 portrait;       // (bulge, coreRadius, old, young)
+  float mix;
+  float normalization;
+  float exposure;
+  float palette;
+  float thickness;
+  float barRadius;
+  float dustStrength;
+  float cloudKind;
+} AtlasVolumeUniforms;
+
+/// Arm/knot light samples of one model, drawn additively after its volume.
+typedef struct {
+  matrix_float4x4 projection;
+  matrix_float3x3 viewRotation;
+  vector_float3 origin;
+  float scale;
+  float mix;
+} AtlasArmUniforms;
+
 #endif

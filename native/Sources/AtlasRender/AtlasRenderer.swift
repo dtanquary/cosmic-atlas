@@ -23,6 +23,7 @@ public final class AtlasRenderer: @unchecked Sendable {
   let overlayRings: MTLRenderPipelineState
   let overlayFootprint: MTLRenderPipelineState
   let footprintSampler: MTLSamplerState
+  let volumes: VolumePipelines
   let depthTestNoWrite: MTLDepthStencilState
   let depthTestWrite: MTLDepthStencilState
   let depthOff: MTLDepthStencilState
@@ -65,6 +66,7 @@ public final class AtlasRenderer: @unchecked Sendable {
     let sampler = MTLSamplerDescriptor()
     sampler.sAddressMode = .repeat; sampler.tAddressMode = .clampToEdge; sampler.minFilter = .linear; sampler.magFilter = .linear
     footprintSampler = device.makeSamplerState(descriptor: sampler)!
+    volumes = try VolumePipelines(device: device, library: library)
     // Reversed-Z: nearer fragments have larger depth.
     depthTestNoWrite = depthState(.greater, write: false)
     depthTestWrite = depthState(.greater, write: true)
@@ -102,6 +104,8 @@ public final class AtlasRenderer: @unchecked Sendable {
       encoder.drawPrimitives(type: .point, vertexStart: 0, vertexCount: draw.chunk.node.storedCount)
       stats.draws += 1; stats.points += draw.chunk.node.storedCount
     }
+    // Per visible model: volume quad + arm points, then the Milky Way, painting over points like the web.
+    for model in frame.models { drawModel(model, with: encoder, stats: &stats) }
     if !frame.markers.isEmpty || frame.line != nil {
       encoder.setDepthStencilState(depthOff)
       if let line = frame.line {
