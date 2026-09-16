@@ -11,11 +11,27 @@ xcodebuild -project native/App/CosmicAtlas.xcodeproj -scheme CosmicAtlas \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build
 ```
 
-Device runs need a signing team on the command line (or once in the Xcode Signing tab); keep the team ID out of git:
+Device runs need a signing team on the command line (or once in the Xcode Signing tab); keep the team ID out of git
+(this checkout keeps it in the ignored `.deploy/ios.env`). The phone must be unlocked, and on the first install iOS asks
+you to trust the developer app under Settings → General → VPN & Device Management.
+
+**Always judge performance on a Release build.** `xcodebuild test` installs a Debug build whose unoptimised Swift makes
+the per-frame streaming code many times slower; the device journey test below builds Release for that reason. To try
+the app by hand, install a Release build directly:
 
 ```sh
-xcodebuild test -project native/App/CosmicAtlas.xcodeproj -scheme CosmicAtlas \
-  -destination "platform=iOS,id=$UDID" -allowProvisioningUpdates DEVELOPMENT_TEAM="$ATLAS_TEAM_ID" \
+source .deploy/ios.env
+xcodebuild -project native/App/CosmicAtlas.xcodeproj -scheme CosmicAtlas -configuration Release \
+  -destination "platform=iOS,id=$ATLAS_IPHONE_UDID" -allowProvisioningUpdates DEVELOPMENT_TEAM="$ATLAS_TEAM_ID" \
+  -derivedDataPath native/.cache/DerivedData-release build
+xcrun devicectl device install app --device "$ATLAS_IPHONE_UDID" \
+  native/.cache/DerivedData-release/Build/Products/Release-iphoneos/CosmicAtlas.app
+```
+
+
+```sh
+xcodebuild test -project native/App/CosmicAtlas.xcodeproj -scheme CosmicAtlas -configuration Release \
+  -destination "platform=iOS,id=$ATLAS_IPHONE_UDID" -allowProvisioningUpdates DEVELOPMENT_TEAM="$ATLAS_TEAM_ID" \
   -only-testing:CosmicAtlasDeviceTests -resultBundlePath native/.cache/device.xcresult
 ```
 

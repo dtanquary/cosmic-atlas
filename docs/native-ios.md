@@ -53,6 +53,23 @@ summary in this file's history and `AGENTS.md` for the standing rules.
    a separate observation. Add a row to the *Physical devices* table in [performance.md](performance.md) and a
    `physicalDevice: true` run in `performance-results.json`. Do not infer temperature or power from frame rate.
 
+## Progress (16 September 2026)
+
+- Phase 0: scaffold, docs and the pending physical-device table are in place; the web baseline on the paired devices
+  is still to be recorded by hand.
+- Phase 1: AtlasCore ports the data contract, loader, link codecs, tours/trips, search, model decoding, camera and
+  settings; the vitest suites are ported 1:1 with the repository fixtures.
+- Phase 2: the Metal point pass, GPU picking, session streaming and the iOS view with gestures run on the simulator and
+  install on the iPhone; the on-device journey test exists but has not yet completed a run (the phone must be unlocked
+  and the developer app trusted for the test runner to attach).
+- Phase 3: the CMB shell, lookback rings and survey footprint overlays, the settings sheet and ring labels.
+- Phase 4: galaxy volumes (Gaussian bodies, the disk template for the Milky Way and portraits, Magellanic clouds, arm
+  points), the twelve-model scheduler, nearby layer, visits and link application in the session.
+- Not yet: the product UI of Phase 5 beyond a minimal inspector and settings sheet, and the Phase 6 store preparation.
+
+Judge device performance only on Release builds; Debug builds of unoptimised Swift are many times slower in the
+per-frame streaming code and are what `xcodebuild test` installs by default (see `native/README.md`).
+
 ## Native measurement rules
 
 - Device performance tests live in `native/App/CosmicAtlasDeviceTests`, run with
