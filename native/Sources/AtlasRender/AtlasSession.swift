@@ -10,6 +10,7 @@ public struct AtlasStats: Sendable, Equatable {
   public var mode: DetailMode = .adaptive, complete = false
   public var fps = 0.0, p95 = 0.0, calls = 0, managedMiB = 0.0, blocked = false
   public var focusDistance = 0.0, focusFromObserver = 0.0, budget = 0, models = 0
+  public init() {}
 }
 
 let OVERVIEW_DIRECTION = simd_normalize(SIMD3<Double>(0.85, -1, 0.58))

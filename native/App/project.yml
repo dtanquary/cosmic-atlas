@@ -53,6 +53,7 @@ targets:
         UIViewControllerBasedStatusBarAppearance: true
         ITSAppUsesNonExemptEncryption: false
         NSAppTransportSecurity: {}
+        AtlasOrigin: https://cosmic-atlas-754.pages.dev/
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.dtanquary.cosmicatlas
