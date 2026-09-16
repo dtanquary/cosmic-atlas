@@ -51,7 +51,7 @@ final class SessionTests: XCTestCase {
     let frame = session.tick(now: 100)
     let target = OffscreenTarget(renderer: session.renderer, width: 800, height: 500)
     let stats = target.render(frame)
-    XCTAssertEqual(stats.draws, frame.chunks.count + frame.markers.count)
+    XCTAssertEqual(stats.draws, frame.chunks.count + 1 + frame.models.count + frame.markers.count, "chunks, the nearby batch, visible models, markers")
     session.didDraw(stats)
     XCTAssertEqual(session.stats.calls, stats.draws)
   }
