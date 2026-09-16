@@ -16,7 +16,7 @@ let package = Package(
     .target(name: "AtlasRender", dependencies: ["AtlasCore", "AtlasShaderTypes"]),
     .target(name: "AtlasTestSupport", dependencies: ["AtlasCore"]),
     .testTarget(name: "AtlasCoreTests", dependencies: ["AtlasCore", "AtlasTestSupport"]),
-    .testTarget(name: "AtlasRenderTests", dependencies: ["AtlasRender", "AtlasTestSupport"]),
+    .testTarget(name: "AtlasRenderTests", dependencies: ["AtlasRender", "AtlasShaderTypes", "AtlasTestSupport"]),
   ],
   swiftLanguageModes: [.v6]
 )
