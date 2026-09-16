@@ -57,7 +57,7 @@ public func validateBinary(_ data: Data, kind: BinaryKind, expectedCount: Int? =
   try data.withUnsafeBytes { try validateBinary($0, kind: kind, expectedCount: expectedCount) }
 }
 
-public struct NearbyInfo: Sendable, Equatable {
+public struct NearbyInfo: Sendable, Equatable, Codable {
   public var key: String, name: String, aliases: [String], method: String, distanceError: String, distanceSource: String, shapeNote: String, shapeSources: [String], orientationMeasured: Bool
   public init(key: String, name: String, aliases: [String], method: String, distanceError: String, distanceSource: String, shapeNote: String, shapeSources: [String], orientationMeasured: Bool) {
     self.key = key; self.name = name; self.aliases = aliases; self.method = method; self.distanceError = distanceError; self.distanceSource = distanceSource; self.shapeNote = shapeNote; self.shapeSources = shapeSources; self.orientationMeasured = orientationMeasured
