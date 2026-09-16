@@ -33,8 +33,10 @@ public struct GalaxyDetailData: Codable, Sendable, Equatable {
   public var version: Int, catalogId: String, catalogSourceSha256: String, name: String, galaxy: Galaxy
   public var shape: Shape, gaussians: [Gaussian], fitMaxRelativeError: Double
   public var spiral: Spiral?, model: Model?, knotCount: Int?, cloud: MagellanicCloudKind?
-  public init(version: Int = 1, catalogId: String, catalogSourceSha256: String, name: String, galaxy: Galaxy, shape: Shape, gaussians: [Gaussian], fitMaxRelativeError: Double, spiral: Spiral? = nil, model: Model? = nil, knotCount: Int? = nil, cloud: MagellanicCloudKind? = nil) {
-    self.version = version; self.catalogId = catalogId; self.catalogSourceSha256 = catalogSourceSha256; self.name = name; self.galaxy = galaxy; self.shape = shape; self.gaussians = gaussians; self.fitMaxRelativeError = fitMaxRelativeError; self.spiral = spiral; self.model = model; self.knotCount = knotCount; self.cloud = cloud
+  /// Diagnostic opt-out: inspect the unmodified source profile separately.
+  public var sourceProfileOnly: Bool?
+  public init(version: Int = 1, catalogId: String, catalogSourceSha256: String, name: String, galaxy: Galaxy, shape: Shape, gaussians: [Gaussian], fitMaxRelativeError: Double, spiral: Spiral? = nil, model: Model? = nil, knotCount: Int? = nil, cloud: MagellanicCloudKind? = nil, sourceProfileOnly: Bool? = nil) {
+    self.version = version; self.catalogId = catalogId; self.catalogSourceSha256 = catalogSourceSha256; self.name = name; self.galaxy = galaxy; self.shape = shape; self.gaussians = gaussians; self.fitMaxRelativeError = fitMaxRelativeError; self.spiral = spiral; self.model = model; self.knotCount = knotCount; self.cloud = cloud; self.sourceProfileOnly = sourceProfileOnly
   }
 }
 
