@@ -77,3 +77,12 @@ Adaptive streaming kept changing the workload, so this is an exploratory compari
 Final milestone 2 comparison: Chrome cold plus 600 seconds of exploration has movement p95/p99 **16.8/33.3 ms**, with 4 of 20,361 intervals over 50 ms (baseline sustained: 484/18,728, p99 83.4 ms). Warm Chrome is 16.8/33.4 ms; emulated 5 Mbps is 16.8/16.8 ms. First coarse view remains about 755 ms locally and 3,846 ms with network emulation. The final WebKit phone route completes all ten stops at 20/37 ms, versus baseline 19/47 ms; these runs do not establish a phone p95 improvement. Its drawing buffer remains 603×1311 and peak managed memory is 334.6 MiB.
 
 Sustained peak managed memory rose to 486 MiB from 373.7 MiB, with no reported memory blocking. Adaptive detail loaded up to 11.41 million and submitted 2.00 million points, versus 8.43 million / 0.998 million in the baseline. Completed response bodies rose from 383.16 MB to 451.55 MB. These differing workloads preclude attributing every timing/resource difference to the cache. All cases retain the full accepted catalog and 0.5% floor. The first three cases use `ee7ee58`; final WebKit uses `c2d3f2a`, whose only runtime difference is the bounded regional readiness check. An earlier phone failure and the original reports remain in ignored evidence. Forty arrival captures across the completed cases were reviewed.
+
+**Physical devices**
+
+Pending. Two devices are paired with the development Mac for the native client work in [native-ios.md](native-ios.md): an iPhone 17 Pro and an iPad (A16). No physical-device measurement of the web app has been recorded yet; the WebKit phone-layout rows above are desktop WebKit on the M3 Max. The device method is written in `native-ios.md` (Safari with Web Inspector, the production road trip, the app's own diagnostics HUD). Rows are added here only from an actual device run, with `physicalDevice: true` in `performance-results.json`.
+
+| Device | OS / Safari | First coarse view | Movement p95 / p99 | Peak managed memory | Full detail survives |
+| --- | --- | ---: | ---: | ---: | --- |
+| iPhone 17 Pro | pending | — | — | — | — |
+| iPad (A16) | pending | — | — | — | — |

@@ -29,3 +29,16 @@ wrangler.jsonc
 *.key
 *.p12
 *.pfx
+
+# Native iOS client: generated project, build products, Xcode state, device results
+native/.build/
+native/.cache/
+native/**/.swiftpm/
+native/**/xcuserdata/
+native/**/*.xcuserstate
+native/**/DerivedData/
+native/**/build/
+native/App/*.xcodeproj
+native/App/CosmicAtlas/Info.plist
+*.xcresult
+*.mobileprovision

@@ -1,0 +1,80 @@
+# xcodegen spec for the iOS app. Generate with `xcodegen generate` in this directory (brew install xcodegen).
+# The generated .xcodeproj is ignored by git so signing teams and Xcode state never land in the public repo.
+name: CosmicAtlas
+options:
+  bundleIdPrefix: com.dtanquary
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+packages:
+  AtlasKit:
+    path: ../
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    CODE_SIGN_STYLE: Automatic
+    # Set DEVELOPMENT_TEAM on the xcodebuild command line or in the Xcode Signing tab; never commit it.
+targets:
+  CosmicAtlas:
+    type: application
+    platform: iOS
+    sources:
+      - path: CosmicAtlas
+      # Single source of truth stays in the web tree; these folder references copy at build time only.
+      - path: ../../src/data
+        type: folder
+        buildPhase: resources
+      - path: ../../public/photos
+        type: folder
+        buildPhase: resources
+      - path: ../../public/licenses
+        type: folder
+        buildPhase: resources
+      - path: ../../public/acknowledgments.txt
+        buildPhase: resources
+      - path: ../../public/third-party-notices.txt
+        buildPhase: resources
+    dependencies:
+      - package: AtlasKit
+        product: AtlasCore
+      - package: AtlasKit
+        product: AtlasRender
+    info:
+      path: CosmicAtlas/Info.plist
+      properties:
+        CFBundleDisplayName: Cosmic Atlas
+        CFBundleShortVersionString: "0.1.0"
+        CFBundleVersion: "1"
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+        UISupportedInterfaceOrientations~ipad: [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+        UIViewControllerBasedStatusBarAppearance: true
+        ITSAppUsesNonExemptEncryption: false
+        NSAppTransportSecurity: {}
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.dtanquary.cosmicatlas
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SUPPORTS_MACCATALYST: false
+        INFOPLIST_KEY_UILaunchScreen_Generation: true
+  CosmicAtlasDeviceTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: CosmicAtlasDeviceTests
+    dependencies:
+      - target: CosmicAtlas
+schemes:
+  CosmicAtlas:
+    build:
+      targets:
+        CosmicAtlas: all
+        CosmicAtlasDeviceTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - CosmicAtlasDeviceTests
