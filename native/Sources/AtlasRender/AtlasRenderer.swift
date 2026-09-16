@@ -19,6 +19,10 @@ public final class AtlasRenderer: @unchecked Sendable {
   let pointPick: MTLRenderPipelineState
   let markers: MTLRenderPipelineState
   let line: MTLRenderPipelineState
+  let overlayCMB: MTLRenderPipelineState
+  let overlayRings: MTLRenderPipelineState
+  let overlayFootprint: MTLRenderPipelineState
+  let footprintSampler: MTLSamplerState
   let depthTestNoWrite: MTLDepthStencilState
   let depthTestWrite: MTLDepthStencilState
   let depthOff: MTLDepthStencilState
@@ -55,6 +59,12 @@ public final class AtlasRenderer: @unchecked Sendable {
       return device.makeDepthStencilState(descriptor: d)!
     }
     self.pointCatalog = pointCatalog; self.pointPick = pointPick; self.markers = markers; self.line = line
+    overlayCMB = try pipeline("atlas_overlay_vertex", "atlas_cmb_fragment", format: Self.colorFormat, blend: true)
+    overlayRings = try pipeline("atlas_overlay_vertex", "atlas_rings_fragment", format: Self.colorFormat, blend: true)
+    overlayFootprint = try pipeline("atlas_overlay_vertex", "atlas_footprint_fragment", format: Self.colorFormat, blend: true)
+    let sampler = MTLSamplerDescriptor()
+    sampler.sAddressMode = .repeat; sampler.tAddressMode = .clampToEdge; sampler.minFilter = .linear; sampler.magFilter = .linear
+    footprintSampler = device.makeSamplerState(descriptor: sampler)!
     // Reversed-Z: nearer fragments have larger depth.
     depthTestNoWrite = depthState(.greater, write: false)
     depthTestWrite = depthState(.greater, write: true)
@@ -78,6 +88,7 @@ public final class AtlasRenderer: @unchecked Sendable {
   @discardableResult
   public func draw(_ frame: FrameState, with encoder: MTLRenderCommandEncoder) -> DrawStats {
     var stats = DrawStats()
+    drawOverlays(frame.overlays, camera: frame.camera, with: encoder, stats: &stats)
     var uniforms = frame.uniforms
     encoder.setVertexBytes(&uniforms, length: MemoryLayout<AtlasFrameUniforms>.stride, index: 2)
     encoder.setFragmentBytes(&uniforms, length: MemoryLayout<AtlasFrameUniforms>.stride, index: 2)

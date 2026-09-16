@@ -28,4 +28,14 @@ typedef struct {
   unsigned int localChunk;           // chunk box within 1 Mpc of the observer
 } AtlasChunkUniforms;
 
+/// Observer-centred overlays (CMB shell, lookback rings, survey footprint): one full-screen triangle each.
+typedef struct {
+  matrix_float3x3 rotation;   // camera world rotation
+  vector_float2 lens;         // tan(fov/2) * (aspect, 1)
+  vector_float3 observer;     // camera / shell radius
+  vector_float3 toOrigin;     // unit vector from the camera toward the observer
+  float ringAngle[8];
+  unsigned int ringCount;
+} AtlasOverlayUniforms;
+
 #endif

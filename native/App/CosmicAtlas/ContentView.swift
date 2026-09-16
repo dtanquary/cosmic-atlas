@@ -34,7 +34,7 @@ struct AtlasScreen: View {
       .padding(.horizontal, 12).padding(.bottom, 8)
     }
     .foregroundStyle(.white)
-    .task { await model.open() }
+    .task { if ProcessInfo.processInfo.environment["XCTestSessionIdentifier"] == nil { await model.open() } } // hosted tests drive their own session
     .statusBarHidden(false)
   }
 }

@@ -23,7 +23,7 @@ final class PointPassTests: XCTestCase {
     let chunk = try loadChunk(renderer, node)
     var camera = Camera(position: (node.min + node.max) / 2 + OVERVIEW_DIRECTION * simd_length(node.max - node.min) / 2 * 2.1, target: (node.min + node.max) / 2)
     camera.aspect = 1; camera.far = simd_length(node.max - node.min) * 30
-    var frame = FrameState(uniforms: FrameUniforms.make(camera: camera, viewportHeightPx: 256, pointSizePx: 1.6, fadeRange: [1000, 10000], minOpacity: 0.005, depthCues: true, enlargePoints: false, hideUncertainLocal: true))
+    var frame = FrameState(uniforms: FrameUniforms.make(camera: camera, viewportHeightPx: 256, pointSizePx: 1.6, fadeRange: [1000, 10000], minOpacity: 0.005, depthCues: true, enlargePoints: false, hideUncertainLocal: true), camera: camera)
     var u = AtlasChunkUniforms(); u.origin = SIMD3<Float>(node.center - camera.position); u.worldOrigin = SIMD3<Float>(node.center); u.nodeCode = 1
     frame.chunks = [ChunkDraw(chunk: chunk, uniforms: u)]
     frame.markers = [MarkerDraw(origin: SIMD3<Float>(-camera.position), sizePx: 7, color: [0.45, 0.6, 0.68])]
@@ -50,7 +50,7 @@ final class PointPassTests: XCTestCase {
     let world = node.center + SIMD3<Double>(Double(p[row * 3]), Double(p[row * 3 + 1]), Double(p[row * 3 + 2]))
     var camera = Camera(position: world + OVERVIEW_DIRECTION * 0.5, target: world)
     camera.aspect = 1; camera.near = 0.001; camera.far = 100000
-    var frame = FrameState(uniforms: FrameUniforms.make(camera: camera, viewportHeightPx: 512, pointSizePx: 7, fadeRange: [1000, 10000], minOpacity: 0.005, depthCues: true, enlargePoints: false, hideUncertainLocal: true))
+    var frame = FrameState(uniforms: FrameUniforms.make(camera: camera, viewportHeightPx: 512, pointSizePx: 7, fadeRange: [1000, 10000], minOpacity: 0.005, depthCues: true, enlargePoints: false, hideUncertainLocal: true), camera: camera)
     var u = AtlasChunkUniforms(); u.origin = SIMD3<Float>(node.center - camera.position); u.worldOrigin = SIMD3<Float>(node.center); u.nodeCode = 1
     frame.chunks = [ChunkDraw(chunk: chunk, uniforms: u)]
     let pass = PickPass(renderer: renderer)

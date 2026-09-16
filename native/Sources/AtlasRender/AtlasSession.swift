@@ -68,6 +68,15 @@ public final class AtlasSession {
   /// CSS-pixel viewport (points) and the drawable scale (capped at 1.5 like the web).
   public var viewportPoints = SIMD2<Double>(1, 1)
   public var scale = 1.0
+  public var cosmicHorizon = false { didSet { invalidate() } }
+  public var lookbackRings = false { didSet { invalidate() } }
+  public var surveyFootprint = false { didSet { if surveyFootprint { loadSurveyFootprint() }; invalidate() } }
+  public enum FootprintState: Sendable { case idle, loading, ready, failed }
+  public private(set) var footprintState = FootprintState.idle
+  public private(set) var footprintDisclosure = ""
+  var footprintTexture: MTLTexture?
+  /// Rings chosen for the current frame; labels read the same list the shader drew.
+  public private(set) var rings: [LookbackRing] = []
   public var drawableSize: SIMD2<Int> { SIMD2(Int((viewportPoints.x * scale).rounded()), Int((viewportPoints.y * scale).rounded())) }
 
   var nodes: [String: CatalogNode] = [:]
@@ -216,6 +225,61 @@ public final class AtlasSession {
 
   public func retry() { failed = [:]; blocked = false; dirty = true; invalidate() }
 
+  /// Lazy sidecar fetch on the first enable (or after a failure); the frame redraws once it settles either way.
+  func loadSurveyFootprint() {
+    guard footprintState == .idle || footprintState == .failed, let release, let manifest else { return }
+    footprintState = .loading
+    Task { [weak self] in
+      guard let self else { return }
+      do {
+        let (data, response) = try await URLSession.shared.data(from: release.catalogAsset("survey-footprint.json"))
+        if let http = response as? HTTPURLResponse, !(200..<300).contains(http.statusCode) { throw AtlasError("Survey footprint could not load.") }
+        let sidecar = try JSONDecoder().decode(SurveyFootprintData.self, from: data)
+        let cells = try decodeFootprint(sidecar, sourceSha256: manifest.source.sha256, acceptedRows: manifest.source.acceptedRows)
+        footprintTexture = renderer.makeFootprintTexture(cells: cells)
+        footprintDisclosure = sidecar.disclosure ?? ""
+        footprintState = footprintTexture == nil ? .failed : .ready
+      } catch { footprintState = .failed }
+      invalidate()
+    }
+  }
+  /// Test seam: install an already-decoded footprint grid.
+  public func installFootprint(cells: [UInt8], disclosure: String) { footprintTexture = renderer.makeFootprintTexture(cells: cells); footprintDisclosure = disclosure; footprintState = .ready }
+
+  /// Frames the CMB shell: 50° field, aspect ≤ 1, 14% margin.
+  public func viewCosmicHorizon(seconds: Double = 0, completion: @escaping (Bool) -> Void = { _ in }) {
+    guard manifest != nil else { return }
+    clearSelection()
+    let halfFov = atan(camera.tanHalfFov * min(1, camera.aspect))
+    let distance = reference.cmbRadiusMpc / sin(halfFov) * 1.14
+    orbit.maxDistance = max(orbit.maxDistance, distance * 2)
+    focusAt(target: .zero, distance: distance, direction: OVERVIEW_DIRECTION, seconds: seconds, completion: completion)
+  }
+
+  /// Screen anchors for the rings the shader drew (src/explorer.ts ringLabels), in points with a top-left origin.
+  public struct RingLabel: Sendable, Equatable { public var x: Double, y: Double, lookbackGyr: Double, comovingMpc: Double, visible: Bool }
+  public func ringLabels() -> [RingLabel] {
+    if rings.isEmpty { return [] }
+    let d = simd_length(camera.position), toCamera = camera.position / d
+    var up = camera.cameraUp; up -= toCamera * simd_dot(up, toCamera)
+    let forward = camera.forward, degenerate = simd_length_squared(up) < 1e-12
+    if !degenerate { up = simd_normalize(up) }
+    let view = simd_double3x3(camera.orientation.inverse), tanHalf = camera.tanHalfFov
+    return rings.map { ring in
+      let r = ring.comovingMpc
+      let top = toCamera * (r * r / d) + up * (r * (1 - r * r / (d * d)).squareRoot())
+      let relative = top - camera.position
+      let inFront = simd_dot(forward, relative) > 0
+      let v = view * relative
+      let depth = -v.z
+      let px = v.x / (depth * tanHalf * camera.aspect), py = v.y / (depth * tanHalf)
+      let z = depth > camera.near && depth < camera.far ? 0.0 : 2.0
+      // Anchors stay out of the top/bottom 10% so labels never sit on the header or footer bands.
+      return RingLabel(x: (px * 0.5 + 0.5) * viewportPoints.x, y: (0.5 - py * 0.5) * viewportPoints.y, lookbackGyr: ring.lookbackGyr, comovingMpc: ring.comovingMpc,
+                       visible: !degenerate && inFront && z > -1 && z < 1 && abs(px) < 0.95 && abs(py) < 0.8)
+    }
+  }
+
   func updateLOD(now: Double) {
     guard manifest != nil else { return }
     let frustum = Frustum(camera: camera)
@@ -324,8 +388,13 @@ public final class AtlasSession {
     if (moved || orbitMoved || automaticOrbit) && wasContinuous { timings.record(elapsed * 1000) }
     updateDepthCues()
     if dirty || now - lastLOD > 0.2 { updateLOD(now: now); lastLOD = now; dirty = false }
+    rings = lookbackRings ? Lookback(reference).chooseRings(dOriginMpc: simd_length(camera.position), fovDeg: camera.fovDegrees, aspect: camera.aspect, heightPx: viewportPoints.y) : []
     var frame = FrameState(uniforms: FrameUniforms.make(camera: camera, viewportHeightPx: viewportPoints.y, pointSizePx: 1.6 * scale, fadeRange: fadeRange, minOpacity: minOpacity,
-                                                        depthCues: depthCues, enlargePoints: enlargePoints, hideUncertainLocal: !showUncertainLocal))
+                                                        depthCues: depthCues, enlargePoints: enlargePoints, hideUncertainLocal: !showUncertainLocal), camera: camera)
+    frame.overlays.cmbShell = cosmicHorizon; frame.overlays.cmbRadiusMpc = reference.cmbRadiusMpc
+    frame.overlays.ringAngles = rings.map(\.angle)
+    frame.overlays.footprint = surveyFootprint && footprintState == .ready ? footprintTexture : nil
+    frame.overlays.footprintRadiusMpc = manifest?.maxDistanceMpc ?? 0
     for id in drawn {
       guard let chunk = cache[id] else { continue }
       var u = AtlasChunkUniforms()

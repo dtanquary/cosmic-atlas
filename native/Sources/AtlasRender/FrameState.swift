@@ -64,10 +64,12 @@ public struct LineDraw: Sendable {
 /// Everything one frame draws. The session builds it; tests can build it by hand.
 public struct FrameState {
   public var uniforms: AtlasFrameUniforms
+  public var camera: Camera
+  public var overlays = OverlayState()
   public var chunks: [ChunkDraw] = []
   public var markers: [MarkerDraw] = []
   public var line: LineDraw? = nil
-  public init(uniforms: AtlasFrameUniforms) { self.uniforms = uniforms }
+  public init(uniforms: AtlasFrameUniforms, camera: Camera) { self.uniforms = uniforms; self.camera = camera }
 }
 
 public enum FrameUniforms {

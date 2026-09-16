@@ -65,6 +65,9 @@ targets:
     platform: iOS
     sources:
       - path: CosmicAtlasDeviceTests
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: true
     dependencies:
       - target: CosmicAtlas
 schemes:
