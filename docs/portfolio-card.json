@@ -1,0 +1,22 @@
+{
+  "id": "cosmicatlas",
+  "name": "Cosmic Atlas",
+  "tag": "Fly through 14 million real galaxies.",
+  "blurb": "A browser explorer of 14,140,375 DESI DR1 galaxy observations plus six nearby galaxies with independently measured distances. Orbit the cosmic web, inspect exact catalog measurements, fly up to galaxies that resolve into 3D models, and take a guided road trip from the Sun to the Coma cluster.",
+  "platforms": ["Web"],
+  "stack": ["TypeScript + Three.js", "WebGL2 streaming", "Python + Astropy"],
+  "ai": "Built by ChatGPT Codex and Claude Code as the implementing engineers under one shared AGENTS.md, with Dave directing, reviewing and testing every GPU run. No AI runs inside the app.",
+  "links": [
+    { "label": "Live app", "href": "https://cosmic-atlas-754.pages.dev/" },
+    { "label": "Road trip", "href": "https://cosmic-atlas-754.pages.dev/#tour=road-trip" },
+    { "label": "GitHub", "href": "https://github.com/dtanquary/cosmic-atlas" }
+  ],
+  "shots": 3,
+  "widget": {
+    "concept": "Forward flight through a galaxy point cloud; the centre point resolves into a tilted spiral disk as the camera arrives, then the loop resets.",
+    "elements": "About 24 off-white points from a seeded scatter (formula and seed, not literals), each with opacity by depth; one centre point; one disk div in rotateX(~62deg) with a soft radial core and one or two thin elliptical ring divs for arms. Points drift radially outward from centre with a per-point delay so the field reads as parallax, not as a scale of the whole group.",
+    "loop": "8s. 0-55%: points drift outward and fade at the edges, centre point brightens. 55-80%: centre point cross-fades into the disk, disk scales 0.2 to 1 and settles. 80-100%: hold, then reset. At 0% the tile must read as a static cosmic web with one bright point at centre.",
+    "label": "14,140,375 GALAXIES",
+    "backdrop": "#0a0c10"
+  }
+}
