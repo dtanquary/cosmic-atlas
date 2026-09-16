@@ -24,7 +24,9 @@ struct AtlasScreen: View {
     ZStack(alignment: .bottom) {
       AtlasView(session: model.session).ignoresSafeArea()
         .onLongPressGesture { model.diagnostics.toggle() }
+      RingLabelsOverlay(labels: model.ringLabels)
       if !model.ready { LoadingOverlay(error: model.loadError) { Task { await model.open() } } }
+      VStack { HeaderBar(model: model); Spacer() }.padding(.horizontal, 12)
       VStack(alignment: .leading, spacing: 6) {
         if let toast = model.toast { Text(toast).font(.footnote).padding(8).background(.black.opacity(0.7)).clipShape(RoundedRectangle(cornerRadius: 8)) }
         if model.diagnostics { DiagnosticsLine(stats: model.stats) }
@@ -34,8 +36,24 @@ struct AtlasScreen: View {
       .padding(.horizontal, 12).padding(.bottom, 8)
     }
     .foregroundStyle(.white)
+    .sheet(isPresented: $model.showSettings) { SettingsSheet(model: model) }
     .task { if ProcessInfo.processInfo.environment["XCTestSessionIdentifier"] == nil { await model.open() } } // hosted tests drive their own session
     .statusBarHidden(false)
+  }
+}
+
+struct HeaderBar: View {
+  @Bindable var model: AtlasModel
+  var body: some View {
+    HStack(spacing: 8) {
+      Text("Cosmic Atlas").font(.headline)
+      Spacer()
+      Button { model.session.reset(seconds: 1.5) } label: { Image(systemName: "scope") }.accessibilityLabel("Overview")
+      Button { model.settings.cosmicHorizon.toggle(); model.session.cosmicHorizon = model.settings.cosmicHorizon; model.settings.save(to: UserDefaults.standard) } label: { Image(systemName: "circle.dashed") }
+        .accessibilityLabel("CMB shell").foregroundStyle(model.settings.cosmicHorizon ? .cyan : .white)
+      Button { model.showSettings = true } label: { Image(systemName: "gearshape") }.accessibilityLabel("Settings")
+    }
+    .padding(10).background(.black.opacity(0.5)).clipShape(RoundedRectangle(cornerRadius: 10))
   }
 }
 

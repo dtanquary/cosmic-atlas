@@ -17,7 +17,7 @@ final class SessionTests: XCTestCase {
       let data = try Data(contentsOf: url)
       return try AssetVerifier.verify(compressed: data, asset: asset, kind: kind, count: count)
     })
-    let session = AtlasSession(renderer: renderer, reference: Self.reference, loader: loader)
+    let session = try AtlasSession(renderer: renderer, reference: Self.reference, loader: loader)
     session.viewportPoints = [800, 500]; session.scale = 1
     try session.load(release: CatalogRelease(manifestURL: RepoPaths.file("public/data/development/manifest.json")), manifestData: Self.manifestData)
     return session

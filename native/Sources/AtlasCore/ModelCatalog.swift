@@ -28,16 +28,24 @@ public struct ProfileChunk: Sendable {
   public var count: Int { (buffer.count - BINARY_HEADER_BYTES) / 20 }
   public func value(_ index: Int) -> Float { buffer.withUnsafeBytes { $0.loadUnaligned(fromByteOffset: BINARY_HEADER_BYTES + index * 4, as: Float.self) } }
   public func flag(_ index: Int) -> UInt32 { buffer.withUnsafeBytes { $0.loadUnaligned(fromByteOffset: BINARY_HEADER_BYTES + index * 4, as: UInt32.self) } }
+  /// Bound pointers for hot loops: `values` are the five floats per row (the fifth reinterpreted as flags).
+  public func withRows<T>(_ body: (_ values: UnsafePointer<Float>, _ flags: UnsafePointer<UInt32>) throws -> T) rethrows -> T {
+    try buffer.withUnsafeBytes { raw in
+      let base = raw.baseAddress!.advanced(by: BINARY_HEADER_BYTES)
+      return try body(base.assumingMemoryBound(to: Float.self), base.assumingMemoryBound(to: UInt32.self))
+    }
+  }
   public mutating func setValue(_ v: Float, at index: Int) { withUnsafeBytes(of: v) { buffer.replaceSubrange((BINARY_HEADER_BYTES + index * 4)..<(BINARY_HEADER_BYTES + index * 4 + 4), with: $0) } }
 }
 
 let familyByCode: [UInt32: GalaxyFamily] = [1: .spiral, 2: .barred, 3: .elliptical, 4: .lenticular, 5: .irregular]
 let profileTypes = ["Unknown", "PSF", "REX", "EXP", "DEV", "SER"]
 
-public func measuredShape(_ chunk: ProfileChunk, row: Int) -> Bool {
-  let p = row * 5, r = chunk.value(p), e1 = chunk.value(p + 1), e2 = chunk.value(p + 2), type = chunk.flag(p + 4) & 255
+@inline(__always) public func measuredShape(values: UnsafePointer<Float>, flags: UnsafePointer<UInt32>, row: Int) -> Bool {
+  let p = row * 5, r = values[p], e1 = values[p + 1], e2 = values[p + 2], type = flags[p + 4] & 255
   return type >= 2 && type <= 5 && (r + e1 + e2).isFinite && r > 0 && hypot(Double(e1), Double(e2)) < 0.999
 }
+public func measuredShape(_ chunk: ProfileChunk, row: Int) -> Bool { chunk.withRows { measuredShape(values: $0, flags: $1, row: row) } }
 
 public func decodeModel(_ manifest: ModelManifest, chunk: ProfileChunk, row: Int, galaxy: Galaxy) throws -> GalaxyDetailData {
   let count = try chunk.buffer.withUnsafeBytes { try validateBinary($0, kind: .profiles) }

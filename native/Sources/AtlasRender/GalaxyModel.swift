@@ -6,7 +6,8 @@ import AtlasShaderTypes
 
 /// One galaxy volume on the GPU (GalaxyVolume in src/galaxy-detail.ts): the analytic Gaussian body, a disk-template
 /// density texture (Milky Way or portrait) or a Magellanic cloud, plus optional arm/knot light samples.
-public final class GalaxyModel {
+/// ponytail: mutated only on the main actor (session) or in a single test; unchecked rather than locked.
+public final class GalaxyModel: @unchecked Sendable {
   public enum Kind: Equatable { case gaussian, milkyWay, portrait(DiskPortrait), cloud(MagellanicCloudKind) }
   public let data: GalaxyDetailData?
   public let appearance: GalaxyAppearance

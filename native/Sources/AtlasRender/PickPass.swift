@@ -62,6 +62,15 @@ public final class PickPass {
       encoder.setVertexBytes(&chunk, length: MemoryLayout<AtlasChunkUniforms>.stride, index: 3)
       encoder.drawPrimitives(type: .point, vertexStart: 0, vertexCount: draw.chunk.node.storedCount)
     }
+    if let nearby = frame.nearby {
+      var u = nearby.uniforms, chunk = nearby.draw.uniforms
+      u.projection = uniforms.projection; u.pointSizePx = uniforms.pointSizePx
+      encoder.setVertexBytes(&u, length: MemoryLayout<AtlasFrameUniforms>.stride, index: 2)
+      encoder.setVertexBuffer(nearby.draw.chunk.buffer, offset: ChunkBuffers.positionsOffset, index: 0)
+      encoder.setVertexBuffer(nearby.draw.chunk.slots, offset: 0, index: 1)
+      encoder.setVertexBytes(&chunk, length: MemoryLayout<AtlasChunkUniforms>.stride, index: 3)
+      encoder.drawPrimitives(type: .point, vertexStart: 0, vertexCount: nearby.draw.chunk.node.storedCount)
+    }
     encoder.endEncoding()
     commandBuffer.commit(); commandBuffer.waitUntilCompleted()
     var pixels = [UInt8](repeating: 0, count: Self.size * Self.size * 4)

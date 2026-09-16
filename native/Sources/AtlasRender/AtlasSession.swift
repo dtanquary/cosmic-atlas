@@ -13,8 +13,8 @@ public struct AtlasStats: Sendable, Equatable {
   public init() {}
 }
 
-let OVERVIEW_DIRECTION = simd_normalize(SIMD3<Double>(0.85, -1, 0.58))
-let OVERVIEW_FACTOR = 2.1
+public let OVERVIEW_DIRECTION = simd_normalize(SIMD3<Double>(0.85, -1, 0.58))
+public let OVERVIEW_FACTOR = 2.1
 
 /// Double-precision frustum planes in world space (GL clip convention), for chunk culling far from the origin.
 struct Frustum {
@@ -122,6 +122,33 @@ public final class AtlasSession {
   var picking = false
   let pickPass: PickPass
 
+  // MARK: Models
+  let fields: FieldCache
+  public internal(set) var resolvedGalaxies: [GalaxyModel] = []
+  public internal(set) var nearbyGalaxies: [GalaxyModel] = []
+  public private(set) var milkyWay: GalaxyModel
+  let nearbyChunk: ChunkBuffers
+  public var galaxyAppearance: GalaxyAppearance = .spiral { didSet { if galaxyAppearance != oldValue { rebuildModels() } } }
+  public var modelDisplay: ModelDisplay = .automatic { didSet { modelScanNeeded = true; dirty = true; invalidate() } }
+  var modelPresence: [Int: (value: Double, target: Double)] = [:]
+  var modelRequests: [Int: Task<GalaxyModel, Error>] = [:]
+  var pinnedModels: Set<Int> = []
+  var modelLocations: [Int: (node: String, row: Int)] = [:]
+  var wantedModels: Set<Int> = []
+  var lastModelScan = -1.0, modelScanNeeded = true
+  var focusedGalaxyId: Int? = nil
+  var homeFocused = false
+  public private(set) var homeSelected = false
+  public var onHomeSelection: (Bool) -> Void = { _ in }
+  public private(set) var modelManifest: ModelManifest?
+  var modelBase: URL?
+  let profileLoader: ChunkLoader
+  var profiles: [String: ProfileChunk] = [:]
+  var profilePending: Set<String> = []
+  public private(set) var profileFailed: Set<String> = []
+  public var allModels: [GalaxyModel] { resolvedGalaxies + nearbyGalaxies }
+  public func resolvedFor(_ id: Int) -> GalaxyModel? { allModels.first { $0.id == id } }
+
   public var onMessage: (String) -> Void = { _ in }
   public var onSelection: (Galaxy?) -> Void = { _ in }
   public var onMeasure: ([Galaxy], Bool) -> Void = { _, _ in }
@@ -129,13 +156,45 @@ public final class AtlasSession {
   public var onError: (String) -> Void = { _ in }
   public var onStats: (AtlasStats) -> Void = { _ in }
   public var onAutoFly: (Bool) -> Void = { _ in }
+  public var onRings: ([RingLabel]) -> Void = { _ in }
   /// Schedule a frame (MTKView.setNeedsDisplay). Idle frames are never drawn.
   public var invalidate: () -> Void = {}
 
-  public init(renderer: AtlasRenderer, reference: ReferenceData, loader: ChunkLoader = ChunkLoader()) {
-    self.renderer = renderer; self.reference = reference; self.loader = loader
+  public init(renderer: AtlasRenderer, reference: ReferenceData, loader: ChunkLoader = ChunkLoader(), profileLoader: ChunkLoader = ChunkLoader()) throws {
+    self.renderer = renderer; self.reference = reference; self.loader = loader; self.profileLoader = profileLoader
     pickPass = PickPass(renderer: renderer)
+    let fieldCache = FieldCache(milkyWay: reference.milkyWay)
+    fields = fieldCache
+    milkyWay = try GalaxyModel(renderer: renderer, milkyWay: reference.milkyWay, fields: fieldCache)
+    let nearby = try nearbyDetails(reference.nearby)
+    let nearbyModels = try nearby.map { try GalaxyModel(renderer: renderer, data: $0, appearance: .spiral, profile: reference.spiralProfile, fields: fieldCache) }
+    let centers = nearbyModels.map(\.center)
+    // The six nearby points: absolute centres, permanently slotted to their models, in the 65535 pick namespace.
+    var bytes = Data(count: BINARY_HEADER_BYTES + nearby.count * 16)
+    bytes.withUnsafeMutableBytes { raw in
+      raw.storeBytes(of: BinaryKind.points.magic, toByteOffset: 0, as: UInt32.self); raw.storeBytes(of: UInt32(1), toByteOffset: 4, as: UInt32.self); raw.storeBytes(of: UInt32(nearby.count), toByteOffset: 8, as: UInt32.self)
+      for (i, center) in centers.enumerated() {
+        for c in 0..<3 { raw.storeBytes(of: Float(center[c]), toByteOffset: BINARY_HEADER_BYTES + i * 12 + c * 4, as: Float.self) }
+        raw.storeBytes(of: UInt32(i), toByteOffset: BINARY_HEADER_BYTES + nearby.count * 12 + i * 4, as: UInt32.self)
+      }
+    }
+    nearbyGalaxies = nearbyModels
+    let empty = Asset(url: "", bytes: 0, decodedBytes: 0, sha256: "")
+    let node = CatalogNode(id: "nearby", count: nearby.count, storedCount: nearby.count, center: .zero, min: .zero, max: .zero, children: [], points: empty, metadata: empty)
+    nearbyChunk = try renderer.makeChunk(node: node, decoded: bytes, localChunk: false)
+    for i in 0..<nearby.count { nearbyChunk.setSlot(row: i, value: UInt8(i + 1)) }
     orbit.minDistance = 0.00001; orbit.zoomSpeed = 0.9; orbit.dampingFactor = 0.09
+  }
+
+  /// Appearance switches rebuild every model from its unchanged source data; identities, positions and slots persist.
+  func rebuildModels() {
+    func replace(_ old: GalaxyModel) -> GalaxyModel {
+      guard let data = old.data, let model = try? GalaxyModel(renderer: renderer, data: data, appearance: galaxyAppearance, profile: reference.spiralProfile, fields: fields) else { return old }
+      updateModel(model); return model
+    }
+    resolvedGalaxies = resolvedGalaxies.map(replace)
+    nearbyGalaxies = nearbyGalaxies.map(replace)
+    bindModels(); onSelection(selected); invalidate()
   }
 
   // MARK: Loading
@@ -166,7 +225,60 @@ public final class AtlasSession {
     camera.far = max(overviewRadius * 30, reference.cmbRadiusMpc * 12)
     reset()
     invalidate()
+    if manifest.id == "dr1" && manifest.subset == nil { Task { await openModelCatalog() } }
   }
+
+  /// The two pinned previews and the catalog-wide profile sidecars (Explorer.load's second half).
+  func openModelCatalog() async {
+    guard let release, let manifest else { return }
+    var previews: [GalaxyModel] = [], rejected = false
+    for path in ["galaxy-detail.json", "galaxy-spiral.json"] {
+      do {
+        let (data, response) = try await URLSession.shared.data(from: release.catalogAsset(path))
+        if let http = response as? HTTPURLResponse, !(200..<300).contains(http.statusCode) { throw AtlasError("Profile unavailable") }
+        let detail = try JSONDecoder().decode(GalaxyDetailData.self, from: data)
+        guard detail.version == 1, detail.catalogId == manifest.id, detail.catalogSourceSha256 == manifest.source.sha256, detail.galaxy.id >= 0, detail.galaxy.id < manifest.count,
+              detail.shape.radiusArcsec.isFinite, detail.shape.radiusArcsec > 0, (detail.shape.e1 + detail.shape.e2 + detail.galaxy.distance).isFinite, detail.galaxy.distance > 0,
+              !detail.gaussians.isEmpty, detail.gaussians.count <= 20, detail.gaussians.allSatisfy({ ($0.sigmaRe + $0.peak).isFinite && $0.sigmaRe > 0 && $0.peak >= 0 }) else { throw AtlasError("Invalid galaxy profile") }
+        previews.append(try GalaxyModel(renderer: renderer, data: detail, appearance: galaxyAppearance, profile: reference.spiralProfile, fields: fields))
+      } catch { rejected = true }
+    }
+    resolvedGalaxies = previews; pinnedModels = Set(previews.map(\.id))
+    for model in previews { modelPresence[model.id] = (1, 1) }
+    if rejected { onMessage("Some galaxy previews could not load. You can still browse the point atlas.") }
+    bindModels(); invalidate()
+    do {
+      let url = release.catalogAsset("models/manifest.json")
+      let (data, response) = try await URLSession.shared.data(from: url)
+      if let http = response as? HTTPURLResponse, !(200..<300).contains(http.statusCode) { throw AtlasError("Galaxy model catalog unavailable") }
+      let models = try JSONDecoder().decode(ModelManifest.self, from: data)
+      try models.validate(against: manifest)
+      modelManifest = models; modelBase = url.deletingLastPathComponent()
+      modelScanNeeded = true; invalidate()
+    } catch { onMessage("Galaxy models could not load. The point atlas is still available.") }
+  }
+
+  /// Profile chunk for a node, cached LRU (16 chunks / 48 MiB) like ModelCatalog.read.
+  func readProfile(_ node: CatalogNode) async throws -> ProfileChunk {
+    if var chunk = profiles[node.id] { chunk.used = ProcessInfo.processInfo.systemUptime; profiles[node.id] = chunk; return chunk }
+    guard let models = modelManifest, let base = modelBase, let asset = models.nodes[node.id] else { throw AtlasError("No profile chunk for this node") }
+    profilePending.insert(node.id)
+    defer { profilePending.remove(node.id); modelScanNeeded = true; invalidate() }
+    do {
+      let data = try await profileLoader.load(key: "s:\(node.id)", url: URL(string: asset.url, relativeTo: base)!.absoluteURL, asset: asset.asset, kind: .profiles, count: node.storedCount, priority: true)
+      let chunk = ProfileChunk(buffer: data, used: ProcessInfo.processInfo.systemUptime)
+      profiles[node.id] = chunk
+      trimProfiles()
+      return chunk
+    } catch { if !(error is CancellationError) { profileFailed.insert(node.id) }; throw error }
+  }
+  func trimProfiles() {
+    for (id, _) in profiles.sorted(by: { $0.value.used < $1.value.used }) {
+      if profiles.count <= 16 && profiles.values.reduce(0, { $0 + $1.buffer.count }) < 48 * 1_048_576 { break }
+      profiles[id] = nil
+    }
+  }
+  var profileMemoryBytes: Int { profiles.values.reduce(0) { $0 + $1.buffer.count } }
 
   func request(_ node: CatalogNode) {
     guard let release, cache[node.id] == nil, !pending.contains(node.id), failed[node.id] == nil else { return }
@@ -201,11 +313,13 @@ public final class AtlasSession {
     chunk.used = ProcessInfo.processInfo.systemUptime
     cache[chunk.node.id] = chunk
     for id in chunk.ids { let i = Int(id); if references[i] == 0 { loadedUnique += 1 }; references[i] &+= 1 }
+    bindModels(only: chunk); modelScanNeeded = true
     if !ready { ready = true; onReady() }
   }
 
   public var memoryBytes: Int {
-    var bytes = references.count + PickPass.size * PickPass.size * 8
+    var bytes = references.count + PickPass.size * PickPass.size * 8 + milkyWay.memoryBytes + profileMemoryBytes
+    for model in allModels { bytes += model.memoryBytes }
     for chunk in cache.values { bytes += chunk.memoryBytes }
     for entry in metadata { bytes += entry.data.count }
     for id in pending { if let node = nodes[id] { bytes += node.points.bytes * 2 + node.points.decodedBytes * 3 } }
@@ -309,8 +423,16 @@ public final class AtlasSession {
   func updateDepthCues() {
     // Expand the fade horizon smoothly outside the survey; use a neighborhood range inside it.
     let outside = simd_length(camera.position - overviewTarget) - overviewRadius
-    let far = max(1500, overviewRadius * 0.4 + max(0, outside) * 3)
-    // ponytail: focused-model and local-horizon terms arrive with the volume passes
+    var far = max(1500, overviewRadius * 0.4 + max(0, outside) * 3)
+    // A display-mode switch must not brighten the distant background around an intentionally focused galaxy.
+    let focused: GalaxyModel? = homeFocused ? milkyWay : focusedGalaxyId.flatMap { resolvedFor($0) }
+    if let focused {
+      let distance = simd_length(camera.position - focused.center), scale = viewportPoints.y / (2 * camera.tanHalfFov)
+      let t = detailBlend(focused.radius * scale / max(distance, 1e-10))
+      far += (max(1, distance * 30) - far) * t
+    }
+    // Resolve a galaxy against its local neighborhood rather than a wall of distant screen markers.
+    for model in allModels + [milkyWay] { let localHorizon = max(1, simd_length(camera.position - model.center) * 30); far = min(far, far + (localHorizon - far) * model.blend) }
     fadeRange = SIMD2(far * 0.08, far)
   }
 
@@ -319,9 +441,10 @@ public final class AtlasSession {
   public var orbitDistance: Double { simd_length(camera.position - orbit.target) }
 
   /// Instant when seconds is 0. Otherwise a frame-loop travel that completes true on arrival, or false when superseded or taken over.
-  public func focusAt(target: SIMD3<Double>, distance: Double = 25, direction: SIMD3<Double>? = nil, seconds: Double = 0, completion: @escaping (Bool) -> Void = { _ in }) {
+  public func focusAt(target: SIMD3<Double>, distance: Double = 25, direction: SIMD3<Double>? = nil, galaxyId: Int? = nil, home: Bool = false, seconds: Double = 0, completion: @escaping (Bool) -> Void = { _ in }) {
     stopTravel()
-    selectionSerial += 1
+    selectionSerial += 1; focusedGalaxyId = galaxyId; homeFocused = home
+    if let galaxyId, modelPresence[galaxyId] != nil { modelPresence[galaxyId] = (1, 1) }
     setAutoFly(false); flight = false
     let unit = simd_normalize(direction ?? -camera.forward)
     orbit.clearMomentum()
@@ -367,9 +490,20 @@ public final class AtlasSession {
 
   // MARK: Frame
 
+  public enum HomeView: Sendable { case galaxy, sun }
+  public var homeView: HomeView? {
+    guard homeFocused else { return nil }
+    if simd_length_squared(orbit.target - milkyWay.center) < 1e-18 { return .galaxy }
+    return simd_length_squared(orbit.target) < 1e-18 ? .sun : nil
+  }
+  /// What a link needs: orbit target, camera, and the exact identity being looked at (a panned home view has none).
   public var viewState: ViewState {
     var identity: ViewIdentity? = nil
-    if let selected, let address = selectedAddress, selected.id >= 0 { identity = .desi(node: address.node, row: address.row, targetId: selected.targetId) }
+    if homeSelected { identity = homeView == .galaxy ? .core : homeView == .sun ? .sun : nil }
+    else if let selected {
+      if selected.targetId.hasPrefix("nearby:") { identity = .nearby(String(selected.targetId.dropFirst(7))) }
+      else if let address = selectedAddress { identity = .desi(node: address.node, row: address.row, targetId: selected.targetId) }
+    }
     return ViewState(target: orbit.target, camera: camera.position, identity: identity)
   }
 
@@ -386,11 +520,31 @@ public final class AtlasSession {
     camera.aspect = viewportPoints.x / viewportPoints.y
     camera.retuneNear(orbitDistance: orbitDistance)
     if (moved || orbitMoved || automaticOrbit) && wasContinuous { timings.record(elapsed * 1000) }
+    var animating = false
+    for (id, presence) in modelPresence {
+      let delta = dt / 0.6
+      var p = presence
+      p.value = p.target > p.value ? min(p.target, p.value + delta) : max(p.target, p.value - delta)
+      if p.value == 0 && p.target == 0 { modelScanNeeded = true }
+      if p.value != p.target { animating = true }
+      modelPresence[id] = p
+    }
+    for model in resolvedGalaxies { updateModel(model) }
+    for model in nearbyGalaxies { updateModel(model) }
+    milkyWay.update(camera: camera, heightPx: viewportPoints.y, pixelRatio: scale, focused: homeFocused, display: modelDisplay)
     updateDepthCues()
     if dirty || now - lastLOD > 0.2 { updateLOD(now: now); lastLOD = now; dirty = false }
+    if modelScanNeeded || now - lastModelScan > 0.25 { updateModels(); lastModelScan = now; modelScanNeeded = false }
     rings = lookbackRings ? Lookback(reference).chooseRings(dOriginMpc: simd_length(camera.position), fovDeg: camera.fovDegrees, aspect: camera.aspect, heightPx: viewportPoints.y) : []
+    let detailOrigins = resolvedGalaxies.map { SIMD3<Float>($0.center - camera.position) }, detailMix = resolvedGalaxies.map { Float($0.blend) }
     var frame = FrameState(uniforms: FrameUniforms.make(camera: camera, viewportHeightPx: viewportPoints.y, pointSizePx: 1.6 * scale, fadeRange: fadeRange, minOpacity: minOpacity,
-                                                        depthCues: depthCues, enlargePoints: enlargePoints, hideUncertainLocal: !showUncertainLocal), camera: camera)
+                                                        depthCues: depthCues, enlargePoints: enlargePoints, hideUncertainLocal: !showUncertainLocal, detailOrigins: detailOrigins, detailMix: detailMix), camera: camera)
+    var nearbyUniforms = frame.uniforms
+    FrameUniforms.setDetail(&nearbyUniforms, origins: nearbyGalaxies.map { SIMD3<Float>($0.center - camera.position) }, mix: nearbyGalaxies.map { Float($0.blend) })
+    var nearbyChunkUniforms = AtlasChunkUniforms()
+    nearbyChunkUniforms.origin = SIMD3<Float>(-camera.position); nearbyChunkUniforms.nodeCode = 65535
+    frame.nearby = (ChunkDraw(chunk: nearbyChunk, uniforms: nearbyChunkUniforms), nearbyUniforms)
+    frame.models = resolvedGalaxies.filter(\.visible) + nearbyGalaxies.filter(\.visible) + (milkyWay.visible ? [milkyWay] : [])
     frame.overlays.cmbShell = cosmicHorizon; frame.overlays.cmbRadiusMpc = reference.cmbRadiusMpc
     frame.overlays.ringAngles = rings.map(\.angle)
     frame.overlays.footprint = surveyFootprint && footprintState == .ready ? footprintTexture : nil
@@ -405,15 +559,17 @@ public final class AtlasSession {
       frame.chunks.append(ChunkDraw(chunk: chunk, uniforms: u))
     }
     frame.markers.append(MarkerDraw(origin: SIMD3<Float>(-camera.position), sizePx: Float(7 * scale), color: color(0x7299ad)))
+    if homeFocused && milkyWay.blend > 0.1 { frame.markers.append(MarkerDraw(origin: SIMD3<Float>(milkyWay.center - camera.position), sizePx: Float(7 * scale), color: color(0xd4bd96))) }
     if let selected, catalogPositionVisible(selected) { frame.markers.append(MarkerDraw(origin: SIMD3<Float>(selected.position - camera.position), sizePx: Float(15 * scale), color: color(0xb6f1fa))) }
     for galaxy in measurement where catalogPositionVisible(galaxy) { frame.markers.append(MarkerDraw(origin: SIMD3<Float>(galaxy.position - camera.position), sizePx: Float(13 * scale), color: color(0x9ee4f1))) }
     if measurement.count == 2, measurement.allSatisfy(catalogPositionVisible) {
       frame.line = LineDraw(origin: SIMD3<Float>(measurement[0].position - camera.position), end: SIMD3<Float>(measurement[1].position - measurement[0].position))
     }
     lastFrame = frame
+    if lookbackRings || !rings.isEmpty { onRings(ringLabels()) }
     if now - lastStats > 0.25 || !(moved || orbitMoved) { onStats(stats); lastStats = now }
     if adaptive.record(mode: mode, moving: moved || orbitMoved, pending: pending.count, p95: timings.p95) { dirty = true }
-    wasContinuous = moved || orbitMoved || automaticOrbit || dirty || orbit.isSettling
+    wasContinuous = moved || orbitMoved || automaticOrbit || dirty || orbit.isSettling || animating
     return frame
   }
   /// Record the draw the view actually submitted for the last tick.
@@ -430,7 +586,9 @@ public final class AtlasSession {
     s.complete = ready && !drawn.isEmpty && desired.count == drawn.count && drawn.allSatisfy { desired.contains($0) } && drawn.allSatisfy { nodes[$0]?.children.isEmpty ?? false }
     s.fps = timings.fps; s.p95 = timings.p95; s.calls = lastDraw.draws
     s.managedMiB = Double(memoryBytes) / 1_048_576; s.blocked = blocked
-    s.focusDistance = orbitDistance; s.focusFromObserver = simd_length(orbit.target); s.budget = adaptive.points; s.models = 0
+    s.pending += profilePending.count; s.failed += profileFailed.count
+    s.focusDistance = orbitDistance; s.focusFromObserver = simd_length(orbit.target); s.budget = adaptive.points
+    s.models = allModels.filter(\.visible).count + (milkyWay.visible ? 1 : 0)
     return s
   }
 
@@ -445,6 +603,7 @@ public final class AtlasSession {
   }
 
   public func selectGalaxy(_ galaxy: Galaxy, address: (node: String, row: Int)?) {
+    clearHomeSelection()
     selected = galaxy; selectedAddress = address; onSelection(galaxy)
     if measuring {
       if measurement.count == 2 { measurement = [] }
@@ -453,16 +612,29 @@ public final class AtlasSession {
     }
     invalidate()
   }
-  public func clearSelection() { selectionSerial += 1; selected = nil; selectedAddress = nil; onSelection(nil); invalidate() }
+  public func clearSelection() { clearHomeSelection(); selectionSerial += 1; selected = nil; selectedAddress = nil; onSelection(nil); invalidate() }
+  func inspectHome() { selectionSerial += 1; homeSelected = true; onHomeSelection(true); invalidate() }
+  public func clearHomeSelection() { if homeSelected { homeSelected = false; onHomeSelection(false) } }
+  public func setShowUncertainLocal(_ show: Bool) {
+    showUncertainLocal = show; selectionSerial += 1; modelScanNeeded = true
+    for model in allModels { updateModel(model) }
+    onSelection(selected); onMeasure(measurement, measuring); invalidate()
+  }
   public func setMeasuring(_ enabled: Bool) { measuring = enabled; measurement = []; onMeasure(measurement, enabled); invalidate() }
   public var measurementDistance: Double? { measurement.count == 2 ? separation(measurement[0].position, measurement[1].position) : nil }
 
   /// Tap-to-pick at a drawable pixel with a bottom-left origin (the web's readback convention).
   public func pick(drawableX: Int, drawableY: Int) async {
     guard !picking, ready, let frame = lastFrame else { return }
+    let size = drawableSize
+    let ndc = SIMD2<Double>(Double(drawableX) / Double(size.x) * 2 - 1, Double(drawableY) / Double(size.y) * 2 - 1)
+    // The analytic body test comes first: a visible model's disc, out to 4 R_e, wins over the points behind it.
+    let body = allModels.filter { $0.hitTest(ndc: ndc, camera: camera) }.min { simd_length_squared($0.center - camera.position) < simd_length_squared($1.center - camera.position) }
+    let homeHit = !measuring && milkyWay.hitTest(ndc: ndc, camera: camera)
+    if homeHit && (body == nil || simd_length_squared(milkyWay.center - camera.position) < simd_length_squared(body!.center - camera.position)) { inspectHome(); return }
+    if let body, let data = body.data { selectionSerial += 1; selectGalaxy(data.galaxy, address: modelLocations[data.galaxy.id]); return }
     picking = true; selectionSerial += 1; let serial = selectionSerial
     defer { picking = false; invalidate() }
-    let size = drawableSize
     let window = PickPass.Window(x: drawableX, y: drawableY, drawableWidth: size.x, drawableHeight: size.y)
     var pickFrame = frame
     pickFrame.uniforms.pointSizePx = Float(7 * scale)
@@ -470,7 +642,7 @@ public final class AtlasSession {
     let code = pickPass.pick(pickFrame, window: window, drawableWidth: size.x, drawableHeight: size.y)
     if code == 0 { if !measuring { clearSelection() }; return }
     if serial != selectionSerial { return }
-    if code >> 16 == 65535 { return } // nearby layer arrives with the models
+    if code >> 16 == 65535 { if let model = nearbyGalaxies[safe: Int(code & 65535)], let data = model.data { selectGalaxy(data.galaxy, address: nil) }; return }
     let nodeId = String(Int(code >> 16) - 1), row = Int(code & 65535)
     guard let item = cache[nodeId], row < item.node.storedCount else { return }
     let id = Int(item.ids[row]), node = item.node
@@ -479,6 +651,8 @@ public final class AtlasSession {
       if serial != selectionSerial { return }
       let galaxy = try decodeGalaxy(data, row: row, id: id)
       if !catalogPositionVisible(galaxy) { return }
+      if modelManifest != nil && !uncertainLocalPosition(galaxy) { do { _ = try await ensureModel(galaxy, node: node, row: row, priority: true) } catch { onMessage("The shape could not load; the catalog measurements are still available.") } }
+      if serial != selectionSerial { return }
       selectGalaxy(galaxy, address: (nodeId, row))
     } catch { onMessage("Could not inspect this point. \((error as? AtlasError)?.message ?? "Try again.")") }
   }

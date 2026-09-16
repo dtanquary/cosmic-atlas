@@ -51,7 +51,7 @@ final class PerformanceJourneyTests: XCTestCase {
 
     let renderer = try AtlasRenderer()
     let reference = try ReferenceData(directory: Bundle.main.url(forResource: "data", withExtension: nil)!)
-    let session = AtlasSession(renderer: renderer, reference: reference)
+    let session = try AtlasSession(renderer: renderer, reference: reference)
     let screen = UIScreen.main
     session.viewportPoints = SIMD2(Double(screen.bounds.width), Double(screen.bounds.height))
     session.scale = min(Double(screen.nativeScale), 1.5)
@@ -62,7 +62,7 @@ final class PerformanceJourneyTests: XCTestCase {
     let target = OffscreenTarget(renderer: renderer, width: size.x, height: size.y)
 
     let opened = CACurrentMediaTime()
-    try await session.open(origin: AtlasModel.origin)
+    try await session.open(origin: URL(string: Bundle.main.object(forInfoDictionaryKey: "AtlasOrigin") as? String ?? "https://cosmic-atlas-754.pages.dev/")!)
     var frames: [Double] = []
     var peakFootprint = 0, peakManaged = 0.0
     func sample() {

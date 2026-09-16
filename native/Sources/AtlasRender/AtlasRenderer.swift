@@ -104,6 +104,18 @@ public final class AtlasRenderer: @unchecked Sendable {
       encoder.drawPrimitives(type: .point, vertexStart: 0, vertexCount: draw.chunk.node.storedCount)
       stats.draws += 1; stats.points += draw.chunk.node.storedCount
     }
+    if let nearby = frame.nearby {
+      var u = nearby.uniforms, chunk = nearby.draw.uniforms
+      encoder.setVertexBytes(&u, length: MemoryLayout<AtlasFrameUniforms>.stride, index: 2)
+      encoder.setFragmentBytes(&u, length: MemoryLayout<AtlasFrameUniforms>.stride, index: 2)
+      encoder.setVertexBuffer(nearby.draw.chunk.buffer, offset: ChunkBuffers.positionsOffset, index: 0)
+      encoder.setVertexBuffer(nearby.draw.chunk.slots, offset: 0, index: 1)
+      encoder.setVertexBytes(&chunk, length: MemoryLayout<AtlasChunkUniforms>.stride, index: 3)
+      encoder.drawPrimitives(type: .point, vertexStart: 0, vertexCount: nearby.draw.chunk.node.storedCount)
+      stats.draws += 1; stats.points += nearby.draw.chunk.node.storedCount
+      encoder.setVertexBytes(&uniforms, length: MemoryLayout<AtlasFrameUniforms>.stride, index: 2)
+      encoder.setFragmentBytes(&uniforms, length: MemoryLayout<AtlasFrameUniforms>.stride, index: 2)
+    }
     // Per visible model: volume quad + arm points, then the Milky Way, painting over points like the web.
     for model in frame.models { drawModel(model, with: encoder, stats: &stats) }
     if !frame.markers.isEmpty || frame.line != nil {

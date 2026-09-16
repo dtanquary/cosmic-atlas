@@ -69,6 +69,8 @@ public struct FrameState {
   public var chunks: [ChunkDraw] = []
   /// Visible galaxy models in draw order (DESI pool, nearby layer, Milky Way last).
   public var models: [GalaxyModel] = []
+  /// The six nearby points with their own twelve-slot arrays, drawn after the catalog chunks.
+  public var nearby: (draw: ChunkDraw, uniforms: AtlasFrameUniforms)? = nil
   public var markers: [MarkerDraw] = []
   public var line: LineDraw? = nil
   public init(uniforms: AtlasFrameUniforms, camera: Camera) { self.uniforms = uniforms; self.camera = camera }
@@ -89,14 +91,17 @@ public enum FrameUniforms {
     u.depthCues = depthCues ? 1 : 0
     u.enlargePoints = enlargePoints ? 1 : 0
     u.hideUncertainLocal = hideUncertainLocal ? 1 : 0
+    setDetail(&u, origins: detailOrigins, mix: detailMix)
+    return u
+  }
+  public static func setDetail(_ u: inout AtlasFrameUniforms, origins: [SIMD3<Float>], mix: [Float]) {
     withUnsafeMutableBytes(of: &u.detailOrigins) { raw in
       let p = raw.bindMemory(to: SIMD3<Float>.self)
-      for i in 0..<MODEL_LIMIT { p[i] = i < detailOrigins.count ? detailOrigins[i] : .zero }
+      for i in 0..<MODEL_LIMIT { p[i] = i < origins.count ? origins[i] : .zero }
     }
     withUnsafeMutableBytes(of: &u.detailMix) { raw in
       let p = raw.bindMemory(to: Float.self)
-      for i in 0..<MODEL_LIMIT { p[i] = i < detailMix.count ? detailMix[i] : 0 }
+      for i in 0..<MODEL_LIMIT { p[i] = i < mix.count ? mix[i] : 0 }
     }
-    return u
   }
 }
