@@ -53,7 +53,11 @@ final class AtlasModel {
 
   func open() async {
     loadError = nil
-    do { try await session.open(origin: AtlasModel.origin); applyDeferredSettings() }
+    do {
+      try await session.open(origin: AtlasModel.origin); applyDeferredSettings()
+      // Launch argument `-tour road-trip`: the web's #tour= link for simulator checks and screenshots.
+      if let key = UserDefaults.standard.string(forKey: "tour"), let route = session.reference.tours.first(where: { $0.key == key }) { startTour(route) }
+    }
     catch { loadError = (error as? AtlasError)?.message ?? error.localizedDescription }
   }
   static var origin: URL { URL(string: Bundle.main.object(forInfoDictionaryKey: "AtlasOrigin") as? String ?? "https://cosmic-atlas-754.pages.dev/")! }

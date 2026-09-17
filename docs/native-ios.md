@@ -71,6 +71,15 @@ summary in this file's history and `AGENTS.md` for the standing rules.
   resolve through the name index the session loads from `galaxy-search.json`. `TourSessionTests` plays the whole road
   trip over the local full release with a simulated clock. The native app defaults the CMB shell to on until the user
   chooses otherwise (Dave, 16 September 2026); the web keeps its off default.
+- UI material (Dave, 16 September 2026): Liquid Glass only, iOS 26+. Every floating element over the map (header,
+  tour panel, inspector, footer, toast, diagnostics) is `.glassEffect(.regular)`; the map is the content layer and gets
+  no glass; nothing inside a glass panel is glass again; the header buttons and the bottom stack each sit in one
+  `GlassEffectContainer`; the regular variant is used throughout because the panels carry text (the HIG reserves the
+  clear variant for media backgrounds with a dimming layer). The app renders in the dark scheme because the map is
+  always dark. The tour panel minimizes to a single row (progress, stop title, play, next); phones start minimized so
+  the stop text never covers the map, iPads start expanded, and the expanded caption scrolls inside a bounded height.
+  The footer is one short row with the detail mode in a menu. `-tour <key>` as a launch argument starts a tour for
+  simulator screenshots, like the web's `#tour=` link.
 - Not yet: search, share and saved views, trips, the photo panel, About the data, and the Phase 6 store preparation.
 - Device observation, not a measurement: after the frame-pacing change below Dave reported the drag lag on the iPhone 17
   Pro Release build gone ("working great", 16 September 2026). The journey test still has no completed run.
