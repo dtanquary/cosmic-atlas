@@ -35,6 +35,9 @@ xcodebuild test -project native/App/CosmicAtlas.xcodeproj -scheme CosmicAtlas -c
   -only-testing:CosmicAtlasDeviceTests -resultBundlePath native/.cache/device.xcresult
 ```
 
+App icon: `python3 native/App/Icon/make_icon.py` regenerates the single 1024×1024 PNG in `App/CosmicAtlas/Assets.xcassets`
+(deterministic point-cloud galaxy; iOS derives the dark, tinted and glass appearances).
+
 Layout: `Sources/AtlasCore` (1:1 ports of `src/*.ts`), `Sources/AtlasShaderTypes` (uniform structs shared with MSL),
 `Sources/AtlasRender` (Metal passes), `Tests/` (XCTest ports of `tests/*.test.ts` using the repo fixtures via `#filePath`),
 `App/` (xcodegen spec, app sources, device tests). Reference JSON, photos and credits are folder references into the
