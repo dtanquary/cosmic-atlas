@@ -10,7 +10,7 @@ import AtlasTestSupport
 final class ModelSessionTests: XCTestCase {
   static let reference = try! ReferenceData(directory: RepoPaths.file("src/data"))
 
-  func makeSession() throws -> AtlasSession {
+  static func makeSession() throws -> AtlasSession {
     let disk = ChunkLoader(fetch: { url, asset, kind, count in try AssetVerifier.verify(compressed: try Data(contentsOf: url), asset: asset, kind: kind, count: count) })
     let profiles = ChunkLoader(fetch: { url, asset, kind, count in try AssetVerifier.verify(compressed: try Data(contentsOf: url), asset: asset, kind: kind, count: count) })
     let session = try AtlasSession(renderer: try AtlasRenderer(), reference: Self.reference, loader: disk, profileLoader: profiles)
@@ -27,7 +27,7 @@ final class ModelSessionTests: XCTestCase {
 
   func testPreviewsVisitsResidencyPickingAndIdentities() async throws {
     guard RepoPaths.exists("public/data/dr1/0.points.bin"), RepoPaths.exists("public/data/models/0.bin") else { throw XCTSkip("Full catalog not present locally") }
-    let session = try makeSession()
+    let session = try Self.makeSession()
     var now = await settle(session, frames: 40)
     XCTAssertNotNil(session.modelManifest, "the model catalog opens for the full release")
     XCTAssertEqual(session.resolvedGalaxies.count, 2, "two pinned previews")

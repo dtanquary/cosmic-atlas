@@ -30,13 +30,15 @@ struct AtlasScreen: View {
       VStack(alignment: .leading, spacing: 6) {
         if let toast = model.toast { Text(toast).font(.footnote).padding(8).background(.black.opacity(0.7)).clipShape(RoundedRectangle(cornerRadius: 8)) }
         if model.diagnostics { DiagnosticsLine(stats: model.stats) }
-        if let galaxy = model.selected { InspectorCard(galaxy: galaxy, units: model.units, onClose: { model.session.clearSelection() }) }
+        if model.tourActive { TourPanel(model: model) }
+        else if let galaxy = model.selected { InspectorCard(galaxy: galaxy, units: model.units, onClose: { model.session.clearSelection() }) }
         FooterBar(model: model)
       }
       .padding(.horizontal, 12).padding(.bottom, 8)
     }
     .foregroundStyle(.white)
     .sheet(isPresented: $model.showSettings) { SettingsSheet(model: model) }
+    .sheet(isPresented: $model.showTours) { ToursSheet(model: model) }
     .task { if ProcessInfo.processInfo.environment["XCTestSessionIdentifier"] == nil { await model.open() } } // hosted tests drive their own session
     .statusBarHidden(false)
   }
@@ -51,6 +53,7 @@ struct HeaderBar: View {
       Button { model.session.reset(seconds: 1.5) } label: { Image(systemName: "scope") }.accessibilityLabel("Overview")
       Button { model.settings.cosmicHorizon.toggle(); model.session.cosmicHorizon = model.settings.cosmicHorizon; model.settings.save(to: UserDefaults.standard) } label: { Image(systemName: "circle.dashed") }
         .accessibilityLabel("CMB shell").foregroundStyle(model.settings.cosmicHorizon ? .cyan : .white)
+      Button { model.showTours = true } label: { Image(systemName: "map") }.accessibilityLabel("Guided tours")
       Button { model.showSettings = true } label: { Image(systemName: "gearshape") }.accessibilityLabel("Settings")
     }
     .padding(10).background(.black.opacity(0.5)).clipShape(RoundedRectangle(cornerRadius: 10))

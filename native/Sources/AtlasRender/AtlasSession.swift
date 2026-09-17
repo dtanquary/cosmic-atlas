@@ -149,6 +149,9 @@ public final class AtlasSession {
   var profiles: [String: ProfileChunk] = [:]
   var profilePending: Set<String> = []
   public private(set) var profileFailed: Set<String> = []
+  /// galaxy-search.json merged with the nearby layer (src/galaxy-search.ts); tours resolve catalog stops by exact name here.
+  public internal(set) var names: [NamedGalaxy] = []
+  var nameIndexTask: Task<Void, Never>?
   public var allModels: [GalaxyModel] { resolvedGalaxies + nearbyGalaxies }
   public func resolvedFor(_ id: Int) -> GalaxyModel? { allModels.first { $0.id == id } }
 
@@ -160,6 +163,8 @@ public final class AtlasSession {
   public var onStats: (AtlasStats) -> Void = { _ in }
   public var onAutoFly: (Bool) -> Void = { _ in }
   public var onRings: ([RingLabel]) -> Void = { _ in }
+  /// Any orbit input (drag, pinch, wheel): the app pauses a running tour here, as the web does on pointerdown.
+  public var onUserInput: () -> Void = {}
   /// Schedule a frame (MTKView.setNeedsDisplay). Idle frames are never drawn.
   public var invalidate: () -> Void = {}
 
@@ -229,6 +234,8 @@ public final class AtlasSession {
     reset()
     invalidate()
     if manifest.id == "dr1" && manifest.subset == nil { Task { await openModelCatalog() } }
+    names = []; nameIndexTask = nil
+    Task { await openNameIndex() }
   }
 
   /// The two pinned previews and the catalog-wide profile sidecars (Explorer.load's second half).
@@ -472,7 +479,7 @@ public final class AtlasSession {
     focusAt(target: overviewTarget, distance: overviewRadius * OVERVIEW_FACTOR, direction: OVERVIEW_DIRECTION, seconds: seconds, completion: completion)
   }
   /// Any orbit input (drag, pinch, wheel) takes over from a travel the same frame.
-  public func userInputBegan() { stopTravel(); dirty = true; invalidate() }
+  public func userInputBegan() { stopTravel(); dirty = true; invalidate(); onUserInput() }
   public func setAutoFly(_ enabled: Bool) {
     if enabled && !ready || autoFly == enabled { return }
     if enabled { stopTravel(); flight = false; orbit.clearMomentum() }

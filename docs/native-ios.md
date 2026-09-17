@@ -65,7 +65,15 @@ summary in this file's history and `AGENTS.md` for the standing rules.
 - Phase 3: the CMB shell, lookback rings and survey footprint overlays, the settings sheet and ring labels.
 - Phase 4: galaxy volumes (Gaussian bodies, the disk template for the Milky Way and portraits, Magellanic clouds, arm
   points), the twelve-model scheduler, nearby layer, visits and link application in the session.
-- Not yet: the product UI of Phase 5 beyond a minimal inspector and settings sheet, and the Phase 6 store preparation.
+- Phase 5 (started): guided tours run in the native UI through `SessionTourAtlas`, the session's implementation of the
+  ported runner's `TourAtlas` surface; the Tours sheet lists every route, the tour panel carries progress, stop text,
+  Prev / Play / Next, status and the stops & pace menu, and any orbit input pauses the tour as on the web. Catalog stops
+  resolve through the name index the session loads from `galaxy-search.json`. `TourSessionTests` plays the whole road
+  trip over the local full release with a simulated clock. The native app defaults the CMB shell to on until the user
+  chooses otherwise (Dave, 16 September 2026); the web keeps its off default.
+- Not yet: search, share and saved views, trips, the photo panel, About the data, and the Phase 6 store preparation.
+- Device observation, not a measurement: after the frame-pacing change below Dave reported the drag lag on the iPhone 17
+  Pro Release build gone ("working great", 16 September 2026). The journey test still has no completed run.
 
 Judge device performance only on Release builds; Debug builds of unoptimised Swift are many times slower in the
 per-frame streaming code and are what `xcodebuild test` installs by default (see `native/README.md`).
