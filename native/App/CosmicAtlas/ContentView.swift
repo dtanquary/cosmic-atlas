@@ -79,7 +79,7 @@ struct LoadingOverlay: View {
 struct DiagnosticsLine: View {
   let stats: AtlasStats
   var body: some View {
-    Text(String(format: "%.0f FPS · p95 %.1f ms / %d draw calls · %d close-up models / %.0f MiB managed / budget %d", stats.fps, stats.p95, stats.calls, stats.models, stats.managedMiB, stats.budget))
+    Text(String(format: "%.0f FPS · p95 %.1f ms · gpu %.1f ms / %d draw calls · %d close-up models / %.0f MiB managed / budget %d", stats.fps, stats.p95, stats.gpuMs, stats.calls, stats.models, stats.managedMiB, stats.budget))
       .font(.system(.caption2, design: .monospaced)).padding(6).background(.black.opacity(0.6)).clipShape(RoundedRectangle(cornerRadius: 6))
   }
 }

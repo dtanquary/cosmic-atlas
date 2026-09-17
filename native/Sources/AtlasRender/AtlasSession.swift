@@ -10,6 +10,8 @@ public struct AtlasStats: Sendable, Equatable {
   public var mode: DetailMode = .adaptive, complete = false
   public var fps = 0.0, p95 = 0.0, calls = 0, managedMiB = 0.0, blocked = false
   public var focusDistance = 0.0, focusFromObserver = 0.0, budget = 0, models = 0
+  /// Last frame's GPU time, reported by the view that presents (0 offscreen).
+  public var gpuMs = 0.0
   public init() {}
 }
 
@@ -102,6 +104,7 @@ public final class AtlasSession {
   var lastLOD = -1.0, lastStats = 0.0, lastTime = 0.0
   var dirty = true
   var lastDraw = DrawStats()
+  public var gpuMs = 0.0
   var lastFrame: FrameState?
   /// Visible evictions would be a bug: the web pins zero; tests read this.
   public private(set) var visibleEvictions = 0
@@ -584,7 +587,7 @@ public final class AtlasSession {
     s.represented = drawn.reduce(0) { $0 + (nodes[$1]?.count ?? 0) }
     s.pending = pending.count; s.failed = failed.count; s.mode = mode
     s.complete = ready && !drawn.isEmpty && desired.count == drawn.count && drawn.allSatisfy { desired.contains($0) } && drawn.allSatisfy { nodes[$0]?.children.isEmpty ?? false }
-    s.fps = timings.fps; s.p95 = timings.p95; s.calls = lastDraw.draws
+    s.fps = timings.fps; s.p95 = timings.p95; s.calls = lastDraw.draws; s.gpuMs = gpuMs
     s.managedMiB = Double(memoryBytes) / 1_048_576; s.blocked = blocked
     s.pending += profilePending.count; s.failed += profileFailed.count
     s.focusDistance = orbitDistance; s.focusFromObserver = simd_length(orbit.target); s.budget = adaptive.points

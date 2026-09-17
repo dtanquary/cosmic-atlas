@@ -70,6 +70,12 @@ summary in this file's history and `AGENTS.md` for the standing rules.
 Judge device performance only on Release builds; Debug builds of unoptimised Swift are many times slower in the
 per-frame streaming code and are what `xcodebuild test` installs by default (see `native/README.md`).
 
+Frame pacing (input latency): idle frames draw on demand, but while the session animates the view is driven by a
+`CADisplayLink`, one frame per vsync, and the main thread never waits for the GPU: if the previous command buffer is
+still running the frame is dropped rather than blocking touch delivery behind `nextDrawable`. Orbit input applies an
+`Orbit.update` inside the gesture handler as well as in the frame loop, as three.js OrbitControls does on every
+pointer/touch move, so the damped response matches the web. The diagnostics line shows the last frame's GPU time.
+
 ## Native measurement rules
 
 - Device performance tests live in `native/App/CosmicAtlasDeviceTests`, run with
