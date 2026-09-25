@@ -81,8 +81,7 @@ final class VolumeTests: XCTestCase {
       let a = try model(data, .spiral), b = try model(other, .catalog)
       XCTAssertEqual(a.center, data.galaxy.position); XCTAssertEqual(a.radius, b.radius); XCTAssertEqual(a.frame?.q, b.frame?.q); XCTAssertEqual(a.frame?.positionAngle, b.frame?.positionAngle)
       XCTAssertEqual(a.radius / data.galaxy.distance * 180 / .pi * 3600, data.shape.radiusArcsec, accuracy: 1e-9)
-      if let disk = portrait.disk { XCTAssertEqual(a.kind, .portrait(disk)); XCTAssertNil(a.arms); XCTAssertLessThan(a.memoryBytes, Int(1.4 * 1_048_576)) }
-      else if let look = portrait.look {
+      if let look = portrait.look {
         // Procedural: no texture, and the noise seed follows the exact identity, not the dense row.
         XCTAssertEqual(a.kind, .look(look)); XCTAssertNil(a.arms); XCTAssertEqual(a.memoryBytes, 0); XCTAssertEqual(a.uniforms.seed, b.uniforms.seed)
       }

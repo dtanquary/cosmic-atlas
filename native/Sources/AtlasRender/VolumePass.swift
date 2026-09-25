@@ -8,7 +8,6 @@ import AtlasShaderTypes
 final class VolumePipelines {
   let gaussian: MTLRenderPipelineState
   let milkyWay: MTLRenderPipelineState
-  let portrait: MTLRenderPipelineState
   let look: MTLRenderPipelineState
   let cloud: MTLRenderPipelineState
   let arms: MTLRenderPipelineState
@@ -33,16 +32,15 @@ final class VolumePipelines {
       d.label = fragment
       return try device.makeRenderPipelineState(descriptor: d)
     }
-    func diskConstants(size: Int, steps: Int, kind: Int) -> MTLFunctionConstantValues {
+    func lookConstants(home: Bool) -> MTLFunctionConstantValues {
       let c = MTLFunctionConstantValues()
-      var s = Int32(size), st = Int32(steps), k = Int32(kind)
-      c.setConstantValue(&s, type: .int, index: 0); c.setConstantValue(&st, type: .int, index: 1); c.setConstantValue(&k, type: .int, index: 2)
+      var s = Int32(HOME_FIELD_SIZE), st = Int32(HOME_RAY_STEPS), h = home
+      c.setConstantValue(&s, type: .int, index: 0); c.setConstantValue(&st, type: .int, index: 1); c.setConstantValue(&h, type: .bool, index: 2)
       return c
     }
     gaussian = try pipeline("atlas_volume_gaussian", additive: true)
-    milkyWay = try pipeline("atlas_volume_disk", constants: diskConstants(size: HOME_FIELD_SIZE, steps: HOME_RAY_STEPS, kind: 0), additive: false)
-    portrait = try pipeline("atlas_volume_disk", constants: diskConstants(size: PORTRAIT_FIELD_SIZE, steps: PORTRAIT_RAY_STEPS, kind: 1), additive: false)
-    look = try pipeline("atlas_volume_look", additive: false)
+    milkyWay = try pipeline("atlas_volume_look", constants: lookConstants(home: true), additive: false)
+    look = try pipeline("atlas_volume_look", constants: lookConstants(home: false), additive: false)
     cloud = try pipeline("atlas_volume_cloud", additive: true)
     let a = MTLRenderPipelineDescriptor()
     a.vertexFunction = library.makeFunction(name: "atlas_arms_vertex"); a.fragmentFunction = library.makeFunction(name: "atlas_arms_fragment")
@@ -71,7 +69,6 @@ extension AtlasRenderer {
     switch model.kind {
     case .gaussian: encoder.setRenderPipelineState(volumes.gaussian)
     case .milkyWay: encoder.setRenderPipelineState(volumes.milkyWay); encoder.setFragmentTexture(model.density, index: 0); encoder.setFragmentSamplerState(volumes.densitySampler, index: 0)
-    case .portrait: encoder.setRenderPipelineState(volumes.portrait); encoder.setFragmentTexture(model.density, index: 0); encoder.setFragmentSamplerState(volumes.densitySampler, index: 0)
     case .look: encoder.setRenderPipelineState(volumes.look)
     case .cloud: encoder.setRenderPipelineState(volumes.cloud); encoder.setFragmentTexture(model.cloud, index: 0); encoder.setFragmentSamplerState(volumes.cloudSampler, index: 0)
     }

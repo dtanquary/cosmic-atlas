@@ -4,11 +4,11 @@ import simd
 import AtlasCore
 import AtlasShaderTypes
 
-/// One galaxy volume on the GPU (GalaxyVolume in src/galaxy-detail.ts): the analytic Gaussian body, a disk-template
-/// density texture (Milky Way or portrait) or a Magellanic cloud, plus optional arm/knot light samples.
+/// One galaxy volume on the GPU (GalaxyVolume in src/galaxy-detail.ts): the analytic Gaussian body, a procedural look,
+/// the Milky Way (its look plus the home density march) or a Magellanic cloud, plus optional arm/knot light samples.
 /// ponytail: mutated only on the main actor (session) or in a single test; unchecked rather than locked.
 public final class GalaxyModel: @unchecked Sendable {
-  public enum Kind: Equatable { case gaussian, milkyWay, portrait(DiskPortrait), look(GalaxyLookKey), cloud(MagellanicCloudKind) }
+  public enum Kind: Equatable { case gaussian, milkyWay, look(GalaxyLookKey), cloud(MagellanicCloudKind) }
   public let data: GalaxyDetailData?
   public let appearance: GalaxyAppearance
   public let light: GalaxyLight
@@ -39,7 +39,8 @@ public final class GalaxyModel: @unchecked Sendable {
   /// The Milky Way reference: literature-based frame, no catalog identity.
   public convenience init(renderer: AtlasRenderer, milkyWay reference: MilkyWayReference, fields: FieldCache) throws {
     let frame = MilkyWayFrame(reference)
-    let light = GalaxyLight(family: .barred, gaussians: [], spiral: nil, cloud: nil, portrait: nil, seed: 20260911, knotCount: nil, exposure: nil, colors: nil)
+    var light = GalaxyLight(family: .barred, gaussians: [], spiral: nil, cloud: nil, seed: 20260911, knotCount: nil, exposure: nil, colors: nil)
+    light.look = .init(key: .milkyWay, seed: lookSeed("milky-way"))
     try self.init(renderer: renderer, data: nil, appearance: .catalog, light: light, frame: nil, milkyWay: frame, axes: (frame.major, frame.minor, frame.normal, frame.thickness, frame.q), radius: frame.radius, center: frame.center, fields: fields)
   }
 
@@ -66,27 +67,23 @@ public final class GalaxyModel: @unchecked Sendable {
     uniforms.thickness = Float(axes.thickness)
     var kind = Kind.gaussian
     var density: MTLTexture? = nil, cloud: MTLTexture? = nil
-    if let milkyWay {
-      _ = milkyWay
+    if let look = light.look, let l = galaxyLooks[look.key] {
+      kind = .look(look.key)
+      uniforms.dustStrength = 1
+      uniforms.shape = SIMD4(Float(l.arms), Float(1 / tan(l.pitchDegrees * .pi / 180)), Float(l.bar), Float(l.bulge))
+      uniforms.arms = SIMD4(Float(l.ragged), Float(l.dust), Float(l.minor), Float(l.hii))
+      uniforms.pattern = SIMD4(Float(l.phaseDegrees * .pi / 180), Float(l.spin), Float(l.extent), Float(l.unitsPerRe))
+      uniforms.coreColor = l.core.float3; uniforms.diskColor = l.disc.float3; uniforms.youngColor = l.young.float3; uniforms.emissionColor = l.knots.float3
+      uniforms.seed = SIMD2<Float>(look.seed); uniforms.pixelRatio = 1
+    }
+    if milkyWay != nil {
+      // The look from outside; the home density march inside the disc.
       kind = .milkyWay
       density = try fields.milkyWayTexture(renderer)
       let phase = Double.pi - fields.milkyWay.barAngleDeg * .pi / 180
       uniforms.barDirection = SIMD2(Float(cos(phase)), Float(sin(phase)))
       uniforms.barRadius = Float(fields.milkyWay.barHalfLengthMpc / fields.milkyWay.radiusMpc)
       uniforms.dustStrength = 0.9
-    } else if let portrait = light.portrait {
-      kind = .portrait(portrait)
-      density = try fields.portraitTexture(renderer, portrait)
-      let l = portraitLight[portrait]!
-      uniforms.dustStrength = Float(l.dust)
-      uniforms.portrait = SIMD4(Float(l.bulge), Float(l.coreRadius), Float(l.old), Float(l.young))
-    } else if let look = light.look, let l = galaxyLooks[look.key] {
-      kind = .look(look.key)
-      uniforms.dustStrength = 1
-      uniforms.shape = SIMD4(Float(l.arms), Float(1 / tan(l.pitchDegrees * .pi / 180)), Float(l.bar), Float(l.bulge))
-      uniforms.arms = SIMD4(Float(l.ragged), Float(l.dust), Float(l.minor), Float(l.hii))
-      uniforms.coreColor = l.core.float3; uniforms.diskColor = l.disc.float3; uniforms.youngColor = l.young.float3; uniforms.emissionColor = l.knots.float3
-      uniforms.seed = SIMD2<Float>(look.seed); uniforms.pixelRatio = 1
     } else if let cloudKind = light.cloud {
       kind = .cloud(cloudKind)
       cloud = try fields.cloudTexture(renderer, cloudKind)
@@ -123,10 +120,9 @@ public final class GalaxyModel: @unchecked Sendable {
     } else { arms = nil }
   }
 
-  /// Managed bytes as the web counts them: portrait texture with mips, cloud field ×2, arm buffers ×2.
+  /// Managed bytes as the web counts them: home texture with mips, cloud field ×2, arm buffers ×2.
   public var memoryBytes: Int {
     var bytes = 0
-    if case .portrait = kind { bytes += portraitMemoryBytes }
     if case .milkyWay = kind { bytes += HOME_FIELD_SIZE * HOME_FIELD_SIZE * 4 + 4 * (4 * HOME_FIELD_SIZE * HOME_FIELD_SIZE - 1) / 3 }
     if cloud != nil { bytes += CLOUD_FIELD_SIZE * CLOUD_FIELD_SIZE * CLOUD_FIELD_SIZE * 2 * 2 }
     if let arms { bytes += arms.bytes }
@@ -183,7 +179,6 @@ public final class GalaxyModel: @unchecked Sendable {
 public final class FieldCache: @unchecked Sendable {
   public let milkyWay: MilkyWayReference
   private var milkyWayField: [UInt8]?
-  private var portraitFields: [DiskPortrait: [UInt8]] = [:]
   private var cloudFields: [MagellanicCloudKind: [UInt8]] = [:]
   private var textures: [String: MTLTexture] = [:]
   public init(milkyWay: MilkyWayReference) { self.milkyWay = milkyWay }
@@ -202,10 +197,6 @@ public final class FieldCache: @unchecked Sendable {
   public func milkyWayTexture(_ renderer: AtlasRenderer) throws -> MTLTexture {
     if milkyWayField == nil { milkyWayField = milkyWayDensityField(milkyWay) }
     return try texture2D(renderer, key: "milky-way", size: HOME_FIELD_SIZE, data: milkyWayField!)
-  }
-  public func portraitTexture(_ renderer: AtlasRenderer, _ kind: DiskPortrait) throws -> MTLTexture {
-    if portraitFields[kind] == nil { portraitFields[kind] = portraitDensityField(kind) }
-    return try texture2D(renderer, key: "portrait-\(kind.rawValue)", size: PORTRAIT_FIELD_SIZE, data: portraitFields[kind]!)
   }
   public func cloudTexture(_ renderer: AtlasRenderer, _ kind: MagellanicCloudKind) throws -> MTLTexture {
     let key = "cloud-\(kind.rawValue)"

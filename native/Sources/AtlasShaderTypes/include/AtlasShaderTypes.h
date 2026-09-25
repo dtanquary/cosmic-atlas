@@ -38,7 +38,7 @@ typedef struct {
   unsigned int ringCount;
 } AtlasOverlayUniforms;
 
-/// One galaxy volume (analytic Gaussian mixture, disk template or Magellanic cloud): a screen-space quad clipped to
+/// One galaxy volume (analytic Gaussian mixture, procedural look, home march or Magellanic cloud): a screen-space quad clipped to
 /// `bounds`, rays reconstructed from the camera basis and deprojected by `toModel`.
 typedef struct {
   vector_float4 bounds;         // NDC rect the quad covers
@@ -53,10 +53,10 @@ typedef struct {
   vector_float2 projection;     // tan(fov/2) * (aspect, 1)
   vector_float2 barDirection;
   vector_float2 gaussians[20];  // (sigma in R_e, peak)
-  vector_float4 portrait;       // (bulge, coreRadius, old, young)
   vector_float4 shape;          // look: (arms, cot pitch, bar, bulge)
   vector_float4 arms;           // look: (ragged, dust, minor, H II)
   vector_float3 youngColor;     // look: young arm stars (disk/core/emission colors hold disc, bulge and H II)
+  vector_float4 pattern;        // look: (phase, spin, disc extent, units per R_e)
   vector_float2 seed;           // look: noise offsets from the public identity
   float pixelRatio;             // look: drawable pixels per point
   float mix;

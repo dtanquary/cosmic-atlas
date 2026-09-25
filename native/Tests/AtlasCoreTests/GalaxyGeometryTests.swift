@@ -135,11 +135,11 @@ final class GalaxyGeometryTests: XCTestCase {
     for data in try nearbyDetails(Self.reference.nearby) + [Self.detail, Self.spiral] { XCTAssertNotNil(galaxyPortrait(data.galaxy.targetId), data.galaxy.targetId) }
     var unknown = try nearbyDetails(Self.reference.nearby)[0]; unknown.galaxy.targetId = "unmatched:portrait-fallback"
     let fallback = try resolveModel(unknown, appearance: .spiral, profile: profile)
-    XCTAssertNotNil(fallback.light.spiral); XCTAssertNil(fallback.light.portrait); XCTAssertEqual(fallback.light.knotCount, 12000)
+    XCTAssertNotNil(fallback.light.spiral); XCTAssertNil(fallback.light.look); XCTAssertEqual(fallback.light.knotCount, 12000)
     var profileOnly = try nearbyDetails(Self.reference.nearby)[0]; profileOnly.sourceProfileOnly = true; profileOnly.spiral = nil; profileOnly.knotCount = 0
     let source = try resolveModel(profileOnly, appearance: .catalog, profile: profile)
-    XCTAssertNil(source.light.portrait); XCTAssertNil(source.light.spiral); XCTAssertEqual(source.light.knotCount, 0)
+    XCTAssertNil(source.light.look); XCTAssertNil(source.light.spiral); XCTAssertEqual(source.light.knotCount, 0)
     let m31 = try resolveModel(try nearbyDetails(Self.reference.nearby)[0], appearance: .spiral, profile: profile)
-    XCTAssertEqual(m31.light.portrait, .m31); XCTAssertEqual(m31.light.gaussians, [])
+    XCTAssertEqual(m31.light.look?.key, .m31); XCTAssertEqual(m31.light.gaussians, [])
   }
 }

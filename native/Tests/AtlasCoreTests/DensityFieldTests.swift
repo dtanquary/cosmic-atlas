@@ -3,7 +3,7 @@ import simd
 import AtlasTestSupport
 @testable import AtlasCore
 
-// Ports of the field cases in tests/milky-way, galaxy-portraits and magellanic-clouds.
+// Ports of the field cases in tests/milky-way and magellanic-clouds.
 final class DensityFieldTests: XCTestCase {
   static let reference = try! ReferenceData(directory: RepoPaths.file("src/data"))
 
@@ -32,22 +32,6 @@ final class DensityFieldTests: XCTestCase {
     XCTAssertEqual(simd_dot(simd_cross(frame.major, frame.minor), frame.normal), 1, accuracy: 1e-12)
     for axis in [frame.major, frame.minor, frame.normal] { XCTAssertEqual(simd_length(axis), 1, accuracy: 1e-12) }
     XCTAssertEqual(Self.reference.milkyWay.diskScaleMpc, 0.0026)
-  }
-  func testPortraitFieldsAreDeterministicDistinctAndBounded() {
-    let fields = [DiskPortrait.m31, .m33].map { kind -> [UInt8] in
-      let size = 96, field = portraitDensityField(kind, size: size)
-      XCTAssertEqual(field, portraitDensityField(kind, size: size))
-      var dust = 0, emission = 0
-      for y in 0..<size { for x in 0..<size {
-        let i = (y * size + x) * 4, r = hypot(((Double(x) + 0.5) / Double(size) * 2 - 1) * 4.5, ((Double(y) + 0.5) / Double(size) * 2 - 1) * 4.5)
-        if r >= 4.45 { XCTAssertEqual(Array(field[i..<i + 4]), [0, 0, 0, 0]) }
-        dust += Int(field[i + 2]); emission += Int(field[i + 3])
-      } }
-      XCTAssertGreaterThan(dust, 10000); XCTAssertGreaterThan(emission, 100)
-      return field
-    }
-    XCTAssertNotEqual(fields[0], fields[1])
-    XCTAssertEqual(portraitMemoryBytes, 384 * 384 * 4 + (0...8).reduce(0) { $0 + (384 >> $1) * (384 >> $1) * 4 })
   }
   func testCloudFieldsAreDistinctDeterministicWithEmptyBoundaries() {
     let size = CLOUD_FIELD_SIZE, lmc = cloudDensityField(.lmc), smc = cloudDensityField(.smc)

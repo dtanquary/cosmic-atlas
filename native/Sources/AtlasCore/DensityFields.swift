@@ -1,13 +1,10 @@
 import Foundation
 
-// Procedural density fields from src/milky-way-light.ts, src/galaxy-portraits.ts and src/magellanic-clouds.ts.
+// Procedural density fields from src/milky-way-light.ts and src/magellanic-clouds.ts.
 // A density field, not a photograph or a catalog of individual stars.
 
 public let HOME_FIELD_SIZE = 512, HOME_EXTENT_RE = 4.5, HOME_RAY_STEPS = 64
-public let PORTRAIT_FIELD_SIZE = 384, PORTRAIT_EXTENT_RE = 4.5, PORTRAIT_RAY_STEPS = 96
 public let CLOUD_FIELD_SIZE = 48, CLOUD_EXTENT_RE = 4.5, CLOUD_RAY_STEPS = 64
-/// Bytes of a portrait texture with its mip chain, as the web counts them.
-public let portraitMemoryBytes: Int = { var bytes = PORTRAIT_FIELD_SIZE * PORTRAIT_FIELD_SIZE * 4; var size = PORTRAIT_FIELD_SIZE; while size >= 1 { bytes += size * size * 4; size /= 2 }; return bytes }()
 
 @inline(__always) func smooth(_ a: Double, _ b: Double, _ x: Double) -> Double { let t = max(0, min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t) }
 @inline(__always) func ridge(_ angle: Double, _ width: Double) -> Double { let w = atan2(sin(angle), cos(angle)) / width; return exp(-0.5 * w * w) }
@@ -22,10 +19,6 @@ func noise2(_ x: Double, _ y: Double, _ seed: Int32) -> Double {
   let a = hash2(ix, iy, seed), b = hash2(ix &+ 1, iy, seed), c = hash2(ix, iy &+ 1, seed), d = hash2(ix &+ 1, iy &+ 1, seed)
   return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v
 }
-public struct MilkyWayLight: Sendable { public var bulge: Double, coreRadius: Double, old: Double, young: Double, dust: Double }
-public let portraitLight: [DiskPortrait: MilkyWayLight] = [
-  .m31: MilkyWayLight(bulge: 2.6, coreRadius: 0.38, old: 1.3, young: 1.2, dust: 1.3),
-  .m33: MilkyWayLight(bulge: 0.13, coreRadius: 0.19, old: 0.9, young: 1.4, dust: 0.55)]
 
 /// Channels hold sqrt(old disk), sqrt(young arms), dust, and faint emission regions.
 public func milkyWayDensityField(_ reference: MilkyWayReference, size: Int = HOME_FIELD_SIZE) -> [UInt8] {
@@ -61,47 +54,6 @@ public func milkyWayDensityField(_ reference: MilkyWayReference, size: Int = HOM
     let emission = young * smooth(0.64, 0.84, fine) * smooth(0.5, 0.8, grain) * 0.65
     let i = (y * size + x) * 4
     data[i] = UInt8((old.squareRoot() * 255).rounded()); data[i + 1] = UInt8((min(1, young).squareRoot() * 255).rounded())
-    data[i + 2] = UInt8((min(1, dustDensity) * 255).rounded()); data[i + 3] = UInt8((min(1, emission) * 255).rounded())
-  } }
-  return data
-}
-
-/// Same four channels as the home template, regenerated from compact recipes. Feature placement is illustrative.
-public func portraitDensityField(_ kind: DiskPortrait, size: Int = PORTRAIT_FIELD_SIZE) -> [UInt8] {
-  var data = [UInt8](repeating: 0, count: size * size * 4)
-  let seed: Int32 = kind == .m31 ? 31031 : 33033
-  let pitch: Double = kind == .m31 ? 12 : 26, winding = 1 / tan(pitch * .pi / 180), count = kind == .m31 ? 2 : 3
-  for y in 0..<size { for x in 0..<size {
-    let px = ((Double(x) + 0.5) / Double(size) * 2 - 1) * PORTRAIT_EXTENT_RE, py = ((Double(y) + 0.5) / Double(size) * 2 - 1) * PORTRAIT_EXTENT_RE, r = hypot(px, py)
-    let edge = 1 - smooth(3.3, 4.45, r); if edge == 0 { continue }
-    let coarse = noise2(px * 3.4 + 7, py * 3.4 - 4, seed), fine = noise2(px * 17, py * 17, seed), grain = noise2(px * 47 + 2, py * 47 - 3, seed)
-    let theta = atan2(py, px), path = 0.8 + winding * log(max(0.22, r) / 0.55)
-    let bend = (coarse - 0.5) * (kind == .m33 ? 1.05 : 0.36) + 0.09 * sin(r * 11 + theta * 3)
-    var arms = 0.0, dust = 0.0
-    for arm in 0..<count {
-      let a = theta - path - Double(arm) * .pi * 2 / Double(count) + bend, width = kind == .m33 ? 0.33 : 0.25
-      let broken = kind == .m33 ? 0.25 + 1.6 * coarse * coarse : 0.65 + 0.5 * coarse
-      arms += ridge(a, width) * broken
-      if kind != .m31 { arms += 0.45 * ridge(a + 0.4 * sin(r * 9 + Double(arm)), width * 0.5) * fine }
-      dust += ridge(a + 0.18, width * 0.35) + 0.45 * ridge(a + 0.31 + 0.1 * fine, width * 0.2)
-    }
-    if kind == .m31 {
-      // Broad annular arcs rather than a sharp circular hoop; noise breaks them into long uneven dust lanes.
-      let rr = r + 0.09 * sin(theta - 1) + 0.06 * (coarse - 0.5)
-      let r1 = (rr - 1.13) / 0.14, r2 = (rr - 1.78) / 0.18
-      let rings = exp(-(r1 * r1)) + 0.45 * exp(-(r2 * r2))
-      arms = 0.35 * arms + 0.8 * rings; dust = 0.45 * dust + 1.8 * rings
-    }
-    let onset = smooth(0.2, 0.65, r), outer = exp(-1.15 * r) * edge
-    let old = exp(-1.67834699 * r) * edge * (0.88 + 0.24 * coarse)
-    let mixNoise = 0.5 * coarse + 0.5 * fine
-    let young = outer * onset * (0.3 + 0.65 * arms) * (0.4 + 1.4 * mixNoise * mixNoise)
-    let filament = pow(1 - abs(2 * noise2(px * 12 + coarse, py * 12, seed) - 1), 8)
-    let dustDensity = onset * edge * exp(-0.55 * r) * (0.08 + 1.6 * dust + 0.35 * filament) * (0.3 + 1.1 * fine)
-    var emission = young * smooth(0.53, 0.76, fine) * smooth(0.45, 0.74, grain) * (kind == .m31 ? 0.45 : 2.4)
-    if kind == .m33 { emission += 0.13 * exp(-((px - 1.4) * (px - 1.4) + (py + 0.55) * (py + 0.55)) / 0.018) * (0.35 + fine) }
-    let i = (y * size + x) * 4
-    data[i] = UInt8((min(1, old).squareRoot() * 255).rounded()); data[i + 1] = UInt8((min(1, young).squareRoot() * 255).rounded())
     data[i + 2] = UInt8((min(1, dustDensity) * 255).rounded()); data[i + 3] = UInt8((min(1, emission) * 255).rounded())
   } }
   return data
