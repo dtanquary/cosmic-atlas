@@ -456,3 +456,28 @@ Visual review of real-app captures used face-on, zoomed, inclined and steep view
 `swift test` passes every AtlasRender test, including the look's draw count, allocation, identity seed and deterministic redraw. In AtlasCore, `ChunkLoaderTests.testDoesNotDeliverACancelledReplyToANewRequiredRequest` failed in 2 of 3 reruns. It is a known timing flake in loader code this change does not touch.
 
 Mac GPU time with NGC 3982 filling the frame (median of 25 frames, M3 Max): **1.97 ms** face-on and 1.69 ms inclined at 2800×1800; **0.42/0.44 ms** at 660×1434. The Triangulum texture portrait at the same framing takes 17.2/14.2 ms and 3.19/3.13 ms. These are local measurements; no iPhone or iPad numbers are recorded yet.
+
+### Step 2: Andromeda, Triangulum and the Milky Way
+
+Andromeda and Triangulum move from texture portraits to the procedural look, and the Milky Way gains it for outside views. The home march still draws views from within the disc and edge-on. `npm test` passes **126 tests in 26 files**, and strict TypeScript and the build pass. The look tests now integrate every look's disc (Andromeda, Triangulum and NGC 3982 at extent 1, the Milky Way at 1.5) and pin the Milky Way's bar length, angle and handedness to `src/data/milky-way.json`.
+
+Full-data `?portraittest&cloudtest&varianttest&colortest&continuitytest&nearbytest&sharetest`, `?tourtest&hometest&uxtest&cosmictest` and development-subset `?dataset=development&nearbytest&portraittest&cloudtest&tourtest&hometest` pass on HeadlessChrome 153 / ANGLE Metal M3 Max, 1600×1000. There are no page or shader errors and no failed keys, before and after context recovery.
+
+- **Andromeda and Triangulum:** one draw each with **0 texture bytes**. The face, inclined, reverse and edge views peak at **203–245/255** with zero clipped pixels. Inside views are unclipped, facing away draws nothing, and dust darkens them (0.35 and 0.15). A 0.001 rad orbit changes the mean by at most 0.039 levels, and checksums survive reconstruction and recovery.
+- **Nearby layer:** now totals **1,343,488 bytes** (the two clouds), down from 4,095,984.
+- **Milky Way:** passes every home appearance check. Its face and inclined views use the look (peak 245/255). The edge-on, inside and Sun views use the march, with 65,536 lit pixels and none clipped. Dust darkens it (0.47), a small orbit changes 0.063, and memory is still 2,446,676 bytes in one draw.
+- **Performance and navigation:** orbit samples and the home orbit hold **60 FPS, p95 16.7–16.8 ms** (the 60 Hz cap). The road trip reaches all ten stops, continuity stays within 12 models, and the subset skips only its two unavailable stops.
+
+Visual review: real-app captures of all three at observer, zoomed, inclined and steep views. For the Milky Way this included the core view, Sun / Observer focus and edge-on; in Metal, face-on, inclined, edge-on and from the Sun. Andromeda's observer view reads as tight dusty rings with a cream bulge half hidden behind the disc. Face-on it shows many concentric tight arms, which is expected at an 8° pitch.
+
+`swift test`: every AtlasRender test passes under `MTL_DEBUG_LAYER=1`. AtlasCore passes except the same `ChunkLoaderTests.testDoesNotDeliverACancelledReplyToANewRequiredRequest` timing flake, which failed in every repeated filtered run and passed in one full run. The iOS app builds for the iPhone 17 Pro simulator.
+
+Mac GPU (M3 Max, median of 25 frames, model filling the frame, 2800×1800 / 660×1434):
+
+| Model and view | Time |
+| --- | --- |
+| Andromeda look | **2.01 / 0.42 ms** |
+| Milky Way from outside | **16.9 / 3.04 ms** |
+| Milky Way from the Sun | **15.0 / 2.79 ms** |
+
+The Milky Way still runs its full march under the look, so its outside view costs the march plus about 2 ms. Skipping the march where the look fully covers a pixel is a possible later saving.

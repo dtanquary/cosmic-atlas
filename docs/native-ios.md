@@ -96,7 +96,9 @@ pointer/touch move, so the damped response matches the web. The diagnostics line
 - Procedural galaxy looks (25 September 2026): `atlas_volume_look` ports `src/galaxy-looks.ts` for NGC 3982 with the same
   look table, identity seeds and integer-hash noise; `GalaxyLooksTests` guards the disc profile and the Metal constants. On the Mac GPU it
   costs 0.42 ms with the galaxy filling a 660×1434 frame, versus 3.19 ms for the texture portrait it replaces. The on-device check is still
-  to be done. See [galaxy looks](galaxy-looks.md).
+  to be done. See [galaxy looks](galaxy-looks.md). Andromeda, Triangulum and the Milky Way (outside views) followed the same day. The
+  Milky Way pipeline is `atlas_volume_look` with `LOOK_HOME` set, which blends into its density march inside the disc. The texture
+  portraits and their pipeline are gone.
 
 ## Native measurement rules
 

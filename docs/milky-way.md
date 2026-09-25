@@ -1,5 +1,11 @@
 # Milky Way reference model
 
+## Procedural look from outside — 25 September 2026
+
+Seen from outside, the home galaxy now uses the [procedural galaxy look](galaxy-looks.md) ported from the Atrium screensaver. It has two major arms off the bar's ends, two minor arms between them, dust lanes with dark cores, feathers, a filament web, H II regions, resolved stars and a rounder bulge. The sourced geometry drives it: the pattern's bar has the adopted 5 kpc half-length and lies 28° from the Sun–centre line, the arms wind with the same handedness as the density field below, and the smooth disc keeps the 2.6 kpc exponential scale, with its half-light radius at the adopted 4.36 kpc. The disc fades out between about 9 and 15 kpc, so the Sun at 8.1 kpc lies inside it.
+
+The density-field march described below still draws every view from within the disc layer, edge-on views and grazing rays. Whole pixels hand over between the two within 0.35–1.4 kpc of the midplane and between about 81° and 86.5° from face-on. The Sun, the observer position and the adopted frame are unchanged, and there is still one draw call. Arm paths, pitch (13°), dust, star and H II placement, colours and the bulge profile are illustrative.
+
 ## Photographic appearance revision
 
 The visual model uses [Hubble's 2025 Andromeda panorama](https://esahubble.org/images/heic2501a/) (NASA, ESA, B. Williams / University of Washington) as a reference for continuous starlight, warm inner light, muted blue outer populations, and dark filamentary dust. It does not copy Andromeda's dimensions, bulge-to-disk ratio, or viewing angle. No telescope image is distributed as a texture.
