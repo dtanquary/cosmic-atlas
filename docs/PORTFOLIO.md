@@ -1,6 +1,6 @@
 # Cosmic Atlas — a 3D map of 14,140,375 measured galaxies, for anyone who wants to see where things actually are
 
-**What it is:** A browser app that draws every accepted galaxy observation in the DESI Data Release 1 redshift catalog as a point in three-dimensional space, with the Solar System at the origin. You orbit, fly, and zoom from the Sun out to the cosmic microwave background; click any point for its exact DESI target ID, sky position, redshift and derived distance; measure the separation between two galaxies; search for named galaxies; and fly up close, where a point resolves into a procedural 3D model whose size and projected shape come from the catalog. Six nearby galaxies with independently measured distances, a Milky Way reference model, lookback-time rings, the survey footprint and a ten-stop guided road trip sit alongside the survey. Everything the app shows is labelled as measured, adopted or illustrative, and the app never pretends a gap in the survey is empty space.
+**What it is:** A browser app that draws every accepted galaxy observation in the DESI Data Release 1 redshift catalog as a point in three-dimensional space, with the Solar System at the origin. You orbit, fly, and zoom from the Sun out to the cosmic microwave background; click any point for its exact DESI target ID, sky position, redshift and derived distance; measure the separation between two galaxies; search for named galaxies; and fly up close, where a point resolves into a procedural 3D model whose size and projected shape come from the catalog. Ten nearby galaxies with independently measured distances, a Milky Way reference model, lookback-time rings, the survey footprint and a ten-stop guided road trip sit alongside the survey. Everything the app shows is labelled as measured, adopted or illustrative, and the app never pretends a gap in the survey is empty space.
 
 **Stack:** Strict TypeScript with Three.js on WebGL2, built by Vite; Python 3.11 with NumPy, Astropy and SciPy for the offline data pipeline; Playwright for real-GPU browser checks. 47 TypeScript files totalling 417 KB of source (written densely: 4,619 physical lines); 17 Python scripts, 1,295 lines; 14 Node scripts, 891 lines; 25 unit-test files with 124 tests; 19 documents, 1,914 lines. Runtime dependencies: <code>three</code> and two font packages. No backend, no API keys, no runtime calls to any astronomy service.
 
@@ -20,7 +20,7 @@
     node.meta.bin    56-byte f64 rows   -- gzip -->  (all nodes) |  vertex path  float32 chunk positions relative to  |
     node profiles    20-byte rows       -- gzip -->  143 MB      |               a float64 node center; camera        |
   sidecars: 17,320 names, 720x360 footprint, lookback table,     |               subtraction on the CPU each frame    |
-    six nearby galaxies, Milky Way frame, tours, photographs     +--------------------------------------------------+
+    ten nearby galaxies, Milky Way frame, tours, photographs     +--------------------------------------------------+
                                                                  Cloudflare Pages: 3,070 static files, 1,081.9 MiB
 </code></pre>
 

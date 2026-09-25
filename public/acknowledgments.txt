@@ -118,17 +118,22 @@ The derived model manifest and profile sidecars include adapted OpenNGC classifi
 
 INDEPENDENT NEARBY GALAXIES
 
-The six-entry nearby layer uses adopted numerical measurements from McConnachie, A. W. (2012), AJ, 144, 4, and its January 2021 compilation: https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/community/nearby/ . Coordinates and selected half-light radii/ellipses are credited to that compilation and its referenced studies. M32's RR Lyrae distance is attributed there to Fiorentino et al. (2010).
+The ten-entry nearby layer uses adopted numerical measurements from McConnachie, A. W. (2012), AJ, 144, 4, and its January 2021 compilation: https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/community/nearby/ . Coordinates and selected half-light radii/ellipses are credited to that compilation and its referenced studies. M32's RR Lyrae distance is attributed there to Fiorentino et al. (2010).
 
 M31, M33 and NGC 205 tip-of-the-red-giant-branch distances: McConnachie et al. (2005), https://arxiv.org/abs/astro-ph/0410489 .
 Large Magellanic Cloud eclipsing-binary distance: Pietrzynski et al. (2019), https://arxiv.org/abs/1903.08096 .
 Small Magellanic Cloud eclipsing-binary distance: Graczyk et al. (2020), https://arxiv.org/abs/2010.08754 .
+M51 tip-of-the-red-giant-branch distance, also adopted for NGC 5195: McQuinn et al. (2016), https://arxiv.org/abs/1606.04120 .
+M101 tip-of-the-red-giant-branch distance: Beaton et al. (2019), Carnegie-Chicago Hubble Program, https://arxiv.org/abs/1908.06120 .
+NGC 1300 Tully-Fisher distance modulus: Cosmicflows-4, Tully et al. (2023), https://arxiv.org/abs/2209.11238 .
+M51, M101 and NGC 1300 disk scale lengths, outer-isophote shapes and the NGC 1300 bar: S4G Pipeline 4, Salo et al. (2015), https://arxiv.org/abs/1503.06550 (VizieR J/ApJS/219/4).
+NGC 5195 effective aperture and the four galaxies' visual types: Third Reference Catalogue of Bright Galaxies, de Vaucouleurs et al. (1991) (VizieR VII/155).
 M31 disk scale and projected flattening: Courteau et al. (2011), https://arxiv.org/abs/1106.3564 .
 M33 K-band disk scale: https://doi.org/10.1111/j.1365-2966.2012.21778.x ; rescaled from that work's adopted distance.
 
 Additional projected axis ratios, sky angles and aliases derive from Mattia Verga's OpenNGC, under CC BY-SA 4.0, as credited above. Adapted OpenNGC shape fields and the combined nearby reference are distributed under CC BY-SA 4.0, preserving the research provenance of other numerical measurements. Processing converts sexagesimal coordinates, distance moduli, angular sizes and ellipses; fits illustrative smooth Gaussian profiles; and adds explicit missing-shape assumptions. Source snapshot and input-excerpt SHA-256 values are retained in src/data/nearby-sources.json and the generated nearby-galaxies.json. See docs/nearby-galaxies.md for exact choices.
 
-The layer does not alter or globally deduplicate DESI observations. Depth, ambiguous near side, arms/clumps, colors and exposure are illustrative; the Clouds have explicitly assumed model sizes, and LMC orientation is unknown. The six nearby entries are counted separately. These adopted values are not a claim of the latest scientific consensus.
+The layer does not alter or globally deduplicate DESI observations. Depth, ambiguous near side, arms/clumps, colors and exposure are illustrative; the Clouds have explicitly assumed model sizes, and LMC orientation is unknown. The ten nearby entries are counted separately. These adopted values are not a claim of the latest scientific consensus.
 
 Milky Way appearance reference
 ------------------------------

@@ -1,6 +1,6 @@
 # Cosmic Atlas
 
-A minimal 3D explorer of **14,140,375 accepted DESI DR1 galaxy observations**, plus six nearby galaxies with independently measured distances, built with TypeScript, Three.js and Vite. Browse the cosmic web, inspect catalog measurements, compare distances, fly through space, and approach galaxies to reveal procedural 3D models.
+A minimal 3D explorer of **14,140,375 accepted DESI DR1 galaxy observations**, plus ten nearby galaxies with independently measured distances, built with TypeScript, Three.js and Vite. Browse the cosmic web, inspect catalog measurements, compare distances, fly through space, and approach galaxies to reveal procedural 3D models.
 
 **[Open Cosmic Atlas](https://cosmic-atlas-754.pages.dev/) · [Start the Cosmic Road Trip](https://cosmic-atlas-754.pages.dev/#tour=road-trip)**
 
@@ -54,7 +54,7 @@ npm run dev
 
 Open the URL Vite prints, normally **http://127.0.0.1:5173/**.
 
-Bootstrap downloads small byte ranges from the official DESI catalog and builds a clearly labeled subset of real observations. It gives you the point map, navigation, selection, distance measurement and the Milky Way reference model. The six nearby galaxies also work in bootstrap, including their search, models and measurements. DESI-wide close-up models and additional DESI name destinations require the full-data setup below.
+Bootstrap downloads small byte ranges from the official DESI catalog and builds a clearly labeled subset of real observations. It gives you the point map, navigation, selection, distance measurement and the Milky Way reference model. The ten nearby galaxies also work in bootstrap, including their search, models and measurements. DESI-wide close-up models and additional DESI name destinations require the full-data setup below.
 
 **Generated catalog binaries are not in Git.** A fresh clone needs bootstrap or full preparation before it can load the map. `data:bootstrap` also changes `public/data/catalog.json` to activate the sample; treat that as a local dataset choice when reviewing changes for a commit.
 
@@ -87,7 +87,7 @@ The prepared full atlas contains all **14,140,375** accepted observations. Its m
 
 Search distinguishes names it recognizes from places it can visit. Andromeda now resolves to the independently measured nearby layer. Names without either a nearby entry or a matched DESI destination (for example, the Sombrero Galaxy) retain a location-unavailable explanation. Only available galaxies are selectable; **Browse available galaxies** returns to usable suggestions.
 
-To work with the million-object subset after full preparation, open `/?dataset=development`. Full catalog model/name matching is deliberately disabled for subsets. The Milky Way and six nearby galaxies are available independently.
+To work with the million-object subset after full preparation, open `/?dataset=development`. Full catalog model/name matching is deliberately disabled for subsets. The Milky Way and ten nearby galaxies are available independently.
 
 The two original individually fitted previews and the Milky Way reference data are checked in. To regenerate them:
 
@@ -105,7 +105,7 @@ Python, NumPy, Astropy and SciPy prepare immutable binary datasets ahead of time
 
 The main renderer batches point geometry, uses camera-relative coordinates to retain precision at galaxy scales, and performs selection on the GPU. A Web Worker decompresses and validates chunks. The browser never creates a scene object or DOM element for every galaxy and never integrates cosmological distances during navigation.
 
-Nearby catalog objects outside the local-distance safeguard crossfade into bounded analytic light volumes and, where appropriate, seeded spiral arms or irregular clumps. There are at most **12 resident DESI models**, plus six fixed nearby models and the Milky Way reference. The nearby layer batches its six distant points into one draw call; its geometry is bounded to about 3.8 MiB in the default spiral appearance (2.6 MiB with catalog types). Models start resolving about 1.6 times farther away than before. Streamed models retain their identity across point-chunk changes and fade in/out over 0.6 seconds; a ranking margin limits repeated replacements within the fixed pool. Automatic display fades incidental models back to points before they fill the view. **Visit** or **Focus** keeps the chosen galaxy visible for deliberate close-ups. Settings also offers **Focused galaxy only** and **Points only**.
+Nearby catalog objects outside the local-distance safeguard crossfade into bounded analytic light volumes and, where appropriate, seeded spiral arms or irregular clumps. There are at most **12 resident DESI models**, plus ten fixed nearby models and the Milky Way reference. The nearby layer batches its ten points into one draw call; its only geometry and textures are the two Magellanic Clouds' 1.3 MiB in either appearance. Models start resolving about 1.6 times farther away than before. Streamed models retain their identity across point-chunk changes and fade in/out over 0.6 seconds; a ranking margin limits repeated replacements within the fixed pool. Automatic display fades incidental models back to points before they fill the view. **Visit** or **Focus** keeps the chosen galaxy visible for deliberate close-ups. Settings also offers **Focused galaxy only** and **Points only**.
 
 **All spirals** is the default appearance for now. Every catalog model uses one of six procedural spiral looks after the Atrium screensaver's research: grand-design, multi-arm, tightly wound, flocculent, barred or weakly barred. The recorded Hubble type chooses the look where one exists, and the galaxy's identity otherwise. Each look keeps the adopted center, radius and projected sky ellipse and holds its smooth disc's half-light radius at the adopted radius. These are illustrations, not new catalog classifications; see [docs/galaxy-looks.md](docs/galaxy-looks.md). Settings → **Galaxy appearance → Catalog types** restores the source-based variants. The override changes the light profile and assumed depth; it does not reclassify galaxies or change their source data. Galaxy models also receive subtle, stable blue-white to ivory palettes with warmer centers and faint pink accents. These are illustrative colors, not measured photometry; they remain the same when models reload or appearance changes.
 

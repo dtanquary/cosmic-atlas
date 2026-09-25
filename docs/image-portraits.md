@@ -17,6 +17,19 @@ Requested by Dave on 2026-09-12: inspect images of every road-trip target, adapt
 
 Reference images are linked for comparison, not redistributed as app assets. Color composites guide illustrative hues only; exposures, feature angles, unresolved depth, individual clouds and arm paths are not new measurements. Foreground stars, telescope spikes, mosaic edges and background nebulosity are excluded. Exact public identities select recipes, never rounded coordinates, row numbers or name resemblance. Unknown identities retain their current model. Both appearance modes retain these explicitly requested named treatments; Catalog types still restores classifications for other observations.
 
+## Nearby additions (2026-09-25)
+
+Step 4 of the [procedural galaxy looks](galaxy-looks.md) added four cited nearby entries. They are not road-trip stops, but they follow the same rules: exact `nearby:` identities select the treatment, and adopted sizes and ellipses are kept. Each photo was rotated north up (from its published orientation) and compared with a model rendered from Earth's line of sight.
+
+| Galaxy | Image inspected | Treatment |
+| --- | --- | --- |
+| Whirlpool (M51) | [Hubble mosaic heic0506a](https://esahubble.org/images/heic0506a/), NASA/ESA/S. Beckwith/Hubble Heritage: a grand design, strung with H II regions, winding clockwise outward (north up); one arm reaches NGC 5195. | Atrium's Whirlpool look. It is turned so an arm crest passes where the line of sight to NGC 5195 crosses the disc. |
+| NGC 5195 | Same image: a warm, smooth, dusty companion. | A smooth n=2 profile at exposure 12. Its disturbed dust is not modelled. |
+| Pinwheel (M101) | [Hubble mosaic heic0602a](https://esahubble.org/images/heic0602a/), NASA/ESA/K. Kuntz/F. Bresolin/J. Trauger/J. Mould/Y.-H. Chu: many open, lopsided arms winding clockwise outward. | Atrium's Pinwheel look. |
+| NGC 1300 | [Hubble mosaic opo0501a](https://esahubble.org/images/opo0501a/), NASA/ESA/Hubble Heritage: a long bar with dust lanes and open arms off its ends, winding anticlockwise outward. | Atrium's Great Barred look, mirrored. The bar's length and sky angle come from the S4G bar fit. |
+
+A gradient measurement of spiral handedness gives the same sign on each photo and its render (M51 +0.32 / +0.43, M101 +0.37 / +0.43, NGC 1300 −0.22 / −0.32; positive is clockwise outward).
+
 ## Telescope photograph comparison
 
 An optional, credited photograph panel is available for supported tour destinations and verified selections. It pauses the tour and loads one bounded image only on demand. Phone panels preserve access to the map; close and Model return without resuming. The ten source images, separate rights, exact identity mapping, crop/orientation disclosures and sole calibrated NGC 4026 match are documented in [photographs](photographs.md). Match is reversible; stale camera lookups cannot navigate after closing or input takeover. Existing model geometry and catalog data are unchanged.

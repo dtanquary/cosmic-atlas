@@ -89,7 +89,7 @@ The public source includes TypeScript, tests, Python tools, lockfiles, compact r
 
 Save the public HTTPS URL as `{"url":"https://YOUR_PAGES_DOMAIN/"}` in ignored `.deploy/site.json`, then run `npm run verify:pages`. It checks exact hosted app/credit assets, data manifests/search sidecars, nine point/metadata/profile chunks and private-path 404 responses. Results stay in `.deploy/hosted-verification.json`. This samples hosted binaries; build-time validation checks every local binary and Wrangler uploads the complete package.
 
-1. Load the deployed HTTPS URL and confirm the full observation count and six nearby entries.
+1. Load the deployed HTTPS URL and confirm the full observation count and ten nearby entries.
 2. Check Milky Way, Andromeda, and a matched DESI visit such as NGC 3982; confirm points, model profiles and search load.
 3. Open **About the data → Data attribution and processing notes**. Verify MIT and third-party license assets too.
 4. Compare hosted binary SHA-256 and decompressed headers with their manifests; check JSON MIME types and binary response behavior.

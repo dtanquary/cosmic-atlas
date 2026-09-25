@@ -7,7 +7,7 @@ Requested by Dave on 2026-09-25: bring the galaxy rendering researched for the A
 | 1 | Shared shader (GLSL + Metal) on NGC 3982 | Done: web and native |
 | 2 | Andromeda, Triangulum, Milky Way (sourced geometry kept) | Done: web and native; the texture portraits are removed |
 | 3 | Every catalog spiral, looks chosen by recorded type or identity; replaces the variant light-budget rule | Done: web and native; variant recipes, light samples and the common spiral profile removed |
-| 4 | M51, NGC 5195, M101, NGC 1300 as cited nearby entries | Not started |
+| 4 | M51, NGC 5195, M101, NGC 1300 as cited nearby entries | Done: web and native; the nearby layer holds 10 of its 12 entries |
 
 ## What carries over from Atrium
 
@@ -47,6 +47,15 @@ The Milky Way uses Atrium's Milky Way settings (four arms with the two minor one
 ## Catalog looks
 
 Six catalog looks cover the DESI catalog, each one of Atrium's six galaxy types. See [galaxy detail](galaxy-detail.md#catalog-looks) for the type mapping, identity weights and inspector disclosure. Every galaxy drawn as a spiral uses one: all of them in the default appearance, and the spiral and barred-spiral families in Catalog types. The recorded Hubble type chooses it for the 2,046 typed spirals and the exact identity for everything else. The identity also turns and mirrors the pattern and tints the disc and young stars by its palette at fixed luminance. Named looks (NGC 3982, Andromeda, Triangulum, the Milky Way) keep their own settings. A catalog model is now one draw with no light-sample geometry, down from 12,000 or 24,000 samples (672,000 bytes) each.
+
+## M51, NGC 5195, M101 and NGC 1300
+
+These four are new [nearby entries](nearby-galaxies.md) with cited distances, sizes and shapes: red giant branch distances for M51 and M101, M51's distance assumed for NGC 5195, and a Tully–Fisher distance for NGC 1300. They get Atrium's own kinds on the galaxies those kinds were drawn from. The Whirlpool, Pinwheel and Great Barred settings are now shared constants: the grand, multi and barred catalog looks use them unchanged.
+
+- **Handedness.** Each look's spin matches its Hubble photo rotated north up. The model frame puts the observer on the positive-normal side, so the pattern's anticlockwise sense is anticlockwise on the sky. Spin 1 winds clockwise outward (M51, M101); NGC 1300 is mirrored.
+- **M51.** It is turned 37.3° so an arm crest passes where the line of sight to NGC 5195 crosses M51's midplane, 1.03 disc radii out. That arm reaches the companion, as in the photo; the noise warp moves the exact crest.
+- **NGC 1300.** The bar is 0.3817 disc radii, turned −6.98°. Projected on the sky, that is 75.0 arcsec at 100.3°, the S4G bar. `tests/galaxy-looks.test.ts` and `GalaxyLooksTests` pin both numbers to `nearby-sources.json`.
+- **NGC 5195.** A smooth n=2 model rather than a look: it is amorphous and bulge- and bar-dominated (RC3 I0 pec).
 
 ## Validation and cost
 

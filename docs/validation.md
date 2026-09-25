@@ -501,3 +501,27 @@ Full-data suites pass on HeadlessChrome 153 / ANGLE Metal M3 Max, 1600×1000, wi
 - **Navigation and performance:** continuity stays within 12 models with no abrupt events. Model and close-up orbits hold **60 FPS, p95 16.7 ms**. The road trip reaches all ten stops, and the nearby layer stays at 1,343,488 bytes.
 
 Visual review: real-app captures of NGC 3992 (recorded Sbc → multi-arm, warm identity tint) and NGC 5107 (recorded SBcd → barred, steep view with dust lanes), plus the six-look preview. `swift test` passes every AtlasRender test under `MTL_DEBUG_LAYER=1`; AtlasCore passes apart from the known `ChunkLoaderTests` timing flake. The iOS app builds for the simulator.
+
+### Step 4: M51, NGC 5195, M101 and NGC 1300
+
+The nearby layer holds ten entries. Every new distance, size and shape was checked against its source: the arXiv abstracts for the M51 and M101 distances, and VizieR queries of Cosmicflows-4, S4G Pipeline 4 and RC3. `npm test` passes **126 tests in 25 files**, and strict TypeScript and the build pass. The new unit checks cover:
+
+- ten distinct negative IDs and distances;
+- the redshift guard, which would catch only the Local Group entries without their citations;
+- the new names and aliases, and an empty search listing all ten plus the observer;
+- the Local Group tour stop, framed on the six Local Group entries;
+- the NGC 1300 bar, pinned to the S4G bar length and sky angle within 0.5 arcsec and 0.5°.
+
+Full-data suites pass on HeadlessChrome 153 / ANGLE Metal M3 Max, 1600×1000, with no page errors or failed keys: `?portraittest&cloudtest&varianttest&colortest&continuitytest&nearbytest&sharetest`, `?modeltest&detailtest` and `?tourtest&hometest&uxtest`. The development subset passes `?dataset=development&tourtest&varianttest&portraittest&cloudtest&colortest&nearbytest`. The only request failures logged were aborted point-chunk requests during navigation.
+
+- **Nearby:** all ten search destinations, visits, body and point picking, and measurements pass, before and after context recovery. The layer stays at **1,343,488 bytes**.
+- **Portraits:** the three new looks draw in one call with 0 bytes and peak at 245 with no clipped pixels. They pass the inside, behind, dust and reconstruction checks. NGC 5195 peaks at **199**.
+- **Catalog looks:** face-on light ratios stay at **0.96–1.05×** the median; the grand, multi and barred values are unchanged.
+
+Visual review:
+
+- Real-app captures of all four from arrival, face-on zoom and orbit views.
+- North-up renders from Earth's line of sight, compared with the rotated Hubble photos. Spiral handedness has the same sign in each photo and render, and NGC 5195 sits at the tip of M51's arm.
+- A throwaway Metal snapshot matched the web renders.
+
+`swift test` passes under `MTL_DEBUG_LAYER=1`: AtlasCore 130 and AtlasRender 17, with no `ChunkLoaderTests` flake in this run. The iOS app builds for the simulator.
