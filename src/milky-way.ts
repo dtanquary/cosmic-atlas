@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import {GalaxyVolume} from './galaxy-detail';
 import reference from './data/milky-way.json';
 import {HOME_FIELD_SIZE,milkyWayDensityField,milkyWayFragment} from './milky-way-light';
+import {lookUniforms} from './galaxy-looks';
 
 export const milkyWayReference=reference;
 
@@ -20,9 +21,9 @@ export class MilkyWay extends GalaxyVolume {
     this.material.fragmentShader=milkyWayFragment;
     Object.assign(this.material.uniforms,{uDensity:{value:this.density},uThickness:{value:frame.thickness},
       uBarDirection:{value:new THREE.Vector2(Math.cos(phase),Math.sin(phase))},
-      uBarRadius:{value:reference.barHalfLengthMpc/reference.radiusMpc},uDustStrength:{value:.9}});
-    // Premultiplied emission plus absorption of background light. All stellar
-    // components and their intervening dust are integrated in the same pass.
+      uBarRadius:{value:reference.barHalfLengthMpc/reference.radiusMpc},uDustStrength:{value:.9},...lookUniforms('milkyWay','milky-way')});
+    // Premultiplied emission plus absorption of background light: the procedural
+    // look from outside, the home density march from inside the disc.
     this.material.blending=THREE.CustomBlending;
     this.material.blendSrc=THREE.OneFactor;this.material.blendDst=THREE.OneMinusSrcAlphaFactor;
   }

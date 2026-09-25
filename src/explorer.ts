@@ -961,7 +961,7 @@ export class Explorer {
   }
   async probeGalaxyPortraits(preview?:HTMLElement){
     const {probeVolumes}=await import('./volume-diagnostics');
-    try{return probeVolumes(this.renderer,this.allModels.filter(m=>{const p=galaxyPortrait(m.data.galaxy.targetId);return p?.disk||p?.look||p?.smooth}).map(m=>m.data),{calls:1,maxBytes:1.4*1048576},preview)}finally{this.invalidate()}
+    try{return probeVolumes(this.renderer,this.allModels.filter(m=>{const p=galaxyPortrait(m.data.galaxy.targetId);return p?.look||p?.smooth}).map(m=>m.data),{calls:1,maxBytes:1.4*1048576},preview)}finally{this.invalidate()}
   }
   async probeCloudModels(preview?:HTMLElement){
     const {probeCloudModels}=await import('./cloud-diagnostics');
@@ -971,7 +971,7 @@ export class Explorer {
     const savedRotate=this.controls.autoRotate,savedSpeed=this.controls.autoRotateSpeed,cases=[];
     const sleep=(ms:number)=>new Promise<void>(resolve=>setTimeout(resolve,ms));
     try{
-      for(const model of this.allModels.filter(m=>kind==='cloud'?m.data.cloud:galaxyPortrait(m.data.galaxy.targetId)?.disk||galaxyPortrait(m.data.galaxy.targetId)?.look)){
+      for(const model of this.allModels.filter(m=>kind==='cloud'?m.data.cloud:galaxyPortrait(m.data.galaxy.targetId)?.look)){
         this.visitGalaxy(model.data.galaxy.id);this.controls.autoRotate=true;this.controls.autoRotateSpeed=2;this.invalidate();await sleep(3000);
         const samples:number[]=[];let previous=performance.now();const end=previous+4000;
         await new Promise<void>(resolve=>{const frame=(now:number)=>{samples.push(now-previous);previous=now;if(now<end)requestAnimationFrame(frame);else resolve()};requestAnimationFrame(frame)});

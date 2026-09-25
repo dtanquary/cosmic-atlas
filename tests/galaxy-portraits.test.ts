@@ -1,25 +1,10 @@
 import {it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
 import * as THREE from 'three';
-import {galaxyPortrait,portraitDensityField,PORTRAIT_FIELD_SIZE,type DiskPortrait} from '../src/galaxy-portraits';
+import {galaxyPortrait} from '../src/galaxy-portraits';
 import {ResolvedGalaxy,type GalaxyDetailData} from '../src/galaxy-detail';
 import {galaxyLookFragment} from '../src/galaxy-looks';
 import {nearbyDetails} from '../src/nearby-galaxies';
-
-it('keeps image-inspired fields deterministic, distinct and inside the adopted radius envelope',()=>{
- const fields=(['m31','m33'] as DiskPortrait[]).map(kind=>{
-  const size=96,field=portraitDensityField(kind,size);expect(field).toEqual(portraitDensityField(kind,size));
-  let dust=0,emission=0;
-  for(let y=0;y<size;y++)for(let x=0;x<size;x++){
-   const i=(y*size+x)*4,r=Math.hypot(((x+.5)/size*2-1)*4.5,((y+.5)/size*2-1)*4.5);
-   if(r>=4.45)expect(field.slice(i,i+4)).toEqual(new Uint8Array(4));
-   dust+=field[i+2];emission+=field[i+3];
-  }
-  expect(dust).toBeGreaterThan(10000);expect(emission).toBeGreaterThan(100);
-  return field;
- });
- expect(fields[0]).not.toEqual(fields[1]);
-});
 
 it('preserves sourced geometry and profiles through recipe selection and appearance recycling',()=>{
  const sources=[...nearbyDetails(),...['galaxy-detail','galaxy-spiral'].map(file=>JSON.parse(readFileSync(new URL(`../public/data/${file}.json`,import.meta.url),'utf8')) as GalaxyDetailData)];
@@ -32,11 +17,7 @@ it('preserves sourced geometry and profiles through recipe selection and appeara
    expect(a.frame.q).toBe(b.frame.q);expect(a.frame.positionAngle).toBe(b.frame.positionAngle);
    expect(a.radius/data.galaxy.distance*180/Math.PI*3600).toBeCloseTo(data.shape.radiusArcsec,10);
    const material=(m:ResolvedGalaxy)=>(m.scene.children[0] as THREE.Mesh<THREE.PlaneGeometry,THREE.RawShaderMaterial>).material;
-   if(portrait?.disk){
-    expect(a.scene.children).toHaveLength(1);expect(a.memoryBytes).toBeLessThan(1.4*1048576);
-    const field=(m:ResolvedGalaxy)=>material(m).uniforms.uDensity.value.image.data;
-    expect(field(a).byteLength).toBe(PORTRAIT_FIELD_SIZE**2*4);expect(field(a)).toEqual(field(b));
-   }else if(portrait?.look){
+   if(portrait?.look){
     // Procedural: no texture, and the noise seed follows the exact identity, not the dense row.
     expect(a.scene.children).toHaveLength(1);expect(a.memoryBytes).toBe(0);expect(material(a).fragmentShader).toBe(galaxyLookFragment);
     expect(material(a).uniforms.uSeed.value.toArray()).toEqual(material(b).uniforms.uSeed.value.toArray());

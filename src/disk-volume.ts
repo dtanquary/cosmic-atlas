@@ -1,36 +1,23 @@
-/** Shared continuous stellar/dust template: forward rays, finite extent,
- * exact vertical integration and filtered detail at grazing angles. */
-export function diskVolumeFragment({size,steps,extent,center,emission,uniforms=''}:{size:number;steps:number;extent:number;center:string;emission:string;uniforms?:string}){
-return `precision highp float;
-in vec2 vNdc;
-uniform mat3 uToModel;
-uniform vec3 uOrigin,uForward,uRight,uUp;
-uniform vec2 uProjection,uBarDirection;
-uniform float uMix,uThickness,uBarRadius,uDustStrength;
+/** The home galaxy's continuous stellar/dust march: forward rays, finite extent,
+ * exact vertical integration and filtered detail at grazing angles. Defines
+ * diskMarch(origin, ray) in model units, returning premultiplied light and
+ * opacity, or a negative opacity outside the volume. It relies on the look
+ * shader's column() and uniforms. */
+export function diskMarch({size,steps,extent,center,emission}:{size:number;steps:number;extent:number;center:string;emission:string}){
+return `uniform vec2 uBarDirection;
+uniform float uBarRadius;
 uniform sampler2D uDensity;
-${uniforms}
-out vec4 fragColor;
-const float EXTENT=${extent.toFixed(1)};
-// Integrate each thin vertical layer exactly across a ray cell. Midpoint-only
-// sampling aliases into bands as an inclined camera crosses the dust plane.
-float column(float z0,float z1,float height,float rayZ,float stepSize){
-  if(abs(rayZ)<1e-5)return exp(-abs((z0+z1)*.5)/height)*stepSize/(2.*height);
-  float integral=z0*z1<0.?2.-exp(-abs(z0)/height)-exp(-abs(z1)/height):
-    exp(-min(abs(z0),abs(z1))/height)*(1.-exp(-abs(z1-z0)/height));
-  return integral/(2.*abs(rayZ));
-}
-void main(){
-  vec3 origin=uOrigin*vec3(1.,1.,uThickness);
-  vec3 ray=normalize((uToModel*normalize(uForward+vNdc.x*uProjection.x*uRight+vNdc.y*uProjection.y*uUp))*vec3(1.,1.,uThickness));
+vec4 diskMarch(vec3 origin,vec3 ray){
+  const float EXTENT=${extent.toFixed(1)};
   // Finite slab plus radial cylinder, including parallel rays and inside views.
   vec3 inv=vec3(ray.x<0.?-1.:1.,ray.y<0.?-1.:1.,ray.z<0.?-1.:1.)/max(abs(ray),vec3(1e-7));
   vec3 a=(-vec3(EXTENT,EXTENT,.8)-origin)*inv,b=(vec3(EXTENT,EXTENT,.8)-origin)*inv;
   vec3 lo=min(a,b),hi=max(a,b);
   float entry=max(0.,max(lo.x,max(lo.y,lo.z))),exit=min(hi.x,min(hi.y,hi.z));
   float qa=dot(ray.xy,ray.xy),qb=dot(origin.xy,ray.xy),qc=dot(origin.xy,origin.xy)-EXTENT*EXTENT;
-  if(qa>1e-8){float disc=qb*qb-qa*qc;if(disc<0.)discard;float root=sqrt(disc);entry=max(entry,(-qb-root)/qa);exit=min(exit,(-qb+root)/qa);}
-  else if(qc>0.)discard;
-  if(exit<=entry)discard;
+  if(qa>1e-8){float disc=qb*qb-qa*qc;if(disc<0.)return vec4(0.,0.,0.,-1.);float root=sqrt(disc);entry=max(entry,(-qb-root)/qa);exit=min(exit,(-qb+root)/qa);}
+  else if(qc>0.)return vec4(0.,0.,0.,-1.);
+  if(exit<=entry)return vec4(0.,0.,0.,-1.);
   float stepSize=(exit-entry)/float(${steps});
   vec3 light=vec3(0.),transmission=vec3(1.);
   for(int i=0;i<${steps};i++){
@@ -55,10 +42,6 @@ ${emission}    emission+=field.a*column(z0,z1,.025,ray.z,stepSize)*vec3(.6,.24,.
     transmission*=through;
   }
   // Fixed exposure with a shoulder: the core retains color at every angle.
-  vec3 color=.94*(1.-exp(-light*1.65));
-  float opacity=1.-dot(transmission,vec3(.2126,.7152,.0722));
-  if(max(color.r,max(color.g,color.b))<.0001&&opacity<.0001)discard;
-  fragColor=vec4(color*uMix,opacity*uMix);
+  return vec4(.94*(1.-exp(-light*1.65)),1.-dot(transmission,vec3(.2126,.7152,.0722)));
 }`;
-
 }

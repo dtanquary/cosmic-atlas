@@ -1,4 +1,5 @@
-import {diskVolumeFragment} from './disk-volume';
+import {diskMarch} from './disk-volume';
+import {lookFragment} from './galaxy-looks';
 import reference from './data/milky-way.json';
 
 // A density field, not a photograph or a catalog of individual stars. Channels
@@ -52,9 +53,10 @@ export function milkyWayDensityField(size=HOME_FIELD_SIZE){
   return data;
 }
 
-/** One bounded emission/absorption volume. Texture lookup replaces per-frame
+/** The Milky Way look from outside, and inside the disc (or edge-on) one
+ * bounded emission/absorption volume. Texture lookup replaces per-frame
  * procedural noise; the ray starts at the camera even when inside the disk. */
-export const milkyWayFragment=diskVolumeFragment({size:HOME_FIELD_SIZE,steps:HOME_RAY_STEPS,extent:HOME_EXTENT_RE,
+export const milkyWayFragment=lookFragment(diskMarch({size:HOME_FIELD_SIZE,steps:HOME_RAY_STEPS,extent:HOME_EXTENT_RE,
 center:`    vec2 barPos=vec2(dot(p.xy,uBarDirection),dot(p.xy,vec2(-uBarDirection.y,uBarDirection.x)));
     float barEnd=1.-smoothstep(.75,1.,abs(barPos.x)/uBarRadius);
     float barLight=.15*exp(-2.*pow(barPos.x/uBarRadius,2.)-2.*pow(barPos.y/.23,2.))*barEnd*column(z0,z1,.055,ray.z,stepSize);
@@ -65,4 +67,4 @@ center:`    vec2 barPos=vec2(dot(p.xy,uBarDirection),dot(p.xy,vec2(-uBarDirectio
 `,
 emission:`    vec3 diskColor=mix(vec3(.83,.76,.65),vec3(.63,.70,.81),smoothstep(.5,2.8,r));
     vec3 emission=old*1.25*diskColor+young*.85*vec3(.62,.70,.82)+(barLight+bulge)*vec3(1.,.86,.66);
-`});
+`}));
