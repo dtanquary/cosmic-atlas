@@ -54,6 +54,11 @@ typedef struct {
   vector_float2 barDirection;
   vector_float2 gaussians[20];  // (sigma in R_e, peak)
   vector_float4 portrait;       // (bulge, coreRadius, old, young)
+  vector_float4 shape;          // look: (arms, cot pitch, bar, bulge)
+  vector_float4 arms;           // look: (ragged, dust, minor, H II)
+  vector_float3 youngColor;     // look: young arm stars (disk/core/emission colors hold disc, bulge and H II)
+  vector_float2 seed;           // look: noise offsets from the public identity
+  float pixelRatio;             // look: drawable pixels per point
   float mix;
   float normalization;
   float exposure;

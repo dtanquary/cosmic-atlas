@@ -349,3 +349,197 @@ fragment float4 atlas_arms_fragment(ArmOut in [[stage_in]], float2 coord [[point
   float glow = exp(-18.0 * r * r) * (1.0 - smoothstep(0.38, 0.5, r));
   return float4(in.color, 0.055 * glow * in.weight * u.mix);
 }
+
+// Procedural spiral looks (src/galaxy-looks.ts, after the Atrium Galaxy screensaver): thin disc, bulge and dust
+// evaluated once where each ray crosses the midplane, keeping per-pixel detail at any zoom. Grazing and in-plane rays
+// fall back to a march through the azimuthally averaged disc. Constants mirror lookDisc in GalaxyLooks.swift.
+namespace look {
+constant float S = 0.5311, SCALE = 0.4, FADE_START = 0.85, FADE_END = 1.4;
+constant float EXTENT = 1.6, SLAB = 0.3, H_OLD = 0.065 * S, H_YOUNG = 0.028 * S, H_DUST = 0.019 * S, QB = 0.6;
+constant int STEPS = 48;
+static inline float2 turn(float2 v, float a) { float c = cos(a), s = sin(a); return float2(c * v.x - s * v.y, s * v.x + c * v.y); }
+static inline float wrapMod(float x, float y) { return x - y * floor(x / y); }
+static inline float2x2 m2(float a, float b, float c, float d) { return float2x2(float2(a, b), float2(c, d)); }
+// Integer hashes (Jarzynski & Olano 2020) give identical lattices on every GPU.
+static inline float lattice(float2 i) {
+  uint2 v = uint2(int2(i)) * 1664525u + 1013904223u;
+  v.x += v.y * 1664525u; v.y += v.x * 1664525u; v ^= v >> 16u; v.x += v.y * 1664525u; v.y += v.x * 1664525u; v ^= v >> 16u;
+  return float(v.x) / 4294967296.0;
+}
+static inline float4 hash4(float2 cell, int salt) {
+  uint4 v = uint4(uint2(int2(cell)), uint(salt), 7u) * 1664525u + 1013904223u;
+  v.x += v.y * v.w; v.y += v.z * v.x; v.z += v.x * v.y; v.w += v.y * v.z; v ^= v >> 16u;
+  v.x += v.y * v.w; v.y += v.z * v.x; v.z += v.x * v.y; v.w += v.y * v.z;
+  return float4(v) / 4294967296.0;
+}
+static inline float noise(float2 p) {
+  float2 i = floor(p), f = fract(p), u = f * f * (3.0 - 2.0 * f);
+  return mix(mix(lattice(i), lattice(i + float2(1, 0)), u.x), mix(lattice(i + float2(0, 1)), lattice(i + float2(1, 1)), u.x), u.y);
+}
+// Detail finer than about two pixels fades to its mean instead of aliasing.
+static inline float keep(float frequency, float footprint) { return 1.0 - smoothstep(0.25, 0.5, frequency * footprint); }
+static inline float fbm3(float2 p) { float2 p1 = p * 2.03 + float2(1.7, 9.2); return 0.5 * noise(p) + 0.25 * noise(p1) + 0.125 * noise(p1 * 2.03 + float2(1.7, 9.2)) + 0.047; }
+static inline float2 fbmRidge(float2 p, float footprint) {
+  float v = 0.0, ridges = 0.0, a = 0.5, w = 1.0, frequency = 1.0;
+  for (int i = 0; i < 5; i++) {
+    float k = keep(frequency, footprint), n = noise(p), rr = 1.0 - abs(2.0 * n - 1.0); rr *= rr;
+    v += a * mix(0.5, n, k); ridges += a * mix(0.35, rr * w, k); w = clamp(rr * 2.0, 0.0, 1.0);
+    p = m2(1.6, 1.2, -1.2, 1.6) * p + float2(1.7, 9.2); a *= 0.5; frequency *= 2.0;
+  }
+  return float2(v, ridges);
+}
+// A narrow profile across an arm, widened (with its light conserved) once the arm spacing approaches a pixel.
+static inline float band(float ph, float k, float dph) { float kk = k / (1.0 + 0.3 * k * dph * dph); return pow(0.5 + 0.5 * cos(ph), kk) * sqrt(kk / k); }
+// One star per cell, a round pinpoint on screen: M maps a step in the disc to points.
+static inline float2 discStar(float2 g, float cell, int salt, float chance, float2x2 M) {
+  float4 h = hash4(floor(g / cell), salt);
+  if (h.x > chance) return float2(0.0);
+  float d = length(M * ((fract(g / cell) - 0.5 - (h.yz - 0.5) * 0.8) * cell)), mag = pow(h.w, 2.5);
+  return float2(exp(-d * d * (4.5 - 2.5 * mag)) * (0.3 + 1.6 * mag), h.x / max(chance, 1e-4));
+}
+// Cells about `points` across on screen, blended over two octaves so zooming reveals new stars rather than resizing old ones.
+static inline float2 starLayer(float2 g, float points, float unitsPerPoint, int salt, float chance, float2x2 M) {
+  float level = max(log2(points * unitsPerPoint / 0.0005), -4.0), l0 = floor(level), f = level - l0, cell = 0.0005 * exp2(l0);
+  int i = int(l0) + 64;
+  return discStar(g, cell, salt * 256 + i, chance, M) * (1.0 - f) + discStar(g, cell * 2.0, salt * 256 + i + 1, chance, M) * f;
+}
+// An H II region with its young cluster, physically sized (0.8-3.2 points at the original's 390 points per disc radius).
+static inline float2 knot(float2 g, float cell, float chance, float2x2 M, float pointsPerUnit) {
+  float4 h = hash4(floor(g / cell), 41);
+  if (h.x > chance) return float2(0.0);
+  float size = (0.8 + 2.4 * pow(h.w, 3.0)) / 390.0 * pointsPerUnit, shown = max(size, 0.7);
+  float l = length(M * ((fract(g / cell) - 0.5 - (h.yz - 0.5) * 0.3) * cell)) / shown;
+  return float2(exp(-l * l * 2.0), exp(-l * l * 8.0)) * (0.3 + 0.7 * h.x / max(chance, 1e-4)) * (size * size) / (shown * shown);
+}
+static inline float discLight(float r) { return exp(-r / SCALE) * smoothstep(FADE_END, FADE_START, r); }
+}
+
+fragment float4 atlas_volume_look(VolumeOut in [[stage_in]], constant AtlasVolumeUniforms &u [[buffer(0)]]) {
+  using namespace look;
+  float3 o = u.origin * float3(1.0, 1.0, u.thickness) * S;
+  float3 ray = normalize(volumeRay(in.ndc, u) * float3(1.0, 1.0, u.thickness));
+  float cosi = abs(ray.z), tp = abs(ray.z) < 1e-6 ? -1.0 : -o.z / ray.z;
+  // Derivatives before any discard: the crossing point's footprint on the disc.
+  float2 g = (o + ray * clamp(tp, 0.0, 64.0)).xy, gx = dfdx(g), gy = dfdy(g);
+  float arms = u.shape.x, cot = u.shape.y, bar = u.shape.z, bulgeR = u.shape.w, ragged = u.arms.x, r0 = max(bar, bulgeR * 1.6);
+  // The bulge: an oblate cloud whose projection is the original's Sersic n=2 profile, part ahead of the camera, part behind the dust.
+  float3 P = o * float3(1.0, 1.0, 1.0 / QB), D = ray * float3(1.0, 1.0, 1.0 / QB);
+  float dd = dot(D, D), tc = -dot(P, D) / dd, bulgeW = max(bulgeR * 1.7, 1e-4), rb = length(P + D * tc) / bulgeW;
+  float bulge = (20.0 * exp(-3.67 * sqrt(rb)) + 1.5 * exp(-rb * rb * 60.0)) / (sqrt(dd) * QB) * clamp(0.5 + 0.5 * tc * sqrt(dd) / bulgeW, 0.0, 1.0);
+  float behind = tp > 0.0 ? clamp(0.5 - 0.5 * (tp - tc) * sqrt(dd) / bulgeW, 0.0, 1.0) : 0.0;
+  // Finite slab and cylinder, including inside views.
+  float3 inv = float3(ray.x < 0.0 ? -1.0 : 1.0, ray.y < 0.0 ? -1.0 : 1.0, ray.z < 0.0 ? -1.0 : 1.0) / max(abs(ray), float3(1e-7));
+  float3 a = (-float3(EXTENT, EXTENT, SLAB) - o) * inv, b = (float3(EXTENT, EXTENT, SLAB) - o) * inv, lo = min(a, b), hi = max(a, b);
+  float entry = max(0.0, max(lo.x, max(lo.y, lo.z))), exit = min(hi.x, min(hi.y, hi.z));
+  float qa = dot(ray.xy, ray.xy), qb = dot(o.xy, ray.xy), qc = dot(o.xy, o.xy) - EXTENT * EXTENT, disc = qb * qb - qa * qc;
+  if (qa > 1e-8 && disc >= 0.0) { float root = sqrt(disc); entry = max(entry, (-qb - root) / qa); exit = min(exit, (-qb + root) / qa); } else if (qc > 0.0) exit = entry;
+  if (exit <= entry && bulge < 1e-4) { discard_fragment(); return float4(0.0); }
+  float dust0 = u.arms.y * u.dustStrength, w = smoothstep(0.06, 0.16, cosi);
+  float3 light = float3(0.0), transmission = float3(1.0), vivid = float3(0.0), bulgeDust = float3(1.0);
+  if (w > 0.0 && exit > entry) {
+    float r = length(g);
+    // Screen footprint in disc units per point, and its inverse for round pinpoints.
+    float2x2 J = float2x2(gx, gy) * u.pixelRatio;
+    float ja = dot(J[0], J[0]), jb = dot(J[0], J[1]), jd = dot(J[1], J[1]), half_ = 0.5 * (ja + jd), spread = sqrt(max(half_ * half_ - (ja * jd - jb * jb), 0.0));
+    float sMax = sqrt(half_ + spread), sMin = sqrt(max(half_ - spread, 1e-20)), fp = sMax / u.pixelRatio, det = J[0].x * J[1].y - J[1].x * J[0].y;
+    float2x2 M = m2(J[1].y, -J[0].y, -J[1].x, J[0].x) * (1.0 / (abs(det) < 1e-20 ? 1e-20 : det));
+    float steep = smoothstep(0.5, 0.25, cosi), soft = mix(1.0, 0.4, steep);
+    // Swirled space: logarithmic arms are straight rays, and noise is sheared along them.
+    float lr = log(max(r, r0 * 0.35) / r0);
+    float2 q = turn(g, lr * cot), qn = turn(g, lr * min(cot, 1.0));
+    float warp = fbm3(q * 2.2 + u.seed) - 0.5, aq = atan2(q.y, q.x), ph = arms * aq + warp * (2.0 + 5.0 * ragged);
+    float dph = arms * sqrt(1.0 + cot * cot) / max(r, r0 * 0.35) * fp;
+    float armN = wrapMod(floor(ph / 6.2832 + 0.5), arms);
+    float armAmp = (0.6 + 0.4 * hash4(float2(armN, floor(u.seed.x)), 5).x) * mix(1.0, u.arms.z, wrapMod(armN, 2.0));
+    float crest = band(ph, (4.0 - 2.0 * ragged) * soft, dph) * armAmp, young = band(ph - 0.35, 8.0 * soft, dph) * armAmp, hii = band(ph + 0.2, 10.0 * soft, dph) * armAmp;
+    float n5 = noise(q * 5.0 + u.seed.yx), floc = ragged * ragged;
+    crest *= mix(1.0, smoothstep(0.3, 0.7, n5), ragged);
+    if (floc > 0.1) {
+      float patches = smoothstep(0.45, 0.8, n5 * 0.6 + mix(0.5, noise(q * 11.0 - u.seed), keep(11.0, fp * 1.5)) * 0.4) * armAmp;
+      crest = mix(crest, max(crest * 0.35, patches), floc); young = mix(young, patches, floc); hii = mix(hii, patches, floc);
+    }
+    // Star clouds are lumpy in the disc itself, so arms read as clusters, not brush strokes.
+    float lumps = mix(0.5, noise(g * 16.0 + u.seed), keep(16.0, fp)) * 0.5 + mix(0.5, noise(m2(0.8, 0.6, -0.6, 0.8) * g * 47.0 - u.seed), keep(47.0, fp)) * 0.5;
+    float clump = smoothstep(0.2, 0.9, lumps);
+    float inArms = smoothstep(r0 * 0.8, r0 * 1.5, r) * mix(1.0, smoothstep(1.25, 0.9, r), steep);
+    float sigma = discLight(r), arm = crest * inArms * (0.5 + 0.9 * clump);
+    // Dust: broken lanes on the arms' inner edges with narrow dark cores, feathers, a filament web down to the nucleus,
+    // and lanes along a bar's leading edges.
+    float2 fr = fbmRidge(qn * 6.0 + u.seed * 1.3 + 3.0, fp * 6.0 * 1.5);
+    float dt = fr.x, lp = ph + 0.45 + (dt - 0.5) * 2.5, lc = 0.5 + 0.5 * cos(lp);
+    float along = lc > 0.6 ? mix(0.5, noise(qn * 40.0 + u.seed), keep(40.0, fp * 1.5)) : 0.5;
+    float broken = smoothstep(0.25, 0.8, lumps + dt - 0.5);
+    float lane = band(lp, 14.0 * mix(1.0, 0.7, steep), dph) * broken * mix(0.45, 1.0, smoothstep(0.3, 0.7, along));
+    float perp = r / arms / sqrt(1.0 + cot * cot), lw = (0.004 + 0.006 * lumps) * (1.0 + 1.5 * steep), lwShown = max(lw, 0.6 * fp);
+    float l1 = (lp - 6.2832 * floor(lp / 6.2832 + 0.5)) * perp / lwShown;
+    float core = exp(-l1 * l1) * lw / lwShown * smoothstep(0.3, 0.7, along) * broken;
+    float tanP = 1.0 / cot, kf = (1.0 - tanP * 0.7) / (tanP + 0.7);
+    float fu = 18.0 * (aq - (cot - kf) * lr) / 6.2832 + (dt - 0.5) * 0.8, phw = ph - 6.2832 * floor(ph / 6.2832 + 0.5);
+    float feather = pow(0.5 + 0.5 * cos(6.2832 * fu), 8.0) * step(0.45, hash4(float2(wrapMod(floor(fu + 0.5), 18.0), floor(u.seed.y)), 9).x)
+                  * smoothstep(-1.8, -0.3, phw) * smoothstep(0.7, 0.4, phw) * smoothstep(0.3, 0.55, dt) * keep(18.0 / 6.2832 / max(r, 0.05), fp);
+    float web = smoothstep(0.25, 0.7, fr.y) * mix(1.0, 0.4, steep);
+    float ax = abs(g.x) / max(bar, 0.001), barY = (g.y - sign(g.x) * bar * (0.1 + 0.15 * ax * ax)) / (0.02 + 0.02 * dt);
+    float barLane = step(0.001, bar) * exp(-barY * barY) * smoothstep(0.1, 0.35, ax) * smoothstep(1.1, 0.8, ax) * smoothstep(0.3, 0.6, dt + 0.2);
+    float barZone = mix(1.0, smoothstep(bar * 0.7, bar * 1.1, r), step(0.001, bar));
+    float dust = ((lane * 0.7 + core * 0.8) * (1.0 - 0.7 * floc) + feather * 0.7 * (1.0 - ragged)) * smoothstep(r0 * 0.5, r0 * 0.95, r)
+               + barLane * 0.9 + web * (0.25 + 0.9 * crest) * smoothstep(0.015, 0.06, r) * barZone;
+    // A thin midplane sheet: it reddens the light behind it, blue first.
+    float3 absorb = exp(-dust * smoothstep(1.3, 0.5, r) * dust0 / cosi * float3(0.65, 0.8, 1.0));
+    float bx = g.x / max(bar, 0.001), by = g.y / max(bar * 0.3, 0.001); bx *= bx;
+    float barLight = step(0.001, bar) * exp(-bx * bx - by * by);
+    float3 old = mix(u.coreColor, u.diskColor, smoothstep(0.05, 0.7, r)), tint = mix(old, u.youngColor, clamp(arm * 0.7 + 0.6 * smoothstep(0.4, 1.1, r), 0.0, 1.0));
+    float tex = 0.7 + 0.6 * (0.55 * lumps + 0.45 * mix(0.5, noise(m2(0.6, -0.8, 0.8, 0.6) * g * 110.0 + u.seed.yx), keep(110.0, fp)));
+    // Dust sits in a thin midplane layer: as in the original, a third of the old disc's light is in front of it.
+    float zs = clamp(o.z, -SLAB, SLAB), ze = tp > 0.0 ? -sign(o.z) * SLAB : sign(ray.z) * SLAB, zc = tp > 0.0 ? 0.0 : ze;
+    float oldFront = column(zs, zc, H_OLD, ray.z, 0.0), oldBack = tp > 0.0 ? column(0.0, ze, H_OLD, ray.z, 0.0) : 0.0;
+    float youngColumn = column(zs, zc, H_YOUNG, ray.z, 0.0) + (tp > 0.0 ? column(0.0, ze, H_YOUNG, ray.z, 0.0) : 0.0);
+    float3 seen = tp > 0.0 ? absorb : float3(1.0);
+    float3 a1 = (tint * sigma * 0.84 * tex + u.coreColor * barLight * 0.9) * (oldFront + oldBack) * mix(seen, float3(1.0), 0.3);
+    float3 a2 = (tint * sigma * 3.5 * arm * tex + u.youngColor * young * inArms * clump * sigma * 1.2) * youngColumn * seen;
+    // Resolved stars: a fine grain that follows the light, and blue giants past the crests.
+    float2 s1 = starLayer(g, 2.2, sMax, 3, clamp(crest * inArms * 4.0 * smoothstep(1.4, 0.9, r) + sigma * 0.6, 0.0, 0.85), M);
+    float giants = clamp(young * inArms * clump * 2.0, 0.0, 0.3) * smoothstep(1.4, 1.0, r);
+    float2 s2 = giants > 0.002 ? starLayer(g, 11.0, sMax, 11, giants, M) : float2(0.0);
+    float3 stars = (mix(old, u.youngColor, smoothstep(0.05, 0.4, crest)) * s1.x * min(sigma * (1.5 + 3.0 * arm), 0.3) + u.youngColor * s2.x * 0.5) * seen;
+    // H II regions in complexes along the arms' inner edges; part of their pink stays saturated past the stretch.
+    float2 k = float2(0.0);
+    float strung = hii * inArms * smoothstep(1.2, 0.8, r), shownKnots = smoothstep(2.0, 5.0, 0.041 / sMax);
+    if (strung > 0.002 && shownKnots > 0.0) {
+      float groups = smoothstep(0.3, 0.7, noise(g * 9.0 + u.seed.yx));
+      k = knot(g, 0.041, clamp(strung * groups * 12.0 * u.arms.w, 0.0, 0.9), M, 1.0 / sMin) * shownKnots * mix(1.0, 1.6, clamp(u.arms.w - 1.0, 0.0, 1.0));
+    }
+    float fade = 0.25 + 0.75 * smoothstep(1.2, 0.3, r);
+    float3 through = sqrt(seen);
+    light = (a1 + a2 + stars + (u.emissionColor * k.x * 1.5 + mix(u.youngColor, float3(1.0), 0.5) * k.y * 1.5) * through * fade) * w;
+    vivid = u.emissionColor * k.x * 0.7 * through * fade * w;
+    transmission = seen; bulgeDust = seen;
+  }
+  if (w < 1.0 && exit > entry) {
+    // In-plane and grazing rays: march the azimuthally averaged disc and dust.
+    float dt = (exit - entry) / float(STEPS);
+    float3 marched = float3(0.0), through = float3(1.0), atBulge = float3(1.0);
+    for (int i = 0; i < STEPS; i++) {
+      float t = entry + (float(i) + 0.5) * dt;
+      float3 p = o + ray * t;
+      float r = length(p.xy), z0 = p.z - ray.z * dt * 0.5, z1 = p.z + ray.z * dt * 0.5, sigma = discLight(r);
+      float inArms = smoothstep(r0 * 0.8, r0 * 1.5, r);
+      float3 old = mix(u.coreColor, u.diskColor, smoothstep(0.05, 0.7, r)), tint = mix(old, u.youngColor, clamp(0.14 * inArms + 0.6 * smoothstep(0.4, 1.1, r), 0.0, 1.0));
+      float cellO = column(z0, z1, H_OLD, ray.z, dt), cellY = column(z0, z1, H_YOUNG, ray.z, dt), cellD = column(z0, z1, H_DUST, ray.z, dt);
+      float3 e = tint * sigma * (0.84 * cellO + 0.6 * inArms * cellY);
+      float3 tau = 0.15 * smoothstep(1.3, 0.5, r) * smoothstep(r0 * 0.5, r0 * 0.95, r) * dust0 * cellD * float3(0.65, 0.8, 1.0);
+      float3 cell = exp(-tau);
+      marched += through * e * (1.0 - cell + 1e-5) / (tau + 1e-5);
+      through *= cell;
+      if (t < tc) atBulge = through;
+    }
+    light += marched * (1.0 - w); transmission = mix(through, transmission, w); bulgeDust = mix(atBulge, bulgeDust, w);
+  }
+  light += u.coreColor * bulge * ((1.0 - behind) + behind * bulgeDust);
+  // Hubble-style stretch on brightness: faint outskirts lift, the core keeps its colour, and only the brightest parts pale.
+  float lum = dot(light, float3(0.3, 0.5, 0.2)) + 1e-4, stretched = log(20.0 * lum + sqrt(400.0 * lum * lum + 1.0)) / 6.17;
+  float3 col = mix(min(light * stretched / lum, float3(1.0)), float3(stretched), 0.5 * smoothstep(0.55, 1.0, stretched)) + vivid;
+  col = 0.96 * min(col, float3(1.0));
+  float opacity = 1.0 - dot(transmission, float3(0.2126, 0.7152, 0.0722));
+  if (max(col.r, max(col.g, col.b)) < 0.002 && opacity < 0.0001) { discard_fragment(); return float4(0.0); }
+  return float4(col * u.mix, opacity * u.mix);
+}

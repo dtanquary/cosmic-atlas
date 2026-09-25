@@ -25,8 +25,7 @@ func noise2(_ x: Double, _ y: Double, _ seed: Int32) -> Double {
 public struct MilkyWayLight: Sendable { public var bulge: Double, coreRadius: Double, old: Double, young: Double, dust: Double }
 public let portraitLight: [DiskPortrait: MilkyWayLight] = [
   .m31: MilkyWayLight(bulge: 2.6, coreRadius: 0.38, old: 1.3, young: 1.2, dust: 1.3),
-  .m33: MilkyWayLight(bulge: 0.13, coreRadius: 0.19, old: 0.9, young: 1.4, dust: 0.55),
-  .ngc3982: MilkyWayLight(bulge: 1.3, coreRadius: 0.23, old: 1, young: 1.5, dust: 1.1)]
+  .m33: MilkyWayLight(bulge: 0.13, coreRadius: 0.19, old: 0.9, young: 1.4, dust: 0.55)]
 
 /// Channels hold sqrt(old disk), sqrt(young arms), dust, and faint emission regions.
 public func milkyWayDensityField(_ reference: MilkyWayReference, size: Int = HOME_FIELD_SIZE) -> [UInt8] {
@@ -70,14 +69,14 @@ public func milkyWayDensityField(_ reference: MilkyWayReference, size: Int = HOM
 /// Same four channels as the home template, regenerated from compact recipes. Feature placement is illustrative.
 public func portraitDensityField(_ kind: DiskPortrait, size: Int = PORTRAIT_FIELD_SIZE) -> [UInt8] {
   var data = [UInt8](repeating: 0, count: size * size * 4)
-  let seed: Int32 = kind == .m31 ? 31031 : kind == .m33 ? 33033 : 39823982
-  let pitch: Double = kind == .m31 ? 12 : kind == .m33 ? 26 : 19, winding = 1 / tan(pitch * .pi / 180), count = kind == .m31 ? 2 : kind == .m33 ? 3 : 4
+  let seed: Int32 = kind == .m31 ? 31031 : 33033
+  let pitch: Double = kind == .m31 ? 12 : 26, winding = 1 / tan(pitch * .pi / 180), count = kind == .m31 ? 2 : 3
   for y in 0..<size { for x in 0..<size {
     let px = ((Double(x) + 0.5) / Double(size) * 2 - 1) * PORTRAIT_EXTENT_RE, py = ((Double(y) + 0.5) / Double(size) * 2 - 1) * PORTRAIT_EXTENT_RE, r = hypot(px, py)
     let edge = 1 - smooth(3.3, 4.45, r); if edge == 0 { continue }
     let coarse = noise2(px * 3.4 + 7, py * 3.4 - 4, seed), fine = noise2(px * 17, py * 17, seed), grain = noise2(px * 47 + 2, py * 47 - 3, seed)
     let theta = atan2(py, px), path = 0.8 + winding * log(max(0.22, r) / 0.55)
-    let bend = (coarse - 0.5) * (kind == .m33 ? 1.05 : kind == .ngc3982 ? 0.65 : 0.36) + 0.09 * sin(r * 11 + theta * 3)
+    let bend = (coarse - 0.5) * (kind == .m33 ? 1.05 : 0.36) + 0.09 * sin(r * 11 + theta * 3)
     var arms = 0.0, dust = 0.0
     for arm in 0..<count {
       let a = theta - path - Double(arm) * .pi * 2 / Double(count) + bend, width = kind == .m33 ? 0.33 : 0.25

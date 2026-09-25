@@ -34,7 +34,7 @@ final class DensityFieldTests: XCTestCase {
     XCTAssertEqual(Self.reference.milkyWay.diskScaleMpc, 0.0026)
   }
   func testPortraitFieldsAreDeterministicDistinctAndBounded() {
-    let fields = [DiskPortrait.m31, .m33, .ngc3982].map { kind -> [UInt8] in
+    let fields = [DiskPortrait.m31, .m33].map { kind -> [UInt8] in
       let size = 96, field = portraitDensityField(kind, size: size)
       XCTAssertEqual(field, portraitDensityField(kind, size: size))
       var dust = 0, emission = 0
@@ -46,7 +46,7 @@ final class DensityFieldTests: XCTestCase {
       XCTAssertGreaterThan(dust, 10000); XCTAssertGreaterThan(emission, 100)
       return field
     }
-    XCTAssertNotEqual(fields[0], fields[1]); XCTAssertNotEqual(fields[1], fields[2])
+    XCTAssertNotEqual(fields[0], fields[1])
     XCTAssertEqual(portraitMemoryBytes, 384 * 384 * 4 + (0...8).reduce(0) { $0 + (384 >> $1) * (384 >> $1) * 4 })
   }
   func testCloudFieldsAreDistinctDeterministicWithEmptyBoundaries() {

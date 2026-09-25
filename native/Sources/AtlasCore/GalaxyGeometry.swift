@@ -178,13 +178,15 @@ public func modelBlend(_ radiusPixels: Double, shortSide: Double, focused: Bool 
   return focused ? resolved : resolved * (1 - smoothstep(radiusPixels / max(1, shortSide), 0.06, 0.16))
 }
 
-public enum DiskPortrait: String, Sendable { case m31, m33, ngc3982 }
-public struct GalaxyPortrait: Sendable, Equatable { public var label: String, source: String, disk: DiskPortrait?, smooth: GalaxyFamily?, exposure: Double? }
+public enum DiskPortrait: String, Sendable { case m31, m33 }
+public struct GalaxyPortrait: Sendable, Equatable {
+  public var label: String, source: String, disk: DiskPortrait?, look: GalaxyLookKey? = nil, smooth: GalaxyFamily?, exposure: Double?
+}
 /// Image interpretation is keyed only to verified public identities.
 let portraits: [String: GalaxyPortrait] = [
   "nearby:m31": GalaxyPortrait(label: "Andromeda · dust-ring disk", source: "https://esahubble.org/images/heic2501a/", disk: .m31, smooth: nil, exposure: nil),
   "nearby:m33": GalaxyPortrait(label: "Triangulum · patchy spiral", source: "https://www.eso.org/public/images/eso1424a/", disk: .m33, smooth: nil, exposure: nil),
-  "39633325333155389": GalaxyPortrait(label: "NGC 3982 · intricate spiral", source: "https://esahubble.org/images/opo1036a/", disk: .ngc3982, smooth: nil, exposure: nil),
+  "39633325333155389": GalaxyPortrait(label: "NGC 3982 · intricate spiral", source: "https://esahubble.org/images/opo1036a/", disk: nil, look: .ngc3982, smooth: nil, exposure: nil),
   "nearby:m32": GalaxyPortrait(label: "M32 · compact elliptical", source: "https://science.nasa.gov/mission/hubble/science/explore-the-night-sky/hubble-messier-catalog/messier-32/", disk: nil, smooth: .elliptical, exposure: 8),
   "nearby:m110": GalaxyPortrait(label: "M110 · diffuse elliptical", source: "https://science.nasa.gov/mission/hubble/science/explore-the-night-sky/hubble-messier-catalog/messier-110/", disk: nil, smooth: .elliptical, exposure: 6),
   "39633263488141603": GalaxyPortrait(label: "NGC 4026 · smooth lenticular", source: "https://www.legacysurvey.org/viewer?ra=179.8544868&dec=50.9616574&layer=ls-dr9&zoom=14", disk: nil, smooth: .lenticular, exposure: nil),
@@ -196,7 +198,9 @@ public let cloudLabels: [MagellanicCloudKind: String] = [.lmc: "Barred stellar c
 
 /// What a model renders: family, light profile, structure recipe and palette.
 public struct GalaxyLight: Sendable, Equatable {
+  public struct Look: Sendable, Equatable { public var key: GalaxyLookKey, seed: SIMD2<Double> }
   public var family: GalaxyFamily, gaussians: [Gaussian], spiral: GalaxyDetailData.Spiral?, cloud: MagellanicCloudKind?, portrait: DiskPortrait?
+  public var look: Look? = nil
   public var seed: UInt32, knotCount: Int?, exposure: Double?, colors: GalaxyColors?
   public init(family: GalaxyFamily, gaussians: [Gaussian], spiral: GalaxyDetailData.Spiral?, cloud: MagellanicCloudKind?, portrait: DiskPortrait?, seed: UInt32, knotCount: Int?, exposure: Double?, colors: GalaxyColors?) {
     self.family = family; self.gaussians = gaussians; self.spiral = spiral; self.cloud = cloud; self.portrait = portrait; self.seed = seed; self.knotCount = knotCount; self.exposure = exposure; self.colors = colors
@@ -216,7 +220,7 @@ public struct ResolvedModel: Sendable, Equatable {
 public func resolveModel(_ data: GalaxyDetailData, appearance: GalaxyAppearance = .catalog, profile: SpiralProfile) throws -> ResolvedModel {
   let galaxy = data.galaxy, shape = data.shape
   let portrait = data.sourceProfileOnly == true ? nil : galaxyPortrait(galaxy.targetId)
-  let family: GalaxyFamily = data.cloud != nil ? .irregular : portrait?.smooth ?? ((portrait?.disk != nil || appearance == .spiral) ? .spiral : data.model?.family ?? (data.spiral != nil ? .spiral : .lenticular))
+  let family: GalaxyFamily = data.cloud != nil ? .irregular : portrait?.smooth ?? ((portrait?.disk != nil || portrait?.look != nil || appearance == .spiral) ? .spiral : data.model?.family ?? (data.spiral != nil ? .spiral : .lenticular))
   let e = hypot(shape.e1, shape.e2), q = (1 - e) / (1 + e)
   let intrinsic = min(family == .elliptical ? 0.65 : family == .irregular ? 0.3 : 0.12, q * 0.95)
   let seed = UInt32(bitPattern: Int32(truncatingIfNeeded: galaxy.id))
@@ -225,6 +229,9 @@ public func resolveModel(_ data: GalaxyDetailData, appearance: GalaxyAppearance 
     light = GalaxyLight(family: family, gaussians: data.gaussians, spiral: nil, cloud: cloud, portrait: nil, seed: seed, knotCount: 4096, exposure: nil, colors: galaxyColors(galaxy.targetId))
   } else if let disk = portrait?.disk {
     light = GalaxyLight(family: family, gaussians: [], spiral: nil, cloud: nil, portrait: disk, seed: seed, knotCount: nil, exposure: nil, colors: galaxyColors(galaxy.targetId))
+  } else if let key = portrait?.look {
+    var l = GalaxyLight(family: family, gaussians: [], spiral: nil, cloud: nil, portrait: nil, seed: seed, knotCount: nil, exposure: nil, colors: nil)
+    l.look = .init(key: key, seed: lookSeed(galaxy.targetId)); light = l
   } else if appearance == .spiral && portrait?.smooth == nil {
     light = spiralLight(data, profile: profile)
   } else {

@@ -9,6 +9,7 @@ final class VolumePipelines {
   let gaussian: MTLRenderPipelineState
   let milkyWay: MTLRenderPipelineState
   let portrait: MTLRenderPipelineState
+  let look: MTLRenderPipelineState
   let cloud: MTLRenderPipelineState
   let arms: MTLRenderPipelineState
   let densitySampler: MTLSamplerState
@@ -41,6 +42,7 @@ final class VolumePipelines {
     gaussian = try pipeline("atlas_volume_gaussian", additive: true)
     milkyWay = try pipeline("atlas_volume_disk", constants: diskConstants(size: HOME_FIELD_SIZE, steps: HOME_RAY_STEPS, kind: 0), additive: false)
     portrait = try pipeline("atlas_volume_disk", constants: diskConstants(size: PORTRAIT_FIELD_SIZE, steps: PORTRAIT_RAY_STEPS, kind: 1), additive: false)
+    look = try pipeline("atlas_volume_look", additive: false)
     cloud = try pipeline("atlas_volume_cloud", additive: true)
     let a = MTLRenderPipelineDescriptor()
     a.vertexFunction = library.makeFunction(name: "atlas_arms_vertex"); a.fragmentFunction = library.makeFunction(name: "atlas_arms_fragment")
@@ -70,6 +72,7 @@ extension AtlasRenderer {
     case .gaussian: encoder.setRenderPipelineState(volumes.gaussian)
     case .milkyWay: encoder.setRenderPipelineState(volumes.milkyWay); encoder.setFragmentTexture(model.density, index: 0); encoder.setFragmentSamplerState(volumes.densitySampler, index: 0)
     case .portrait: encoder.setRenderPipelineState(volumes.portrait); encoder.setFragmentTexture(model.density, index: 0); encoder.setFragmentSamplerState(volumes.densitySampler, index: 0)
+    case .look: encoder.setRenderPipelineState(volumes.look)
     case .cloud: encoder.setRenderPipelineState(volumes.cloud); encoder.setFragmentTexture(model.cloud, index: 0); encoder.setFragmentSamplerState(volumes.cloudSampler, index: 0)
     }
     encoder.setVertexBytes(&u, length: MemoryLayout<AtlasVolumeUniforms>.stride, index: 0)

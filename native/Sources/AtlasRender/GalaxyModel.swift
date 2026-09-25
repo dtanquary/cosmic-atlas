@@ -8,7 +8,7 @@ import AtlasShaderTypes
 /// density texture (Milky Way or portrait) or a Magellanic cloud, plus optional arm/knot light samples.
 /// ponytail: mutated only on the main actor (session) or in a single test; unchecked rather than locked.
 public final class GalaxyModel: @unchecked Sendable {
-  public enum Kind: Equatable { case gaussian, milkyWay, portrait(DiskPortrait), cloud(MagellanicCloudKind) }
+  public enum Kind: Equatable { case gaussian, milkyWay, portrait(DiskPortrait), look(GalaxyLookKey), cloud(MagellanicCloudKind) }
   public let data: GalaxyDetailData?
   public let appearance: GalaxyAppearance
   public let light: GalaxyLight
@@ -80,6 +80,13 @@ public final class GalaxyModel: @unchecked Sendable {
       let l = portraitLight[portrait]!
       uniforms.dustStrength = Float(l.dust)
       uniforms.portrait = SIMD4(Float(l.bulge), Float(l.coreRadius), Float(l.old), Float(l.young))
+    } else if let look = light.look, let l = galaxyLooks[look.key] {
+      kind = .look(look.key)
+      uniforms.dustStrength = 1
+      uniforms.shape = SIMD4(Float(l.arms), Float(1 / tan(l.pitchDegrees * .pi / 180)), Float(l.bar), Float(l.bulge))
+      uniforms.arms = SIMD4(Float(l.ragged), Float(l.dust), Float(l.minor), Float(l.hii))
+      uniforms.coreColor = l.core.float3; uniforms.diskColor = l.disc.float3; uniforms.youngColor = l.young.float3; uniforms.emissionColor = l.knots.float3
+      uniforms.seed = SIMD2<Float>(look.seed); uniforms.pixelRatio = 1
     } else if let cloudKind = light.cloud {
       kind = .cloud(cloudKind)
       cloud = try fields.cloudTexture(renderer, cloudKind)
@@ -152,6 +159,7 @@ public final class GalaxyModel: @unchecked Sendable {
     uniforms.forward = SIMD3<Float>(camera.forward); uniforms.right = SIMD3<Float>(camera.right); uniforms.up = SIMD3<Float>(camera.cameraUp)
     uniforms.projection = SIMD2(Float(tanHalf * camera.aspect), Float(tanHalf))
     uniforms.mix = Float(blend)
+    uniforms.pixelRatio = Float(pixelRatio)
     armUniforms.projection = camera.projection; armUniforms.viewRotation = camera.viewRotation
     armUniforms.origin = SIMD3<Float>(relative)
     armUniforms.scale = Float(radius * heightPx * pixelRatio / (2 * tanHalf))
