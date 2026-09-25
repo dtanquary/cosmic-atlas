@@ -2,8 +2,10 @@
  * Every structure (arms, dust, stars, H II regions) is illustrative; only the
  * adopted size, sky ellipse and position come from the source catalogs. */
 import * as THREE from 'three';
+import {warmthTint,type GalaxyColors} from './galaxy-colors';
 
-export type GalaxyLookKey='ngc3982'|'m31'|'m33'|'milkyWay';
+export type CatalogLookKey='grand'|'multi'|'tight'|'flocculent'|'barred'|'weakBar';
+export type GalaxyLookKey='ngc3982'|'m31'|'m33'|'milkyWay'|CatalogLookKey;
 type RGB=[number,number,number];
 export interface GalaxyLook {arms:number;minor:number;pitchDegrees:number;bar:number;bulge:number;ragged:number;dust:number;hii:number;
  extent:number;unitsPerRe:number;phaseDegrees:number;spin:1|-1;core:RGB;disc:RGB;young:RGB;knots:RGB}
@@ -15,19 +17,52 @@ export interface GalaxyLook {arms:number;minor:number;pitchDegrees:number;bar:nu
 // spin orient the pattern in the model frame (spin -1 mirrors it). Colours are
 // bulge, old disc, young arm stars and H II pink, in the family Atrium sampled
 // from Hubble/ESO photos.
+const andromeda:GalaxyLook={arms:2,minor:1,pitchDegrees:8,bar:0,bulge:.13,ragged:.5,dust:1.2,hii:1,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.9,.78],disc:[.86,.78,.86],young:[.74,.76,1],knots:[1,.5,.7]};
+const triangulum:GalaxyLook={arms:2,minor:1,pitchDegrees:30,bar:0,bulge:.015,ragged:.9,dust:.6,hii:1.5,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.96,.9],disc:[.88,.9,1],young:[.74,.86,1],knots:[1,.5,.56]};
 export const galaxyLooks:Record<GalaxyLookKey,GalaxyLook>={
  // NGC 3982 (Hubble opo1036a): many short winding arms, dense dust filaments, rich in H II, small warm centre.
  ngc3982:{arms:4,minor:.8,pitchDegrees:26,bar:0,bulge:.05,ragged:.7,dust:2.2,hii:2,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.92,.84],disc:[.88,.9,1],young:[.7,.82,1],knots:[1,.45,.58]},
  // Andromeda (heic2501a): tightly wound dusty arms that read as rings, large cream bulge, mauve outskirts.
- m31:{arms:2,minor:1,pitchDegrees:8,bar:0,bulge:.13,ragged:.5,dust:1.2,hii:1,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.9,.78],disc:[.86,.78,.86],young:[.74,.76,1],knots:[1,.5,.7]},
+ m31:andromeda,
  // Triangulum (eso1424a): a flocculent patchwork, weak nucleus, rich in H II.
- m33:{arms:2,minor:1,pitchDegrees:30,bar:0,bulge:.015,ragged:.9,dust:.6,hii:1.5,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.96,.9],disc:[.88,.9,1],young:[.74,.86,1],knots:[1,.5,.56]},
+ m33:triangulum,
  // Milky Way: two major arms off the bar's ends and two minor between. The bar
  // length (5 kpc half-length) and angle (28 degrees from the Sun-centre line)
  // and the handedness follow the sourced home reference; the disc reaches about
  // 15 kpc so the Sun at 8.1 kpc sits inside it.
  milkyWay:{arms:4,minor:.45,pitchDegrees:13,bar:.71075,bulge:.09,ragged:.3,dust:1.2,hii:1,extent:1.5,unitsPerRe:.6203,phaseDegrees:152,spin:-1,core:[1,.9,.76],disc:[.92,.88,.84],young:[.72,.84,1],knots:[1,.45,.55]},
+ // Catalog looks, after Atrium's kinds: Whirlpool (M51), Pinwheel (M101),
+ // Andromeda, Triangulum, Great Barred (NGC 1300) and its Milky Way.
+ grand:{arms:2,minor:1,pitchDegrees:19,bar:0,bulge:.05,ragged:.2,dust:1.3,hii:1,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.91,.8],disc:[.94,.9,.87],young:[.72,.86,1],knots:[1,.42,.5]},
+ multi:{arms:4,minor:1,pitchDegrees:27,bar:0,bulge:.03,ragged:.55,dust:.8,hii:1,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.93,.86],disc:[.95,.93,.93],young:[.7,.82,1],knots:[1,.5,.6]},
+ tight:andromeda,
+ flocculent:triangulum,
+ barred:{arms:2,minor:1,pitchDegrees:17,bar:.45,bulge:.05,ragged:.1,dust:1,hii:1,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.9,.84],disc:[.93,.9,.97],young:[.72,.84,1],knots:[1,.5,.6]},
+ weakBar:{arms:4,minor:.45,pitchDegrees:13,bar:.28,bulge:.09,ragged:.3,dust:1.2,hii:1,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.9,.76],disc:[.92,.88,.84],young:[.72,.84,1],knots:[1,.45,.55]},
 };
+export const catalogLookLabels:Record<CatalogLookKey,string>={grand:'Grand-design spiral',multi:'Multi-arm spiral',tight:'Tightly wound spiral',flocculent:'Flocculent spiral',barred:'Barred spiral',weakBar:'Weakly barred spiral'};
+
+// Recorded Hubble types: bars first (SB, SAB), then the stage sets winding,
+// bulge and raggedness, as along the Hubble sequence. Display choices, not fits.
+const stageLooks:Record<string,CatalogLookKey>={a:'tight',ab:'tight',b:'grand',bc:'multi',c:'multi',cd:'flocculent',d:'flocculent',m:'flocculent'};
+// Without a usable type: weights in hash space, not measured population fractions.
+const identityLooks:[number,CatalogLookKey][]=[[.25,'grand'],[.5,'multi'],[.65,'tight'],[.8,'barred'],[.9,'weakBar'],[1,'flocculent']];
+
+function identityHash(text:string){
+ let h=2166136261;
+ for(let i=0;i<text.length;i++)h=Math.imul(h^text.charCodeAt(i),16777619);
+ h^=h>>>16;h=Math.imul(h,0x7feb352d);h^=h>>>15;h=Math.imul(h,0x846ca68b);return (h^(h>>>16))>>>0;
+}
+
+/** A catalog galaxy's look: from its recorded visual type when that names a
+ * spiral stage, otherwise from its exact public identity. */
+export function catalogLook(identity:string,morphology?:string):{key:CatalogLookKey;fromType:boolean}{
+ const type=morphology?.match(/^S(AB|B)?(a|ab|b|bc|c|cd|d|m)$/);
+ if(type)return {key:type[1]==='B'?'barred':type[1]==='AB'?'weakBar':stageLooks[type[2]],fromType:true};
+ const fraction=identityHash(`look:${identity}`)/4294967296;
+ return {key:identityLooks.find(([limit])=>fraction<limit)![1],fromType:false};
+}
+const catalogKeys=new Set<GalaxyLookKey>(Object.keys(catalogLookLabels) as CatalogLookKey[]);
 
 /** Stable noise offsets per galaxy, from its exact public identity. */
 export function lookSeed(identity:string):[number,number]{
@@ -42,12 +77,29 @@ export function lookSeed(identity:string):[number,number]{
  * only added light. */
 export const lookDisc={scale:.4,fadeStart:.85,fadeEnd:1.4};
 
+/** The colours and pattern orientation a model draws with. Catalog looks turn
+ * and mirror their pattern and tint their colours (at fixed luminance) by exact
+ * identity (the disc and young stars, at fixed luminance), so no two catalog
+ * galaxies line up or match exactly; named looks
+ * keep their tuned values. */
+export function lookAppearance(key:GalaxyLookKey,identity:string,palette?:GalaxyColors){
+ const l=galaxyLooks[key],catalog=catalogKeys.has(key),h=identityHash(`pattern:${identity}`);
+ const tint=palette?warmthTint(palette):[1,1,1];
+ const shift=(rgb:RGB,amount:number):RGB=>{
+  const lum=(c:RGB)=>c[0]*.2126+c[1]*.7152+c[2]*.0722,out=rgb.map((value,i)=>value*(1+amount*(tint[i]-1))) as RGB,scale=lum(rgb)/lum(out);
+  // Light multipliers, so a channel may pass 1; the stretch keeps the output in range.
+  return out.map(value=>value*scale) as RGB;
+ };
+ return {phase:catalog?(h&16777215)/16777216*Math.PI*2:THREE.MathUtils.degToRad(l.phaseDegrees),spin:catalog?(h>>>31?-1:1):l.spin,
+  core:l.core,disc:shift(l.disc,1),young:shift(l.young,.6),knots:l.knots};
+}
+
 /** Uniforms shared by every model drawn with a look. */
-export function lookUniforms(key:GalaxyLookKey,identity:string){
- const l=galaxyLooks[key],v=(rgb:RGB)=>new THREE.Vector3().fromArray(rgb);
+export function lookUniforms(key:GalaxyLookKey,identity:string,palette?:GalaxyColors){
+ const l=galaxyLooks[key],a=lookAppearance(key,identity,palette),v=(rgb:RGB)=>new THREE.Vector3().fromArray(rgb);
  return {uShape:{value:new THREE.Vector4(l.arms,1/Math.tan(THREE.MathUtils.degToRad(l.pitchDegrees)),l.bar,l.bulge)},uArms:{value:new THREE.Vector4(l.ragged,l.dust,l.minor,l.hii)},
-  uPattern:{value:new THREE.Vector4(THREE.MathUtils.degToRad(l.phaseDegrees),l.spin,l.extent,l.unitsPerRe)},uSeed:{value:new THREE.Vector2(...lookSeed(identity))},
-  uCore:{value:v(l.core)},uDisc:{value:v(l.disc)},uYoung:{value:v(l.young)},uKnots:{value:v(l.knots)},uPixelRatio:{value:1}};
+  uPattern:{value:new THREE.Vector4(a.phase,a.spin,l.extent,l.unitsPerRe)},uSeed:{value:new THREE.Vector2(...lookSeed(identity))},
+  uCore:{value:v(a.core)},uDisc:{value:v(a.disc)},uYoung:{value:v(a.young)},uKnots:{value:v(a.knots)},uPixelRatio:{value:1}};
 }
 
 /** Thin disc, bulge and dust evaluated once where each ray crosses the midplane,

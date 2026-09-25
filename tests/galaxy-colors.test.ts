@@ -1,6 +1,6 @@
 import {it,expect} from 'vitest';
 import {galaxyColors} from '../src/galaxy-colors';
-import {spiralSamples,irregularSamples} from '../src/galaxy-detail';
+import {irregularSamples} from '../src/galaxy-detail';
 
 const luminance=(rgb:number[])=>rgb[0]*.2126+rgb[1]*.7152+rgb[2]*.0722;
 
@@ -17,9 +17,9 @@ it('keeps repeatable, restrained palettes with equal brightness across galaxy id
  expect(Math.min(...ratios)).toBeLessThan(.75);expect(Math.max(...ratios)).toBeGreaterThan(1.05);
 });
 
-it('changes arm and clump colors without moving light samples or changing their sizes',()=>{
- const a=galaxyColors('nearby:m31'),b=galaxyColors('nearby:m33'),parameters={seed:123,arms:2,pitchDegrees:20,phaseRadians:.4};
- for(const samples of [(palette:typeof a)=>spiralSamples(parameters,1200,palette),(palette:typeof a)=>irregularSamples(123,1200,palette)]){
+it('changes clump colors without moving light samples or changing their sizes',()=>{
+ const a=galaxyColors('nearby:m31'),b=galaxyColors('nearby:m33');
+ for(const samples of [(palette:typeof a)=>irregularSamples(123,1200,palette)]){
   const first=samples(a),second=samples(b);
   expect(first.positions).toEqual(second.positions);expect(first.sizes).toEqual(second.sizes);
   expect(first.colors).not.toEqual(second.colors);expect(samples(a).colors).toEqual(first.colors);

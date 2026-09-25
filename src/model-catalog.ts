@@ -34,7 +34,7 @@ export function decodeModel(manifest:ModelManifest,chunk:ProfileChunk,row:number
     name:named?.name??galaxy.targetId,galaxy,
     shape:{radiusArcsec:measured?chunk.values[p]:manifest.fallbackRadiusMpc/galaxy.distance*180*3600/Math.PI,e1:measured?chunk.values[p+1]:0,e2:measured?chunk.values[p+2]:0,sersic:index,profileType:profileTypes[type]??'Unknown'},
     gaussians:fit.gaussians,fitMaxRelativeError:fit.weightedError,
-    model:{family,typeSource:known?'catalog':'proxy',typeLabel:known?`${familyLabels[family]} · ${named?.morphology??'catalog type'}`:measured?`${family==='spiral'?'Disk-like':family==='lenticular'?'Smooth round':'Spheroidal'} approximation`:'Unresolved shape · illustrative model',shapeMeasured:measured,sourceName:named?.source,profileIndex:fit.n},
+    model:{family,typeSource:known?'catalog':'proxy',typeLabel:known?`${familyLabels[family]} · ${named?.morphology??'catalog type'}`:measured?`${family==='spiral'?'Disk-like':family==='lenticular'?'Smooth round':'Spheroidal'} approximation`:'Unresolved shape · illustrative model',morphology:known?named?.morphology:undefined,shapeMeasured:measured,sourceName:named?.source,profileIndex:fit.n},
     spiral:family==='spiral'||family==='barred'?{arms:2+((seed>>>8)%3===0?1:0),pitchDegrees:18+seed%12,phaseRadians:phase,seed,bar:family==='barred'}:undefined,
     knotCount:12000};
 }

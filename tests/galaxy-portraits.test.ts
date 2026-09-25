@@ -35,5 +35,5 @@ it('falls back for absent or merely similar identities and exposes original prof
  for(const id of ['nearby:m310','39633325333155388','NGC 3982','NGC 4874','NGC 4889','toString'])expect(galaxyPortrait(id)).toBeUndefined();
  const original=nearbyDetails()[0],unknown={...original,galaxy:{...original.galaxy,targetId:'unmatched:portrait-fallback'}};
  const fallback=new ResolvedGalaxy(unknown,'spiral'),profile=new ResolvedGalaxy({...original,sourceProfileOnly:true,spiral:undefined,knotCount:0},'catalog');
- try{expect(fallback.memoryBytes).toBe(672000);expect(fallback.scene.children).toHaveLength(2);expect(profile.memoryBytes).toBe(0);expect(profile.scene.children).toHaveLength(1)}finally{fallback.dispose();profile.dispose()}
+ try{expect(fallback.memoryBytes).toBe(0);expect(fallback.scene.children).toHaveLength(1);expect(fallback.look).toBeDefined();expect(profile.look).toBeUndefined();expect(profile.memoryBytes).toBe(0);expect(profile.scene.children).toHaveLength(1)}finally{fallback.dispose();profile.dispose()}
 });

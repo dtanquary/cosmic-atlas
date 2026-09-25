@@ -6,7 +6,7 @@ import { ChunkLoader } from './loader';
 import { chooseFrontier, coveredFrontier } from './spatial';
 import { decodeGalaxy, separation } from './format';
 import {galaxyPortrait} from './galaxy-portraits';
-import {ResolvedGalaxy,GalaxyVolume,spiralLight, detailBlend, type GalaxyDetailData, type ModelDisplay,type GalaxyAppearance} from './galaxy-detail';
+import {ResolvedGalaxy,GalaxyVolume,detailBlend, type GalaxyDetailData, type ModelDisplay,type GalaxyAppearance} from './galaxy-detail';
 import {ModelCatalog,MODEL_LIMIT,decodeModel,measuredShape} from './model-catalog';
 import {MilkyWay} from './milky-way';
 import {createNearbyGalaxies} from './nearby-galaxies';
@@ -984,11 +984,12 @@ export class Explorer {
   /** Isolate palette changes with identical geometry in the actual GPU pipeline. */
   probeGalaxyColors(){
     const source=this.nearbyGalaxies[0].data,target=new THREE.WebGLRenderTarget(256,256),pixels=new Uint8Array(256*256*4);
-    const template=new ResolvedGalaxy(source,'spiral'),light=spiralLight(source);
+    const template=new ResolvedGalaxy(source,'spiral');
     const camera=new THREE.PerspectiveCamera(50,1,.000001,100000);
-    const identities=['nearby:m31','nearby:m33','nearby:lmc','nearby:smc'].sort((a,b)=>{const x=galaxyColors(a).disk,y=galaxyColors(b).disk;return x[0]/x[2]-y[0]/y[2]});
+    // The coolest and warmest of 64 identities' palettes on one look and structure seed.
+    const identities=Array.from({length:64},(_,i)=>`color-probe:${i}`).sort((a,b)=>{const x=galaxyColors(a).disk,y=galaxyColors(b).disk;return x[0]/x[2]-y[0]/y[2]});
     const sample=(identity:string)=>{
-      const model=new GalaxyVolume({...light,colors:galaxyColors(identity)},template.frame,template.radius,template.center);
+      const model=new GalaxyVolume({family:'spiral',look:{key:'grand',identity:'color-probe'},colors:galaxyColors(identity),gaussians:[],seed:1},template.frame,template.radius,template.center);
       try{
         camera.up.copy(model.frame.major);camera.position.copy(model.center).addScaledVector(model.frame.normal,12*model.radius);camera.lookAt(model.center);camera.updateMatrixWorld();model.update(camera,256,1,true);
         this.renderer.setRenderTarget(target);this.renderer.setClearColor(0,0);this.renderer.clear();this.renderer.info.reset();this.renderer.render(model.scene,camera);
@@ -1000,7 +1001,7 @@ export class Explorer {
     };
     try{
       const cool=sample(identities[0]),warm=sample(identities.at(-1)!),repeat=sample(identities[0]),brightnessDifference=Math.abs(cool.luminance-warm.luminance)/cool.luminance;
-      return {cool,warm,repeat,brightnessDifference,passed:warm.redBlue-cool.redBlue>.08&&brightnessDifference<.05&&cool.checksum===repeat.checksum&&cool.bytes===warm.bytes&&cool.calls===2&&warm.calls===2};
+      return {cool,warm,repeat,brightnessDifference,passed:warm.redBlue-cool.redBlue>.08&&brightnessDifference<.05&&cool.checksum===repeat.checksum&&cool.bytes===warm.bytes&&cool.calls===1&&warm.calls===1};
     }finally{template.dispose();target.dispose();this.renderer.setRenderTarget(null);this.renderer.setClearColor(0x06090d,1);this.invalidate()}
   }
   async probeGalaxyAppearance(){

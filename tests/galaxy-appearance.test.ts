@@ -8,7 +8,9 @@ it('uses bounded spiral geometry for every family without rewriting source ident
   const data={...source,spiral:undefined,model:{...source.model!,family}};
   const before=JSON.stringify(data),catalog=new ResolvedGalaxy(data,'catalog'),spiral=new ResolvedGalaxy(data,'spiral');
   try{
-   expect(spiral.appearance).toBe('spiral');expect(spiral.memoryBytes).toBe(12000*7*4*2);
+   expect(spiral.appearance).toBe('spiral');expect(spiral.memoryBytes).toBe(0);expect(spiral.look).toBeDefined();
+   // Catalog types keeps the other families' renderers; spiral and barred discs take a look.
+   expect(!!catalog.look).toBe(family==='spiral'||family==='barred');expect(catalog.memoryBytes).toBe(family==='irregular'?12000*7*4*2:0);
    expect(spiral.data).toBe(data);expect(JSON.stringify(data)).toBe(before);
    expect(spiral.center.toArray()).toEqual(catalog.center.toArray());expect(spiral.radius).toBe(catalog.radius);
    expect(spiral.frame.q).toBe(catalog.frame.q);expect(spiral.frame.positionAngle).toBe(catalog.frame.positionAngle);
