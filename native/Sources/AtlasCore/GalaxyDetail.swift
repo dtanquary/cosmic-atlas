@@ -25,9 +25,9 @@ public struct GalaxyDetailData: Codable, Sendable, Equatable {
   }
   public struct Model: Codable, Sendable, Equatable {
     public enum TypeSource: String, Codable, Sendable { case catalog, proxy }
-    public var family: GalaxyFamily, typeSource: TypeSource, typeLabel: String, shapeMeasured: Bool, sourceName: String?, profileIndex: Double
-    public init(family: GalaxyFamily, typeSource: TypeSource, typeLabel: String, shapeMeasured: Bool, sourceName: String?, profileIndex: Double) {
-      self.family = family; self.typeSource = typeSource; self.typeLabel = typeLabel; self.shapeMeasured = shapeMeasured; self.sourceName = sourceName; self.profileIndex = profileIndex
+    public var family: GalaxyFamily, typeSource: TypeSource, typeLabel: String, morphology: String?, shapeMeasured: Bool, sourceName: String?, profileIndex: Double
+    public init(family: GalaxyFamily, typeSource: TypeSource, typeLabel: String, morphology: String? = nil, shapeMeasured: Bool, sourceName: String?, profileIndex: Double) {
+      self.family = family; self.typeSource = typeSource; self.typeLabel = typeLabel; self.morphology = morphology; self.shapeMeasured = shapeMeasured; self.sourceName = sourceName; self.profileIndex = profileIndex
     }
   }
   public var version: Int, catalogId: String, catalogSourceSha256: String, name: String, galaxy: Galaxy

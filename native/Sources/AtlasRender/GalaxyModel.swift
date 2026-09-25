@@ -31,16 +31,16 @@ public final class GalaxyModel: @unchecked Sendable {
   public var id: Int { data?.galaxy.id ?? Int.min }
 
   /// A measured catalog observation or a nearby entry.
-  public convenience init(renderer: AtlasRenderer, data: GalaxyDetailData, appearance: GalaxyAppearance, profile: SpiralProfile, fields: FieldCache) throws {
-    let resolved = try resolveModel(data, appearance: appearance, profile: profile)
+  public convenience init(renderer: AtlasRenderer, data: GalaxyDetailData, appearance: GalaxyAppearance, fields: FieldCache) throws {
+    let resolved = try resolveModel(data, appearance: appearance)
     let axes = (major: resolved.frame.major, minor: resolved.frame.minor, normal: resolved.frame.normal, thickness: resolved.frame.thickness, q: resolved.frame.q)
     try self.init(renderer: renderer, data: data, appearance: appearance, light: resolved.light, frame: resolved.frame, milkyWay: nil, axes: axes, radius: resolved.radius, center: resolved.center, fields: fields)
   }
   /// The Milky Way reference: literature-based frame, no catalog identity.
   public convenience init(renderer: AtlasRenderer, milkyWay reference: MilkyWayReference, fields: FieldCache) throws {
     let frame = MilkyWayFrame(reference)
-    var light = GalaxyLight(family: .barred, gaussians: [], spiral: nil, cloud: nil, seed: 20260911, knotCount: nil, exposure: nil, colors: nil)
-    light.look = .init(key: .milkyWay, seed: lookSeed("milky-way"))
+    var light = GalaxyLight(family: .barred, gaussians: [], cloud: nil, seed: 20260911, knotCount: nil, exposure: nil, colors: nil)
+    light.look = .init(key: .milkyWay, identity: "milky-way")
     try self.init(renderer: renderer, data: nil, appearance: .catalog, light: light, frame: nil, milkyWay: frame, axes: (frame.major, frame.minor, frame.normal, frame.thickness, frame.q), radius: frame.radius, center: frame.center, fields: fields)
   }
 
@@ -72,9 +72,10 @@ public final class GalaxyModel: @unchecked Sendable {
       uniforms.dustStrength = 1
       uniforms.shape = SIMD4(Float(l.arms), Float(1 / tan(l.pitchDegrees * .pi / 180)), Float(l.bar), Float(l.bulge))
       uniforms.arms = SIMD4(Float(l.ragged), Float(l.dust), Float(l.minor), Float(l.hii))
-      uniforms.pattern = SIMD4(Float(l.phaseDegrees * .pi / 180), Float(l.spin), Float(l.extent), Float(l.unitsPerRe))
-      uniforms.coreColor = l.core.float3; uniforms.diskColor = l.disc.float3; uniforms.youngColor = l.young.float3; uniforms.emissionColor = l.knots.float3
-      uniforms.seed = SIMD2<Float>(look.seed); uniforms.pixelRatio = 1
+      let a = lookAppearance(look.key, identity: look.identity, palette: light.colors)
+      uniforms.pattern = SIMD4(Float(a.phase), Float(a.spin), Float(l.extent), Float(l.unitsPerRe))
+      uniforms.coreColor = a.core.float3; uniforms.diskColor = a.disc.float3; uniforms.youngColor = a.young.float3; uniforms.emissionColor = a.knots.float3
+      uniforms.seed = SIMD2<Float>(lookSeed(look.identity)); uniforms.pixelRatio = 1
     }
     if milkyWay != nil {
       // The look from outside; the home density march inside the disc.
@@ -91,7 +92,7 @@ public final class GalaxyModel: @unchecked Sendable {
       uniforms.cloudKind = cloudKind == .lmc ? 0 : 1
     }
     self.kind = kind; self.density = density; self.cloud = cloud
-    // Arm/knot samples: spiral recipes, irregular clumps, or the cloud's own field samples.
+    // Light samples: irregular clumps, or the cloud's own field samples.
     var samples: GalaxySamples? = nil
     if let cloudKind = light.cloud {
       let field = fields.cloudField(cloudKind)
@@ -104,8 +105,6 @@ public final class GalaxyModel: @unchecked Sendable {
         colors[i * 3] = Float(c.r); colors[i * 3 + 1] = Float(c.g); colors[i * 3 + 2] = Float(c.b)
       }
       samples = GalaxySamples(positions: positions, colors: colors, sizes: s.sizes)
-    } else if let spiral = light.spiral {
-      samples = spiralSamples(spiral, count: light.knotCount ?? 24000, palette: light.colors)
     } else if family == .irregular {
       samples = irregularSamples(seed: light.seed, count: light.knotCount ?? 12000, palette: light.colors)
     }

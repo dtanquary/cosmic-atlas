@@ -1,8 +1,8 @@
 import Foundation
 import simd
 
-// Pure geometry from src/galaxy-detail.ts, src/galaxy-colors.ts, src/galaxy-variants.ts and src/galaxy-portraits.ts.
-// Integer hashing reproduces JavaScript's Math.imul / >>> exactly so identities pick the same palette and recipe.
+// Pure geometry from src/galaxy-detail.ts, src/galaxy-colors.ts and src/galaxy-portraits.ts.
+// Integer hashing reproduces JavaScript's Math.imul / >>> exactly so identities pick the same palette and look.
 
 @inline(__always) func imul(_ a: Int32, _ b: Int32) -> Int32 { a &* b }
 @inline(__always) func ushr(_ a: Int32, _ n: Int32) -> Int32 { Int32(bitPattern: UInt32(bitPattern: a) >> UInt32(n)) }
@@ -30,6 +30,13 @@ func mixRGB(_ a: RGB, _ b: RGB, _ t: Double) -> RGB { RGB(a.r + (b.r - a.r) * t,
 public func luminance(_ c: RGB) -> Double { c.r * 0.2126 + c.g * 0.7152 + c.b * 0.0722 }
 func withLuminance(_ c: RGB, _ value: Double) -> RGB { let s = value / luminance(c); return RGB(c.r * s, c.g * s, c.b * s) }
 
+let coolDisk = RGB(0.50, 0.66, 0.83), warmDisk = RGB(0.76, 0.72, 0.64)
+/// A palette's disk hue relative to the middle of the range, per channel at unit luminance.
+public func warmthTint(_ colors: GalaxyColors) -> RGB {
+  let own = withLuminance(colors.disk, 1), middle = withLuminance(mixRGB(coolDisk, warmDisk, 0.5), 1)
+  return RGB(own.r / middle.r, own.g / middle.g, own.b / middle.b)
+}
+
 /// Plausible display colors, not measured photometry or inferred stellar ages.
 public func galaxyColors(_ identity: String) -> GalaxyColors {
   var state = Int32(truncatingIfNeeded: 2166136261 as UInt32)
@@ -43,81 +50,10 @@ public func galaxyColors(_ identity: String) -> GalaxyColors {
   }
   let warmth = 0.1 + 0.8 * random(), coreWarmth = warmth * 0.8 + random() * 0.2
   return GalaxyColors(
-    disk: withLuminance(mixRGB(RGB(0.50, 0.66, 0.83), RGB(0.76, 0.72, 0.64), warmth), 0.69),
+    disk: withLuminance(mixRGB(coolDisk, warmDisk, warmth), 0.69),
     core: withLuminance(mixRGB(RGB(0.95, 0.91, 0.83), RGB(1, 0.90, 0.72), coreWarmth), 0.88),
     emission: withLuminance(RGB(0.86, 0.57, 0.64), 0.66),
     emissionFraction: 0.015 + 0.02 * random())
-}
-
-/// Display recipes sharing one disk profile, radial distribution and light budget.
-public struct GalaxyVariant: Sendable, Equatable { public var key: String, label: String, arms: Int, pitchDegrees: Double, innerStyle: String?, armStyle: String? }
-public let galaxyVariants: [GalaxyVariant] = [
-  GalaxyVariant(key: "classic", label: "Classic spiral", arms: 2, pitchDegrees: 20, innerStyle: nil, armStyle: nil),
-  GalaxyVariant(key: "multi", label: "Fine multi-arm spiral", arms: 4, pitchDegrees: 22, innerStyle: nil, armStyle: nil),
-  GalaxyVariant(key: "ringed", label: "Ringed spiral disk", arms: 2, pitchDegrees: 20, innerStyle: "ring", armStyle: nil),
-  GalaxyVariant(key: "tight", label: "Tightly wound spiral", arms: 2, pitchDegrees: 12, innerStyle: nil, armStyle: nil),
-  GalaxyVariant(key: "feathered", label: "Feathered spiral", arms: 3, pitchDegrees: 26, innerStyle: nil, armStyle: "feathered"),
-]
-let namedRecipes: [String: Int] = ["nearby:m31": 3, "nearby:m33": 4, "39633325333155389": 1]
-
-/// Independent of color, dense row indices, camera position and source classification.
-public func galaxyVariant(_ identity: String) -> (variant: GalaxyVariant, parameters: GalaxyDetailData.Spiral) {
-  var seed = Int32(truncatingIfNeeded: 2166136261 as UInt32)
-  for unit in "spiral:\(identity)".utf16 { seed = imul(seed ^ Int32(unit), 16777619) }
-  seed ^= ushr(seed, 16); seed = imul(seed, 0x7feb352d); seed ^= ushr(seed, 15); seed = imul(seed, Int32(truncatingIfNeeded: 0x846ca68b as UInt32))
-  let unsigned = UInt32(bitPattern: seed ^ ushr(seed, 16))
-  let fraction = Double(unsigned) / 4294967296
-  // Named illustrations are deliberate display recipes, not morphology fits.
-  let variant = galaxyVariants[namedRecipes[identity] ?? (fraction < 0.4 ? 0 : fraction < 0.65 ? 1 : fraction < 0.8 ? 2 : fraction < 0.9 ? 3 : 4)]
-  let phase = Double(UInt32(bitPattern: imul(Int32(bitPattern: unsigned), Int32(truncatingIfNeeded: 2654435761 as UInt32)))) / 4294967296 * .pi * 2
-  return (variant, GalaxyDetailData.Spiral(arms: variant.arms, pitchDegrees: variant.pitchDegrees, phaseRadians: phase, seed: unsigned, innerStyle: variant.innerStyle, armStyle: variant.armStyle))
-}
-
-/// Deterministic illustrative arm knots in galaxy coordinates, in units of R_e.
-public func spiralSamples(_ p: GalaxyDetailData.Spiral, count: Int = 24000, palette: GalaxyColors? = nil) -> GalaxySamples {
-  var random = JSRandom(seed: p.seed)
-  var positions = [Float](repeating: 0, count: count * 3), colors = [Float](repeating: 0, count: count * 3), sizes = [Float](repeating: 0, count: count)
-  let winding = 1 / tan(p.pitchDegrees * .pi / 180)
-  let bar = p.bar ?? false
-  var i = 0
-  while i < count {
-    let barRadius = p.barRadiusRe ?? 0.95
-    let start = bar ? (p.barRadiusRe == nil ? 0.85 : barRadius * 0.9) : 0.32
-    let r = start - log(random.next() * random.next()) / 1.55
-    // Keep the faint outer skirt bounded; no structure outside the measured scale.
-    if r > 4.5 { continue }
-    let arm = i % p.arms
-    let phase = p.phaseRadians + Double(arm) * 2 * .pi / Double(p.arms) + winding * log(r / start)
-    var angle: Double
-    if random.next() < 0.2 { angle = random.next() * 2 * .pi } else { angle = phase + random.normal() * (0.2 + 0.045 * r) + 0.08 * sin(r * 10 + Double(arm) * 3) }
-    // Variants move light around the disk, never toward the core or farther out.
-    if p.innerStyle == "ring" && i % 4 < 2 {
-      let strength = smoothstep(r, 0.45, 0.8) * (1 - smoothstep(r, 1.25, 1.65))
-      let ringAngle = p.phaseRadians + Double(i) * 2.399963229728653
-      angle += atan2(sin(ringAngle - angle), cos(ringAngle - angle)) * strength
-    }
-    if p.armStyle == "feathered" {
-      let outer = smoothstep(r, 0.6, 1.3)
-      angle += outer * (0.28 * sin(r * 7 + Double(arm) * 2) + 0.13 * sin(r * 15 - Double(arm)))
-      if i % 4 == 0 { angle += outer * 0.42 * sin(r * 4 + Double(arm)) }
-    }
-    positions[i * 3] = Float(r * cos(angle)); positions[i * 3 + 1] = Float(r * sin(angle)); positions[i * 3 + 2] = Float(random.normal() * 0.035)
-    if bar && random.next() < 0.27 {
-      let x = (random.next() * 2 - 1) * barRadius, y = random.normal() * 0.09, c = cos(p.phaseRadians), s = sin(p.phaseRadians)
-      positions[i * 3] = Float(x * c - y * s); positions[i * 3 + 1] = Float(x * s + y * c); positions[i * 3 + 2] = Float(random.normal() * 0.045)
-    }
-    let young = random.next(), warm = 1 - smoothstep(hypot(Double(positions[i * 3]), Double(positions[i * 3 + 1])), 0.3, 1.1)
-    if let palette {
-      let color = young < palette.emissionFraction ? palette.emission.array : zip(palette.disk.array, palette.core.array).map { $0 + ($1 - $0) * warm }
-      for c in 0..<3 { colors[i * 3 + c] = Float(color[c]) }
-    } else {
-      let color = young < 0.035 ? [0.95, 0.42, 0.58] : [0.45 + 0.45 * warm, 0.68 + 0.18 * warm, 1 - 0.25 * warm]
-      for c in 0..<3 { colors[i * 3 + c] = Float(color[c]) }
-    }
-    sizes[i] = Float(0.04 + random.next() * 0.05)
-    i += 1
-  }
-  return GalaxySamples(positions: positions, colors: colors, sizes: sizes)
 }
 
 /// Irregular light clumps, not individually measured stars or star-forming regions.
@@ -198,48 +134,46 @@ public let cloudLabels: [MagellanicCloudKind: String] = [.lmc: "Barred stellar c
 /// What a model renders: family, light profile, structure recipe and palette.
 public struct GalaxyLight: Sendable, Equatable {
   public struct Look: Sendable, Equatable {
-    public var key: GalaxyLookKey, seed: SIMD2<Double>
-    public init(key: GalaxyLookKey, seed: SIMD2<Double>) { self.key = key; self.seed = seed }
+    public var key: GalaxyLookKey, identity: String
+    public init(key: GalaxyLookKey, identity: String) { self.key = key; self.identity = identity }
   }
-  public var family: GalaxyFamily, gaussians: [Gaussian], spiral: GalaxyDetailData.Spiral?, cloud: MagellanicCloudKind?
+  public var family: GalaxyFamily, gaussians: [Gaussian], cloud: MagellanicCloudKind?
   public var look: Look? = nil
   public var seed: UInt32, knotCount: Int?, exposure: Double?, colors: GalaxyColors?
-  public init(family: GalaxyFamily, gaussians: [Gaussian], spiral: GalaxyDetailData.Spiral?, cloud: MagellanicCloudKind?, seed: UInt32, knotCount: Int?, exposure: Double?, colors: GalaxyColors?) {
-    self.family = family; self.gaussians = gaussians; self.spiral = spiral; self.cloud = cloud; self.seed = seed; self.knotCount = knotCount; self.exposure = exposure; self.colors = colors
+  public init(family: GalaxyFamily, gaussians: [Gaussian], cloud: MagellanicCloudKind?, seed: UInt32, knotCount: Int?, exposure: Double?, colors: GalaxyColors?) {
+    self.family = family; self.gaussians = gaussians; self.cloud = cloud; self.seed = seed; self.knotCount = knotCount; self.exposure = exposure; self.colors = colors
   }
-}
-
-/// One shared exposure/profile/point budget for every illustrative disk variant.
-public func spiralLight(_ data: GalaxyDetailData, profile: SpiralProfile) -> GalaxyLight {
-  GalaxyLight(family: .spiral, gaussians: profile.gaussians, spiral: galaxyVariant(data.galaxy.targetId).parameters, cloud: nil,
-              seed: UInt32(bitPattern: Int32(truncatingIfNeeded: data.galaxy.id)), knotCount: data.knotCount ?? (data.spiral != nil ? 24000 : 12000), exposure: 0.55, colors: galaxyColors(data.galaxy.targetId))
 }
 
 /// A measured catalog observation's model recipe (ResolvedGalaxy's constructor): light, deprojected frame, radius and centre.
 public struct ResolvedModel: Sendable, Equatable {
   public var light: GalaxyLight, frame: GalaxyFrame, radius: Double, center: SIMD3<Double>
+  /// The catalog look drawn, and whether its recorded visual type chose it.
+  public var look: CatalogLookChoice?
 }
-public func resolveModel(_ data: GalaxyDetailData, appearance: GalaxyAppearance = .catalog, profile: SpiralProfile) throws -> ResolvedModel {
+public func resolveModel(_ data: GalaxyDetailData, appearance: GalaxyAppearance = .catalog) throws -> ResolvedModel {
   let galaxy = data.galaxy, shape = data.shape
   let portrait = data.sourceProfileOnly == true ? nil : galaxyPortrait(galaxy.targetId)
   let family: GalaxyFamily = data.cloud != nil ? .irregular : portrait?.smooth ?? ((portrait?.look != nil || appearance == .spiral) ? .spiral : data.model?.family ?? (data.spiral != nil ? .spiral : .lenticular))
   let e = hypot(shape.e1, shape.e2), q = (1 - e) / (1 + e)
   let intrinsic = min(family == .elliptical ? 0.65 : family == .irregular ? 0.3 : 0.12, q * 0.95)
   let seed = UInt32(bitPattern: Int32(truncatingIfNeeded: galaxy.id))
-  let light: GalaxyLight
+  // Every disc drawn as a spiral gets a catalog look; the source profile stays available through sourceProfileOnly.
+  let look = portrait == nil && data.cloud == nil && data.sourceProfileOnly != true && (family == .spiral || family == .barred) ? catalogLook(galaxy.targetId, morphology: data.model?.morphology) : nil
+  var light: GalaxyLight
   if let cloud = data.cloud {
-    light = GalaxyLight(family: family, gaussians: data.gaussians, spiral: nil, cloud: cloud, seed: seed, knotCount: 4096, exposure: nil, colors: galaxyColors(galaxy.targetId))
+    light = GalaxyLight(family: family, gaussians: data.gaussians, cloud: cloud, seed: seed, knotCount: 4096, exposure: nil, colors: galaxyColors(galaxy.targetId))
   } else if let key = portrait?.look {
-    var l = GalaxyLight(family: family, gaussians: [], spiral: nil, cloud: nil, seed: seed, knotCount: nil, exposure: nil, colors: nil)
-    l.look = .init(key: key, seed: lookSeed(galaxy.targetId)); light = l
-  } else if appearance == .spiral && portrait?.smooth == nil {
-    light = spiralLight(data, profile: profile)
+    light = GalaxyLight(family: family, gaussians: [], cloud: nil, seed: seed, knotCount: nil, exposure: nil, colors: nil)
+    light.look = .init(key: key, identity: galaxy.targetId)
+  } else if let look {
+    light = GalaxyLight(family: family, gaussians: [], cloud: nil, seed: seed, knotCount: nil, exposure: nil, colors: galaxyColors(galaxy.targetId))
+    light.look = .init(key: look.key, identity: galaxy.targetId)
   } else {
-    light = GalaxyLight(family: family, gaussians: data.gaussians, spiral: portrait?.smooth != nil ? nil : data.spiral, cloud: nil, seed: seed,
-                        knotCount: data.knotCount ?? (data.spiral != nil ? 24000 : 12000), exposure: portrait?.exposure, colors: galaxyColors(galaxy.targetId))
+    light = GalaxyLight(family: family, gaussians: data.gaussians, cloud: nil, seed: seed, knotCount: data.knotCount ?? 12000, exposure: portrait?.exposure, colors: galaxyColors(galaxy.targetId))
   }
   return ResolvedModel(light: light, frame: try galaxyFrame(ra: galaxy.ra, dec: galaxy.dec, e1: shape.e1, e2: shape.e2, thickness: intrinsic),
-                       radius: galaxyRadius(distanceMpc: galaxy.distance, radiusArcsec: shape.radiusArcsec), center: galaxy.position)
+                       radius: galaxyRadius(distanceMpc: galaxy.distance, radiusArcsec: shape.radiusArcsec), center: galaxy.position, look: look)
 }
 
 /// The Milky Way's literature-based frame: adopted axes, thickness .07, unit q; the approach direction the tours use.

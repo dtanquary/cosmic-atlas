@@ -31,4 +31,36 @@ final class GalaxyLooksTests: XCTestCase {
     let shader = try String(contentsOf: RepoPaths.file("native/Sources/AtlasRender/Shaders/Atlas.metal"), encoding: .utf8)
     XCTAssertTrue(shader.contains("SCALE = \(lookDisc.scale), FADE_START = \(lookDisc.fadeStart), FADE_END = \(lookDisc.fadeEnd),"))
   }
+  func testChoosesCatalogLooksFromRecordedHubbleTypesBarsFirst() {
+    let cases: [(String, GalaxyLookKey)] = [("Sa", .tight), ("Sab", .tight), ("Sb", .grand), ("Sbc", .multi), ("Sc", .multi), ("Scd", .flocculent), ("Sd", .flocculent), ("Sm", .flocculent),
+                                            ("SABa", .weakBar), ("SABc", .weakBar), ("SBa", .barred), ("SBbc", .barred), ("SBm", .barred)]
+    for (type, key) in cases { XCTAssertEqual(catalogLook("any-identity", morphology: type), CatalogLookChoice(key: key, fromType: true), type) }
+    for type in ["S?", "E", "S0", nil] { XCTAssertFalse(catalogLook("any-identity", morphology: type).fromType) }
+  }
+  func testSpreadsUntypedGalaxiesOverEveryCatalogLookByExactIdentity() {
+    let seen = Set((0..<512).map { catalogLook("look-test:\($0)").key })
+    XCTAssertEqual(seen, Set(catalogLookLabels.keys))
+  }
+  func testTurnsMirrorsAndTintsCatalogLooksByIdentityAtFixedLuminance() {
+    let a = lookAppearance(.grand, identity: "look-test:a", palette: galaxyColors("look-test:a")), b = lookAppearance(.grand, identity: "look-test:b", palette: galaxyColors("look-test:b"))
+    XCTAssertNotEqual(a.phase, b.phase)
+    XCTAssertEqual(luminance(a.disc), luminance(galaxyLooks[.grand]!.disc), accuracy: 1e-9); XCTAssertEqual(luminance(a.young), luminance(galaxyLooks[.grand]!.young), accuracy: 1e-9)
+    XCTAssertNotEqual(a.disc, b.disc); XCTAssertEqual(a.core, galaxyLooks[.grand]!.core)
+    XCTAssertEqual(Set((0..<64).map { lookAppearance(.barred, identity: "look-test:\($0)").spin }), [1, -1])
+    let named = lookAppearance(.milkyWay, identity: "milky-way"); XCTAssertEqual(named.spin, -1); XCTAssertEqual(named.disc, galaxyLooks[.milkyWay]!.disc)
+  }
+  func testMatchesTheWebForPinnedIdentities() {
+    // From src/galaxy-looks.ts: catalogLook(id) and lookAppearance('grand', id, galaxyColors(id)).
+    let pins: [(String, GalaxyLookKey, Double, Double, RGB)] = [
+      ("39633263488141603", .multi, 0.5890433794496901, -1, RGB(0.9790225730583073, 0.8935615158871252, 0.8188726427331318)),
+      ("look-test:1", .weakBar, 4.599611431912832, -1, RGB(0.9484236534153483, 0.8986101490897064, 0.8589633331708993)),
+      ("look-test:2", .grand, 5.956159403455188, 1, RGB(0.8431586124192363, 0.9159782322522885, 0.9968815414519895)),
+      ("look-test:3", .multi, 1.9385562364655737, 1, RGB(0.8365238865374219, 0.9170729211422167, 1.0055743562497323))]
+    for (id, key, phase, spin, disc) in pins {
+      XCTAssertEqual(catalogLook(id), CatalogLookChoice(key: key, fromType: false), id)
+      let a = lookAppearance(.grand, identity: id, palette: galaxyColors(id))
+      XCTAssertEqual(a.phase, phase, accuracy: 1e-12); XCTAssertEqual(a.spin, spin)
+      for (x, y) in zip(a.disc.array, disc.array) { XCTAssertEqual(x, y, accuracy: 1e-12) }
+    }
+  }
 }

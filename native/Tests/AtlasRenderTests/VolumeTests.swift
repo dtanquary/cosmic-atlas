@@ -13,9 +13,8 @@ final class VolumeTests: XCTestCase {
   static let spiral = try! JSONDecoder().decode(GalaxyDetailData.self, from: RepoPaths.data("public/data/galaxy-spiral.json"))
   static let renderer = try! AtlasRenderer()
   static let fields = FieldCache(milkyWay: reference.milkyWay)
-  var profile: SpiralProfile { Self.reference.spiralProfile }
 
-  func model(_ data: GalaxyDetailData, _ appearance: GalaxyAppearance = .catalog) throws -> GalaxyModel { try GalaxyModel(renderer: Self.renderer, data: data, appearance: appearance, profile: profile, fields: Self.fields) }
+  func model(_ data: GalaxyDetailData, _ appearance: GalaxyAppearance = .catalog) throws -> GalaxyModel { try GalaxyModel(renderer: Self.renderer, data: data, appearance: appearance, fields: Self.fields) }
   func camera(at position: SIMD3<Double>, lookingAt target: SIMD3<Double>, near: Double = 0.0001) -> Camera { var c = Camera(position: position, target: target); c.aspect = 1; c.near = near; c.far = 100000; return c }
   func project(_ point: SIMD3<Double>, _ camera: Camera) -> SIMD2<Double> {
     let v = simd_double3x3(camera.orientation.inverse) * (point - camera.position)
@@ -91,21 +90,23 @@ final class VolumeTests: XCTestCase {
     XCTAssertLessThan(nearbyBytes, 4 * 1_048_576)
     var unknown = try nearbyDetails(Self.reference.nearby)[0]; unknown.galaxy.targetId = "unmatched:portrait-fallback"
     let fallback = try model(unknown, .spiral)
-    XCTAssertEqual(fallback.memoryBytes, 672000); XCTAssertNotNil(fallback.arms)
+    XCTAssertEqual(fallback.memoryBytes, 0); XCTAssertNil(fallback.arms)
     for family in [GalaxyFamily.spiral, .barred, .elliptical, .lenticular, .irregular] {
       var d = unknown; d.spiral = nil; d.model?.family = family
-      XCTAssertEqual(try model(d, .spiral).memoryBytes, 12000 * 7 * 4 * 2)
+      // Every family is a catalog look under the spiral appearance; Catalog types keeps clumps for irregulars.
+      XCTAssertEqual(try model(d, .spiral).memoryBytes, 0)
+      XCTAssertEqual(try model(d, .catalog).memoryBytes, family == .irregular ? 12000 * 7 * 4 * 2 : 0)
     }
   }
   func testVolumesDrawDeterministicallyWithTheWebsDrawCounts() throws {
     let target = OffscreenTarget(renderer: Self.renderer, width: 320, height: 320)
-    // NGC 3982 carries a procedural look (one draw); an unmatched identity takes the generic spiral with arm points (two).
+    // NGC 3982 carries its named look and an unmatched identity a catalog look (one draw each); clouds keep their knots (two).
     var generic = Self.spiral; generic.galaxy.targetId = "unmatched:draw-count"
     let smooth = try model(Self.detail), portrait = try model(Self.spiral, .spiral), spiral = try model(generic, .spiral), m31 = try model(try nearbyDetails(Self.reference.nearby)[0], .spiral)
     let lmc = try model(try nearbyDetails(Self.reference.nearby).first { $0.cloud == .lmc }!, .spiral)
     let mw = try GalaxyModel(renderer: Self.renderer, milkyWay: Self.reference.milkyWay, fields: Self.fields)
-    XCTAssertEqual(portrait.kind, .look(.ngc3982)); XCTAssertEqual(spiral.kind, .gaussian)
-    for (m, expectedDraws) in [(smooth, 1), (portrait, 1), (spiral, 2), (m31, 1), (lmc, 2), (mw, 1)] {
+    XCTAssertEqual(portrait.kind, .look(.ngc3982)); XCTAssertEqual(spiral.kind, .look(catalogLook(generic.galaxy.targetId).key))
+    for (m, expectedDraws) in [(smooth, 1), (portrait, 1), (spiral, 1), (m31, 1), (lmc, 2), (mw, 1)] {
       let direction = m.frame?.normal ?? m.milkyWayFrame!.normal
       let cam = camera(at: m.center + simd_normalize(direction * 0.8 + (m.frame?.major ?? m.milkyWayFrame!.major) * 0.6) * 6 * m.radius, lookingAt: m.center, near: m.radius * 0.01)
       m.update(camera: cam, heightPx: 320, focused: true)

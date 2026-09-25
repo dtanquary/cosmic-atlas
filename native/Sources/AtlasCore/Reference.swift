@@ -34,8 +34,6 @@ public struct NearbyReference: Codable, Sendable {
   public var version: Int, source: Source, entries: [Entry]
 }
 
-public struct SpiralProfile: Codable, Sendable { public var description: String, gaussians: [Gaussian] }
-
 public enum StopKind: String, Codable, Sendable { case sun, core, localgroup, overview, cmb, nearby, catalog, cluster, view }
 
 public struct TourTarget: Codable, Sendable, Equatable {
@@ -72,7 +70,7 @@ public struct PhotosFile: Codable, Sendable { public var version: Int, verified:
 /// Every bundled reference file, decoded once.
 public struct ReferenceData: Sendable {
   public var lookback: LookbackReference, cosmicHorizon: CosmicHorizonReference, milkyWay: MilkyWayReference
-  public var nearby: NearbyReference, tours: [TourData], photos: PhotosFile, spiralProfile: SpiralProfile
+  public var nearby: NearbyReference, tours: [TourData], photos: PhotosFile
   public var cmbRadiusMpc: Double { cosmicHorizon.radiusMpc }
 
   public init(directory: URL) throws {
@@ -80,7 +78,7 @@ public struct ReferenceData: Sendable {
       try JSONDecoder().decode(T.self, from: Data(contentsOf: directory.appendingPathComponent("\(name).json")))
     }
     lookback = try load("lookback"); cosmicHorizon = try load("cosmic-horizon"); milkyWay = try load("milky-way")
-    nearby = try load("nearby-galaxies"); tours = (try load("tours") as ToursFile).tours; photos = try load("photos"); spiralProfile = try load("spiral-profile")
+    nearby = try load("nearby-galaxies"); tours = (try load("tours") as ToursFile).tours; photos = try load("photos")
   }
 }
 

@@ -68,7 +68,7 @@ public func decodeModel(_ manifest: ModelManifest, chunk: ProfileChunk, row: Int
   let e2: Double = measured ? Double(chunk.value(p + 2)) : 0
   let profileType = Int(type) < profileTypes.count ? profileTypes[Int(type)] : "Unknown"
   let shape = GalaxyDetailData.Shape(radiusArcsec: radiusArcsec, e1: e1, e2: e2, sersic: index, profileType: profileType)
-  let model = GalaxyDetailData.Model(family: family, typeSource: known != nil ? .catalog : .proxy, typeLabel: typeLabel, shapeMeasured: measured, sourceName: named?.source, profileIndex: fit.n)
+  let model = GalaxyDetailData.Model(family: family, typeSource: known != nil ? .catalog : .proxy, typeLabel: typeLabel, morphology: known != nil ? named?.morphology : nil, shapeMeasured: measured, sourceName: named?.source, profileIndex: fit.n)
   return GalaxyDetailData(catalogId: manifest.catalogId, catalogSourceSha256: manifest.catalogSourceSha256, name: named?.name ?? galaxy.targetId, galaxy: galaxy,
                           shape: shape, gaussians: fit.gaussians, fitMaxRelativeError: fit.weightedError, spiral: spiral, model: model, knotCount: 12000)
 }

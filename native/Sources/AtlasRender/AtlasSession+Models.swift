@@ -48,7 +48,7 @@ extension AtlasSession {
         guard let removable else { throw CancellationError() } // waiting for a model to fade out
         removeModel(removable)
       }
-      let model = try GalaxyModel(renderer: renderer, data: try decodeModel(manifest, chunk: chunk, row: row, galaxy: galaxy), appearance: galaxyAppearance, profile: reference.spiralProfile, fields: fields)
+      let model = try GalaxyModel(renderer: renderer, data: try decodeModel(manifest, chunk: chunk, row: row, galaxy: galaxy), appearance: galaxyAppearance, fields: fields)
       modelPresence[galaxy.id] = (priority ? 1 : 0, 1); updateModel(model)
       resolvedGalaxies.append(model); modelLocations[galaxy.id] = (node.id, row); bindModels()
       if selected?.id == galaxy.id { onSelection(selected) }

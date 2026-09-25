@@ -16,6 +16,7 @@ public enum Strings {
   public static let profileAdopted = "Adopted global shape", profileMeasured = "Measured global shape", profileIllustrative = "Illustrative shape"
   public static let portraitAppearance = "Appearance guided by telescope images. Adopted size and sky ellipse are retained; feature placement, depth, colors and exposure remain illustrative. This is not a reconstructed 3D photograph."
   public static let spiralAppearance = "Spiral appearance: morphology, light profile and depth are illustrative. Adopted size and sky ellipse are retained. Colors vary illustratively, not from measured photometry. Source properties are described below."
+  public static let lookFromType = " The look follows the recorded visual type.", lookFromIdentity = " The look is chosen from the catalog identity."
   public static let proxyOrigin = "The visual type is an approximation; morphology is not classified. "
   public static let measuredShapeSentence = "Size and projected ellipse follow the catalog. "
   public static let assumedShapeSentence = "No usable shape measurement: size is assumed (5 kpc half-light radius), with no measured orientation. "
@@ -46,7 +47,7 @@ public enum Strings {
 
   public static var all: [String] {
     [footprintHint, uncertainLocalPrefix, uncertainLocalShown, uncertainLocalHidden, uncertainLocalSuffix, distanceCaptionNearby, distanceCaptionUncertain, distanceCaptionComoving,
-     sourceNearby, sourceObservation, profileAdopted, profileMeasured, profileIllustrative, portraitAppearance, spiralAppearance, proxyOrigin, measuredShapeSentence, assumedShapeSentence,
+     sourceNearby, sourceObservation, profileAdopted, profileMeasured, profileIllustrative, portraitAppearance, spiralAppearance, lookFromType, lookFromIdentity, proxyOrigin, measuredShapeSentence, assumedShapeSentence,
      illustrativeSuffix, cloudNote, nearbyNote, assumedPrefix, angleUnknown, angleUnconstrained, lookbackCaptionNearby, lookbackCaptionRedshift, redshiftNotUsed, redshiftErrorUnavailable,
      measureFirst, measureSecond, measureUnreliable, measureLocal, measureMixed, measureComoving, modelDisplayPoints, modelDisplayFocused, savedViewsUnavailable, linkOutOfRange,
      linkUnknownGalaxy, modelLoadFailed, shapesLoadFailed, firstDataFailed, searchNoMatches, searchPopular, searchUnavailable]

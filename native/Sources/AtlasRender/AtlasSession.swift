@@ -175,7 +175,7 @@ public final class AtlasSession {
     fields = fieldCache
     milkyWay = try GalaxyModel(renderer: renderer, milkyWay: reference.milkyWay, fields: fieldCache)
     let nearby = try nearbyDetails(reference.nearby)
-    let nearbyModels = try nearby.map { try GalaxyModel(renderer: renderer, data: $0, appearance: .spiral, profile: reference.spiralProfile, fields: fieldCache) }
+    let nearbyModels = try nearby.map { try GalaxyModel(renderer: renderer, data: $0, appearance: .spiral, fields: fieldCache) }
     let centers = nearbyModels.map(\.center)
     // The six nearby points: absolute centres, permanently slotted to their models, in the 65535 pick namespace.
     var bytes = Data(count: BINARY_HEADER_BYTES + nearby.count * 16)
@@ -197,7 +197,7 @@ public final class AtlasSession {
   /// Appearance switches rebuild every model from its unchanged source data; identities, positions and slots persist.
   func rebuildModels() {
     func replace(_ old: GalaxyModel) -> GalaxyModel {
-      guard let data = old.data, let model = try? GalaxyModel(renderer: renderer, data: data, appearance: galaxyAppearance, profile: reference.spiralProfile, fields: fields) else { return old }
+      guard let data = old.data, let model = try? GalaxyModel(renderer: renderer, data: data, appearance: galaxyAppearance, fields: fields) else { return old }
       updateModel(model); return model
     }
     resolvedGalaxies = resolvedGalaxies.map(replace)
@@ -250,7 +250,7 @@ public final class AtlasSession {
         guard detail.version == 1, detail.catalogId == manifest.id, detail.catalogSourceSha256 == manifest.source.sha256, detail.galaxy.id >= 0, detail.galaxy.id < manifest.count,
               detail.shape.radiusArcsec.isFinite, detail.shape.radiusArcsec > 0, (detail.shape.e1 + detail.shape.e2 + detail.galaxy.distance).isFinite, detail.galaxy.distance > 0,
               !detail.gaussians.isEmpty, detail.gaussians.count <= 20, detail.gaussians.allSatisfy({ ($0.sigmaRe + $0.peak).isFinite && $0.sigmaRe > 0 && $0.peak >= 0 }) else { throw AtlasError("Invalid galaxy profile") }
-        previews.append(try GalaxyModel(renderer: renderer, data: detail, appearance: galaxyAppearance, profile: reference.spiralProfile, fields: fields))
+        previews.append(try GalaxyModel(renderer: renderer, data: detail, appearance: galaxyAppearance, fields: fields))
       } catch { rejected = true }
     }
     resolvedGalaxies = previews; pinnedModels = Set(previews.map(\.id))
