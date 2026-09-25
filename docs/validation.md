@@ -435,3 +435,24 @@ Final shared production regressions pass **50 tour/history, 126 mobile, 30 exist
 The sole later runtime change in `18256b1` permits equivalent JSON member ordering/whitespace while retaining strict schema, UTF-8 and canonical base64url bytes. The complete custom-trip journey reruns on that final source; the navigation/rendering suites above cover unchanged code at `5b27527`. Six original editor captures plus twelve final editor/recipient captures were visually reviewed.
 
 Final delivery: all four milestones are pushed and deployed. Hosted exact-byte verification passes for app/photo/license assets and the documented catalog sample. A fresh live Chrome phone-layout browser passes paused Andromeda invitation, credited photograph, custom itinerary preview and playback, with the full catalog count and no page errors. Operational receipts and captures remain ignored. These live browser checks do not add a physical-device claim.
+
+## Procedural galaxy looks — 25 September 2026
+
+Step 1 of [galaxy looks](galaxy-looks.md): NGC 3982 on the web (`1942f07`) and in Metal (`1757e6b`). `npm test` passes **126 tests in 26 files**, and strict TypeScript and the production build pass. `tests/galaxy-looks.test.ts` and `GalaxyLooksTests` put the smooth disc's numerically integrated half-light radius within **0.05%** of the adopted radius, seed structure only from exact public identities, and pin the Metal constants to `lookDisc`.
+
+Full-data `?portraittest&cloudtest&varianttest&colortest&continuitytest&nearbytest&sharetest` and `?tourtest&hometest&uxtest` pass on **HeadlessChrome 153 / ANGLE Metal Apple M3 Max, 1600×1000**. There are no page or shader errors and no failed keys, before and after WebGL context recovery. NGC 3982:
+
+- Renders in **1 draw** with **0 texture bytes** (previously 1,376,248). Face, inclined, reverse and edge views are lit, with peaks of **233–245/255** and **zero clipped pixels**.
+- The inside view is lit and unclipped, and the view facing away draws nothing.
+- Dust darkens the integrated light (mean difference 0.42). Repeat error is **0**, a 0.001 rad orbit changes the mean by **0.019** levels, and a reconstruction with another dense ID matches its checksum.
+- The four-second orbit sample holds **60.0 FPS, p95 16.8 ms** at the 60 Hz cap. The share link for NGC 3982 lands and keeps its model resident.
+- The road trip reaches **all ten stops**. Continuity stays within **12** DESI models with no abrupt events.
+- Andromeda, Triangulum, the dwarfs, the clouds, the generic variants and the home appearance are unchanged and pass.
+
+Development-subset `?dataset=development&nearbytest&portraittest&cloudtest&tourtest` also passes: the four available portraits and the clouds, and the road trip skips only NGC 3982 and NGC 4026 with their notices.
+
+Visual review of real-app captures used face-on, zoomed, inclined and steep views, compared with the bundled Hubble image, and Metal offscreen renders at face-on, 63°, 80° and edge-on views. The edge-on view is the averaged-disc march: a bright band with a central dust lane, without arm structure. The iOS app target builds for the iPhone 17 Pro simulator.
+
+`swift test` passes every AtlasRender test, including the look's draw count, allocation, identity seed and deterministic redraw. In AtlasCore, `ChunkLoaderTests.testDoesNotDeliverACancelledReplyToANewRequiredRequest` failed in 2 of 3 reruns. It is a known timing flake in loader code this change does not touch.
+
+Mac GPU time with NGC 3982 filling the frame (median of 25 frames, M3 Max): **1.97 ms** face-on and 1.69 ms inclined at 2800×1800; **0.42/0.44 ms** at 660×1434. The Triangulum texture portrait at the same framing takes 17.2/14.2 ms and 3.19/3.13 ms. These are local measurements; no iPhone or iPad numbers are recorded yet.

@@ -93,6 +93,11 @@ still running the frame is dropped rather than blocking touch delivery behind `n
 `Orbit.update` inside the gesture handler as well as in the frame loop, as three.js OrbitControls does on every
 pointer/touch move, so the damped response matches the web. The diagnostics line shows the last frame's GPU time.
 
+- Procedural galaxy looks (25 September 2026): `atlas_volume_look` ports `src/galaxy-looks.ts` for NGC 3982 with the same
+  look table, identity seeds and integer-hash noise; `GalaxyLooksTests` guards the disc profile and the Metal constants. On the Mac GPU it
+  costs 0.42 ms with the galaxy filling a 660×1434 frame, versus 3.19 ms for the texture portrait it replaces. The on-device check is still
+  to be done. See [galaxy looks](galaxy-looks.md).
+
 ## Native measurement rules
 
 - Device performance tests live in `native/App/CosmicAtlasDeviceTests`, run with
