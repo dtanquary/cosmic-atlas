@@ -21,7 +21,8 @@ const favorites=['NGC 3982','NGC 5107','NGC 4026','NGC 4121','NGC 3738','NGC 399
 const isVisitable=(entry:NamedGalaxy)=>entry.kind==='observer'||entry.id!==undefined;
 export function namedSuggestions(entries:NamedGalaxy[],query:string,limit=8){
   const needle=normalizeName(query);
-  if(!needle)return [observerEntry,...entries.filter(entry=>entry.kind==='nearby'),...favorites.flatMap(name=>entries.filter(e=>e.name===name&&e.id!==undefined))].slice(0,limit);
+  // Every nearby destination, plus room for one DESI example.
+  if(!needle){const nearby=entries.filter(entry=>entry.kind==='nearby');return [observerEntry,...nearby,...favorites.flatMap(name=>entries.filter(e=>e.name===name&&e.id!==undefined))].slice(0,Math.max(limit,nearby.length+2))}
   const results:{entry:NamedGalaxy;rank:number}[]=[];
   for(const entry of [observerEntry,...entries]){
     let rank=Infinity;

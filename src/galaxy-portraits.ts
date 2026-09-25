@@ -10,6 +10,10 @@ const portraits:ReadonlyMap<string,GalaxyPortrait>=new Map([
  ['nearby:m32',{label:'M32 · compact elliptical',smooth:'elliptical',exposure:8,source:'https://science.nasa.gov/mission/hubble/science/explore-the-night-sky/hubble-messier-catalog/messier-32/'}],
  ['nearby:m110',{label:'M110 · diffuse elliptical',smooth:'elliptical',exposure:6,source:'https://science.nasa.gov/mission/hubble/science/explore-the-night-sky/hubble-messier-catalog/messier-110/'}],
  ['39633263488141603',{label:'NGC 4026 · smooth lenticular',smooth:'lenticular',source:'https://www.legacysurvey.org/viewer?ra=179.8544868&dec=50.9616574&layer=ls-dr9&zoom=14'}],
+ ['nearby:m51',{label:'Whirlpool · grand-design spiral',look:'m51',source:'https://esahubble.org/images/heic0506a/'}],
+ ['nearby:ngc5195',{label:'NGC 5195 · smooth companion',smooth:'elliptical',exposure:12,source:'https://esahubble.org/images/heic0506a/'}],
+ ['nearby:m101',{label:'Pinwheel · many-armed spiral',look:'m101',source:'https://esahubble.org/images/heic0602a/'}],
+ ['nearby:ngc1300',{label:'NGC 1300 · great barred spiral',look:'ngc1300',source:'https://esahubble.org/images/opo0501a/'}],
  ['nearby:lmc',{label:'Large Magellanic Cloud · stellar bar',source:'https://noirlab.edu/public/images/noirlab2030a/'}],
  ['nearby:smc',{label:'Small Magellanic Cloud · diffuse wing',source:'https://noirlab.edu/public/images/noirlab2030b/'}],
 ]);

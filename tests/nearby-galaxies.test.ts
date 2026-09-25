@@ -6,14 +6,15 @@ import {uncertainLocalPosition} from '../src/local-distances';
 
 describe('Independently measured nearby galaxies',()=>{
  it('retains cited local distances and separate identities without fabricated redshifts',()=>{
-  const details=nearbyDetails();expect(details).toHaveLength(6);
-  expect(new Set(details.map(d=>d.galaxy.id)).size).toBe(6);
-  [.785,.809,.04959,.06244,10**((24.53+5)/5)/1e6,.824].forEach((distance,i)=>expect(details[i].galaxy.distance).toBeCloseTo(distance,13));
+  const details=nearbyDetails();expect(details).toHaveLength(10);
+  expect(new Set(details.map(d=>d.galaxy.id)).size).toBe(10);
+  [.785,.809,.04959,.06244,10**((24.53+5)/5)/1e6,.824,8.58,8.58,6.52,10**((30.715+5)/5)/1e6].forEach((distance,i)=>expect(details[i].galaxy.distance).toBeCloseTo(distance,13));
   for(const d of details){
    expect(d.galaxy.id).toBeLessThan(0);expect(d.galaxy.targetId).toMatch(/^nearby:/);expect(d.galaxy.z).toBeNull();
    expect(Math.hypot(...d.galaxy.position)).toBeCloseTo(d.galaxy.distance,13);
    expect(d.galaxy.nearby?.distanceSource).toMatch(/^https:\/\//);expect(uncertainLocalPosition(d.galaxy)).toBe(false);
-   expect(uncertainLocalPosition({...d.galaxy,nearby:undefined})).toBe(true);
+   // Only the Local Group entries would fall under the redshift-only 1 Mpc guard without their citation.
+   expect(uncertainLocalPosition({...d.galaxy,nearby:undefined})).toBe(d.galaxy.distance<1);
   }
   expect(details[0].galaxy.ra).toBeCloseTo(10.6845833333,8);expect(details[0].galaxy.dec).toBeCloseTo(41.2691666667,8);
  });
@@ -37,9 +38,10 @@ describe('Independently measured nearby galaxies',()=>{
  });
  it('replaces unavailable aliases with one nearby destination, including in a bootstrap search',()=>{
   const entries=mergeNearbyNames([{name:'NGC 224',aliases:['M 31','Andromeda Galaxy']}]);
-  expect(entries).toHaveLength(6);
+  expect(entries).toHaveLength(10);
   for(const q of ['M31','M 031','Messier 31','NGC224','Andromeda']){const hit=namedSuggestions(entries,q)[0];expect(hit.kind).toBe('nearby');expect(hit.id).toBe(-1)}
   for(const q of ['M33','LMC','SMC','M32','M110'])expect(namedSuggestions(entries,q)[0].kind).toBe('nearby');
-  expect(namedSuggestions(entries,'').every(e=>e.kind==='observer'||e.kind==='nearby')).toBe(true);
+  for(const [q,id] of [['M51',-7],['Whirlpool',-7],['NGC5194',-7],['NGC 5195',-8],['M101',-9],['Pinwheel',-9],['NGC1300',-10]] as const)expect(namedSuggestions(entries,q)[0].id).toBe(id);
+  const initial=namedSuggestions(entries,'');expect(initial).toHaveLength(11);expect(initial.every(e=>e.kind==='observer'||e.kind==='nearby')).toBe(true);
  });
 });

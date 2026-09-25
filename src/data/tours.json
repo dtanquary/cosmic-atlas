@@ -32,7 +32,7 @@
         },
         {
           "title": "The Local Group",
-          "caption": "Six nearby galaxies with independently measured distances surround us here; Andromeda is about 785 kpc away, so its light left about 2.6 million years ago. DESI positions come from redshift alone, and those inferred within 1 Mpc are hidden by default as a display safeguard, not as corrected distances.",
+          "caption": "Six Local Group galaxies with independently measured distances surround us here; Andromeda is about 785 kpc away, so its light left about 2.6 million years ago. DESI positions come from redshift alone, and those inferred within 1 Mpc are hidden by default as a display safeguard, not as corrected distances.",
           "target": {
             "kind": "localgroup",
             "positionMpc": [

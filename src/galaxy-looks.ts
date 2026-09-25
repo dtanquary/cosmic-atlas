@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import {warmthTint,type GalaxyColors} from './galaxy-colors';
 
 export type CatalogLookKey='grand'|'multi'|'tight'|'flocculent'|'barred'|'weakBar';
-export type GalaxyLookKey='ngc3982'|'m31'|'m33'|'milkyWay'|CatalogLookKey;
+export type GalaxyLookKey='ngc3982'|'m31'|'m33'|'milkyWay'|'m51'|'m101'|'ngc1300'|CatalogLookKey;
 type RGB=[number,number,number];
 export interface GalaxyLook {arms:number;minor:number;pitchDegrees:number;bar:number;bulge:number;ragged:number;dust:number;hii:number;
  extent:number;unitsPerRe:number;phaseDegrees:number;spin:1|-1;core:RGB;disc:RGB;young:RGB;knots:RGB}
@@ -19,6 +19,9 @@ export interface GalaxyLook {arms:number;minor:number;pitchDegrees:number;bar:nu
 // from Hubble/ESO photos.
 const andromeda:GalaxyLook={arms:2,minor:1,pitchDegrees:8,bar:0,bulge:.13,ragged:.5,dust:1.2,hii:1,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.9,.78],disc:[.86,.78,.86],young:[.74,.76,1],knots:[1,.5,.7]};
 const triangulum:GalaxyLook={arms:2,minor:1,pitchDegrees:30,bar:0,bulge:.015,ragged:.9,dust:.6,hii:1.5,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.96,.9],disc:[.88,.9,1],young:[.74,.86,1],knots:[1,.5,.56]};
+const whirlpool:GalaxyLook={arms:2,minor:1,pitchDegrees:19,bar:0,bulge:.05,ragged:.2,dust:1.3,hii:1,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.91,.8],disc:[.94,.9,.87],young:[.72,.86,1],knots:[1,.42,.5]};
+const pinwheel:GalaxyLook={arms:4,minor:1,pitchDegrees:27,bar:0,bulge:.03,ragged:.55,dust:.8,hii:1,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.93,.86],disc:[.95,.93,.93],young:[.7,.82,1],knots:[1,.5,.6]};
+const greatBarred:GalaxyLook={arms:2,minor:1,pitchDegrees:17,bar:.45,bulge:.05,ragged:.1,dust:1,hii:1,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.9,.84],disc:[.93,.9,.97],young:[.72,.84,1],knots:[1,.5,.6]};
 export const galaxyLooks:Record<GalaxyLookKey,GalaxyLook>={
  // NGC 3982 (Hubble opo1036a): many short winding arms, dense dust filaments, rich in H II, small warm centre.
  ngc3982:{arms:4,minor:.8,pitchDegrees:26,bar:0,bulge:.05,ragged:.7,dust:2.2,hii:2,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.92,.84],disc:[.88,.9,1],young:[.7,.82,1],knots:[1,.45,.58]},
@@ -31,13 +34,22 @@ export const galaxyLooks:Record<GalaxyLookKey,GalaxyLook>={
  // and the handedness follow the sourced home reference; the disc reaches about
  // 15 kpc so the Sun at 8.1 kpc sits inside it.
  milkyWay:{arms:4,minor:.45,pitchDegrees:13,bar:.71075,bulge:.09,ragged:.3,dust:1.2,hii:1,extent:1.5,unitsPerRe:.6203,phaseDegrees:152,spin:-1,core:[1,.9,.76],disc:[.92,.88,.84],young:[.72,.84,1],knots:[1,.45,.55]},
+ // Atrium's own kinds on their galaxies, handedness from the photos (north up).
+ // M51 (heic0506a): winds clockwise outward; turned so an arm crest passes
+ // where the line of sight to NGC 5195 crosses the disc.
+ m51:{...whirlpool,phaseDegrees:37.3},
+ // M101 (heic0602a): many open, lopsided arms winding clockwise outward.
+ m101:pinwheel,
+ // NGC 1300 (opo0501a): winds anticlockwise outward; the bar has the S4G bar's
+ // length (75 arcsec) and sky angle (100.3 degrees), pinned by the tests.
+ ngc1300:{...greatBarred,bar:.3817,phaseDegrees:-6.98,spin:-1},
  // Catalog looks, after Atrium's kinds: Whirlpool (M51), Pinwheel (M101),
  // Andromeda, Triangulum, Great Barred (NGC 1300) and its Milky Way.
- grand:{arms:2,minor:1,pitchDegrees:19,bar:0,bulge:.05,ragged:.2,dust:1.3,hii:1,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.91,.8],disc:[.94,.9,.87],young:[.72,.86,1],knots:[1,.42,.5]},
- multi:{arms:4,minor:1,pitchDegrees:27,bar:0,bulge:.03,ragged:.55,dust:.8,hii:1,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.93,.86],disc:[.95,.93,.93],young:[.7,.82,1],knots:[1,.5,.6]},
+ grand:whirlpool,
+ multi:pinwheel,
  tight:andromeda,
  flocculent:triangulum,
- barred:{arms:2,minor:1,pitchDegrees:17,bar:.45,bulge:.05,ragged:.1,dust:1,hii:1,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.9,.84],disc:[.93,.9,.97],young:[.72,.84,1],knots:[1,.5,.6]},
+ barred:greatBarred,
  weakBar:{arms:4,minor:.45,pitchDegrees:13,bar:.28,bulge:.09,ragged:.3,dust:1.2,hii:1,extent:1,unitsPerRe:.5311,phaseDegrees:0,spin:1,core:[1,.9,.76],disc:[.92,.88,.84],young:[.72,.84,1],knots:[1,.45,.55]},
 };
 export const catalogLookLabels:Record<CatalogLookKey,string>={grand:'Grand-design spiral',multi:'Multi-arm spiral',tight:'Tightly wound spiral',flocculent:'Flocculent spiral',barred:'Barred spiral',weakBar:'Weakly barred spiral'};

@@ -1,14 +1,14 @@
 {
   "version": 1,
   "source": {
-    "title": "Curated nearby-galaxy measurements \u00b7 first six destinations",
+    "title": "Curated nearby-galaxy measurements \u00b7 ten destinations",
     "compilation": "https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/community/nearby/",
     "compilationCitation": "McConnachie, A.W. 2012, AJ, 144, 4; January 2021 update",
     "compilationSha256": "879c15cb0aee9357287fd32268276eff5b36501a11d0b434a5d58c461240502d",
     "openNgcSha256": "be150bdaa1997dacbcb39f303074403edec7a953b589b36d5f1c4522c0cc6fae",
     "license": "OpenNGC-derived positions/shape fields: Mattia Verga, CC-BY-SA-4.0. Other numerical measurements retain their cited research provenance.",
     "notes": "Pinned adopted measurements, not a claim of the latest consensus. Nearby distances are used directly on the observer-centered Mpc axes, without redshift conversion or a cosmological 1+z correction. Positions are approximate observed centers; no proper-motion time propagation. DESI observations are not removed or globally deduplicated.",
-    "excerptSha256": "128b9738e4adef3a9ff501614d02d3e50b7b8586d2ec864e10febb758b5f440b"
+    "excerptSha256": "da56093cf4fdbf83c51def4a877928b5753fd36399e774de4a15b40cd328aab4"
   },
   "entries": [
     {
@@ -48,6 +48,7 @@
       "radiusArcsec": 2337.292686052307,
       "e1": 0.1965942556123923,
       "e2": 0.5401382780895378,
+      "sersic": 1,
       "gaussians": [
         {
           "sigmaRe": 0.008,
@@ -170,6 +171,7 @@
       "radiusArcsec": 576.9731945129123,
       "e1": 0.17826893619550876,
       "e2": 0.1846028874376462,
+      "sersic": 1,
       "gaussians": [
         {
           "sigmaRe": 0.008,
@@ -286,6 +288,7 @@
       "radiusArcsec": 6239.1048471596,
       "e1": 0.0,
       "e2": 0.0,
+      "sersic": 1,
       "gaussians": [
         {
           "sigmaRe": 0.008,
@@ -404,6 +407,7 @@
       "radiusArcsec": 2249.4,
       "e1": 1.531797537584219e-17,
       "e2": 0.2501615222692316,
+      "sersic": 1,
       "gaussians": [
         {
           "sigmaRe": 0.008,
@@ -523,6 +527,7 @@
       "radiusArcsec": 28.2,
       "e1": 0.10616354649677062,
       "e2": -0.09559008662269401,
+      "sersic": 2,
       "gaussians": [
         {
           "sigmaRe": 0.008,
@@ -642,6 +647,7 @@
       "radiusArcsec": 147.6,
       "e1": 0.15315474426268863,
       "e2": 0.22706124598641275,
+      "sersic": 2,
       "gaussians": [
         {
           "sigmaRe": 0.008,
@@ -725,6 +731,494 @@
         }
       ],
       "profileFitMaxRelativeError": 0.2227608785449752
+    },
+    {
+      "key": "m51",
+      "name": "Whirlpool",
+      "aliases": [
+        "M 51",
+        "Messier 51",
+        "NGC 5194",
+        "Whirlpool Galaxy",
+        "UGC 8493",
+        "PGC 47404"
+      ],
+      "ra": "13:29:52.71",
+      "dec": "+47:11:42.6",
+      "distanceKpc": 8580,
+      "distanceError": "\u00b1 0.10 Mpc statistical",
+      "method": "Tip of the red giant branch",
+      "distanceSource": "https://arxiv.org/abs/1606.04120",
+      "family": "spiral",
+      "typeLabel": "Spiral \u00b7 SA(s)bc pec",
+      "diskScaleArcsec": 84.2,
+      "axisRatio": 0.84,
+      "positionAngleDeg": 39.1,
+      "shapeMeasured": true,
+      "orientationMeasured": true,
+      "shapeNote": "3.6 \u00b5m exponential disk scale 84.2 arcsec from the S4G decomposition; model half-light radius is 1.678 \u00d7 that scale. Disk axis ratio 0.84 and sky angle 39.1\u00b0 are the S4G outer isophote, to which that fit fixes its disk. Visual type from RC3. The single disk omits the separately fitted bulge (13% of the light).",
+      "shapeSources": [
+        "https://arxiv.org/abs/1503.06550",
+        "https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=J/ApJS/219/4",
+        "https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=VII/155"
+      ],
+      "id": -7,
+      "coordinateSource": "https://github.com/mattiaverga/OpenNGC",
+      "raDeg": 202.46962499999995,
+      "decDeg": 47.195166666666665,
+      "distanceMpc": 8.58,
+      "radiusArcsec": 141.316816558,
+      "e1": 0.017782265377546982,
+      "e2": 0.08511890337058133,
+      "sersic": 1,
+      "gaussians": [
+        {
+          "sigmaRe": 0.008,
+          "peak": 0.011456733210117505
+        },
+        {
+          "sigmaRe": 0.01092861978710137,
+          "peak": 0.0
+        },
+        {
+          "sigmaRe": 0.014929341306377936,
+          "peak": 0.0013425738986297332
+        },
+        {
+          "sigmaRe": 0.020394636851158957,
+          "peak": 0.019707592847474194
+        },
+        {
+          "sigmaRe": 0.027860653980290292,
+          "peak": 0.0
+        },
+        {
+          "sigmaRe": 0.03805981179632312,
+          "peak": 0.02470215700564012
+        },
+        {
+          "sigmaRe": 0.05199265153633135,
+          "peak": 0.015972001753906086
+        },
+        {
+          "sigmaRe": 0.07102599004547708,
+          "peak": 0.03273294041804115
+        },
+        {
+          "sigmaRe": 0.09702700502618318,
+          "peak": 0.03826971545529248
+        },
+        {
+          "sigmaRe": 0.13254640587654115,
+          "peak": 0.054807028981998025
+        },
+        {
+          "sigmaRe": 0.18106865924644194,
+          "peak": 0.07197055583225319
+        },
+        {
+          "sigmaRe": 0.2473538165330725,
+          "peak": 0.0947761350575049
+        },
+        {
+          "sigmaRe": 0.3379044767222971,
+          "peak": 0.1203096049400229
+        },
+        {
+          "sigmaRe": 0.4616036938071784,
+          "peak": 0.1427056774474009
+        },
+        {
+          "sigmaRe": 0.6305864077425263,
+          "peak": 0.15055024491539618
+        },
+        {
+          "sigmaRe": 0.8614298866415178,
+          "peak": 0.1264883733671449
+        },
+        {
+          "sigmaRe": 1.1767799630438716,
+          "peak": 0.06992925943653276
+        },
+        {
+          "sigmaRe": 1.6075725986482077,
+          "peak": 0.017634194415445607
+        },
+        {
+          "sigmaRe": 2.1960687138485966,
+          "peak": 0.0010219244033738608
+        },
+        {
+          "sigmaRe": 3.0,
+          "peak": 7.124781210615218e-06
+        }
+      ],
+      "profileFitMaxRelativeError": 0.0978575733637863
+    },
+    {
+      "key": "ngc5195",
+      "name": "NGC 5195",
+      "aliases": [
+        "UGC 8494",
+        "PGC 47413"
+      ],
+      "ra": "13:29:59.59",
+      "dec": "+47:15:58.1",
+      "distanceKpc": 8580,
+      "distanceError": "\u00b1 0.10 Mpc statistical, measured in M51",
+      "method": "Tip of the red giant branch of M51, adopted for its interacting companion",
+      "distanceSource": "https://arxiv.org/abs/1606.04120",
+      "family": "lenticular",
+      "typeLabel": "Amorphous peculiar \u00b7 I0 pec",
+      "radiusArcmin": 0.9527,
+      "axisRatio": 0.7927,
+      "positionAngleDeg": 79,
+      "shapeMeasured": true,
+      "orientationMeasured": true,
+      "shapeNote": "Model half-light radius is the RC3 effective aperture, a 1.91 arcmin (log A_e = 1.28) circle holding half the B-band light. Projected axis ratio 4.36 / 5.50 and sky angle 79\u00b0 from OpenNGC. Visual type from RC3. The shared distance with M51 is an assumption; the smooth n=2 profile and depth are illustrative and omit its disturbed dust.",
+      "shapeSources": [
+        "https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=VII/155",
+        "https://github.com/mattiaverga/OpenNGC"
+      ],
+      "id": -8,
+      "coordinateSource": "https://github.com/mattiaverga/OpenNGC",
+      "raDeg": 202.49829166666663,
+      "decDeg": 47.26613888888889,
+      "distanceMpc": 8.58,
+      "radiusArcsec": 57.162,
+      "e1": -0.10721549230305966,
+      "e2": 0.04331787070626353,
+      "sersic": 2,
+      "gaussians": [
+        {
+          "sigmaRe": 0.008,
+          "peak": 0.13742618653935293
+        },
+        {
+          "sigmaRe": 0.01092861978710137,
+          "peak": 0.0
+        },
+        {
+          "sigmaRe": 0.014929341306377936,
+          "peak": 0.0
+        },
+        {
+          "sigmaRe": 0.020394636851158957,
+          "peak": 0.1212967432712274
+        },
+        {
+          "sigmaRe": 0.027860653980290292,
+          "peak": 0.002539983808587497
+        },
+        {
+          "sigmaRe": 0.03805981179632312,
+          "peak": 0.08557499125448749
+        },
+        {
+          "sigmaRe": 0.05199265153633135,
+          "peak": 0.045421428802267495
+        },
+        {
+          "sigmaRe": 0.07102599004547708,
+          "peak": 0.06885190939641202
+        },
+        {
+          "sigmaRe": 0.09702700502618318,
+          "peak": 0.054742886233945576
+        },
+        {
+          "sigmaRe": 0.13254640587654115,
+          "peak": 0.062064409188445774
+        },
+        {
+          "sigmaRe": 0.18106865924644194,
+          "peak": 0.0494927182928326
+        },
+        {
+          "sigmaRe": 0.2473538165330725,
+          "peak": 0.04971565720144946
+        },
+        {
+          "sigmaRe": 0.3379044767222971,
+          "peak": 0.03596878755384456
+        },
+        {
+          "sigmaRe": 0.4616036938071784,
+          "peak": 0.031707516236305106
+        },
+        {
+          "sigmaRe": 0.6305864077425263,
+          "peak": 0.019102594251420642
+        },
+        {
+          "sigmaRe": 0.8614298866415178,
+          "peak": 0.014612029199010777
+        },
+        {
+          "sigmaRe": 1.1767799630438716,
+          "peak": 0.005920366280117728
+        },
+        {
+          "sigmaRe": 1.6075725986482077,
+          "peak": 0.004547647181227067
+        },
+        {
+          "sigmaRe": 2.1960687138485966,
+          "peak": 0.00043892898746468413
+        },
+        {
+          "sigmaRe": 3.0,
+          "peak": 0.0008187347238150948
+        }
+      ],
+      "profileFitMaxRelativeError": 0.2227608785449752
+    },
+    {
+      "key": "m101",
+      "name": "Pinwheel",
+      "aliases": [
+        "M 101",
+        "Messier 101",
+        "NGC 5457",
+        "Pinwheel Galaxy",
+        "UGC 8981",
+        "PGC 50063"
+      ],
+      "ra": "14:03:12.54",
+      "dec": "+54:20:56.2",
+      "distanceKpc": 6520,
+      "distanceError": "\u00b1 0.12 Mpc statistical \u00b7 \u00b1 0.15 Mpc systematic",
+      "method": "Tip of the red giant branch",
+      "distanceSource": "https://arxiv.org/abs/1908.06120",
+      "family": "spiral",
+      "typeLabel": "Spiral \u00b7 SAB(rs)cd",
+      "diskScaleArcsec": 127.3,
+      "axisRatio": 0.929,
+      "positionAngleDeg": 37.7,
+      "shapeMeasured": true,
+      "orientationMeasured": true,
+      "shapeNote": "3.6 \u00b5m exponential disk scale 127.3 arcsec from the S4G decomposition; model half-light radius is 1.678 \u00d7 that scale. Disk axis ratio 0.929 and sky angle 37.7\u00b0 from the S4G outer isophote; the angle is poorly defined (\u00b1 43\u00b0) for this nearly face-on disk. Visual type from RC3. The single disk omits the separately fitted bulge (5% of the light).",
+      "shapeSources": [
+        "https://arxiv.org/abs/1503.06550",
+        "https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=J/ApJS/219/4",
+        "https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=VII/155"
+      ],
+      "id": -9,
+      "coordinateSource": "https://github.com/mattiaverga/OpenNGC",
+      "raDeg": 210.80225,
+      "decDeg": 54.34894444444445,
+      "distanceMpc": 6.52,
+      "radiusArcsec": 213.653571827,
+      "e1": 0.009277825005319365,
+      "e2": 0.03561811876838772,
+      "sersic": 1,
+      "gaussians": [
+        {
+          "sigmaRe": 0.008,
+          "peak": 0.011456733210117505
+        },
+        {
+          "sigmaRe": 0.01092861978710137,
+          "peak": 0.0
+        },
+        {
+          "sigmaRe": 0.014929341306377936,
+          "peak": 0.0013425738986297332
+        },
+        {
+          "sigmaRe": 0.020394636851158957,
+          "peak": 0.019707592847474194
+        },
+        {
+          "sigmaRe": 0.027860653980290292,
+          "peak": 0.0
+        },
+        {
+          "sigmaRe": 0.03805981179632312,
+          "peak": 0.02470215700564012
+        },
+        {
+          "sigmaRe": 0.05199265153633135,
+          "peak": 0.015972001753906086
+        },
+        {
+          "sigmaRe": 0.07102599004547708,
+          "peak": 0.03273294041804115
+        },
+        {
+          "sigmaRe": 0.09702700502618318,
+          "peak": 0.03826971545529248
+        },
+        {
+          "sigmaRe": 0.13254640587654115,
+          "peak": 0.054807028981998025
+        },
+        {
+          "sigmaRe": 0.18106865924644194,
+          "peak": 0.07197055583225319
+        },
+        {
+          "sigmaRe": 0.2473538165330725,
+          "peak": 0.0947761350575049
+        },
+        {
+          "sigmaRe": 0.3379044767222971,
+          "peak": 0.1203096049400229
+        },
+        {
+          "sigmaRe": 0.4616036938071784,
+          "peak": 0.1427056774474009
+        },
+        {
+          "sigmaRe": 0.6305864077425263,
+          "peak": 0.15055024491539618
+        },
+        {
+          "sigmaRe": 0.8614298866415178,
+          "peak": 0.1264883733671449
+        },
+        {
+          "sigmaRe": 1.1767799630438716,
+          "peak": 0.06992925943653276
+        },
+        {
+          "sigmaRe": 1.6075725986482077,
+          "peak": 0.017634194415445607
+        },
+        {
+          "sigmaRe": 2.1960687138485966,
+          "peak": 0.0010219244033738608
+        },
+        {
+          "sigmaRe": 3.0,
+          "peak": 7.124781210615218e-06
+        }
+      ],
+      "profileFitMaxRelativeError": 0.0978575733637863
+    },
+    {
+      "key": "ngc1300",
+      "name": "NGC 1300",
+      "aliases": [
+        "PGC 12412",
+        "ESO 547-31",
+        "UGCA 66"
+      ],
+      "ra": "03:19:41.08",
+      "dec": "-19:24:40.9",
+      "distanceModulus": 30.715,
+      "distanceError": "Distance modulus \u00b1 0.46 mag (about \u00b1 3 Mpc)",
+      "method": "Tully\u2013Fisher relation (no Cepheid or red giant distance yet)",
+      "distanceSource": "https://arxiv.org/abs/2209.11238",
+      "family": "barred",
+      "typeLabel": "Barred spiral \u00b7 SB(rs)bc",
+      "diskScaleArcsec": 62.32,
+      "axisRatio": 0.835,
+      "positionAngleDeg": 106.1,
+      "bar": {
+        "radiusArcsec": 75.0,
+        "positionAngleDeg": 100.28
+      },
+      "shapeMeasured": true,
+      "orientationMeasured": true,
+      "shapeNote": "3.6 \u00b5m exponential disk scale 62.3 arcsec from the S4G decomposition; model half-light radius is 1.678 \u00d7 that scale. Disk axis ratio 0.835 and sky angle 106.1\u00b0 from the S4G outer isophote. The illustrative bar follows the same fit\u2019s bar, 75.0 arcsec long at 100.3\u00b0. Visual type from RC3. The single disk omits the separately fitted bulge (7%) and bar (6%).",
+      "shapeSources": [
+        "https://arxiv.org/abs/1503.06550",
+        "https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=J/ApJS/219/4",
+        "https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=VII/155"
+      ],
+      "id": -10,
+      "coordinateSource": "https://github.com/mattiaverga/OpenNGC",
+      "raDeg": 49.92116666666666,
+      "decDeg": -19.41136111111111,
+      "distanceMpc": 13.899526312133554,
+      "radiusArcsec": 104.5945844168,
+      "e1": -0.07608821384798263,
+      "e2": -0.04791530547774954,
+      "sersic": 1,
+      "gaussians": [
+        {
+          "sigmaRe": 0.008,
+          "peak": 0.011456733210117505
+        },
+        {
+          "sigmaRe": 0.01092861978710137,
+          "peak": 0.0
+        },
+        {
+          "sigmaRe": 0.014929341306377936,
+          "peak": 0.0013425738986297332
+        },
+        {
+          "sigmaRe": 0.020394636851158957,
+          "peak": 0.019707592847474194
+        },
+        {
+          "sigmaRe": 0.027860653980290292,
+          "peak": 0.0
+        },
+        {
+          "sigmaRe": 0.03805981179632312,
+          "peak": 0.02470215700564012
+        },
+        {
+          "sigmaRe": 0.05199265153633135,
+          "peak": 0.015972001753906086
+        },
+        {
+          "sigmaRe": 0.07102599004547708,
+          "peak": 0.03273294041804115
+        },
+        {
+          "sigmaRe": 0.09702700502618318,
+          "peak": 0.03826971545529248
+        },
+        {
+          "sigmaRe": 0.13254640587654115,
+          "peak": 0.054807028981998025
+        },
+        {
+          "sigmaRe": 0.18106865924644194,
+          "peak": 0.07197055583225319
+        },
+        {
+          "sigmaRe": 0.2473538165330725,
+          "peak": 0.0947761350575049
+        },
+        {
+          "sigmaRe": 0.3379044767222971,
+          "peak": 0.1203096049400229
+        },
+        {
+          "sigmaRe": 0.4616036938071784,
+          "peak": 0.1427056774474009
+        },
+        {
+          "sigmaRe": 0.6305864077425263,
+          "peak": 0.15055024491539618
+        },
+        {
+          "sigmaRe": 0.8614298866415178,
+          "peak": 0.1264883733671449
+        },
+        {
+          "sigmaRe": 1.1767799630438716,
+          "peak": 0.06992925943653276
+        },
+        {
+          "sigmaRe": 1.6075725986482077,
+          "peak": 0.017634194415445607
+        },
+        {
+          "sigmaRe": 2.1960687138485966,
+          "peak": 0.0010219244033738608
+        },
+        {
+          "sigmaRe": 3.0,
+          "peak": 7.124781210615218e-06
+        }
+      ],
+      "profileFitMaxRelativeError": 0.0978575733637863
     }
   ]
 }

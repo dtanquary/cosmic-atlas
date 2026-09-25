@@ -30,15 +30,17 @@ def main():
         c = SkyCoord(item['ra'], item['dec'], unit=(u.hourangle, u.deg), frame='icrs')
         distance = item.get('distanceKpc')
         if distance is None: distance = 10**((item['distanceModulus']+5)/5)/1000
-        radius_arcsec = item.get('radiusArcmin', 0)*60
+        # Half-light radius: given directly, or 1.678 exponential disk scales.
+        radius_arcsec = item.get('radiusArcmin', 0)*60 or item.get('diskScaleArcsec', 0)*1.67834699
         if not radius_arcsec: radius_arcsec = item['radiusKpc']/distance*180/math.pi*3600
         q, pa = item['axisRatio'], item.get('positionAngleDeg') or 0
         e = (1-q)/(1+q)
-        entries.append(dict(**item, raDeg=float(c.ra.deg), decDeg=float(c.dec.deg),
+        # Illustrative profile: n=2 for ellipticals and bulge-dominated entries that ask for it, else exponential.
+        n = item.get('sersic') or (2 if item['family'] == 'elliptical' else 1)
+        entries.append(dict(**{k: v for k, v in item.items() if k != 'sersic'}, raDeg=float(c.ra.deg), decDeg=float(c.dec.deg),
             distanceMpc=distance/1000, radiusArcsec=radius_arcsec,
             e1=e*math.cos(2*math.radians(pa)), e2=e*math.sin(2*math.radians(pa)),
-            gaussians=profiles[2 if item['family']=='elliptical' else 1],
-            profileFitMaxRelativeError=fit_errors[2 if item['family']=='elliptical' else 1]))
+            sersic=n, gaussians=profiles[n], profileFitMaxRelativeError=fit_errors[n]))
     out = ROOT/'src/data/nearby-galaxies.json'
     out.write_text(json.dumps(dict(version=1, source=source['source'], entries=entries), indent=2)+'\n')
     print(f'Wrote {len(entries)} nearby galaxies; original DESI assets untouched.')

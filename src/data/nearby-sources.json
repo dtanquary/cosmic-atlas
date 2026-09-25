@@ -1,6 +1,6 @@
 {
   "source": {
-    "title": "Curated nearby-galaxy measurements \u00b7 first six destinations",
+    "title": "Curated nearby-galaxy measurements \u00b7 ten destinations",
     "compilation": "https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/community/nearby/",
     "compilationCitation": "McConnachie, A.W. 2012, AJ, 144, 4; January 2021 update",
     "compilationSha256": "879c15cb0aee9357287fd32268276eff5b36501a11d0b434a5d58c461240502d",
@@ -189,6 +189,135 @@
       ],
       "id": -6,
       "coordinateSource": "https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/community/nearby/"
+    },
+    {
+      "key": "m51",
+      "name": "Whirlpool",
+      "aliases": [
+        "M 51",
+        "Messier 51",
+        "NGC 5194",
+        "Whirlpool Galaxy",
+        "UGC 8493",
+        "PGC 47404"
+      ],
+      "ra": "13:29:52.71",
+      "dec": "+47:11:42.6",
+      "distanceKpc": 8580,
+      "distanceError": "\u00b1 0.10 Mpc statistical",
+      "method": "Tip of the red giant branch",
+      "distanceSource": "https://arxiv.org/abs/1606.04120",
+      "family": "spiral",
+      "typeLabel": "Spiral \u00b7 SA(s)bc pec",
+      "diskScaleArcsec": 84.2,
+      "axisRatio": 0.84,
+      "positionAngleDeg": 39.1,
+      "shapeMeasured": true,
+      "orientationMeasured": true,
+      "shapeNote": "3.6 \u00b5m exponential disk scale 84.2 arcsec from the S4G decomposition; model half-light radius is 1.678 \u00d7 that scale. Disk axis ratio 0.84 and sky angle 39.1\u00b0 are the S4G outer isophote, to which that fit fixes its disk. Visual type from RC3. The single disk omits the separately fitted bulge (13% of the light).",
+      "shapeSources": [
+        "https://arxiv.org/abs/1503.06550",
+        "https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=J/ApJS/219/4",
+        "https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=VII/155"
+      ],
+      "id": -7,
+      "coordinateSource": "https://github.com/mattiaverga/OpenNGC"
+    },
+    {
+      "key": "ngc5195",
+      "name": "NGC 5195",
+      "aliases": [
+        "UGC 8494",
+        "PGC 47413"
+      ],
+      "ra": "13:29:59.59",
+      "dec": "+47:15:58.1",
+      "distanceKpc": 8580,
+      "distanceError": "\u00b1 0.10 Mpc statistical, measured in M51",
+      "method": "Tip of the red giant branch of M51, adopted for its interacting companion",
+      "distanceSource": "https://arxiv.org/abs/1606.04120",
+      "family": "lenticular",
+      "typeLabel": "Amorphous peculiar \u00b7 I0 pec",
+      "radiusArcmin": 0.9527,
+      "sersic": 2,
+      "axisRatio": 0.7927,
+      "positionAngleDeg": 79,
+      "shapeMeasured": true,
+      "orientationMeasured": true,
+      "shapeNote": "Model half-light radius is the RC3 effective aperture, a 1.91 arcmin (log A_e = 1.28) circle holding half the B-band light. Projected axis ratio 4.36 / 5.50 and sky angle 79\u00b0 from OpenNGC. Visual type from RC3. The shared distance with M51 is an assumption; the smooth n=2 profile and depth are illustrative and omit its disturbed dust.",
+      "shapeSources": [
+        "https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=VII/155",
+        "https://github.com/mattiaverga/OpenNGC"
+      ],
+      "id": -8,
+      "coordinateSource": "https://github.com/mattiaverga/OpenNGC"
+    },
+    {
+      "key": "m101",
+      "name": "Pinwheel",
+      "aliases": [
+        "M 101",
+        "Messier 101",
+        "NGC 5457",
+        "Pinwheel Galaxy",
+        "UGC 8981",
+        "PGC 50063"
+      ],
+      "ra": "14:03:12.54",
+      "dec": "+54:20:56.2",
+      "distanceKpc": 6520,
+      "distanceError": "\u00b1 0.12 Mpc statistical \u00b7 \u00b1 0.15 Mpc systematic",
+      "method": "Tip of the red giant branch",
+      "distanceSource": "https://arxiv.org/abs/1908.06120",
+      "family": "spiral",
+      "typeLabel": "Spiral \u00b7 SAB(rs)cd",
+      "diskScaleArcsec": 127.3,
+      "axisRatio": 0.929,
+      "positionAngleDeg": 37.7,
+      "shapeMeasured": true,
+      "orientationMeasured": true,
+      "shapeNote": "3.6 \u00b5m exponential disk scale 127.3 arcsec from the S4G decomposition; model half-light radius is 1.678 \u00d7 that scale. Disk axis ratio 0.929 and sky angle 37.7\u00b0 from the S4G outer isophote; the angle is poorly defined (\u00b1 43\u00b0) for this nearly face-on disk. Visual type from RC3. The single disk omits the separately fitted bulge (5% of the light).",
+      "shapeSources": [
+        "https://arxiv.org/abs/1503.06550",
+        "https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=J/ApJS/219/4",
+        "https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=VII/155"
+      ],
+      "id": -9,
+      "coordinateSource": "https://github.com/mattiaverga/OpenNGC"
+    },
+    {
+      "key": "ngc1300",
+      "name": "NGC 1300",
+      "aliases": [
+        "PGC 12412",
+        "ESO 547-31",
+        "UGCA 66"
+      ],
+      "ra": "03:19:41.08",
+      "dec": "-19:24:40.9",
+      "distanceModulus": 30.715,
+      "distanceError": "Distance modulus \u00b1 0.46 mag (about \u00b1 3 Mpc)",
+      "method": "Tully\u2013Fisher relation (no Cepheid or red giant distance yet)",
+      "distanceSource": "https://arxiv.org/abs/2209.11238",
+      "family": "barred",
+      "typeLabel": "Barred spiral \u00b7 SB(rs)bc",
+      "diskScaleArcsec": 62.32,
+      "axisRatio": 0.835,
+      "positionAngleDeg": 106.1,
+      "bar": {
+        "radiusArcsec": 75.0,
+        "positionAngleDeg": 100.28
+      },
+      "shapeMeasured": true,
+      "orientationMeasured": true,
+      "shapeNote": "3.6 \u00b5m exponential disk scale 62.3 arcsec from the S4G decomposition; model half-light radius is 1.678 \u00d7 that scale. Disk axis ratio 0.835 and sky angle 106.1\u00b0 from the S4G outer isophote. The illustrative bar follows the same fit\u2019s bar, 75.0 arcsec long at 100.3\u00b0. Visual type from RC3. The single disk omits the separately fitted bulge (7%) and bar (6%).",
+      "shapeSources": [
+        "https://arxiv.org/abs/1503.06550",
+        "https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=J/ApJS/219/4",
+        "https://vizier.cds.unistra.fr/viz-bin/VizieR?-source=VII/155"
+      ],
+      "id": -10,
+      "coordinateSource": "https://github.com/mattiaverga/OpenNGC"
     }
   ]
 }

@@ -2,6 +2,8 @@ import {it,expect} from 'vitest';
 import {catalogLook,catalogLookLabels,galaxyLooks,lookAppearance,lookDisc,lookSeed} from '../src/galaxy-looks';
 import {galaxyColors} from '../src/galaxy-colors';
 import reference from '../src/data/milky-way.json';
+import {galaxyFrame} from '../src/galaxy-detail';
+import {nearbyReference} from '../src/nearby-galaxies';
 
 it('puts every look\'s smooth disc half-light radius at the adopted catalog radius',()=>{
  const {scale,fadeStart,fadeEnd}=lookDisc,steps=200000;
@@ -20,6 +22,16 @@ it('keeps the Milky Way bar length, angle and handedness from the sourced refere
  expect(look.phaseDegrees).toBe(180-reference.barAngleDeg);
  // milky-way-light.ts winds its arms anticlockwise outward in the model frame; the look mirrors to match.
  expect(look.spin).toBe(-1);
+});
+
+it('keeps the NGC 1300 bar at the sourced S4G bar length and sky angle',()=>{
+ const entry=nearbyReference.entries.find(e=>e.key==='ngc1300')!,sourced=(entry as {bar?:{radiusArcsec:number;positionAngleDeg:number}}).bar!,look=galaxyLooks.ngc1300;
+ // The bar lies along the pattern's x axis, which phase turns from the major axis toward the in-disc minor axis.
+ const f=galaxyFrame(entry.raDeg,entry.decDeg,entry.e1,entry.e2),phase=look.phaseDegrees*Math.PI/180;
+ const bar=f.major.clone().multiplyScalar(Math.cos(phase)).addScaledVector(f.minor,Math.sin(phase)).multiplyScalar(look.bar/look.unitsPerRe*entry.radiusArcsec);
+ const east=bar.dot(f.east),north=bar.dot(f.north);
+ expect(Math.abs(Math.hypot(east,north)-sourced.radiusArcsec)).toBeLessThan(.5);
+ expect(Math.abs((Math.atan2(east,north)*180/Math.PI+360)%180-sourced.positionAngleDeg)).toBeLessThan(.5);
 });
 
 it('seeds structure from the exact public identity only',()=>{

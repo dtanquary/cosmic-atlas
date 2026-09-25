@@ -126,7 +126,7 @@ export async function probeNearbySearch(atlas:Explorer){
  const dialog=element<HTMLDialogElement>('visit-dialog'),input=element<HTMLInputElement>('galaxy-query');
  const frame=()=>new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));
  const cases=[];
- for(const [query,id] of [['Andromeda',-1],['M33',-2],['LMC',-3],['SMC',-4],['M32',-5],['M110',-6]] as const){
+ for(const [query,id] of [['Andromeda',-1],['M33',-2],['LMC',-3],['SMC',-4],['M32',-5],['M110',-6],['Whirlpool',-7],['NGC 5195',-8],['M101',-9],['NGC 1300',-10]] as const){
   element('visit-galaxy-button').click();const deadline=performance.now()+10000;
   while(!element('galaxy-results').children.length){if(performance.now()>deadline)throw new Error('Nearby search timed out');await frame()}
   input.value=query;input.dispatchEvent(new Event('input',{bubbles:true}));await frame();

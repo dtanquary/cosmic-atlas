@@ -98,11 +98,13 @@ describe('tour routes',()=>{
     const stop=zoomOut.stops.find(stop=>stop.target.kind==='localgroup')!,m31=nearby.get('m31')!;
     const midpoint=cartesian(m31.raDeg,m31.decDeg,m31.distanceMpc/2);
     stop.target.positionMpc!.forEach((value,i)=>expect(Math.abs(value-midpoint[i])).toBeLessThan(1e-12));
-    const reach=Math.max(...nearbyReference.entries.map(e=>separation(cartesian(e.raDeg,e.decDeg,e.distanceMpc),midpoint)),separation([0,0,0],midpoint));
+    // The Local Group entries; M51, M101 and NGC 1300 lie millions of parsecs beyond.
+    const local=nearbyReference.entries.filter(e=>e.distanceMpc<1);
+    const reach=Math.max(...local.map(e=>separation(cartesian(e.raDeg,e.decDeg,e.distanceMpc),midpoint)),separation([0,0,0],midpoint));
     expect(stop.distanceMpc!).toBeGreaterThanOrEqual(frame(reach));
     expect(stop.distanceMpc!).toBeLessThan(frame(reach)*2);
     expect(stop.cites).toBe('m31');
-    expect(nearbyReference.entries.length).toBe(6);expect(stop.caption).toContain('Six nearby galaxies');
+    expect(local.length).toBe(6);expect(stop.caption).toContain('Six Local Group galaxies');
   });
   it('orders the zoom-out by strictly increasing framing distance',()=>{
     const root=manifest.nodes.find((node:{id:string})=>node.id===manifest.root);
