@@ -1,13 +1,14 @@
 import {diskVolumeFragment} from './disk-volume';
+import type {GalaxyLookKey} from './galaxy-looks';
 
-export type DiskPortrait='m31'|'m33'|'ngc3982';
-export interface GalaxyPortrait {label:string;source:string;disk?:DiskPortrait;smooth?:'elliptical'|'lenticular';exposure?:number}
+export type DiskPortrait='m31'|'m33';
+export interface GalaxyPortrait {label:string;source:string;disk?:DiskPortrait;look?:GalaxyLookKey;smooth?:'elliptical'|'lenticular';exposure?:number}
 // Image interpretation is keyed only to verified public identities. Coordinates,
 // profile sidecars and classifications are never rewritten by this registry.
 const portraits:ReadonlyMap<string,GalaxyPortrait>=new Map([
  ['nearby:m31',{label:'Andromeda · dust-ring disk',disk:'m31',source:'https://esahubble.org/images/heic2501a/'}],
  ['nearby:m33',{label:'Triangulum · patchy spiral',disk:'m33',source:'https://www.eso.org/public/images/eso1424a/'}],
- ['39633325333155389',{label:'NGC 3982 · intricate spiral',disk:'ngc3982',source:'https://esahubble.org/images/opo1036a/'}],
+ ['39633325333155389',{label:'NGC 3982 · intricate spiral',look:'ngc3982',source:'https://esahubble.org/images/opo1036a/'}],
  ['nearby:m32',{label:'M32 · compact elliptical',smooth:'elliptical',exposure:8,source:'https://science.nasa.gov/mission/hubble/science/explore-the-night-sky/hubble-messier-catalog/messier-32/'}],
  ['nearby:m110',{label:'M110 · diffuse elliptical',smooth:'elliptical',exposure:6,source:'https://science.nasa.gov/mission/hubble/science/explore-the-night-sky/hubble-messier-catalog/messier-110/'}],
  ['39633263488141603',{label:'NGC 4026 · smooth lenticular',smooth:'lenticular',source:'https://www.legacysurvey.org/viewer?ra=179.8544868&dec=50.9616574&layer=ls-dr9&zoom=14'}],
@@ -26,17 +27,17 @@ function noise(x:number,y:number,seed:number){
  const ix=Math.floor(x),iy=Math.floor(y),u=smooth(0,1,x-ix),v=smooth(0,1,y-iy),a=hash(ix,iy),b=hash(ix+1,iy),c=hash(ix,iy+1),d=hash(ix+1,iy+1);
  return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v;
 }
-export const portraitLight={m31:{bulge:2.6,coreRadius:.38,old:1.3,young:1.2,dust:1.3},m33:{bulge:.13,coreRadius:.19,old:.9,young:1.4,dust:.55},ngc3982:{bulge:1.3,coreRadius:.23,old:1,young:1.5,dust:1.1}} as const;
+export const portraitLight={m31:{bulge:2.6,coreRadius:.38,old:1.3,young:1.2,dust:1.3},m33:{bulge:.13,coreRadius:.19,old:.9,young:1.4,dust:.55}} as const;
 
 /** Same four channels as the home template, regenerated from compact recipes.
  * Feature placement is illustrative, not registered telescope-image pixels. */
 export function portraitDensityField(kind:DiskPortrait,size=PORTRAIT_FIELD_SIZE){
- const data=new Uint8Array(size*size*4),seed=kind==='m31'?31031:kind==='m33'?33033:39823982;
- const pitch=kind==='m31'?12:kind==='m33'?26:19,winding=1/Math.tan(pitch*Math.PI/180),count=kind==='m31'?2:kind==='m33'?3:4;
+ const data=new Uint8Array(size*size*4),seed=kind==='m31'?31031:33033;
+ const pitch=kind==='m31'?12:26,winding=1/Math.tan(pitch*Math.PI/180),count=kind==='m31'?2:3;
  for(let y=0;y<size;y++)for(let x=0;x<size;x++){
   const px=((x+.5)/size*2-1)*PORTRAIT_EXTENT_RE,py=((y+.5)/size*2-1)*PORTRAIT_EXTENT_RE,r=Math.hypot(px,py),edge=1-smooth(3.3,4.45,r);if(!edge)continue;
   const coarse=noise(px*3.4+7,py*3.4-4,seed),fine=noise(px*17,py*17,seed),grain=noise(px*47+2,py*47-3,seed);
-  const theta=Math.atan2(py,px),path=.8+winding*Math.log(Math.max(.22,r)/.55),bend=(coarse-.5)*(kind==='m33'?1.05:kind==='ngc3982'?.65:.36)+.09*Math.sin(r*11+theta*3);
+  const theta=Math.atan2(py,px),path=.8+winding*Math.log(Math.max(.22,r)/.55),bend=(coarse-.5)*(kind==='m33'?1.05:.36)+.09*Math.sin(r*11+theta*3);
   let arms=0,dust=0;
   for(let arm=0;arm<count;arm++){
    const a=theta-path-arm*Math.PI*2/count+bend,width=kind==='m33'?.33:.25;

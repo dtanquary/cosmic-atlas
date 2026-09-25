@@ -3,10 +3,11 @@ import {readFileSync} from 'node:fs';
 import * as THREE from 'three';
 import {galaxyPortrait,portraitDensityField,PORTRAIT_FIELD_SIZE,type DiskPortrait} from '../src/galaxy-portraits';
 import {ResolvedGalaxy,type GalaxyDetailData} from '../src/galaxy-detail';
+import {galaxyLookFragment} from '../src/galaxy-looks';
 import {nearbyDetails} from '../src/nearby-galaxies';
 
 it('keeps image-inspired fields deterministic, distinct and inside the adopted radius envelope',()=>{
- const fields=(['m31','m33','ngc3982'] as DiskPortrait[]).map(kind=>{
+ const fields=(['m31','m33'] as DiskPortrait[]).map(kind=>{
   const size=96,field=portraitDensityField(kind,size);expect(field).toEqual(portraitDensityField(kind,size));
   let dust=0,emission=0;
   for(let y=0;y<size;y++)for(let x=0;x<size;x++){
@@ -17,7 +18,7 @@ it('keeps image-inspired fields deterministic, distinct and inside the adopted r
   expect(dust).toBeGreaterThan(10000);expect(emission).toBeGreaterThan(100);
   return field;
  });
- expect(fields[0]).not.toEqual(fields[1]);expect(fields[1]).not.toEqual(fields[2]);
+ expect(fields[0]).not.toEqual(fields[1]);
 });
 
 it('preserves sourced geometry and profiles through recipe selection and appearance recycling',()=>{
@@ -35,6 +36,10 @@ it('preserves sourced geometry and profiles through recipe selection and appeara
     expect(a.scene.children).toHaveLength(1);expect(a.memoryBytes).toBeLessThan(1.4*1048576);
     const field=(m:ResolvedGalaxy)=>material(m).uniforms.uDensity.value.image.data;
     expect(field(a).byteLength).toBe(PORTRAIT_FIELD_SIZE**2*4);expect(field(a)).toEqual(field(b));
+   }else if(portrait?.look){
+    // Procedural: no texture, and the noise seed follows the exact identity, not the dense row.
+    expect(a.scene.children).toHaveLength(1);expect(a.memoryBytes).toBe(0);expect(material(a).fragmentShader).toBe(galaxyLookFragment);
+    expect(material(a).uniforms.uSeed.value.toArray()).toEqual(material(b).uniforms.uSeed.value.toArray());
    }else if(portrait?.smooth){
     expect(a.scene.children).toHaveLength(1);expect(a.memoryBytes).toBe(0);
     expect(material(a).uniforms.uGaussians.value.slice(0,data.gaussians.length).map((v:THREE.Vector2)=>({sigmaRe:v.x,peak:v.y}))).toEqual(data.gaussians);
