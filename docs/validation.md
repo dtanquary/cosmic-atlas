@@ -481,3 +481,23 @@ Mac GPU (M3 Max, median of 25 frames, model filling the frame, 2800×1800 / 660�
 | Milky Way from the Sun | **15.0 / 2.79 ms** |
 
 The Milky Way still runs its full march under the look, so its outside view costs the march plus about 2 ms. Skipping the march where the look fully covers a pixel is a possible later saving.
+
+### Step 3: catalog looks
+
+Every catalog galaxy drawn as a spiral now uses one of six catalog looks. `galaxy-variants.ts`, `spiralSamples`, `spiralLight`, `src/data/spiral-profile.json` and `scripts/prepare_spiral_profile.py` are removed on both platforms. `npm test` passes **125 tests in 25 files**, and strict TypeScript and the build pass. The unit tests cover:
+
+- the full Hubble-type mapping, with bars first;
+- identity assignment that reaches all six looks and ignores dense rows;
+- the identity pattern and tint at exact luminance, with named looks untouched;
+- Catalog types keeping looks only for spiral and barred families.
+
+`GalaxyLooksTests` ports these and pins four identities' look, phase, spin and tinted disc colour to the web values within 10⁻¹².
+
+Full-data suites pass on HeadlessChrome 153 / ANGLE Metal M3 Max, 1600×1000, with no page errors or failed keys: `?modeltest&detailtest&continuitytest&varianttest&colortest`, `?portraittest&cloudtest&nearbytest&sharetest&selftest` and `?tourtest&hometest&uxtest`. The development subset passes `?dataset=development&nearbytest&portraittest&cloudtest&tourtest&varianttest&colortest`.
+
+- **Catalog models:** NGC 5107 (SBcd) resolves as barred, and the smooth-profile measurements still pass for all 12 detail models through `sourceProfileOnly`. Saturation peaks at exactly **12** resident models.
+- **Looks:** all six render in one draw with 0 bytes and no clipped pixels at face-on, 60° and 85°. They are pickable and reconstruct identically, and their face-on light is **0.96–1.05×** the median look.
+- **Colours:** the coolest and warmest of 64 identity palettes differ by **0.34** in red/blue on one structure seed, with **0.45%** brightness difference.
+- **Navigation and performance:** continuity stays within 12 models with no abrupt events. Model and close-up orbits hold **60 FPS, p95 16.7 ms**. The road trip reaches all ten stops, and the nearby layer stays at 1,343,488 bytes.
+
+Visual review: real-app captures of NGC 3992 (recorded Sbc → multi-arm, warm identity tint) and NGC 5107 (recorded SBcd → barred, steep view with dust lanes), plus the six-look preview. `swift test` passes every AtlasRender test under `MTL_DEBUG_LAYER=1`; AtlasCore passes apart from the known `ChunkLoaderTests` timing flake. The iOS app builds for the simulator.

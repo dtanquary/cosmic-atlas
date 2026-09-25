@@ -6,7 +6,7 @@ Requested by Dave on 2026-09-25: bring the galaxy rendering researched for the A
 | --- | --- | --- |
 | 1 | Shared shader (GLSL + Metal) on NGC 3982 | Done: web and native |
 | 2 | Andromeda, Triangulum, Milky Way (sourced geometry kept) | Done: web and native; the texture portraits are removed |
-| 3 | Every catalog spiral, looks chosen by recorded type or identity; replaces the variant light-budget rule | Not started |
+| 3 | Every catalog spiral, looks chosen by recorded type or identity; replaces the variant light-budget rule | Done: web and native; variant recipes, light samples and the common spiral profile removed |
 | 4 | M51, NGC 5195, M101, NGC 1300 as cited nearby entries | Not started |
 
 ## What carries over from Atrium
@@ -43,6 +43,10 @@ The look is tuned against the bundled Hubble image (opo1036a, `public/photos/`):
 Andromeda and Triangulum take Atrium's own M31 and M33 settings. Andromeda has two arms at an 8° pitch, which read as dusty partial rings, a large cream bulge (0.13), ragged 0.5 and dust 1.2. Triangulum is flocculent (ragged 0.9) with a 30° pitch, a weak nucleus, light dust and 1.5× the H II regions. Their adopted distances, radii and sky ellipses are unchanged, and the steep-tilt softening carries Andromeda's observer view. M32 and M110 remain separate catalog objects, not painted companions. Both looks drop the 384² texture portraits, so the nearby layer's texture memory falls to the two clouds.
 
 The Milky Way uses Atrium's Milky Way settings (four arms with the two minor ones at 0.45, a 13° pitch, bulge 0.09, ragged 0.3) with sourced geometry. Its bar is the adopted 5 kpc half-length (0.71 disc radii), turned 152° in the model frame, so it lies 28° from the Sun–centre line. The pattern is mirrored to wind with the density field's handedness. The disc extent is 1.5, which fades the disc out between about 9 and 15 kpc around the Sun at 8.1 kpc. The existing home march draws every view from within 0.35–1.4 kpc of the midplane, edge-on views and grazing rays. [The home model](milky-way.md) describes the handover.
+
+## Catalog looks
+
+Six catalog looks cover the DESI catalog, each one of Atrium's six galaxy types. See [galaxy detail](galaxy-detail.md#catalog-looks) for the type mapping, identity weights and inspector disclosure. Every galaxy drawn as a spiral uses one: all of them in the default appearance, and the spiral and barred-spiral families in Catalog types. The recorded Hubble type chooses it for the 2,046 typed spirals and the exact identity for everything else. The identity also turns and mirrors the pattern and tints the disc and young stars by its palette at fixed luminance. Named looks (NGC 3982, Andromeda, Triangulum, the Milky Way) keep their own settings. A catalog model is now one draw with no light-sample geometry, down from 12,000 or 24,000 samples (672,000 bytes) each.
 
 ## Validation and cost
 
