@@ -31,7 +31,7 @@ final class ModelSessionTests: XCTestCase {
     var now = await settle(session, frames: 40)
     XCTAssertNotNil(session.modelManifest, "the model catalog opens for the full release")
     XCTAssertEqual(session.resolvedGalaxies.count, 2, "two pinned previews")
-    XCTAssertEqual(session.nearbyGalaxies.count, 6)
+    XCTAssertEqual(session.nearbyGalaxies.count, 10)
     // Visit NGC 3982 by name: the pinned preview is that galaxy, so the visit is observer-facing at 12 radii.
     let index = try JSONDecoder().decode(NameIndex.self, from: RepoPaths.data("public/data/galaxy-search.json"))
     let entry = try XCTUnwrap(index.entries.first { $0.name == "NGC 3982" }?.catalogEntry)

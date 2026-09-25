@@ -37,9 +37,11 @@ final class GalaxySearchTests: XCTestCase {
   }
   func testNearbyNamesReplaceUnavailableAliases() {
     let entries = mergeNearbyNames([NamedGalaxy(name: "NGC 224", aliases: ["M 31", "Andromeda Galaxy"])], reference: Self.reference.nearby)
-    XCTAssertEqual(entries.count, 6)
+    XCTAssertEqual(entries.count, 10)
     for q in ["M31", "M 031", "Messier 31", "NGC224", "Andromeda"] { let hit = namedSuggestions(entries, query: q).first; XCTAssertEqual(hit?.kind, .nearby, q); XCTAssertEqual(hit?.id, -1, q) }
     for q in ["M33", "LMC", "SMC", "M32", "M110"] { XCTAssertEqual(namedSuggestions(entries, query: q).first?.kind, .nearby, q) }
-    XCTAssertTrue(namedSuggestions(entries, query: "").allSatisfy { $0.kind == .observer || $0.kind == .nearby })
+    for (q, id) in [("M51", -7), ("Whirlpool", -7), ("NGC5194", -7), ("NGC 5195", -8), ("M101", -9), ("Pinwheel", -9), ("NGC1300", -10)] { XCTAssertEqual(namedSuggestions(entries, query: q).first?.id, id, q) }
+    let initial = namedSuggestions(entries, query: "")
+    XCTAssertEqual(initial.count, 11); XCTAssertTrue(initial.allSatisfy { $0.kind == .observer || $0.kind == .nearby })
   }
 }

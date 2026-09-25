@@ -49,7 +49,9 @@ public func isVisitable(_ entry: NamedGalaxy) -> Bool { entry.kind == .observer 
 public func namedSuggestions(_ entries: [NamedGalaxy], query: String, limit: Int = 8) -> [NamedGalaxy] {
   let needle = normalizeName(query)
   if needle.isEmpty {
-    return Array(([observerEntry] + entries.filter { $0.kind == .nearby } + favorites.flatMap { name in entries.filter { $0.name == name && $0.id != nil } }).prefix(limit))
+    // Every nearby destination, plus room for one DESI example.
+    let nearby = entries.filter { $0.kind == .nearby }
+    return Array(([observerEntry] + nearby + favorites.flatMap { name in entries.filter { $0.name == name && $0.id != nil } }).prefix(max(limit, nearby.count + 2)))
   }
   var results: [(entry: NamedGalaxy, rank: Double, order: Int)] = []
   for (order, entry) in ([observerEntry] + entries).enumerated() {

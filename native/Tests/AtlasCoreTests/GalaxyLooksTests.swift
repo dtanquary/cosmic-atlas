@@ -1,4 +1,5 @@
 import XCTest
+import simd
 import AtlasTestSupport
 @testable import AtlasCore
 
@@ -21,6 +22,17 @@ final class GalaxyLooksTests: XCTestCase {
     XCTAssertEqual(look.phaseDegrees, 180 - reference.barAngleDeg)
     // milky-way-light winds its arms anticlockwise outward in the model frame; the look mirrors to match.
     XCTAssertEqual(look.spin, -1)
+  }
+  func testKeepsTheNGC1300BarAtTheSourcedS4GBarLengthAndSkyAngle() throws {
+    struct Bars: Decodable { struct Entry: Decodable { struct Bar: Decodable { var radiusArcsec: Double, positionAngleDeg: Double }; var key: String, bar: Bar? }; var entries: [Entry] }
+    let reference = try ReferenceData(directory: RepoPaths.file("src/data")).nearby, entry = try XCTUnwrap(reference.entries.first { $0.key == "ngc1300" })
+    let sourced = try XCTUnwrap(JSONDecoder().decode(Bars.self, from: RepoPaths.data("src/data/nearby-galaxies.json")).entries.first { $0.key == "ngc1300" }?.bar)
+    let look = try XCTUnwrap(galaxyLooks[.ngc1300]), f = try galaxyFrame(ra: entry.raDeg, dec: entry.decDeg, e1: entry.e1, e2: entry.e2), phase = look.phaseDegrees * .pi / 180
+    // The bar lies along the pattern's x axis, which phase turns from the major axis toward the in-disc minor axis.
+    let bar = (f.major * cos(phase) + f.minor * sin(phase)) * (look.bar / look.unitsPerRe * entry.radiusArcsec)
+    let east = simd_dot(bar, f.east), north = simd_dot(bar, f.north)
+    XCTAssertEqual(hypot(east, north), sourced.radiusArcsec, accuracy: 0.5)
+    XCTAssertEqual((atan2(east, north) * 180 / .pi + 360).truncatingRemainder(dividingBy: 180), sourced.positionAngleDeg, accuracy: 0.5)
   }
   func testSeedsStructureFromTheExactPublicIdentityOnly() {
     XCTAssertEqual(lookSeed("39633325333155389"), lookSeed("39633325333155389"))

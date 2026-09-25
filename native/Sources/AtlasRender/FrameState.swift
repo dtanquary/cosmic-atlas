@@ -69,7 +69,7 @@ public struct FrameState {
   public var chunks: [ChunkDraw] = []
   /// Visible galaxy models in draw order (DESI pool, nearby layer, Milky Way last).
   public var models: [GalaxyModel] = []
-  /// The six nearby points with their own twelve-slot arrays, drawn after the catalog chunks.
+  /// The nearby points (up to twelve) with their own twelve-slot arrays, drawn after the catalog chunks.
   public var nearby: (draw: ChunkDraw, uniforms: AtlasFrameUniforms)? = nil
   public var markers: [MarkerDraw] = []
   public var line: LineDraw? = nil

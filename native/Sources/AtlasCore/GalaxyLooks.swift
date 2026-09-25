@@ -3,7 +3,7 @@ import Foundation
 // Procedural spiral looks from src/galaxy-looks.ts (after the Atrium Galaxy screensaver). Arms, dust, stars and H II
 // regions are illustrative; only the adopted size, sky ellipse and position come from the source catalogs.
 
-public enum GalaxyLookKey: String, Sendable, CaseIterable { case ngc3982, m31, m33, milkyWay, grand, multi, tight, flocculent, barred, weakBar }
+public enum GalaxyLookKey: String, Sendable, CaseIterable { case ngc3982, m31, m33, milkyWay, m51, m101, ngc1300, grand, multi, tight, flocculent, barred, weakBar }
 public struct GalaxyLook: Sendable, Equatable {
   public var arms: Double, minor: Double, pitchDegrees: Double, bar: Double, bulge: Double, ragged: Double, dust: Double, hii: Double
   public var extent: Double, unitsPerRe: Double, phaseDegrees: Double, spin: Double
@@ -13,6 +13,13 @@ let andromeda = GalaxyLook(arms: 2, minor: 1, pitchDegrees: 8, bar: 0, bulge: 0.
                            core: RGB(1, 0.9, 0.78), disc: RGB(0.86, 0.78, 0.86), young: RGB(0.74, 0.76, 1), knots: RGB(1, 0.5, 0.7))
 let triangulum = GalaxyLook(arms: 2, minor: 1, pitchDegrees: 30, bar: 0, bulge: 0.015, ragged: 0.9, dust: 0.6, hii: 1.5, extent: 1, unitsPerRe: 0.5311, phaseDegrees: 0, spin: 1,
                             core: RGB(1, 0.96, 0.9), disc: RGB(0.88, 0.9, 1), young: RGB(0.74, 0.86, 1), knots: RGB(1, 0.5, 0.56))
+let whirlpool = GalaxyLook(arms: 2, minor: 1, pitchDegrees: 19, bar: 0, bulge: 0.05, ragged: 0.2, dust: 1.3, hii: 1, extent: 1, unitsPerRe: 0.5311, phaseDegrees: 0, spin: 1,
+                           core: RGB(1, 0.91, 0.8), disc: RGB(0.94, 0.9, 0.87), young: RGB(0.72, 0.86, 1), knots: RGB(1, 0.42, 0.5))
+let pinwheel = GalaxyLook(arms: 4, minor: 1, pitchDegrees: 27, bar: 0, bulge: 0.03, ragged: 0.55, dust: 0.8, hii: 1, extent: 1, unitsPerRe: 0.5311, phaseDegrees: 0, spin: 1,
+                          core: RGB(1, 0.93, 0.86), disc: RGB(0.95, 0.93, 0.93), young: RGB(0.7, 0.82, 1), knots: RGB(1, 0.5, 0.6))
+let greatBarred = GalaxyLook(arms: 2, minor: 1, pitchDegrees: 17, bar: 0.45, bulge: 0.05, ragged: 0.1, dust: 1, hii: 1, extent: 1, unitsPerRe: 0.5311, phaseDegrees: 0, spin: 1,
+                             core: RGB(1, 0.9, 0.84), disc: RGB(0.93, 0.9, 0.97), young: RGB(0.72, 0.84, 1), knots: RGB(1, 0.5, 0.6))
+func with(_ look: GalaxyLook, _ change: (inout GalaxyLook) -> Void) -> GalaxyLook { var l = look; change(&l); return l }
 public let galaxyLooks: [GalaxyLookKey: GalaxyLook] = [
   .ngc3982: GalaxyLook(arms: 4, minor: 0.8, pitchDegrees: 26, bar: 0, bulge: 0.05, ragged: 0.7, dust: 2.2, hii: 2, extent: 1, unitsPerRe: 0.5311, phaseDegrees: 0, spin: 1,
                        core: RGB(1, 0.92, 0.84), disc: RGB(0.88, 0.9, 1), young: RGB(0.7, 0.82, 1), knots: RGB(1, 0.45, 0.58)),
@@ -21,15 +28,18 @@ public let galaxyLooks: [GalaxyLookKey: GalaxyLook] = [
   // Bar length and angle and the handedness follow the sourced home reference; the disc reaches about 15 kpc.
   .milkyWay: GalaxyLook(arms: 4, minor: 0.45, pitchDegrees: 13, bar: 0.71075, bulge: 0.09, ragged: 0.3, dust: 1.2, hii: 1, extent: 1.5, unitsPerRe: 0.6203, phaseDegrees: 152, spin: -1,
                         core: RGB(1, 0.9, 0.76), disc: RGB(0.92, 0.88, 0.84), young: RGB(0.72, 0.84, 1), knots: RGB(1, 0.45, 0.55)),
+  // Atrium's own kinds on their galaxies, handedness from the photos (north up). M51 (heic0506a) winds clockwise outward,
+  // turned so an arm crest passes where the line of sight to NGC 5195 crosses the disc. M101 (heic0602a) winds clockwise.
+  // NGC 1300 (opo0501a) winds anticlockwise; its bar has the S4G bar's length (75 arcsec) and sky angle (100.3°).
+  .m51: with(whirlpool) { $0.phaseDegrees = 37.3 },
+  .m101: pinwheel,
+  .ngc1300: with(greatBarred) { $0.bar = 0.3817; $0.phaseDegrees = -6.98; $0.spin = -1 },
   // Catalog looks, after Atrium's kinds: Whirlpool (M51), Pinwheel (M101), Andromeda, Triangulum, Great Barred (NGC 1300), Milky Way.
-  .grand: GalaxyLook(arms: 2, minor: 1, pitchDegrees: 19, bar: 0, bulge: 0.05, ragged: 0.2, dust: 1.3, hii: 1, extent: 1, unitsPerRe: 0.5311, phaseDegrees: 0, spin: 1,
-                     core: RGB(1, 0.91, 0.8), disc: RGB(0.94, 0.9, 0.87), young: RGB(0.72, 0.86, 1), knots: RGB(1, 0.42, 0.5)),
-  .multi: GalaxyLook(arms: 4, minor: 1, pitchDegrees: 27, bar: 0, bulge: 0.03, ragged: 0.55, dust: 0.8, hii: 1, extent: 1, unitsPerRe: 0.5311, phaseDegrees: 0, spin: 1,
-                     core: RGB(1, 0.93, 0.86), disc: RGB(0.95, 0.93, 0.93), young: RGB(0.7, 0.82, 1), knots: RGB(1, 0.5, 0.6)),
+  .grand: whirlpool,
+  .multi: pinwheel,
   .tight: andromeda,
   .flocculent: triangulum,
-  .barred: GalaxyLook(arms: 2, minor: 1, pitchDegrees: 17, bar: 0.45, bulge: 0.05, ragged: 0.1, dust: 1, hii: 1, extent: 1, unitsPerRe: 0.5311, phaseDegrees: 0, spin: 1,
-                      core: RGB(1, 0.9, 0.84), disc: RGB(0.93, 0.9, 0.97), young: RGB(0.72, 0.84, 1), knots: RGB(1, 0.5, 0.6)),
+  .barred: greatBarred,
   .weakBar: GalaxyLook(arms: 4, minor: 0.45, pitchDegrees: 13, bar: 0.28, bulge: 0.09, ragged: 0.3, dust: 1.2, hii: 1, extent: 1, unitsPerRe: 0.5311, phaseDegrees: 0, spin: 1,
                        core: RGB(1, 0.9, 0.76), disc: RGB(0.92, 0.88, 0.84), young: RGB(0.72, 0.84, 1), knots: RGB(1, 0.45, 0.55)),
 ]

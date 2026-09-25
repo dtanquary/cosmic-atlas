@@ -125,6 +125,10 @@ let portraits: [String: GalaxyPortrait] = [
   "nearby:m32": GalaxyPortrait(label: "M32 · compact elliptical", source: "https://science.nasa.gov/mission/hubble/science/explore-the-night-sky/hubble-messier-catalog/messier-32/", look: nil, smooth: .elliptical, exposure: 8),
   "nearby:m110": GalaxyPortrait(label: "M110 · diffuse elliptical", source: "https://science.nasa.gov/mission/hubble/science/explore-the-night-sky/hubble-messier-catalog/messier-110/", look: nil, smooth: .elliptical, exposure: 6),
   "39633263488141603": GalaxyPortrait(label: "NGC 4026 · smooth lenticular", source: "https://www.legacysurvey.org/viewer?ra=179.8544868&dec=50.9616574&layer=ls-dr9&zoom=14", look: nil, smooth: .lenticular, exposure: nil),
+  "nearby:m51": GalaxyPortrait(label: "Whirlpool · grand-design spiral", source: "https://esahubble.org/images/heic0506a/", look: .m51, smooth: nil, exposure: nil),
+  "nearby:ngc5195": GalaxyPortrait(label: "NGC 5195 · smooth companion", source: "https://esahubble.org/images/heic0506a/", look: nil, smooth: .elliptical, exposure: 12),
+  "nearby:m101": GalaxyPortrait(label: "Pinwheel · many-armed spiral", source: "https://esahubble.org/images/heic0602a/", look: .m101, smooth: nil, exposure: nil),
+  "nearby:ngc1300": GalaxyPortrait(label: "NGC 1300 · great barred spiral", source: "https://esahubble.org/images/opo0501a/", look: .ngc1300, smooth: nil, exposure: nil),
   "nearby:lmc": GalaxyPortrait(label: "Large Magellanic Cloud · stellar bar", source: "https://noirlab.edu/public/images/noirlab2030a/", look: nil, smooth: nil, exposure: nil),
   "nearby:smc": GalaxyPortrait(label: "Small Magellanic Cloud · diffuse wing", source: "https://noirlab.edu/public/images/noirlab2030b/", look: nil, smooth: nil, exposure: nil),
 ]

@@ -177,7 +177,7 @@ public final class AtlasSession {
     let nearby = try nearbyDetails(reference.nearby)
     let nearbyModels = try nearby.map { try GalaxyModel(renderer: renderer, data: $0, appearance: .spiral, fields: fieldCache) }
     let centers = nearbyModels.map(\.center)
-    // The six nearby points: absolute centres, permanently slotted to their models, in the 65535 pick namespace.
+    // The nearby points: absolute centres, permanently slotted to their models, in the 65535 pick namespace.
     var bytes = Data(count: BINARY_HEADER_BYTES + nearby.count * 16)
     bytes.withUnsafeMutableBytes { raw in
       raw.storeBytes(of: BinaryKind.points.magic, toByteOffset: 0, as: UInt32.self); raw.storeBytes(of: UInt32(1), toByteOffset: 4, as: UInt32.self); raw.storeBytes(of: UInt32(nearby.count), toByteOffset: 8, as: UInt32.self)

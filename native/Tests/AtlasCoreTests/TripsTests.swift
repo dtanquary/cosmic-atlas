@@ -205,12 +205,14 @@ final class TourRoutesTests: XCTestCase {
     let stop = try XCTUnwrap(zoomOut.stops.first { $0.target.kind == .localgroup }), m31 = try XCTUnwrap(nearby["m31"])
     let midpoint = cartesian(ra: m31.raDeg, dec: m31.decDeg, distance: m31.distanceMpc / 2)
     for i in 0..<3 { XCTAssertLessThan(abs(position(stop)[i] - midpoint[i]), 1e-12) }
-    let reach = max(reference.nearby.entries.map { separation(cartesian(ra: $0.raDeg, dec: $0.decDeg, distance: $0.distanceMpc), midpoint) }.max()!, separation([0, 0, 0], midpoint))
+    // The Local Group entries; M51, M101 and NGC 1300 lie millions of parsecs beyond.
+    let local = reference.nearby.entries.filter { $0.distanceMpc < 1 }
+    let reach = max(local.map { separation(cartesian(ra: $0.raDeg, dec: $0.decDeg, distance: $0.distanceMpc), midpoint) }.max()!, separation([0, 0, 0], midpoint))
     let distance = try XCTUnwrap(stop.distanceMpc)
     XCTAssertGreaterThanOrEqual(distance, frame(reach))
     XCTAssertLessThan(distance, frame(reach) * 2)
     XCTAssertEqual(stop.cites, "m31")
-    XCTAssertEqual(reference.nearby.entries.count, 6); XCTAssertTrue(stop.caption.contains("Six nearby galaxies"))
+    XCTAssertEqual(local.count, 6); XCTAssertTrue(stop.caption.contains("Six Local Group galaxies"))
   }
   func testOrdersTheZoomOutByStrictlyIncreasingFramingDistance() throws {
     let root = try XCTUnwrap(manifest.nodes.first { $0.id == manifest.root })

@@ -29,7 +29,7 @@ public struct NearbyReference: Codable, Sendable {
     public var key: String, name: String, aliases: [String], distanceError: String, method: String, distanceSource: String
     public var family: String, typeLabel: String, shapeMeasured: Bool, orientationMeasured: Bool, shapeNote: String, shapeSources: [String]
     public var id: Int, raDeg: Double, decDeg: Double, distanceMpc: Double, radiusArcsec: Double, e1: Double, e2: Double
-    public var gaussians: [Gaussian], profileFitMaxRelativeError: Double
+    public var sersic: Double, gaussians: [Gaussian], profileFitMaxRelativeError: Double
   }
   public var version: Int, source: Source, entries: [Entry]
 }
