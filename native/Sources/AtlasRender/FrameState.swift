@@ -17,6 +17,8 @@ public final class ChunkBuffers {
   public private(set) var slots: MTLBuffer
   public private(set) var hasOwnSlots = false
   public var used: TimeInterval = 0
+  /// Rows before `start` are drawn by ancestors (-1 until computed). `fade` eases toward `target` so streaming never pops.
+  public var start = -1, fade = 0.0, target = false
   public var modelRows: [Int] = []
   public var lookup = ModelRows(limit: MODEL_LIMIT)
   public let localChunk: Bool
@@ -50,7 +52,10 @@ public final class ChunkBuffers {
 public struct ChunkDraw {
   public var chunk: ChunkBuffers
   public var uniforms: AtlasChunkUniforms
-  public init(chunk: ChunkBuffers, uniforms: AtlasChunkUniforms) { self.chunk = chunk; self.uniforms = uniforms }
+  /// First row drawn; vertex_id keeps the row index, so pick codes are unchanged.
+  public var start: Int
+  public init(chunk: ChunkBuffers, uniforms: AtlasChunkUniforms, start: Int = 0) { self.chunk = chunk; self.uniforms = uniforms; self.start = start }
+  public var count: Int { chunk.node.storedCount - start }
 }
 public struct MarkerDraw: Sendable {
   public var origin: SIMD3<Float>, sizePx: Float, color: SIMD3<Float>

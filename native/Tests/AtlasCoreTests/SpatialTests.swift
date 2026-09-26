@@ -18,11 +18,22 @@ final class SpatialTests: XCTestCase {
     XCTAssertEqual(chooseFrontier(wide), ["1", "2"])
   }
 
-  func testUsesParentUntilAllRequiredChildrenLoad() {
-    let desired: Set = ["1", "2"], required: Set = ["0", "1", "2"]
-    XCTAssertEqual(coveredFrontier(root: "0", nodes: nodes, desired: desired, required: required, loaded: { $0 != "2" }), ["0"])
-    XCTAssertEqual(coveredFrontier(root: "0", nodes: nodes, desired: desired, required: required, loaded: { _ in true }), ["1", "2"])
-    XCTAssertEqual(coveredFrontier(root: "0", nodes: nodes, desired: desired, required: required, loaded: { _ in false }), [])
+  func testKeepsLoadedAncestorsDrawnBeneathChildren() {
+    let required: Set = ["0", "1", "2"]
+    var result = layeredFrontier(root: "0", nodes: nodes, required: required, loaded: { $0 != "2" })
+    XCTAssertEqual(result.layers, ["0", "1"]); XCTAssertEqual(result.surface, ["0"])
+    result = layeredFrontier(root: "0", nodes: nodes, required: required, loaded: { _ in true })
+    XCTAssertEqual(result.layers, ["0", "1", "2"]); XCTAssertEqual(result.surface, ["1", "2"])
+    result = layeredFrontier(root: "0", nodes: nodes, required: required, loaded: { $0 != "0" })
+    XCTAssertEqual(result.layers, []); XCTAssertEqual(result.surface, [])
+  }
+
+  func testFindsRowsSharedWithAnAncestorInHashOrder() {
+    let ancestor: [UInt32] = [9, 4, 7, 1, 8]
+    XCTAssertEqual(sharedPrefix([4, 1, 3, 5], ancestor), 2)
+    XCTAssertEqual(sharedPrefix([9, 7], ancestor), 2)
+    XCTAssertEqual(sharedPrefix([3, 9], ancestor), 0)
+    XCTAssertEqual(sharedPrefix([], ancestor), 0)
   }
 
   func testCullsUnobservedDirectionsWithoutInventingPoints() {

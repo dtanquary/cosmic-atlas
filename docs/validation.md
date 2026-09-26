@@ -545,4 +545,15 @@ The before/after measurement compared HEAD `27963ef` (a scratch worktree sharing
 
 The remaining Milky Way value is the arrival notice being dismissed, which is the same before and after. Transitions while the camera moves are not isolated by this metric. There, every chunk change now goes through the same fade, and the layered frontier keeps loaded detail on screen.
 
-`?benchmark` is unchanged: before 60.0 fps, p95 16.8 ms, 124 calls; after 60.0 fps, p95 16.7 ms, 142 calls, with both at the 2,000,000-point adaptive cap. The extra calls are ancestor layers. Full-data `?selftest`, `?hometest`, `?continuitytest`, `?uxtest`, `?tourtest`, `?sharetest` and `?nearbytest` pass with every probe available. The development subset passes `?nearbytest` and `?tourtest`. The represented count stays at 14,140,375. The native client's `AtlasCore.coveredFrontier` still uses the replacement frontier.
+`?benchmark` is unchanged: before 60.0 fps, p95 16.8 ms, 124 calls; after 60.0 fps, p95 16.7 ms, 142 calls, with both at the 2,000,000-point adaptive cap. The extra calls are ancestor layers. Full-data `?selftest`, `?hometest`, `?continuitytest`, `?uxtest`, `?tourtest`, `?sharetest` and `?nearbytest` pass with every probe available. The development subset passes `?nearbytest` and `?tourtest`. The represented count stays at 14,140,375.
+
+The native client has the same change. `AtlasCore` ports `layeredFrontier` and `sharedPrefix` with their tests. Each Metal chunk draw starts at its ancestors' prefix; `vertex_id` includes the start, so pick codes keep their rows. A `fadeOut` chunk uniform, where zero means fully drawn, carries the same 0.8 s fade. The fade step is clamped at zero, so a clock that steps backwards cannot push it out of range. The full-data session test now also asserts that a real frame submits every record exactly once, with the root drawn first.
+
+`swift test` results:
+
+- AtlasCore: 131 tests; one failure, described below.
+- AtlasRender: all 17 pass, including picking and the within-budget check.
+
+The one AtlasCore failure is `ChunkLoaderTests.testDoesNotDeliverACancelledReplyToANewRequiredRequest`. It also fails three times out of three on unchanged `89c0624` in a scratch worktree, so it predates this change.
+
+A Release build is installed on the paired iPhone 17 Pro and iPad (A16). This is not yet a recorded device measurement.

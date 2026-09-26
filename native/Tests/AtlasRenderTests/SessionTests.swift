@@ -49,6 +49,11 @@ final class SessionTests: XCTestCase {
     XCTAssertEqual(session.visibleEvictions, 0)
     XCTAssertFalse(session.stats.blocked)
     let frame = session.tick(now: 100)
+    // Layered chunks submit each record once: a descendant starts after the rows its ancestors draw.
+    var rows = Set<UInt32>(), submitted = 0
+    for draw in frame.chunks { for row in draw.start..<draw.chunk.node.storedCount { rows.insert(draw.chunk.ids[row]) }; submitted += draw.count }
+    XCTAssertEqual(rows.count, submitted)
+    XCTAssertEqual(frame.chunks.first?.chunk.node.id, "0", "ancestors stay drawn beneath refined children")
     let target = OffscreenTarget(renderer: session.renderer, width: 800, height: 500)
     let stats = target.render(frame)
     XCTAssertEqual(stats.draws, frame.chunks.count + 1 + frame.models.count + frame.markers.count, "chunks, the nearby batch, visible models, markers")

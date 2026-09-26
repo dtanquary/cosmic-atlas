@@ -26,6 +26,7 @@ typedef struct {
   vector_float3 worldOrigin; // node.center, for the 1 Mpc local guard
   unsigned int nodeCode;             // Number(node.id) + 1; 65535 = nearby layer
   unsigned int localChunk;           // chunk box within 1 Mpc of the observer
+  float fadeOut;                     // 1 - the streaming fade; the zero default draws fully
 } AtlasChunkUniforms;
 
 /// Observer-centred overlays (CMB shell, lookback rings, survey footprint): one full-screen triangle each.

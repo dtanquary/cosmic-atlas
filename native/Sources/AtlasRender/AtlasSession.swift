@@ -17,6 +17,8 @@ public struct AtlasStats: Sendable, Equatable {
 
 public let OVERVIEW_DIRECTION = simd_normalize(SIMD3<Double>(0.85, -1, 0.58))
 public let OVERVIEW_FACTOR = 2.1
+/// Streamed point chunks fade in and out over this time instead of popping.
+public let POINT_FADE_SECONDS = 0.8
 
 /// Double-precision frustum planes in world space (GL clip convention), for chunk culling far from the origin.
 struct Frustum {
@@ -89,6 +91,8 @@ public final class AtlasSession {
   public private(set) var failed: [String: String] = [:]
   var required: Set<String> = [], desired: Set<String> = []
   public private(set) var drawn: [String] = []
+  /// Every chunk drawn this frame, ancestors first: `drawn` is their non-overlapping surface.
+  var layers: [String] = []
   var references: [UInt8] = []
   var loadedUnique = 0
   var metadata: [(id: String, data: Data)] = []
@@ -337,7 +341,7 @@ public final class AtlasSession {
   }
 
   func evict(requiredBytes: Int = 0) {
-    let removable = cache.values.filter { $0.node.id != root && !required.contains($0.node.id) && !drawn.contains($0.node.id) }.sorted { $0.used < $1.used }
+    let removable = cache.values.filter { $0.node.id != root && !required.contains($0.node.id) && $0.fade == 0 }.sorted { $0.used < $1.used }
     for chunk in removable {
       if memoryBytes + requiredBytes < budget.evictTarget() { break }
       cache[chunk.node.id] = nil
@@ -424,8 +428,17 @@ public final class AtlasSession {
       if required.contains(id) || id == root { request(node); queue.append(contentsOf: node.children.filter { required.contains($0) }) }
     }
     let previous = Set(drawn)
-    drawn = coveredFrontier(root: root, nodes: nodes, desired: desired, required: required, loaded: { cache[$0] != nil })
-    for id in drawn { cache[id]?.used = now }
+    (layers, drawn) = layeredFrontier(root: root, nodes: nodes, required: required, loaded: { cache[$0] != nil })
+    for chunk in cache.values { chunk.target = false }
+    for id in layers {
+      guard let chunk = cache[id] else { continue }
+      if chunk.start < 0 {
+        chunk.start = 0
+        var ancestor = parents[id]
+        while let a = ancestor { if let rows = cache[a]?.ids { chunk.start = max(chunk.start, sharedPrefix(chunk.ids, rows)) }; ancestor = parents[a] }
+      }
+      chunk.target = true; chunk.used = now
+    }
     evict()
     for id in previous where cache[id] == nil && drawn.contains(id) { visibleEvictions += 1 }
   }
@@ -544,6 +557,11 @@ public final class AtlasSession {
     milkyWay.update(camera: camera, heightPx: viewportPoints.y, pixelRatio: scale, focused: homeFocused, display: modelDisplay)
     updateDepthCues()
     if dirty || now - lastLOD > 0.2 { updateLOD(now: now); lastLOD = now; dirty = false }
+    let fadeStep = max(0, dt) / POINT_FADE_SECONDS // a clock that steps back must not push a fade out of 0...1
+    for chunk in cache.values {
+      let fade = chunk.target ? min(1, chunk.fade + fadeStep) : max(0, chunk.fade - fadeStep)
+      if fade != chunk.fade { chunk.fade = fade; animating = true }
+    }
     if modelScanNeeded || now - lastModelScan > 0.25 { updateModels(); lastModelScan = now; modelScanNeeded = false }
     rings = lookbackRings ? Lookback(reference).chooseRings(dOriginMpc: simd_length(camera.position), fovDeg: camera.fovDegrees, aspect: camera.aspect, heightPx: viewportPoints.y) : []
     let detailOrigins = resolvedGalaxies.map { SIMD3<Float>($0.center - camera.position) }, detailMix = resolvedGalaxies.map { Float($0.blend) }
@@ -559,14 +577,17 @@ public final class AtlasSession {
     frame.overlays.ringAngles = rings.map(\.angle)
     frame.overlays.footprint = surveyFootprint && footprintState == .ready ? footprintTexture : nil
     frame.overlays.footprintRadiusMpc = manifest?.maxDistanceMpc ?? 0
-    for id in drawn {
-      guard let chunk = cache[id] else { continue }
+    // Targets in tree order, then chunks still fading out, so blending order is stable frame to frame.
+    let fadingOut = cache.values.filter { !$0.target && $0.fade > 0 }.map(\.node.id).sorted { Int($0)! < Int($1)! }
+    for id in layers + fadingOut {
+      guard let chunk = cache[id], chunk.fade > 0 else { continue }
       var u = AtlasChunkUniforms()
       u.origin = SIMD3<Float>(chunk.node.center - camera.position)
       u.worldOrigin = SIMD3<Float>(chunk.node.center)
       u.nodeCode = UInt32(Int(chunk.node.id)! + 1)
       u.localChunk = chunk.localChunk ? 1 : 0
-      frame.chunks.append(ChunkDraw(chunk: chunk, uniforms: u))
+      u.fadeOut = Float(1 - chunk.fade)
+      frame.chunks.append(ChunkDraw(chunk: chunk, uniforms: u, start: chunk.start))
     }
     frame.markers.append(MarkerDraw(origin: SIMD3<Float>(-camera.position), sizePx: Float(7 * scale), color: color(0x7299ad)))
     if homeFocused && milkyWay.blend > 0.1 { frame.markers.append(MarkerDraw(origin: SIMD3<Float>(milkyWay.center - camera.position), sizePx: Float(7 * scale), color: color(0xd4bd96))) }
@@ -589,7 +610,7 @@ public final class AtlasSession {
 
   public var stats: AtlasStats {
     var s = AtlasStats()
-    s.drawn = drawn.reduce(0) { $0 + (nodes[$1]?.storedCount ?? 0) }
+    s.drawn = cache.values.reduce(0) { $0 + ($1.fade > 0 ? $1.node.storedCount - $1.start : 0) }
     s.loaded = loadedUnique
     s.represented = drawn.reduce(0) { $0 + (nodes[$1]?.count ?? 0) }
     s.pending = pending.count; s.failed = failed.count; s.mode = mode

@@ -11,6 +11,7 @@ struct PointOut {
   float visibility;
   float detail;
   float uncertainLocal;
+  float fade [[flat]];
   uint code [[flat]];
 };
 
@@ -44,6 +45,7 @@ vertex PointOut atlas_point_vertex(uint vid [[vertex_id]],
       if (frame.hideUncertainLocal) out.visibility = 0.0;
     }
   }
+  out.fade = 1.0 - chunk.fadeOut;
   out.code = (chunk.nodeCode << 16) | vid;
   return out;
 }
@@ -52,7 +54,7 @@ fragment float4 atlas_point_fragment(PointOut in [[stage_in]], float2 coord [[po
   float r = length(coord - float2(0.5));
   if (r > 0.5 || in.visibility <= 0.0) discard_fragment();
   float alpha = (frame.depthCues ? in.visibility : 0.88) * (1.0 - smoothstep(0.25, 0.5, r));
-  alpha *= 1.0 - in.detail;
+  alpha *= (1.0 - in.detail) * in.fade;
   if (alpha <= 0.0) discard_fragment();
   return float4(mix(float3(0.73, 0.82, 0.9), float3(1.0, 0.61, 0.23), in.uncertainLocal), alpha);
 }

@@ -101,8 +101,8 @@ public final class AtlasRenderer: @unchecked Sendable {
       encoder.setVertexBuffer(draw.chunk.buffer, offset: ChunkBuffers.positionsOffset, index: 0)
       encoder.setVertexBuffer(draw.chunk.slots, offset: 0, index: 1)
       encoder.setVertexBytes(&chunk, length: MemoryLayout<AtlasChunkUniforms>.stride, index: 3)
-      encoder.drawPrimitives(type: .point, vertexStart: 0, vertexCount: draw.chunk.node.storedCount)
-      stats.draws += 1; stats.points += draw.chunk.node.storedCount
+      encoder.drawPrimitives(type: .point, vertexStart: draw.start, vertexCount: draw.count)
+      stats.draws += 1; stats.points += draw.count
     }
     if let nearby = frame.nearby {
       var u = nearby.uniforms, chunk = nearby.draw.uniforms

@@ -49,15 +49,30 @@ public func chooseFrontier(_ o: FrontierOptions) -> [String] {
   return frontier
 }
 
-/// Ancestor fallbacks until every needed child has usable coverage: a parent sample or its covered descendants, never both.
-public func coveredFrontier(root: String, nodes: [String: CatalogNode], desired: Set<String>, required: Set<String>, loaded: (String) -> Bool) -> [String] {
+/// Draw every loaded required node whose ancestors are loaded. Ancestors stay drawn and each node adds only the rows
+/// they lack (`sharedPrefix`), so refining or coarsening never removes a point already on screen. `surface` is the
+/// non-overlapping coverage: a parent stands in for its children until every required child has loaded.
+public func layeredFrontier(root: String, nodes: [String: CatalogNode], required: Set<String>, loaded: (String) -> Bool) -> (layers: [String], surface: [String]) {
+  var layers: [String] = []
   func visit(_ id: String) -> [String]? {
-    if !required.contains(id) { return [] }
-    if desired.contains(id) { return loaded(id) ? [id] : nil }
-    let children = (nodes[id]?.children ?? []).filter { required.contains($0) }
-    let parts = children.map(visit)
-    if parts.allSatisfy({ $0 != nil }) { return parts.flatMap { $0! } }
-    return loaded(id) ? [id] : nil
+    if !required.contains(id) || !loaded(id) { return nil }
+    layers.append(id)
+    let parts = (nodes[id]?.children ?? []).filter { required.contains($0) }.map(visit)
+    return !parts.isEmpty && parts.allSatisfy({ $0 != nil }) ? parts.flatMap { $0! } : [id]
   }
-  return visit(root) ?? []
+  let surface = visit(root) ?? []
+  return (layers, surface)
+}
+
+/// Every node stores its rows in one global hash order, so an ancestor's rows inside a node are exactly a prefix of that
+/// node's rows. One merge walk returns the prefix length.
+public func sharedPrefix<Rows: RandomAccessCollection<UInt32>, Ancestor: RandomAccessCollection<UInt32>>(_ rows: Rows, _ ancestor: Ancestor) -> Int
+where Rows.Index == Int, Ancestor.Index == Int {
+  var j = ancestor.startIndex
+  for (i, row) in rows.enumerated() {
+    while j < ancestor.endIndex && ancestor[j] != row { j += 1 }
+    if j == ancestor.endIndex { return i }
+    j += 1
+  }
+  return rows.count
 }
