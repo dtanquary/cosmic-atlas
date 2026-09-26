@@ -3,7 +3,7 @@ import {ModelRows} from './model-rows';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ChunkLoader } from './loader';
-import { chooseFrontier, coveredFrontier } from './spatial';
+import { chooseFrontier, layeredFrontier, sharedPrefix } from './spatial';
 import { decodeGalaxy, separation } from './format';
 import {galaxyPortrait} from './galaxy-portraits';
 import {ResolvedGalaxy,GalaxyVolume,detailBlend, type GalaxyDetailData, type ModelDisplay,type GalaxyAppearance} from './galaxy-detail';
@@ -24,6 +24,8 @@ import type { Galaxy, Manifest, SpatialNode } from './types';
 export const DEFAULT_MINIMUM_OPACITY=0.005;
 
 const OVERVIEW_DIRECTION=new THREE.Vector3(.85,-1,.58).normalize();
+/** Streamed point chunks fade in and out over this time instead of popping. */
+const POINT_FADE_SECONDS=.8;
 
 const vertex=`precision highp float;
 precision highp int;
@@ -74,12 +76,13 @@ in float vVisibility;
 in float vDetail;
 in float vUncertainLocal;
 uniform bool uDepthCues;
+uniform float uFade;
 out vec4 fragColor;
 void main(){
   float r=length(gl_PointCoord-vec2(.5));
   if(r>.5||vVisibility<=0.0)discard;
   float alpha=(uDepthCues?vVisibility:.88)*(1.0-smoothstep(.25,.5,r));
-  alpha *= 1.0 - vDetail;
+  alpha *= (1.0 - vDetail) * uFade;
   if(alpha<=0.0)discard;
   fragColor=vec4(mix(vec3(.73,.82,.9),vec3(1.,.61,.23),vUncertainLocal),alpha);
 }`;
@@ -98,6 +101,8 @@ const lineFragment=`precision highp float;out vec4 fragColor;void main(){fragCol
 interface Resident {
   node: SpatialNode; buffer: ArrayBuffer; ids: Uint32Array; points: THREE.Points<THREE.BufferGeometry,THREE.RawShaderMaterial>;
   bytes: number; used: number; modelRows:number[];modelLookup:ModelRows;
+  /** Draw from `start`: earlier rows are drawn by ancestors (-1 until computed). */
+  start: number; fade: number; target: boolean;
 }
 export interface AtlasStats {
   drawn:number; loaded:number; represented:number; pending:number; failed:number; mode:'adaptive'|'full'; complete:boolean;
@@ -294,7 +299,7 @@ export class Explorer {
     const material=new THREE.RawShaderMaterial({glslVersion:THREE.GLSL3,vertexShader:vertex,fragmentShader:fragment,
       uniforms:{uOrigin:{value:new THREE.Vector3()},uSize:{value:size},uNode:{value:0},uColor:{value:new THREE.Color(0x9fe5f1)},uDepthCues:depthCues?this.depthCueUniform:{value:false},uEnlargePoints:depthCues?this.enlargePointsUniform:{value:false},uFadeRange:this.fadeRangeUniform,
         uLocalChunk:{value:false},uWorldOrigin:{value:new THREE.Vector3()},uHideUncertainLocal:this.hideUncertainLocalUniform,
-        uDetailOrigins:this.detailOriginsUniform,uDetailMix:this.detailBlendUniform,uMinOpacity:this.minOpacityUniform},
+        uDetailOrigins:this.detailOriginsUniform,uDetailMix:this.detailBlendUniform,uMinOpacity:this.minOpacityUniform,uFade:{value:1}},
       transparent,depthTest:true,depthWrite:!transparent,toneMapped:false});
     (material.defaultAttributeValues as Record<string,number[]>).detailSlot=[0];return material;
   }
@@ -756,7 +761,7 @@ export class Explorer {
   }
   private get memoryLimit(){return (this.mode==='full'?1536:768)*1048576}
   private evict(requiredBytes=0){
-    const removable=[...this.cache.values()].filter(item=>item.node.id!==this.root&&!this.required.has(item.node.id)&&!this.drawn.includes(item.node.id)).sort((a,b)=>a.used-b.used);
+    const removable=[...this.cache.values()].filter(item=>item.node.id!==this.root&&!this.required.has(item.node.id)&&!item.fade).sort((a,b)=>a.used-b.used);
     for(const item of removable){
       if(this.memoryBytes+requiredBytes<this.memoryLimit*.9)break;
       this.scene.remove(item.points);item.points.geometry.dispose();item.points.material.dispose();this.cache.delete(item.node.id);
@@ -788,7 +793,7 @@ export class Explorer {
         m.uniforms.uLocalChunk.value=localChunk;m.uniforms.uWorldOrigin.value.fromArray(node.center);
         this.resolvedGalaxies.forEach((model,i)=>m.uniforms.uDetailOrigins.value[i].copy(model.center).sub(camera.position));
       };
-      const resident={node,buffer,ids,points,bytes:buffer.byteLength+positions.byteLength+node.storedCount*8,used:performance.now(),modelRows:[],modelLookup:new ModelRows(MODEL_LIMIT)};
+      const resident={node,buffer,ids,points,bytes:buffer.byteLength+positions.byteLength+node.storedCount*8,used:performance.now(),modelRows:[],modelLookup:new ModelRows(MODEL_LIMIT),start:-1,fade:0,target:false};
       this.cache.set(node.id,resident);this.bindModels(resident);this.modelScanNeeded=true;
       for(const id of ids)if(this.references[id]++===0)this.loadedUnique++;
       this.scene.add(points);
@@ -809,9 +814,13 @@ export class Explorer {
     // Root first, followed by breadth-first coverage; never queue the entire catalog.
     const queue=[this.root];
     while(queue.length&&this.loader.pending<12){const id=queue.shift()!;const node=this.nodes.get(id)!;if(this.required.has(id)||id===this.root){this.request(node);queue.push(...node.children.filter(c=>this.required.has(c)))}}
-    this.drawn=coveredFrontier(this.root,this.nodes,this.desired,this.required,id=>this.cache.has(id));
-    for(const item of this.cache.values())item.points.visible=false;
-    for(const id of this.drawn){const item=this.cache.get(id)!;item.points.visible=true;item.used=performance.now()}
+    const {layers,surface}=layeredFrontier(this.root,this.nodes,this.required,id=>this.cache.has(id));this.drawn=surface;
+    for(const item of this.cache.values())item.target=false;
+    for(const id of layers){
+      const item=this.cache.get(id)!;
+      if(item.start<0){item.start=0;for(let a=this.parents.get(id);a!==undefined;a=this.parents.get(a))item.start=Math.max(item.start,sharedPrefix(item.ids,this.cache.get(a)!.ids))}
+      item.points.geometry.setDrawRange(item.start,Infinity);item.target=true;item.used=performance.now();
+    }
     this.evict();
   }
   private updateAnnotations(){
@@ -911,7 +920,7 @@ export class Explorer {
   }
   get stats():AtlasStats{
     const sorted=[...this.timings].sort((a,b)=>a-b),mean=this.timings.reduce((a,b)=>a+b,0)/(this.timings.length||1);
-    return {drawn:this.drawn.reduce((n,id)=>n+this.nodes.get(id)!.storedCount,0),loaded:this.loadedUnique,represented:this.drawn.reduce((n,id)=>n+this.nodes.get(id)!.count,0),pending:this.loader.pending+(this.modelCatalog?.pendingCount??0),failed:this.failed.size+(this.modelCatalog?.failed.size??0),mode:this.mode,
+    return {drawn:[...this.cache.values()].reduce((n,item)=>n+(item.points.visible?item.node.storedCount-item.start:0),0),loaded:this.loadedUnique,represented:this.drawn.reduce((n,id)=>n+this.nodes.get(id)!.count,0),pending:this.loader.pending+(this.modelCatalog?.pendingCount??0),failed:this.failed.size+(this.modelCatalog?.failed.size??0),mode:this.mode,
       complete:this.ready&&this.drawn.length>0&&this.desired.size===this.drawn.length&&this.drawn.every(id=>this.desired.has(id))&&this.drawn.every(id=>!this.nodes.get(id)!.children.length),
       fps:mean?1000/mean:0,p95:sorted[Math.floor(sorted.length*.95)]??0,calls:this.renderer.info.render.calls,managedMiB:this.memoryBytes/1048576,blocked:this.blocked,
       focusDistance:this.camera.position.distanceTo(this.controls.target),focusFromObserver:this.controls.target.length(),budget:this.sampleBudget,models:this.allModels.filter(model=>model.visible).length+Number(this.milkyWay.visible)};
@@ -936,6 +945,12 @@ export class Explorer {
     this.milkyWay.update(this.camera,this.canvas.clientHeight||innerHeight,this.pixelRatio,this.homeFocused,this.modelDisplay);
     this.updateDepthCues();
     if(this.dirty||time-this.lastLOD>200){this.updateLOD();this.lastLOD=time;this.dirty=false}
+    const pointStep=Math.min(elapsed/1000,.05)/POINT_FADE_SECONDS;let pointsFading=false;
+    for(const item of this.cache.values()){
+      const fade=item.target?Math.min(1,item.fade+pointStep):Math.max(0,item.fade-pointStep);
+      if(fade!==item.fade){item.fade=fade;item.points.material.uniforms.uFade.value=fade;pointsFading=true}
+      item.points.visible=fade>0;
+    }
     if(this.modelScanNeeded||time-this.lastModelScan>250){this.updateModels();this.lastModelScan=time;this.modelScanNeeded=false}
     this.rings=this.lookbackRings.enabled?chooseRings(this.camera.position.length(),this.camera.fov,this.camera.aspect,this.canvas.clientHeight||innerHeight):[];
     this.positionAnnotations();this.renderer.info.reset();this.renderer.autoClear=false;this.renderer.clear();
@@ -951,7 +966,7 @@ export class Explorer {
       else if(p95>0&&p95<17)this.sampleBudget=Math.min(2000000,Math.floor(this.sampleBudget*1.1));
       this.adaptationFrames=0;this.dirty=true;
     }
-    this.wasContinuous=!!(moved||orbitMoved||automaticOrbit||this.dirty||[...this.modelPresence.values()].some(presence=>presence.value!==presence.target));
+    this.wasContinuous=!!(moved||orbitMoved||automaticOrbit||this.dirty||pointsFading||[...this.modelPresence.values()].some(presence=>presence.value!==presence.target));
     if(this.wasContinuous)this.invalidate();
   }
   get measurementDistance(){return this.measurement.length===2?separation(this.measurement[0].position,this.measurement[1].position):null}
@@ -1143,7 +1158,8 @@ export class Explorer {
     const points=new THREE.Points(geometry,item.points.material);points.frustumCulled=false;points.onBeforeRender=item.points.onBeforeRender;scene.add(points);
     const target=new THREE.WebGLRenderTarget(256,256),pixels=new Uint8Array(256*256*4);
     const sample=(pick=false)=>{
-      scene.overrideMaterial=pick?this.pickMaterial:null;
+      // The chunk may be faded out of the live frontier; this isolated row renders at full fade.
+      scene.overrideMaterial=pick?this.pickMaterial:null;item.points.material.uniforms.uFade.value=1;
       this.renderer.setRenderTarget(target);this.renderer.setClearColor(0,0);this.renderer.clear();this.renderer.render(scene,camera);
       this.renderer.readRenderTargetPixels(target,0,0,256,256,pixels);
       let covered=0,amber=0,code=0;

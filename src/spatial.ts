@@ -30,15 +30,33 @@ export function chooseFrontier(options: FrontierOptions): string[] {
   return [...frontier];
 }
 
-/** Return ancestor fallbacks until every needed child has usable coverage. */
-export function coveredFrontier(root: string, nodes: Map<string, SpatialNode>, desired: Set<string>, required: Set<string>, loaded: (id:string)=>boolean): string[] {
+/**
+ * Draw every loaded required node whose ancestors are loaded. Ancestors stay drawn and each
+ * node adds only the rows they lack (`sharedPrefix`), so refining or coarsening never removes a
+ * point already on screen. `surface` is the non-overlapping coverage: a parent stands in for its
+ * children until every required child has loaded.
+ */
+export function layeredFrontier(root: string, nodes: Map<string, SpatialNode>, required: Set<string>, loaded: (id:string)=>boolean) {
+  const layers:string[]=[];
   const visit=(id:string):string[]|null=>{
-    if(!required.has(id))return [];
-    if(desired.has(id))return loaded(id)?[id]:null;
-    const children=nodes.get(id)!.children.filter(c=>required.has(c));
-    const parts=children.map(visit);
-    if(parts.every(p=>p!==null))return parts.flatMap(p=>p!);
-    return loaded(id)?[id]:null;
+    if(!required.has(id)||!loaded(id))return null;
+    layers.push(id);
+    const parts=nodes.get(id)!.children.filter(c=>required.has(c)).map(visit);
+    return parts.length&&parts.every(p=>p!==null)?parts.flatMap(p=>p!):[id];
   };
-  return visit(root)??[];
+  const surface=visit(root)??[];
+  return {layers,surface};
+}
+
+/**
+ * Every node stores its rows in one global hash order, so an ancestor's rows inside a node are
+ * exactly a prefix of that node's rows. One merge walk returns the prefix length.
+ */
+export function sharedPrefix(rows: Uint32Array, ancestor: Uint32Array): number {
+  let j=0;
+  for(let i=0;i<rows.length;i++){
+    while(j<ancestor.length&&ancestor[j]!==rows[i])j++;
+    if(j++===ancestor.length)return i;
+  }
+  return rows.length;
 }

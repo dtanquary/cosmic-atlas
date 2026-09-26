@@ -525,3 +525,24 @@ Visual review:
 - A throwaway Metal snapshot matched the web renders.
 
 `swift test` passes under `MTL_DEBUG_LAYER=1`: AtlasCore 130 and AtlasRender 17, with no `ChunkLoaderTests` flake in this run. The iOS app builds for the simulator.
+
+## Point streaming fades — 25 September 2026
+
+People repeatedly reported galaxy dots popping in and out while moving. The cause was the replacement frontier. When a node's children finished loading, its sample disappeared and the children appeared in the same frame. If one child entering the view was not yet loaded, all of its loaded siblings reverted to the parent. Streamed points are now layered and fade in and out (see `docs/architecture.md`).
+
+A full-catalog Python check first confirmed the prefix contract on 60 random nodes and all of their ancestors, with no violations. The unit tests cover the layered frontier and the prefix walk; `npm test` passes **127 tests in 25 files**.
+
+The before/after measurement compared HEAD `27963ef` (a scratch worktree sharing the same data) with the change. It used HeadlessChrome 153 / ANGLE Metal M3 Max at 1400×900 with reduced motion, so jumps are instant. Screenshots of a 1000×580 region clear of the interface are taken about every 80 ms while the camera is still. A **pop** is a pixel whose luminance changes by more than 80/255 between two captures but by less than 20/255 in the capture before and the capture after, which is a step rather than a ramp. Captures more than 160 ms apart are excluded.
+
+| Still-camera sequence | Pop pixels, before | Pop pixels, after |
+| --- | ---: | ---: |
+| Initial load, default view | 13,813 | 184 |
+| Full detail switch | 34,221* | 0 |
+| Milky Way jump | 1,301 | 1,285 |
+| Overview jump, wheel zoom, orbit drag (settled) | 0 | 0–23 |
+
+\*From an earlier run that counted changes over 80/255 without the step condition. With the step condition, 20 of the baseline's capture pairs were too slow to count.
+
+The remaining Milky Way value is the arrival notice being dismissed, which is the same before and after. Transitions while the camera moves are not isolated by this metric. There, every chunk change now goes through the same fade, and the layered frontier keeps loaded detail on screen.
+
+`?benchmark` is unchanged: before 60.0 fps, p95 16.8 ms, 124 calls; after 60.0 fps, p95 16.7 ms, 142 calls, with both at the 2,000,000-point adaptive cap. The extra calls are ancestor layers. Full-data `?selftest`, `?hometest`, `?continuitytest`, `?uxtest`, `?tourtest`, `?sharetest` and `?nearbytest` pass with every probe available. The development subset passes `?nearbytest` and `?tourtest`. The represented count stays at 14,140,375. The native client's `AtlasCore.coveredFrontier` still uses the replacement frontier.

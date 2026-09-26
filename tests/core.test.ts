@@ -1,6 +1,6 @@
 import {describe,it,expect} from 'vitest';
 import {cartesian,decodeGalaxy,formatDistance,separation,validateBinary,niceScale} from '../src/format';
-import {chooseFrontier,coveredFrontier} from '../src/spatial';
+import {chooseFrontier,layeredFrontier,sharedPrefix} from '../src/spatial';
 import type {SpatialNode} from '../src/types';
 
 describe('Scientific coordinate and identifier contracts',()=>{
@@ -45,11 +45,18 @@ describe('Spatial coverage and detail completeness',()=>{
   expect(chooseFrontier({...options,mode:'full'})).toEqual(['1','2']);
   expect(chooseFrontier({...options,budget:8,mode:'adaptive'})).toEqual(['1','2']);
  });
- it('uses a parent until all required children load, avoiding duplicate counts',()=>{
-  const desired=new Set(['1','2']),required=new Set(['0','1','2']);
-  expect(coveredFrontier('0',nodes,desired,required,id=>id!=='2')).toEqual(['0']);
-  expect(coveredFrontier('0',nodes,desired,required,()=>true)).toEqual(['1','2']);
-  expect(coveredFrontier('0',nodes,desired,required,()=>false)).toEqual([]);
+ it('keeps loaded ancestors drawn beneath children, so refinement never removes points',()=>{
+  const required=new Set(['0','1','2']);
+  expect(layeredFrontier('0',nodes,required,id=>id!=='2')).toEqual({layers:['0','1'],surface:['0']});
+  expect(layeredFrontier('0',nodes,required,()=>true)).toEqual({layers:['0','1','2'],surface:['1','2']});
+  expect(layeredFrontier('0',nodes,required,id=>id!=='0')).toEqual({layers:[],surface:[]});
+ });
+ it('finds the rows a node shares with an ancestor in their common hash order',()=>{
+  const ancestor=Uint32Array.of(9,4,7,1,8);
+  expect(sharedPrefix(Uint32Array.of(4,1,3,5),ancestor)).toBe(2);
+  expect(sharedPrefix(Uint32Array.of(9,7),ancestor)).toBe(2);
+  expect(sharedPrefix(Uint32Array.of(3,9),ancestor)).toBe(0);
+  expect(sharedPrefix(new Uint32Array(0),ancestor)).toBe(0);
  });
  it('culls unobserved camera directions without inventing replacement points',()=>{
   const result=chooseFrontier({root:'0',nodes,mode:'full',budget:0,visible:n=>n.id!=='2',projectedSize:()=>1000});
